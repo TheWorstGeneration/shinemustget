@@ -1,4 +1,4 @@
-# Shine Must Get 포팅매뉴얼
+# Porting Manual
 
 ## 목차
 
@@ -29,7 +29,7 @@ CI/CD : Jenkins, Docker
    - Spring Boot : 2.7.9
    - Java : 11.0.17
 2. Front-end
-   - Node.js : 18.15.0
+   - Node.js : 18.16.0
    - Next.js : 13.2.3
    - Typescript : 4.9.5
 3. 그 외
@@ -79,7 +79,9 @@ CI/CD : Jenkins, Docker
   NEXT_PUBLIC_LOGIN_REDIRECTURI="https://shinemustget.com/oauth2/authorization/kakao"
   ```
 - Spring
+
   - application-auth.yml (/src/main/resources 에 위치)
+
   ```
   spring:
     security:
@@ -108,7 +110,9 @@ CI/CD : Jenkins, Docker
     secret: [JWT SECRET 키]
     token-validity-in-seconds: 3600
   ```
+
   - application-s3.yml (/src/main/resources 에 위치)
+
   ```
   # s3
   cloud:
@@ -133,6 +137,7 @@ CI/CD : Jenkins, Docker
 ## 5. 배포관련 설정
 
 - Nginx 설정
+
   ```bash
   server {
       # 서버가 Listen할 포트를 지정합니다.
@@ -178,11 +183,6 @@ CI/CD : Jenkins, Docker
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       }
-
-      # Cloud Front로 S3 이미지 요청
-      location /image {
-          proxy_pass https://dw7z6zdy772mu.cloudfront.net;
-      }
   }
   ```
 
@@ -195,15 +195,9 @@ CI/CD : Jenkins, Docker
    ```
 2. Back-end
 
-- Business-Server, Auth-Server
-  ```bash
-  $ ./gradlew build
-  $ java -jar app.jar
-  ```
-- AI-Server
-  ```bash
-  $ pip install --upgrade pip
-  $ pip install --no-cache-dir -r requirements.txt
-  $ apt-get update && apt-get install -y ffmpeg
-  $ python app.py
-  ```
+   Business-Server, Auth-Server
+
+   ```bash
+   $ ./gradlew build
+   $ java -jar app.jar
+   ```
