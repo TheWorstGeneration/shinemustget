@@ -52,7 +52,7 @@
 
 ![architecture](./assets/architecture.png)
 
-## Porting Manual
+## [Porting Manual](./PORTING_MANUAL.md)
 
 1. 프로젝트 사용 도구
 2. 개발 환경
