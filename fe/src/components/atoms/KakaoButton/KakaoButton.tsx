@@ -40,7 +40,14 @@ const SmallButton = styled.button`
 `;
 
 export const KakaoButton = ({ size }: ButtonProps) => {
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    window.Kakao.Auth.authorize({
+      redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI,
+    });
+    window.location.href = process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+      ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+      : '/';
+  };
 
   return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLogin}>
