@@ -24,6 +24,8 @@ public class Member {
     @Column(name = "image_url")
     private String imageUrl;
 
+    private SocialType socialType;
+
     @OneToMany(mappedBy = "member")
     private List<Likes> memberLikes = new ArrayList<>();
 
