@@ -15,9 +15,19 @@ const HeadContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+
   width: 100%;
   height: 5.5rem;
   padding: 0 10rem;
+
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.5);
 
   @media (max-width: 960px) {
     padding: 0 1rem;
