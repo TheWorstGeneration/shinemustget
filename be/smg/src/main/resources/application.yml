@@ -13,10 +13,10 @@ spring:
   # DB??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
-    #url: jdbc:mysql://j8b207.p.ssafy.io:3300/mything?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-    username: root
-    password: blur
+#    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: smg
+    password: smg!
 
   redis:
     host: localhost

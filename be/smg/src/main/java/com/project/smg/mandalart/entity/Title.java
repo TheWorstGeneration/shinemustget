@@ -34,6 +34,9 @@ public class Title {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
+    @Column(name = "like_cnt")
+    private int likeCnt;
+
     @OneToMany(mappedBy = "title")
     private List<Likes> titleLikes = new ArrayList<>();
 
