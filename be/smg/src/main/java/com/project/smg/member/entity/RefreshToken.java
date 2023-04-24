@@ -26,7 +26,7 @@ public class RefreshToken {
     @JsonIgnore
     private Member member;
 
-    private void updateRefreshToken(String updateRefreshToken) {
+    public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
     }
 }
