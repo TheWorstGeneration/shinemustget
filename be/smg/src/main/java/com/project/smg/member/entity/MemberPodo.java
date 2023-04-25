@@ -2,6 +2,7 @@ package com.project.smg.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.smg.podo.entity.Podo;
+import com.project.smg.podo.entity.PodoType;
 import lombok.*;
 
 import javax.persistence.*;

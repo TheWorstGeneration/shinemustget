@@ -1,4 +1,4 @@
-package com.project.smg.member.entity;
+package com.project.smg.podo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.smg.podo.entity.Podo;
