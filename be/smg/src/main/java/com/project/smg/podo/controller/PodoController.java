@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Podo")
+@RequestMapping("/podo")
 public class PodoController {
     private final PodoService podoService;
 
