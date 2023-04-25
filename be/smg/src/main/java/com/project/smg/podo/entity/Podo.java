@@ -2,6 +2,7 @@ package com.project.smg.podo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.smg.mandalart.entity.SmallGoal;
+import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.entity.PodoType;
 import lombok.*;
 
@@ -26,8 +27,10 @@ public class Podo {
     @Column(name = "clear_at")
     private LocalDateTime clearAt;
 
-    @OneToOne(mappedBy = "podo", fetch = FetchType.LAZY)
-    private PodoType podoType;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_podo_id")
+    @JsonIgnore
+    private MemberPodo memberPodo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "small_goal_id")
