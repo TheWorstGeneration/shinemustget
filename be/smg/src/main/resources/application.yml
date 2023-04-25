@@ -13,8 +13,8 @@ spring:
   # DB??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
-#    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    #    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
+    #    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     url: jdbc:mysql://k8b109.p.ssafy.io:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: smg
     password: smg!
@@ -65,15 +65,15 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-  jwt:
-    secretKey: SN5OUPJANIZLB/hZ1q7CsJbHvvuZ5xahm6DZMxTZyDI=
+jwt:
+  secretKey: SN5OUPJANIZLB/hZ1q7CsJbHvvuZ5xahm6DZMxTZyDI=
 
-    access:
-      expiration: 36000000000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
-      header: Authorization
+  access:
+    expiration: 36000000000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
+    header: Authorization
 
-    refresh:
-      expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?))
+  refresh:
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?))
   #    header: Authorization-refresh
 
 

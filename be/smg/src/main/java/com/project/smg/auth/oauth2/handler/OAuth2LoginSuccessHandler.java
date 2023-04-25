@@ -53,7 +53,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void loginSuccess(HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
-        String memberId = (String) oAuth2User.getAttributes().get("id");
+        String memberId = oAuth2User.getAttributes().get("id").toString();
         Optional<Member> findMember =  memberRepository.findById(memberId);
         Member member = findMember.orElseThrow(() -> new IllegalStateException("유저가 존재하지 않음"));
         String accessToken = jwtService.createAccessToken(memberId);
