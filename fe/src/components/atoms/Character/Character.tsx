@@ -17,14 +17,40 @@ const ImageContainer = styled.div`
   height: 500px;
 `;
 
+const You = styled.h2`
+  position: relative;
+
+  font-size: 3rem;
+  font-weight: 600;
+`;
+
 const CharacterImage = styled(Image)`
+  position: absolute;
   object-fit: contain;
+`;
+
+const Dim = styled.div`
+  position: absolute;
+  top: 150vh;
+  left: 0;
+
+  width: 100%;
+  height: 50vh;
+
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
 `;
 
 const Name = styled.h1`
   position: absolute;
-  bottom: 100px;
+  top: 170vh;
   left: 50%;
+
+  font-size: 5rem;
+  font-weight: bold;
 
   transform: translateX(-50%);
 `;
@@ -32,8 +58,9 @@ const Name = styled.h1`
 export const Character = ({ src, alt }: CharacterProps) => {
   return (
     <ImageContainer>
-      <h2>당신도</h2>
+      <You>당신도</You>
       <CharacterImage src={src} width={500} height={500} alt={alt} />
+      <Dim />
       <Name>{alt}.</Name>
     </ImageContainer>
   );

@@ -12,9 +12,18 @@ const FooterContainer = styled.footer`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 100;
   width: 100%;
   height: 5.5rem;
   padding: 0 10rem;
+
+  background-color: #ffffff;
 
   @media (max-width: 960px) {
     padding: 0 1rem;

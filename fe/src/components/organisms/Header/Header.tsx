@@ -1,9 +1,9 @@
+import { usePageYOffset } from '../../../hooks/usePageYOffset';
 import { KakaoButton } from '../../atoms/KakaoButton/KakaoButton';
 import { LanguageButton } from '../../atoms/LanguageButton/LanguageButton';
 import { LogoutButton } from '../../atoms/LogoutButton/LogoutButton';
 import { ProfileImage } from '../../atoms/ProfileImage/ProfileImage';
 import styled from '@emotion/styled';
-import React from 'react';
 
 interface HeaderProps {
   size: 'sm' | 'lg';
@@ -11,7 +11,7 @@ interface HeaderProps {
   language: 'ko' | 'en';
 }
 
-const HeadContainer = styled.header`
+const HeadContainer = styled.header<{ isScroll: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,8 +26,9 @@ const HeadContainer = styled.header`
   height: 5.5rem;
   padding: 0 10rem;
 
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: ${({ isScroll }) => (isScroll ? 'blur(10px)' : 'none')};
+  background-color: ${({ isScroll }) =>
+    isScroll ? 'rgba(255, 255, 255, 0.25)' : 'transparent'};
 
   @media (max-width: 960px) {
     padding: 0 1rem;
@@ -40,13 +41,15 @@ const HeaderItemList = styled.div`
   justify-content: space-between;
 
   & > * {
-    margin-right: 1rem;
+    margin-left: 1rem;
   }
 `;
 
 export const Header = ({ size, isLogin, language }: HeaderProps) => {
+  const isScroll = usePageYOffset() > 700;
+
   return isLogin ? (
-    <HeadContainer>
+    <HeadContainer isScroll={isScroll}>
       <div>Logo</div>
       <HeaderItemList>
         <LanguageButton size={size} language={language} />
@@ -55,7 +58,7 @@ export const Header = ({ size, isLogin, language }: HeaderProps) => {
       </HeaderItemList>
     </HeadContainer>
   ) : (
-    <HeadContainer>
+    <HeadContainer isScroll={isScroll}>
       <div>Logo</div>
       <HeaderItemList>
         <LanguageButton size={size} language={language} />
