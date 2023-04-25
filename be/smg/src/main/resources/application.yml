@@ -5,6 +5,9 @@ spring:
   application:
     name: smg
 
+  profiles:
+    include: API-KEY
+
   # ??? ?? ??
   mvc:
     pathmatch:
@@ -78,3 +81,8 @@ jwt:
 
 
   # gpt api?
+openai:
+  api-key: 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
+
+chatgpt:
+  api-key: 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
