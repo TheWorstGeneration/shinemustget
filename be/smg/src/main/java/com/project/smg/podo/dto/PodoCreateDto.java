@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PodoCreateDto {
     private int id;
-    private int stickerTypeId;
+    private String stickerType;
     private String oneline;
 
 }
