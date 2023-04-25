@@ -29,8 +29,8 @@ public class MemberPodo {
     @JsonIgnore
     private PodoType podoType;
 
-    @OneToOne(mappedBy = "memberPodo", fetch = FetchType.LAZY)
-    private Podo podo;
+//    @OneToOne(mappedBy = "memberPodo", fetch = FetchType.LAZY)
+//    private Podo podo;
 
     public void addMember(Member member) {
         if (this.member != null) {
