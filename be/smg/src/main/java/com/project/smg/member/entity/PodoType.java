@@ -23,22 +23,4 @@ public class PodoType {
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kakao_id")
-    @JsonIgnore
-    private Member member;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "podo_id")
-    @JsonIgnore
-    private Podo podo;
-
-    public void addMember(Member member) {
-        if (this.member != null) {
-            this.member.getPodoTypes().remove(this);
-        }
-        this.member = member;
-        member.getPodoTypes().add(this);
-    }
 }
