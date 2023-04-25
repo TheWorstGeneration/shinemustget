@@ -1,4 +1,7 @@
-import { Character } from '@/components/atoms/Character/Character';
+import { Navigator } from '@/components/atoms/Navigator/Navigator';
+import { CharacterSection } from '@/components/organisms/sections/Character/CharacterSection';
+import { LoginSection } from '@/components/organisms/sections/Login/LoginSection';
+import { VideoSection } from '@/components/organisms/sections/Video/VideoSection';
 import styled from '@emotion/styled';
 
 const MainContainer = styled.main`
@@ -8,51 +11,13 @@ const MainContainer = styled.main`
   justify-content: center;
 `;
 
-const VideoSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #f7e600;
-`;
-
-const CharacterSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #f7e6ff;
-`;
-
-const SliderSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 100vw;
-  height: 100vh;
-
-  background-color: #f3164f;
-`;
-
 export default function Landing() {
-  const image = 'favicon.ico';
   return (
     <MainContainer>
-      <VideoSection></VideoSection>
-      <CharacterSection>
-        <Character src={image} alt={''} />
-      </CharacterSection>
-      <SliderSection></SliderSection>
+      <Navigator />
+      <VideoSection />
+      <CharacterSection />
+      <LoginSection />
     </MainContainer>
   );
 }
