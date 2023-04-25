@@ -1,4 +1,4 @@
-package com.project.smg.member.repository;
+package com.project.smg.podo.repository;
 
 import com.project.smg.podo.entity.PodoType;
 import org.springframework.data.jpa.repository.JpaRepository;
