@@ -11,6 +11,10 @@ const LogoutLink = styled(Link)`
   align-items: center;
   justify-content: center;
 
+  width: fit-content;
+  font-size: 1.5rem;
+  font-weight: 600;
+
   &:hover {
     scale: 1.1;
     opacity: 0.8;
@@ -18,12 +22,14 @@ const LogoutLink = styled(Link)`
 `;
 
 export const Logo = () => {
-  const dispatch = useAppDispatch();
-
   return (
     <LogoutLink href={'/'}>
-      {/* <FontAwesomeIcon icon={faBüromöbel-ExperteGmbH&Co.KG.} /> */}
-      <FontAwesomeIcon icon={faBuromobelexperte} size="2xl" />
+      <FontAwesomeIcon
+        icon={faBuromobelexperte}
+        size="2xl"
+        rotation={90}
+        color="#238835"
+      />
     </LogoutLink>
   );
 };
