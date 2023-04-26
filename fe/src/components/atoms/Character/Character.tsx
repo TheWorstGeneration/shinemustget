@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
@@ -56,9 +58,10 @@ const Name = styled.h1`
 `;
 
 export const Character = ({ src, alt }: CharacterProps) => {
+  const { language } = useAppSelector(selectProfile);
   return (
     <ImageContainer>
-      <You>당신도</You>
+      <You>{language == 'ko' ? '당신도' : 'You are next'}</You>
       <CharacterImage src={src} width={500} height={500} alt={alt} />
       <Dim />
       <Name>{alt}.</Name>

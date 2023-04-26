@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,6 +42,7 @@ const SmallButton = styled.button`
 `;
 
 export const KakaoButton = ({ size }: ButtonProps) => {
+  const { language } = useAppSelector(selectProfile);
   const handleLogin = () => {
     window.Kakao.Auth.authorize({
       redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI,
@@ -52,7 +55,7 @@ export const KakaoButton = ({ size }: ButtonProps) => {
   return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLogin}>
       <FontAwesomeIcon icon={faComment} />
-      <h4>카카오 로그인</h4>
+      <h4>{language == 'ko' ? '카카오 로그인' : 'KAKAO LOGIN'}</h4>
     </LargeButton>
   ) : (
     <SmallButton type="button" onClick={handleLogin}>
