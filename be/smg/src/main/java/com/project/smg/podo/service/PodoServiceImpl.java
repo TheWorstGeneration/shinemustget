@@ -1,5 +1,6 @@
 package com.project.smg.podo.service;
 
+
 import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;

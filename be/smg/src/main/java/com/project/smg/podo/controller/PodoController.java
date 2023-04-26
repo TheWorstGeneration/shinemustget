@@ -47,6 +47,7 @@ public class PodoController {
     public ResponseEntity<?> mySticker(@CookieValue("accessToken") String token){
         System.out.println("1");
         List<StickerDto> stickerList = podoService.sticker(token);
+
         if (stickerList != null) {
             return new ResponseEntity<>(stickerList, HttpStatus.OK);
         }else return new ResponseEntity<>(new ResponseDto(500, "반환 실패"), HttpStatus.OK);

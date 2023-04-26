@@ -12,5 +12,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Inte
     // member id 로 refreshtoken 조회
     @Query(value = "select rt from RefreshToken rt where rt.member.id =:mid")
     Optional<RefreshToken> findByMemberId(@Param("mid") String id);
+    Optional<RefreshToken> findByRefreshToken(String refreshToken);
 
 }
