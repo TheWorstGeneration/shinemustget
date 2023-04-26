@@ -1,14 +1,15 @@
+import { useAppSelector } from '@/hooks/useRedux';
 import { usePageYOffset } from '../../../hooks/usePageYOffset';
 import { KakaoButton } from '../../atoms/KakaoButton/KakaoButton';
 import { LanguageButton } from '../../atoms/LanguageButton/LanguageButton';
 import { LogoutButton } from '../../atoms/LogoutButton/LogoutButton';
 import { ProfileImage } from '../../atoms/ProfileImage/ProfileImage';
 import styled from '@emotion/styled';
+import { selectProfile } from '@/store/modules/profile';
+import { Logo } from '@/components/atoms/Logo/Logo';
 
 interface HeaderProps {
   size: 'sm' | 'lg';
-  isLogin: boolean;
-  language: 'ko' | 'en';
 }
 
 const HeadContainer = styled.header<{ isScroll: boolean }>`
@@ -47,12 +48,13 @@ const HeaderItemList = styled.div`
   }
 `;
 
-export const Header = ({ size, isLogin }: HeaderProps) => {
+export const Header = ({ size }: HeaderProps) => {
+  const { isLogin } = useAppSelector(selectProfile);
   const isScroll = usePageYOffset() > 700;
 
   return isLogin ? (
     <HeadContainer isScroll={isScroll}>
-      <div>Logo</div>
+      <Logo />
       <HeaderItemList>
         <LanguageButton size={size} />
         <LogoutButton />
@@ -61,7 +63,7 @@ export const Header = ({ size, isLogin }: HeaderProps) => {
     </HeadContainer>
   ) : (
     <HeadContainer isScroll={isScroll}>
-      <div>Logo</div>
+      <Logo />
       <HeaderItemList>
         <LanguageButton size={size} />
         <KakaoButton size={size} />
