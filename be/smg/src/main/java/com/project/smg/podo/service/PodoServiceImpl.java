@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,31 +76,24 @@ public class PodoServiceImpl implements PodoService {
         // 멤버 확인
         Member member = checkMember(token);
 
-        // memberpodo list
-        List<MemberPodo> memberPodos = member.getMemberPodos();
-        List<MemberPodo> byName = memberPodoRepository.findByName(member.getId());
-        //List selectNameFromPodoTypeP = em.createQuery("select mp.PodoType.id from MemberPodo mp").getResultList();
-        System.out.println(byName.toString());
-        // 스티커 보유 확인
+        // 멤버가 가진 포도 스티커 id 리스트
+        List<Integer> podoStickersId = memberPodoRepository.findByName(member.getId());
+
+        // 모든 포도 스티커
         List<PodoType> podoTypes = podoTypeRepository.findAll();
 
+        // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
+        List<StickerDto> stickerDtos = new ArrayList<>();
+        for (PodoType podoType : podoTypes){
+            Boolean isMine = false;
+            if(podoStickersId.contains(podoType.getId())){
+                 isMine=true;
+            }
+            StickerDto stickerDto = new StickerDto(podoType.getId(), isMine, podoType.getImageUrl());
+            stickerDtos.add(stickerDto);
+        }
 
-
-//
-//        for (PodoType podoType: podoTypes){
-//            if (podoType.getName().
-//        }
-//
-
-
-
-
-        // Dto 에 담기
-//        List<StickerDto> stickerDtos = memberPodos.stream()
-//                .map(o -> new StickerDto(o.getPodoType().getId(), o.getPodoType().getName(), o.getPodoType().getImageUrl()))
-//                .collect(Collectors.toList());
-
-        return null;
+        return stickerDtos;
     }
 
 
