@@ -20,12 +20,7 @@ public class GptBigGoal {
     @Column(name = "gpt_big_goal_id")
     private int id;
 
-    private int location;
-
     private String content;
-
-    @OneToMany(mappedBy = "gptBigGoal")
-    private List<GptSmallGoal> gptSmallGoals = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gpt_title_id")

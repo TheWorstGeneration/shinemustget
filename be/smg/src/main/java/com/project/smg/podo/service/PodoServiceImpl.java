@@ -1,5 +1,7 @@
 package com.project.smg.podo.service;
 
+
+import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
 import com.project.smg.member.entity.Member;
@@ -32,6 +34,7 @@ public class PodoServiceImpl implements PodoService {
     private final MemberPodoRepository memberPodoRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
+    private final JwtService jwtService;
     private final EntityManager em;
 
     /**
@@ -87,7 +90,7 @@ public class PodoServiceImpl implements PodoService {
         for (PodoType podoType : podoTypes){
             Boolean isMine = false;
             if(podoStickersId.contains(podoType.getId())){
-                 isMine=true;
+                isMine=true;
             }
             StickerDto stickerDto = new StickerDto(podoType.getId(), isMine, podoType.getImageUrl());
             stickerDtos.add(stickerDto);
@@ -98,7 +101,8 @@ public class PodoServiceImpl implements PodoService {
 
 
     private Member checkMember(String token) {
-        Optional<Member> member = memberRepository.findById(token);
+        String id = jwtService.getUserIdFromToken(token);
+        Optional<Member> member = memberRepository.findById(id);
         Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
         return findMember;
     }

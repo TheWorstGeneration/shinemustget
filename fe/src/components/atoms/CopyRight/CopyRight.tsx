@@ -13,15 +13,15 @@ const CopyRightButton = styled.button`
   justify-content: end;
   height: 3rem;
   border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
 
   &:hover {
     opacity: 0.8;
   }
-`;
 
-const CopyRightText = styled.h4`
-  margin: 0 0.5rem;
+  & > * {
+    margin-right: 0.5rem;
+  }
 `;
 
 export const CopyRight = ({ size }: CopyRightButtonProps) => {
@@ -29,16 +29,14 @@ export const CopyRight = ({ size }: CopyRightButtonProps) => {
 
   return size === 'lg' ? (
     <CopyRightButton type="button" onClick={handleCopyRight}>
-      <CopyRightText>Copyright</CopyRightText>
+      <h4>Copyright</h4>
       <FontAwesomeIcon icon={faCopyright} />
-      <CopyRightText>
-        2023 The Worst Generation, Inc. All rights reserved.
-      </CopyRightText>
+      <h4>2023 The Worst Generation, Inc. All rights reserved.</h4>
     </CopyRightButton>
   ) : (
     <CopyRightButton type="button" onClick={handleCopyRight}>
       <FontAwesomeIcon icon={faCopyright} />
-      <CopyRightText>The Worst Generation</CopyRightText>
+      <h4>The Worst Generation</h4>
     </CopyRightButton>
   );
 };

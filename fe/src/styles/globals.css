@@ -86,6 +86,11 @@ body {
   overflow-x: hidden;
 }
 
+/* 스크롤 바 숨기기 */
+::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
