@@ -45,17 +45,14 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
     @Override
-    public HashMap<String, List<String>> getBigGoals(String contents) {
-        // GPT 질문하기
-        ChatGptResponse chatGptResponse = getChatGptResponse(contents);
-
+    public HashMap<String, List<String>> getBigGoals(ChatGptResponse chatGptResponse) {
         // 받아온 메세지 리스트로 형 변환
         String[] content = chatGptResponse.choices.get(0).message.content.split("\n");
         List<String> strings = Arrays.stream(content).map(i -> i.substring(3)).collect(Collectors.toList());
 
         // 담아서 return
         HashMap<String, List<String>> result = new HashMap<>();
-        result.put(contents, strings);
+        result.put(chatGptResponse.getChoices().get(0).message.content, strings);
         return result;
     }
 }
