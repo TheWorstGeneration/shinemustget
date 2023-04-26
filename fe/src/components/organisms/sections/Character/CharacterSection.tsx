@@ -7,6 +7,8 @@ import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 
 const SectionStyle = styled.section`
   display: flex;
@@ -40,7 +42,9 @@ const ButtonContainer = styled.button`
 
 export const CharacterSection = () => {
   const [characterIndex, setCharacterIndex] = useState(0);
-  const { name, image } = CHARACTERS[characterIndex];
+  const { koName, enName, image } = CHARACTERS[characterIndex];
+
+  const { language } = useAppSelector(selectProfile);
 
   const handlePrevClick = () => {
     setCharacterIndex(
@@ -57,7 +61,7 @@ export const CharacterSection = () => {
       <ButtonContainer type="button" onClick={handlePrevClick}>
         <FontAwesomeIcon icon={faChevronLeft} size={'2x'} />
       </ButtonContainer>
-      <Character src={image} alt={name} />
+      <Character src={image} alt={language === 'ko' ? koName : enName} />
       <ButtonContainer type="button" onClick={handleNextClick}>
         <FontAwesomeIcon icon={faChevronRight} size={'2x'} />
       </ButtonContainer>

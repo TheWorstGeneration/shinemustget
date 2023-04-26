@@ -20,30 +20,14 @@ export default meta;
 type Story = StoryObj<typeof LanguageButton>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const LargeKorean: Story = {
+export const Large: Story = {
   args: {
     size: 'lg',
-    language: 'ko',
   },
 };
 
-export const SmallKorean: Story = {
+export const Small: Story = {
   args: {
     size: 'sm',
-    language: 'ko',
-  },
-};
-
-export const LargeEnglish: Story = {
-  args: {
-    size: 'lg',
-    language: 'en',
-  },
-};
-
-export const SmallEnglish: Story = {
-  args: {
-    size: 'sm',
-    language: 'en',
   },
 };

@@ -29,6 +29,8 @@ const HeadContainer = styled.header<{ isScroll: boolean }>`
   backdrop-filter: ${({ isScroll }) => (isScroll ? 'blur(10px)' : 'none')};
   background-color: ${({ isScroll }) =>
     isScroll ? 'rgba(255, 255, 255, 0.25)' : 'transparent'};
+  box-shadow: ${({ isScroll }) =>
+    isScroll ? '0 0.5rem .5rem 0 rgba(0, 0, 0, 0.10)' : 'none'};
 
   @media (max-width: 960px) {
     padding: 0 1rem;
@@ -45,14 +47,14 @@ const HeaderItemList = styled.div`
   }
 `;
 
-export const Header = ({ size, isLogin, language }: HeaderProps) => {
+export const Header = ({ size, isLogin }: HeaderProps) => {
   const isScroll = usePageYOffset() > 700;
 
   return isLogin ? (
     <HeadContainer isScroll={isScroll}>
       <div>Logo</div>
       <HeaderItemList>
-        <LanguageButton size={size} language={language} />
+        <LanguageButton size={size} />
         <LogoutButton />
         <ProfileImage />
       </HeaderItemList>
@@ -61,7 +63,7 @@ export const Header = ({ size, isLogin, language }: HeaderProps) => {
     <HeadContainer isScroll={isScroll}>
       <div>Logo</div>
       <HeaderItemList>
-        <LanguageButton size={size} language={language} />
+        <LanguageButton size={size} />
         <KakaoButton size={size} />
       </HeaderItemList>
     </HeadContainer>

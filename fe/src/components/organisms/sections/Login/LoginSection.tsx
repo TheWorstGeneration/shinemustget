@@ -1,7 +1,9 @@
+import { useAppSelector } from '@/hooks/useRedux';
 import { GOAL_LISTS } from '../../../../constants/goalLists';
 import { KakaoButton } from '../../../atoms/KakaoButton/KakaoButton';
 import { ChipList } from '../../../molecules/ChipList/ChipList';
 import styled from '@emotion/styled';
+import { selectProfile } from '@/store/modules/profile';
 
 const SectionStyle = styled.section`
   display: flex;
@@ -44,12 +46,19 @@ const ChipListContainer = styled.article`
 `;
 
 export const LoginSection = () => {
+  const { language } = useAppSelector(selectProfile);
+  const goalLists = GOAL_LISTS[language];
+
   return (
     <SectionStyle id="login">
-      <LoginText>만다트라를 만들어 목표를 달성해 보세요.</LoginText>
+      <LoginText>
+        {language == 'ko'
+          ? '만다트라를 만들어 목표를 달성해 보세요.'
+          : 'Try to achieve your goals by making a mandalart.'}
+      </LoginText>
       <KakaoButton size={'lg'} />
       <ChipListContainer>
-        {GOAL_LISTS.map((goalList, idx) => (
+        {goalLists.map((goalList, idx) => (
           <ChipList key={idx} chipList={goalList} move={idx} />
         ))}
       </ChipListContainer>
