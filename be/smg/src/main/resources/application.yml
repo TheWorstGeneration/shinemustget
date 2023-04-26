@@ -1,0 +1,92 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: smg
+
+  profiles:
+    include: API-KEY
+
+  # ??? ?? ??
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  # DB??
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
+    #    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://k8b109.p.ssafy.io:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: smg
+    password: smg!
+
+  redis:
+    host: localhost
+    port: 6379
+    password: ns
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        default_batch_fetch_size: ${chunkSize:100}
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+
+  logging.level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 2e076ec2c494a09a9d214c3658d64dcf
+            client-secret: tDquIYEW1gmLenqhFf4VZNAJjFrreNKZ
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            #redirect-uri: http://k8b109.p.ssafy.io/api/login/oauth2/code/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            client-name: Kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secretKey: SN5OUPJANIZLB/hZ1q7CsJbHvvuZ5xahm6DZMxTZyDI=
+
+  access:
+    expiration: 1800000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h)) 밀리초
+
+  refresh:
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?)) 밀리초
+
+cookie:
+  access:
+    expiration: 1800 # 초
+
+  refresh:
+    expiration: 1209600 # 초
+
+  # gpt api?
+openai:
+  api-key: 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
+
+chatgpt:
+  api-key: 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
