@@ -23,8 +23,8 @@ public class Podo {
 
     private String oneline;
 
-    @Column(name = "clear_at")
-    private LocalDateTime clearAt;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_podo_id")
