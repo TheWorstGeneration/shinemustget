@@ -44,6 +44,10 @@ dependencies {
 
 //    //s3
 //    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.819'
+
+    // ChatGpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.0'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 tasks.named('test') {

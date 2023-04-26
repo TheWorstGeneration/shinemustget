@@ -44,7 +44,7 @@ export const Navigator = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setCurSection(window.pageYOffset / window.innerHeight);
+      setCurSection(window.pageYOffset / (window.innerHeight - 88));
     };
 
     window.addEventListener('scroll', handleScroll);

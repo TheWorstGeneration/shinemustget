@@ -2,27 +2,22 @@ package com.project.smg.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.smg.podo.entity.Podo;
+import com.project.smg.podo.entity.PodoType;
 import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
+
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Builder
-@NoArgsConstructor
+@Table(name = "member_podo")
 @AllArgsConstructor
-@Table(name = "podo_type")
-public class PodoType {
+public class MemberPodo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "podo_type_id")
-    private int id;
-
-    private String name;
-
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "member_podo_id")
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
@@ -30,15 +25,16 @@ public class PodoType {
     private Member member;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "podo_id")
+    @JoinColumn(name = "podo_type_id")
     @JsonIgnore
-    private Podo podo;
+    private PodoType podoType;
+
 
     public void addMember(Member member) {
         if (this.member != null) {
-            this.member.getPodoTypes().remove(this);
+            this.member.getMemberPodos().remove(this);
         }
         this.member = member;
-        member.getPodoTypes().add(this);
+        member.getMemberPodos().add(this);
     }
 }

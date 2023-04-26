@@ -5,12 +5,14 @@ import { RootState } from '..';
 export interface profileSlice {
   isLogin: boolean;
   isRanker: boolean;
+  language: string;
 }
 
 // 초기 상태 정의
 const initialState = {
   isLogin: false,
   isRanker: false,
+  language: 'ko',
 };
 
 const profileSlice = createSlice({
@@ -26,6 +28,9 @@ const profileSlice = createSlice({
       state.isLogin = false;
       state.isRanker = false;
     },
+    setLanguage: (state, action) => {
+      state.language = action.payload;
+    }
   },
 });
 
@@ -33,6 +38,7 @@ const profileSlice = createSlice({
 export const { 
   setLogin,
   setLogout,
+  setLanguage,
  } = profileSlice.actions;
 export const selectProfile = (state: RootState) => state.profile;
 // 리듀서

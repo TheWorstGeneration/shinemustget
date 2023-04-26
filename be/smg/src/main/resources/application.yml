@@ -5,6 +5,9 @@ spring:
   application:
     name: smg
 
+  profiles:
+    include: API-KEY
+
   # ??? ?? ??
   mvc:
     pathmatch:
@@ -13,8 +16,9 @@ spring:
   # DB??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
-    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    #    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
+    #    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://k8b109.p.ssafy.io:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: smg
     password: smg!
 
@@ -49,10 +53,10 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 9eec0e493dbf3db1f50e9930111e3715
-            client-secret: FCwY0l62aS1ulyNDCRl3CofAY0XZ8lrF
+            client-id: 2e076ec2c494a09a9d214c3658d64dcf
+            client-secret: tDquIYEW1gmLenqhFf4VZNAJjFrreNKZ
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-            #redirect-uri: http://j8b207.p.ssafy.io/api/login/oauth2/code/kakao
+            #redirect-uri: http://k8b109.p.ssafy.io/api/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: Kakao
@@ -64,16 +68,25 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-  jwt:
-    secretKey: SN5OUPJANIZLB/hZ1q7CsJbHvvuZ5xahm6DZMxTZyDI=
+jwt:
+  secretKey: SN5OUPJANIZLB/hZ1q7CsJbHvvuZ5xahm6DZMxTZyDI=
 
-    access:
-      expiration: 36000000000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
-      header: Authorization
+  access:
+    expiration: 1800000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h)) 밀리초
 
-    refresh:
-      expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?))
-  #    header: Authorization-refresh
+  refresh:
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?)) 밀리초
 
+cookie:
+  access:
+    expiration: 1800 # 초
+
+  refresh:
+    expiration: 1209600 # 초
 
   # gpt api?
+openai:
+  api-key: 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
+
+chatgpt:
+  api-key: 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
