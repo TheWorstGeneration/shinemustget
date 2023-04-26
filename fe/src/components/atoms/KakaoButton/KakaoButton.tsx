@@ -1,5 +1,5 @@
-import { useAppSelector } from '@/hooks/useRedux';
-import { selectProfile } from '@/store/modules/profile';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { selectProfile, setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -42,14 +42,18 @@ const SmallButton = styled.button`
 `;
 
 export const KakaoButton = ({ size }: ButtonProps) => {
+  const dispatch = useAppDispatch();
   const { language } = useAppSelector(selectProfile);
+
   const handleLogin = () => {
-    window.Kakao.Auth.authorize({
-      redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI,
-    });
-    window.location.href = process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
-      ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
-      : '/';
+    // TODO: 카카오 로그인 구현
+    // window.Kakao.Auth.authorize({
+    //   redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI,
+    // });
+    // window.location.href = process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+    //   ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+    //   : '/';
+    dispatch(setLogin({ isRank: false }));
   };
 
   return size === 'lg' ? (
