@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <Hydrate state={pageProps.dehydratedState}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <Header size={'lg'} isLogin={false} language={'ko'} />
+              <Header size={'lg'} />
               <Component {...pageProps} />
               <Footer size={'lg'} />
             </PersistGate>

@@ -26,5 +26,16 @@ const StyledChip = styled.div`
 `;
 
 export const Chip = ({ context }: ChipProps) => {
-  return <StyledChip>{context}</StyledChip>;
+  const handleEasterEgg = () => {
+    alert('SSAFY 8기 경험치 1등은 대전 1반의 양희제님입니다.');
+    // https://github.com/HeeJeYang 열기
+    window.open('https://github.com/HeeJeYang');
+  };
+
+  return context == 'SSAFY 경험치 1등하기' ||
+    context == 'Get the most SSAFY experience points' ? (
+    <StyledChip onClick={handleEasterEgg}>{context}</StyledChip>
+  ) : (
+    <StyledChip>{context}</StyledChip>
+  );
 };
