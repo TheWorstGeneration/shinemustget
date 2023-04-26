@@ -9,12 +9,16 @@ const ProfileButton = styled.button`
   width: 3rem;
   height: 3rem;
   border-radius: 1.5rem;
-  background-color: #4fe44f;
+  background-color: #ffffff;
   overflow: hidden;
 `;
 
+const Profile = styled(Image)`
+  object-fit: contain;
+`;
+
 export const ProfileImage = () => {
-  const image = '';
+  const image = 'assets/images/characters/ohtani.png';
 
   const handleProfile = () => {
     console.log('Profile');
@@ -22,7 +26,7 @@ export const ProfileImage = () => {
 
   return (
     <ProfileButton onClick={handleProfile}>
-      <Image src={image} alt="Profile" width={48} height={48} />
+      <Profile src={image} alt="Profile" width={48} height={48} />
     </ProfileButton>
   );
 };

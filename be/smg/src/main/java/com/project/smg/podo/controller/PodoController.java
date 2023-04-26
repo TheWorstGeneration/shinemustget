@@ -22,7 +22,7 @@ public class PodoController {
 
     /* 포도알 작성 */
     @PostMapping(value = "/write")
-    public ResponseEntity<?> podoCreate(@RequestHeader("Authorization") String token, @RequestBody PodoCreateDto podoCreateDto){
+    public ResponseEntity<?> podoCreate(@CookieValue("accessToken") String token, @RequestBody PodoCreateDto podoCreateDto){
         try {
             podoService.create(token, podoCreateDto);
         } catch (Exception e){
@@ -37,13 +37,15 @@ public class PodoController {
 //    /* 포도알 조회 */
 //    @PostMapping(value = "/write")
 //
-//    /* 포도알 설정 */
+    /* 포도알 설정 */
 //    @PostMapping(value = "/write")
 //    /* 포도송이 조회 */
 //    @PostMapping(value = "/write")
+
     /* 포도알 종류 조회 */
     @GetMapping(value = "/mySticker")
-    public ResponseEntity<?> mySticker(@RequestHeader("Authorization") String token){
+    public ResponseEntity<?> mySticker(@CookieValue("accessToken") String token){
+        System.out.println("1");
         List<StickerDto> stickerList = podoService.sticker(token);
 
         if (stickerList != null) {

@@ -1,5 +1,7 @@
 package com.project.smg.podo.service;
 
+
+import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
 import com.project.smg.member.entity.Member;
@@ -16,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +34,8 @@ public class PodoServiceImpl implements PodoService {
     private final MemberPodoRepository memberPodoRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
+    private final JwtService jwtService;
+    private final EntityManager em;
 
     /**
      * 포도알 작성하기
@@ -73,20 +79,30 @@ public class PodoServiceImpl implements PodoService {
         // 멤버 확인
         Member member = checkMember(token);
 
-        // memberpodo list
-        List<MemberPodo> memberPodos = member.getMemberPodos();
+        // 멤버가 가진 포도 스티커 id 리스트
+        List<Integer> podoStickersId = memberPodoRepository.findByName(member.getId());
 
-        // Dto 에 담기
-        List<StickerDto> stickerDtos = memberPodos.stream()
-                .map(o -> new StickerDto(o.getPodoType().getId(), o.getPodoType().getName(), o.getPodoType().getImageUrl()))
-                .collect(Collectors.toList());
+        // 모든 포도 스티커
+        List<PodoType> podoTypes = podoTypeRepository.findAll();
+
+        // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
+        List<StickerDto> stickerDtos = new ArrayList<>();
+        for (PodoType podoType : podoTypes){
+            Boolean isMine = false;
+            if(podoStickersId.contains(podoType.getId())){
+                isMine=true;
+            }
+            StickerDto stickerDto = new StickerDto(podoType.getId(), isMine, podoType.getImageUrl());
+            stickerDtos.add(stickerDto);
+        }
 
         return stickerDtos;
     }
 
 
     private Member checkMember(String token) {
-        Optional<Member> member = memberRepository.findById(token);
+        String id = jwtService.getUserIdFromToken(token);
+        Optional<Member> member = memberRepository.findById(id);
         Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
         return findMember;
     }

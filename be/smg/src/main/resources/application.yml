@@ -72,13 +72,17 @@ jwt:
   secretKey: SN5OUPJANIZLB/hZ1q7CsJbHvvuZ5xahm6DZMxTZyDI=
 
   access:
-    expiration: 36000000000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
-    header: Authorization
+    expiration: 1800000 # 1??(60?) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h)) 밀리초
 
   refresh:
-    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?))
-  #    header: Authorization-refresh
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> ??) * 14(2?)) 밀리초
 
+cookie:
+  access:
+    expiration: 1800 # 초
+
+  refresh:
+    expiration: 1209600 # 초
 
   # gpt api?
 openai:

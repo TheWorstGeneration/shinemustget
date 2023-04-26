@@ -8,7 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class StickerDto {
     private int id;
-    private String name;
+    private Boolean isMine;
     private String imageUrl;
 
 }
