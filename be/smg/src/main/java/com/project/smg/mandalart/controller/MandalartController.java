@@ -19,8 +19,7 @@ public class MandalartController {
 
     @GetMapping("/big-goal/{content}")
     public ResponseEntity<HashMap<String, List<String>>> getBigGoal(@PathVariable String content){
-        ChatGptResponse chatGptResponse = mandalartService.getChatGptResponse(content);
-        HashMap<String, List<String>> bigGoals = mandalartService.getBigGoals(chatGptResponse);
+        HashMap<String, List<String>> bigGoals = mandalartService.getBigGoals(content);
         return ResponseEntity.status(HttpStatus.OK).body(bigGoals);
     }
 }

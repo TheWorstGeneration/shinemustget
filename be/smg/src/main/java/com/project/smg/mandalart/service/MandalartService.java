@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MandalartService {
     public ChatGptResponse getChatGptResponse(String content);
-    public HashMap<String, List<String>> getBigGoals(ChatGptResponse chatGptResponse);
+    public HashMap<String, List<String>> getBigGoals(String content);
 }

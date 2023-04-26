@@ -43,7 +43,7 @@ class MandalartServiceImplTest {
         chatGptResponse.setChoices(Arrays.asList(choice));
 
         // when
-        HashMap<String, List<String>> result = mandalartService.getBigGoals(chatGptResponse);
+        HashMap<String, List<String>> result = mandalartService.getBigGoals(contents);
 
         // then
         assertEquals(result.size(), 1);
