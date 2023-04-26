@@ -37,10 +37,11 @@ public class PodoController {
 //    /* 포도알 조회 */
 //    @PostMapping(value = "/write")
 //
-//    /* 포도알 설정 */
+    /* 포도알 설정 */
 //    @PostMapping(value = "/write")
 //    /* 포도송이 조회 */
 //    @PostMapping(value = "/write")
+
     /* 포도알 종류 조회 */
     @GetMapping(value = "/mySticker")
     public ResponseEntity<?> mySticker(@RequestHeader("Authorization") String token){

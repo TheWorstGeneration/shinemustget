@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class PodoServiceImpl implements PodoService {
     private final MemberPodoRepository memberPodoRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
+    private final EntityManager em;
 
     /**
      * 포도알 작성하기
@@ -75,13 +77,29 @@ public class PodoServiceImpl implements PodoService {
 
         // memberpodo list
         List<MemberPodo> memberPodos = member.getMemberPodos();
+        List<MemberPodo> byName = memberPodoRepository.findByName(member.getId());
+        //List selectNameFromPodoTypeP = em.createQuery("select mp.PodoType.id from MemberPodo mp").getResultList();
+        System.out.println(byName.toString());
+        // 스티커 보유 확인
+        List<PodoType> podoTypes = podoTypeRepository.findAll();
+
+
+
+//
+//        for (PodoType podoType: podoTypes){
+//            if (podoType.getName().
+//        }
+//
+
+
+
 
         // Dto 에 담기
-        List<StickerDto> stickerDtos = memberPodos.stream()
-                .map(o -> new StickerDto(o.getPodoType().getId(), o.getPodoType().getName(), o.getPodoType().getImageUrl()))
-                .collect(Collectors.toList());
+//        List<StickerDto> stickerDtos = memberPodos.stream()
+//                .map(o -> new StickerDto(o.getPodoType().getId(), o.getPodoType().getName(), o.getPodoType().getImageUrl()))
+//                .collect(Collectors.toList());
 
-        return stickerDtos;
+        return null;
     }
 
 
