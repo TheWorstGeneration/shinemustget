@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { selectProfile, setlanguage } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -5,7 +7,6 @@ import React from 'react';
 
 interface LanguageButtonProps {
   size: 'sm' | 'lg';
-  language: 'ko' | 'en';
 }
 
 const LargeButton = styled.button`
@@ -40,8 +41,13 @@ const SmallButton = styled.button`
   }
 `;
 
-export const LanguageButton = ({ size, language }: LanguageButtonProps) => {
-  const handleLanguage = () => {};
+export const LanguageButton = ({ size }: LanguageButtonProps) => {
+  const language = useAppSelector(selectProfile).language;
+  const dispatch = useAppDispatch();
+
+  const handleLanguage = () => {
+    dispatch(setlanguage(language == 'ko' ? 'en' : 'ko'));
+  };
 
   return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLanguage}>
