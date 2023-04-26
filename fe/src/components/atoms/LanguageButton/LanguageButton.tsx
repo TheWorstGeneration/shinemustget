@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
-import { selectProfile, setlanguage } from '@/store/modules/profile';
+import { selectProfile, setLanguage } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -42,11 +42,11 @@ const SmallButton = styled.button`
 `;
 
 export const LanguageButton = ({ size }: LanguageButtonProps) => {
-  const language = useAppSelector(selectProfile).language;
+  const { language } = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
 
   const handleLanguage = () => {
-    dispatch(setlanguage(language == 'ko' ? 'en' : 'ko'));
+    dispatch(setLanguage(language == 'ko' ? 'en' : 'ko'));
   };
 
   return size === 'lg' ? (

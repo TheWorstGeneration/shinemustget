@@ -13,11 +13,6 @@ const meta: Meta<typeof Header> = {
         options: ['sm', 'md','lg'],
       },
     },
-    isLogin: {
-      control: {
-        type: 'boolean',
-      },
-    },
   },
 };
 
@@ -28,26 +23,11 @@ type Story = StoryObj<typeof Header>;
 export const LargeLogout: Story = {
   args: {
     size: 'lg',
-    isLogin: false,
-  },
-};
-
-export const LargeLogin: Story = {
-  args: {
-    size: 'lg',
-    isLogin: true,
   },
 };
 
 export const SmallLogout: Story = {
   args: {
     size: 'sm',
-    isLogin: false,
-  },
-};
-export const SmallLogin: Story = {
-  args: {
-    size: 'sm',
-    isLogin: true,
   },
 };

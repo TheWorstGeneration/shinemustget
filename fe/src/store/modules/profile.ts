@@ -28,7 +28,7 @@ const profileSlice = createSlice({
       state.isLogin = false;
       state.isRanker = false;
     },
-    setlanguage: (state, action) => {
+    setLanguage: (state, action) => {
       state.language = action.payload;
     }
   },
@@ -38,7 +38,7 @@ const profileSlice = createSlice({
 export const { 
   setLogin,
   setLogout,
-  setlanguage,
+  setLanguage,
  } = profileSlice.actions;
 export const selectProfile = (state: RootState) => state.profile;
 // 리듀서
