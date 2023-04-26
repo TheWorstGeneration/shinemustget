@@ -1,3 +1,4 @@
+import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
 import styled from '@emotion/styled';
 import React from 'react';
 
@@ -10,11 +11,29 @@ const HomeSection = styled.section`
   width: 100vw;
   height: 100vh;
 
-  padding-top: 88px;
+  padding: 0 10re;
 
-  background-color: #f7e600;
+  background-color: #ffffff;
+`;
+
+const HomeMain = styled.main`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  & > * {
+    scale: 0.75;
+  }
 `;
 
 export default function Home() {
-  return <HomeSection>home</HomeSection>;
+  return (
+    <HomeSection>
+      <HomeMain>
+        <Mandalart />
+      </HomeMain>
+    </HomeSection>
+  );
 }
