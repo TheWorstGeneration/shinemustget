@@ -34,9 +34,7 @@ public class PodoServiceImpl implements PodoService {
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
 
-    /**
-     * 포도송이 조회
-     */
+    /** 포도송이 조회 */
     @Override
     public Map<String, Object> read(String mid, int id) {
 
@@ -47,9 +45,7 @@ public class PodoServiceImpl implements PodoService {
         .map(o -> new PodoDto(o.getId(),  o.getMemberPodo().getPodoType().getImageUrl()))
         .collect(Collectors.toList());
 
-
         List<PodosDto> podosList = new ArrayList<>();
-
 
         int size = podos.size();
         for (int i=0; i<size; i+= 26){
@@ -64,11 +60,13 @@ public class PodoServiceImpl implements PodoService {
         return result;
     }
 
+    /** 포도알 조회 */
+    @Override
+    public List<StickerDto> detailPodo(String mid, int id) {
+        return null;
+    }
 
-    /**
-     * 포도알 작성하기
-     */
-
+    /** 포도알 작성하기 */
     @Override
     public void create(String mid, PodoCreateDto podoCreateDto) {
 
@@ -92,9 +90,7 @@ public class PodoServiceImpl implements PodoService {
     }
 
 
-    /**
-     * 회원 스티커 종류
-     *
+    /** 회원 스티커 종류
      * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
     //TODO: 스티커가 없다면 잠긴 스티커 나오게
@@ -119,9 +115,7 @@ public class PodoServiceImpl implements PodoService {
         return stickerList;
     }
 
-    /**
-     * 포도알 설정
-     * */
+    /** 포도알 설정 */
     @Override
     @Transactional
     public void podoSetting(String mid, int id) {
