@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * 각 소셜에서 받아오는 데이터가 다르므로
  * 소셜별로 데이터를 받는 데이터를 분기 처리하는 DTO 클래스
+ * 소셜 로그인 추가 등록 시 추가 작성
  */
 @Getter
 public class OAuthAttributes {

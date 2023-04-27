@@ -110,7 +110,7 @@ public class SecurityConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setMaxAge(3600L);
-        config.addExposedHeader("Authorization");
+//        config.addExposedHeader("Authorization");
         source.registerCorsConfiguration("/**", config);
 
         return source;
