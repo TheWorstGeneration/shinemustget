@@ -3,6 +3,7 @@ package com.project.smg.mandalart.controller;
 import com.project.smg.mandalart.dto.ChatGptResponse;
 import com.project.smg.mandalart.dto.InputRequest;
 import com.project.smg.mandalart.service.MandalartService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,4 +23,5 @@ public class MandalartController {
         HashMap<String, List<String>> bigGoals = mandalartService.getBigGoals(content);
         return ResponseEntity.status(HttpStatus.OK).body(bigGoals);
     }
+
 }

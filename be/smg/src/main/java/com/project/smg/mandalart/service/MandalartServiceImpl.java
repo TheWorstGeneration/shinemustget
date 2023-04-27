@@ -29,8 +29,6 @@ public class MandalartServiceImpl implements MandalartService {
 
     public ChatGptResponse getChatGptResponse(String prompt) {
 
-
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
@@ -61,17 +59,19 @@ public class MandalartServiceImpl implements MandalartService {
 
         ChatGptResponse chatGptResponse = getChatGptResponse(content);
 
-        // 받아온 메세지 리스트로 형 변환
+        // 받아온 메세지 리스트로 변환
         String[] split = chatGptResponse.choices.get(0).message.content.split("\n");
         List<String> strings = Arrays.stream(split).map(i -> i.substring(3)).collect(Collectors.toList());
 
-        // 담아서 return
+        // GptTitle, GptBigGoal에 저장
+        saveGptBigGoal(content, strings);
 
+        // 담아서 return
         result.put(content, strings);
         return result;
     }
 
-    // GptTitle에 저장되 있는 BigGoal 가져오기
+    // GptTitle에 저장한 BigGoal 가져오기
     public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
         List<String> savedGptBigGoal = optional.get().getGptBigGoals()
                 .stream()
@@ -80,10 +80,17 @@ public class MandalartServiceImpl implements MandalartService {
         return savedGptBigGoal;
     }
 
+    // GptTitle, GptBigGoal에 저장
     public void saveGptBigGoal(String title, List<String> strings){
-//        GptBigGoal.builder().content()
-//        GptTitle.builder()
-//                        .content(title).gptBigGoals().build();
-//        gptTitleRepository.save();
+        List<GptBigGoal> gptBigGoals = strings.stream()
+                .map(i -> GptBigGoal.builder().content(i).build())
+                .collect(Collectors.toList());
+
+        GptTitle gptTitle = GptTitle.builder()
+                .content(title)
+                .gptBigGoals(gptBigGoals)
+                .build();
+        for(GptBigGoal goal : gptBigGoals) goal.addGptTitle(gptTitle);
+        gptTitleRepository.save(gptTitle);
     }
 }
