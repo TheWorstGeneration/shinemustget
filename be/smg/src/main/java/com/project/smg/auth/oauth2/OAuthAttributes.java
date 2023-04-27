@@ -47,9 +47,7 @@ public class OAuthAttributes {
      * email에는 UUID로 중복 없는 랜덤 값 생성
      * role은 GUEST로 설정
      */
-    public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
-        System.out.println(oauth2UserInfo.getId());
-
+    public Member toEntity(OAuth2UserInfo oauth2UserInfo, SocialType socialType) {
         return Member.builder()
                 .socialType(socialType)
                 .id((oauth2UserInfo.getId()))

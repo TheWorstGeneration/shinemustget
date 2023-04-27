@@ -20,7 +20,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-
     private final MemberRepository memberRepository;
 
     private static final String KAKAO = "kakao";
@@ -88,7 +87,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      * 생성된 User 객체를 DB에 저장
      */
     private Member saveUser(OAuthAttributes attributes, SocialType socialType) {
-        Member createdUser = attributes.toEntity(socialType, attributes.getOauth2UserInfo());
+        Member createdUser = attributes.toEntity(attributes.getOauth2UserInfo(), socialType);
         return memberRepository.save(createdUser);
     }
 }
