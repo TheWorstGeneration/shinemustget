@@ -20,7 +20,6 @@ public class PodoController {
     private final PodoService podoService;
 
 
-
     /* 포도알 작성 */
     @PostMapping(value = "/write")
     public ResponseEntity<?> podoCreate(@RequestAttribute("id") String mid, @RequestBody PodoCreateDto podoCreateDto){
@@ -33,9 +32,7 @@ public class PodoController {
     }
 
 
-
-
-    /* 포도알 조회 */
+    /* 포도송이 조회 */
     @GetMapping(value = "/readPodo/{id}")
     public ResponseEntity<?> readPodo(@RequestAttribute("id") String mid,
                                       @PathVariable("id") int id){
@@ -47,10 +44,22 @@ public class PodoController {
         } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
     }
 
+    //    /* 포도알 조회 */
+//    @GetMapping(value = "/detail")
+
+
     /* 포도알 설정 */
-//    @PostMapping(value = "/setting")
-//    /* 포도송이 조회 */
-//    @PostMapping(value = "/detail")
+    @PatchMapping(value = "/setting/{id}")
+    public ResponseEntity<?> setting(@RequestAttribute("id") String mid, @PathVariable("id") int id){
+        try {
+            podoService.podoSetting(mid, id);
+            return new ResponseEntity<>(new ResponseDto(200, "변경 완료"), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(new ResponseDto(500, "변경 실패"), HttpStatus.OK);
+        }
+    }
+
+
 
     /* 포도알 종류 조회 */
     @GetMapping(value = "/mySticker")

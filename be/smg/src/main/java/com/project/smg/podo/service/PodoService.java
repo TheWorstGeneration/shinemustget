@@ -12,4 +12,6 @@ public interface PodoService {
     List<StickerDto> sticker(String mid);
 
     Map<String, Object> read(String mid, int id);
+
+    void podoSetting(String mid, int id);
 }
