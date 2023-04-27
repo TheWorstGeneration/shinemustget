@@ -20,7 +20,6 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-
     private final MemberRepository memberRepository;
 
     private static final String KAKAO = "kakao";
@@ -41,8 +40,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         SocialType socialType = getSocialType(registrationId);
 
-        String userNameAttributeName = userRequest.getClientRegistration()
-                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
+        String userNameAttributeName = userRequest
+                                        .getClientRegistration()
+                                        .getProviderDetails()
+                                        .getUserInfoEndpoint()
+                                        .getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
 
         Map<String, Object> attributes = oAuth2User.getAttributes(); // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
 
@@ -85,7 +87,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      * 생성된 User 객체를 DB에 저장
      */
     private Member saveUser(OAuthAttributes attributes, SocialType socialType) {
-        Member createdUser = attributes.toEntity(socialType, attributes.getOauth2UserInfo());
+        Member createdUser = attributes.toEntity(attributes.getOauth2UserInfo(), socialType);
         return memberRepository.save(createdUser);
     }
 }

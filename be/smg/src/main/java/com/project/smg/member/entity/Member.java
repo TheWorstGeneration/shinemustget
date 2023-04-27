@@ -25,6 +25,7 @@ public class Member {
     private String imageUrl;
 
     @Column(name = "social_type")
+    @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
     @OneToMany(mappedBy = "member")

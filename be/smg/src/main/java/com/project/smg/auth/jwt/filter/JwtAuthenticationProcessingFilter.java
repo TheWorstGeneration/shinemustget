@@ -58,32 +58,39 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Access Token 쿠키에서 조회");
-        Cookie[] cookies = request.getCookies();
-        for(int i = 0 ; i < cookies.length; i++){
-            System.out.println("1 : " + cookies[i].getName() + "2 : " + cookies[i].getValue());
-        }
         String accessToken = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
 
         log.info("Access Token : {}", accessToken);
 
-        if(accessToken != null) {
-            jwtService.extractId(accessToken)
-                    .ifPresent(id -> memberRepository.findById(id)
-                            .ifPresent(this::saveAuthentication));
+        if(accessToken == null) {
+            log.info("필터에서 Refresh Token 사용");
+            log.info("Refresh Token 쿠키에서 조회");
+
+            String refreshToken = jwtService.extractRefreshToken(request)
+                    .filter(jwtService::isTokenValid)
+                    .orElse(null);
+            log.info("Refresh Token : {}", refreshToken);
+
+            Member member = memberRepository.findByRefreshToken(refreshToken)
+                    .orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));
+            String memberId = member.getId();
+
+            checkRefreshTokenAndReIssueAccessToken(response, memberId);
+            request.setAttribute("id", memberId);
             filterChain.doFilter(request, response);
         }
 
-        log.info("Refresh Token 쿠키에서 조회");
-        String refreshToken = jwtService.extractRefreshToken(request)
-                .filter(jwtService::isTokenValid)
-                .orElse(null);
-        log.info("Refresh Token : {}", refreshToken);
-
-        if(accessToken == null)
-            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-
+        if(accessToken != null) {
+            log.info("필터에서 Access Token 사용");
+            jwtService.extractId(accessToken)
+                    .ifPresent(id -> memberRepository.findById(id)
+                            .ifPresent(this::saveAuthentication));
+            String memberId = jwtService.getUserIdFromToken(accessToken);
+            request.setAttribute("id", memberId);
+            filterChain.doFilter(request, response);
+        }
     }
 
     /**
@@ -93,14 +100,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      *  그 후 JwtService.refreshTokenAddCookie()으로 쿠키에 리프레시 토큰 저장
      */
 
-    public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-        memberRepository.findByRefreshToken(refreshToken)
-                .ifPresent(member -> {
-                    String reIssuedRefreshToken = reIssueRefreshToken(member);
-                    String reIssuedAccessToken = jwtService.createAccessToken(member.getId());
-                    jwtService.refreshTokenAddCookie(response, reIssuedRefreshToken);
-                    jwtService.accessTokenAddCookie(response, reIssuedAccessToken);
-                });
+    public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String memberId) {
+        String reIssuedRefreshToken = reIssueRefreshToken(memberId);
+        String reIssuedAccessToken = jwtService.createAccessToken(memberId);
+        jwtService.refreshTokenAddCookie(response, reIssuedRefreshToken);
+        jwtService.accessTokenAddCookie(response, reIssuedAccessToken);
     }
 
     /**
@@ -108,31 +112,11 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      * jwtService.createRefreshToken()으로 리프레시 토큰 재발급 후
      * DB에 재발급한 리프레시 토큰 업데이트 후 Flush
      */
-    private String reIssueRefreshToken(Member member) {
+    private String reIssueRefreshToken(String memberId) {
         String reIssuedRefreshToken = jwtService.createRefreshToken();
-        jwtService.updateRefreshToken(member.getId(), reIssuedRefreshToken);
+        jwtService.updateRefreshToken(memberId, reIssuedRefreshToken);
         return reIssuedRefreshToken;
     }
-
-//    /**
-//     * [액세스 토큰 체크 & 인증 처리 메소드]
-//     * request에서 extractAccessToken()으로 액세스 토큰 추출 후, isTokenValid()로 유효한 토큰인지 검증
-//     * 유효한 토큰이면, 액세스 토큰에서 extractId로 kakaoId을 추출한 후 findByKakaoId()로 해당 아이디를 사용하는 유저 객체 반환
-//     * 그 유저 객체를 saveAuthentication()으로 인증 처리하여
-//     * 인증 허가 처리된 객체를 SecurityContextHolder에 담기
-//     * 그 후 다음 인증 필터로 진행
-//     */
-//    public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
-//                                                  FilterChain filterChain) throws ServletException, IOException {
-//        log.info("checkAccessTokenAndAuthentication() 호출");
-//        jwtService.extractAccessToken(request)
-//                .filter(jwtService::isTokenValid)
-//                .ifPresent(accessToken -> jwtService.extractId(accessToken)
-//                        .ifPresent(id -> memberRepository.findById(id)
-//                                .ifPresent(this::saveAuthentication)));
-//
-//        filterChain.doFilter(request, response);
-//    }
 
     /**
      * [인증 허가 메소드]
