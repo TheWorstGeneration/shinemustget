@@ -41,14 +41,17 @@ public class PodoController {
 
 
     /* 포도알 조회 */
-    @PostMapping(value = "/readPodo")
-    public ResponseEntity<?> readPodo(@RequestHeader("Authorization") String token,
+    @GetMapping(value = "/readPodo/{id}")
+    public ResponseEntity<?> readPodo(@CookieValue("accessToken") String token,
                                       @PathVariable("id") int id,
                                       @RequestParam(value = "page", defaultValue = "0") int page){
-        PageRequest pageRequest = PageRequest.of(page, 3, Sort.by("id").ascending());
-        Map <String, Object> result = podoService.read(token, pageRequest, id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-//        return new ResponseEntity<>(new ResponseDto(500, "조회실패"), HttpStatus.OK);
+        PageRequest pageRequest = PageRequest.of(page, 26, Sort.by("id").ascending());
+        Map <String, Object> result = podoService.read(token, pageRequest, id, page);
+
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+        } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
     }
 
     /* 포도알 설정 */
