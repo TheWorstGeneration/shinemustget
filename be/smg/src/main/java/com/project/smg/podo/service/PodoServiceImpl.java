@@ -128,15 +128,16 @@ public class PodoServiceImpl implements PodoService {
 
         // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
         List<StickerDto> stickerList = new ArrayList<>();
+        /*
         for (PodoType podoType : podoTypes){
             Boolean isMine = false;
             if(podoStickersId.contains(podoType.getId())){
                 isMine=true;
             }
-            StickerDto stickerDto = new StickerDto(podoType.getId(), isMine, podoType.getImageUrl());
+            StickerDto stickerDto = new StickerDto(podoType.getId(), podoType.getImageUrl());
             stickerList.add(stickerDto);
         }
-
+*/
         return stickerList;
     }
 
