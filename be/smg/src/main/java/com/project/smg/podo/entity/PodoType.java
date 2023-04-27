@@ -23,4 +23,7 @@ public class PodoType {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name ="image_lock_url")
+    private String imageLockUrl;
 }

@@ -3,7 +3,7 @@ import { faCircle, faCircleDot } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
 
-const LinkContainer = styled.button`
+const LinkContainer = styled.div`
   position: fixed;
   top: 50%;
   right: 2rem;
@@ -20,11 +20,24 @@ const LinkContainer = styled.button`
 
   background-color: #ffffff;
   border-radius: 1.5rem;
-  box-shadow: 0 0 0.5rem 1px #22222225;
+  box-shadow: 0 0 0.5rem 1px rgba(0, 0, 0, 0.25);
   padding: 1rem;
+
+  @media screen and (max-width: 500px) {
+    // 90도 회전
+    width: 9rem;
+    height: 3rem;
+    flex-direction: row;
+
+    // 바닥에 위치
+    top: auto;
+    bottom: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `;
 
-const NavigatorLink = styled.div`
+const NavigatorButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,19 +76,19 @@ export const Navigator = () => {
 
   return (
     <LinkContainer>
-      <NavigatorLink onClick={() => handleNavigator(0)}>
+      <NavigatorButton type="button" onClick={() => handleNavigator(0)}>
         <FontAwesomeIcon
           icon={curSection >= 0 && curSection < 1 ? faCircleDot : faCircle}
         />
-      </NavigatorLink>
-      <NavigatorLink onClick={() => handleNavigator(1)}>
+      </NavigatorButton>
+      <NavigatorButton type="button" onClick={() => handleNavigator(1)}>
         <FontAwesomeIcon
           icon={curSection >= 1 && curSection < 2 ? faCircleDot : faCircle}
         />
-      </NavigatorLink>
-      <NavigatorLink onClick={() => handleNavigator(2)}>
+      </NavigatorButton>
+      <NavigatorButton type="button" onClick={() => handleNavigator(2)}>
         <FontAwesomeIcon icon={curSection >= 2 ? faCircleDot : faCircle} />
-      </NavigatorLink>
+      </NavigatorButton>
     </LinkContainer>
   );
 };

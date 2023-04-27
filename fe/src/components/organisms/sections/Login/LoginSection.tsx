@@ -18,11 +18,21 @@ const SectionStyle = styled.section`
   height: 100vh;
 
   background-color: #ffffff;
+
+  @media screen and (max-width: 500px) {
+    padding-top: 20vh;
+    justify-content: flex-start;
+  }
 `;
 
 const LoginText = styled.h1`
   font-size: 3rem;
   font-weight: 600;
+
+  @media screen and (max-width: 500px) {
+    font-size: 1rem;
+    text-align: center;
+  }
 `;
 
 const ChipListContainer = styled.article`
@@ -43,6 +53,10 @@ const ChipListContainer = styled.article`
 
   position: absolute;
   top: 270vh;
+
+  @media screen and (max-width: 500px) {
+    top: 250vh;
+  }
 `;
 
 export const LoginSection = () => {

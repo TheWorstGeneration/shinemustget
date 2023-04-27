@@ -29,6 +29,8 @@ public class MemberPodo {
     @JsonIgnore
     private PodoType podoType;
 
+    private boolean status;
+
 
     public void addMember(Member member) {
         if (this.member != null) {

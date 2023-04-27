@@ -17,6 +17,11 @@ const ImageContainer = styled.div`
 
   width: 500px;
   height: 500px;
+
+  @media screen and (max-width: 500px) {
+    width: 200px;
+    height: 200px;
+  }
 `;
 
 const You = styled.h2`
@@ -24,11 +29,22 @@ const You = styled.h2`
 
   font-size: 3rem;
   font-weight: 600;
+
+  @media screen and (max-width: 500px) {
+    font-size: 1rem;
+  }
 `;
 
 const CharacterImage = styled(Image)`
   position: absolute;
   object-fit: contain;
+  width: 500px;
+  height: 500px;
+
+  @media screen and (max-width: 500px) {
+    width: 200px;
+    height: 200px;
+  }
 `;
 
 const Dim = styled.div`
@@ -44,6 +60,10 @@ const Dim = styled.div`
     rgba(255, 255, 255) 50%,
     rgba(255, 255, 255, 0) 100%
   );
+
+  @media screen and (max-width: 500px) {
+    height: 20vh;
+  }
 `;
 
 const Name = styled.h1`
@@ -55,6 +75,11 @@ const Name = styled.h1`
   font-weight: bold;
 
   transform: translateX(-50%);
+
+  @media screen and (max-width: 500px) {
+    font-size: 1.5rem;
+    top: 160vh;
+  }
 `;
 
 export const Character = ({ src, alt }: CharacterProps) => {
