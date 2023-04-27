@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StickerDto {
     private int id;
-    private Boolean isMine;
     private String imageUrl;
 
 }

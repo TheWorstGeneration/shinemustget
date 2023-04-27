@@ -40,24 +40,41 @@ public class PodoServiceImpl implements PodoService {
     /**
      * 포도송이 조회
      */
-        //TODO: 2023 04 27 isUp, isDown 구현
-        //TODO: 2023 04 27 read 테스트
+
     @Override
-    public Map<String, Object> read(String token, PageRequest pageRequest, int id) {
+    public Map<String, Object> read(String token, PageRequest pageRequest, int id, int page) {
         // 멤버 확인
         Member member = checkMember(token);
         Map<String, Object> result = new HashMap<>();
         List<PodoDto> podoList = new ArrayList<>();
         Page<Podo> podos = podoRepository.findBySmallGoalId(id ,pageRequest);
+
         // map stream 으로 변경해보기
         for (Podo podo : podos){
             PodoDto podoDto = new PodoDto(podo.getId(), podo.getOneline(), podo.getMemberPodo().getPodoType().getImageUrl());
             podoList.add(podoDto);
         }
-        result.put("podoList",podoList);
-        result.put("podoCnt", podoList.size());
-        result.put("isUp", true); // 이전 페이지
-        result.put("isDown",true); // 다음 페이지
+
+        // 이전, 이후 페이지 존재 여부 확인
+        int totalcnt = podos.getTotalPages()-1;
+
+        // 잘못된 페이지 요청 시 종료
+        if (page> totalcnt){
+            return null;
+        }
+        if (page ==0 && totalcnt ==0){
+            result.put("isUp", false);
+            result.put("isDown", false);
+        } else if (page == totalcnt && page!=0) {
+            result.put("isDown", false);
+            result.put("isUp",true);
+        }else if(page != totalcnt && page ==0) {
+            result.put("isDown", true);
+            result.put("isUp",false);
+        }else {
+            result.put("isDown", true);
+            result.put("isUp",true);
+        }
 
         return result;
     }
@@ -66,7 +83,7 @@ public class PodoServiceImpl implements PodoService {
     /**
      * 포도알 작성하기
      */
-        //TODO: 2023 04 27  create postman 으로 테스트해보고 가데이터 넣기
+
     @Override
     public void create(String token, PodoCreateDto podoCreateDto) {
         // 멤버 확인
@@ -97,6 +114,7 @@ public class PodoServiceImpl implements PodoService {
     /**
      * 회원 스티커 종류
      */
+    //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
     public List<StickerDto> sticker(String token) {
         // 멤버 확인
@@ -110,15 +128,16 @@ public class PodoServiceImpl implements PodoService {
 
         // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
         List<StickerDto> stickerList = new ArrayList<>();
+        /*
         for (PodoType podoType : podoTypes){
             Boolean isMine = false;
             if(podoStickersId.contains(podoType.getId())){
                 isMine=true;
             }
-            StickerDto stickerDto = new StickerDto(podoType.getId(), isMine, podoType.getImageUrl());
+            StickerDto stickerDto = new StickerDto(podoType.getId(), podoType.getImageUrl());
             stickerList.add(stickerDto);
         }
-
+*/
         return stickerList;
     }
 

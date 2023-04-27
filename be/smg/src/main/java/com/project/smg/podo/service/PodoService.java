@@ -12,5 +12,5 @@ public interface PodoService {
 
     List<StickerDto> sticker(String token);
 
-    Map<String, Object> read(String token, PageRequest pageRequest, int id);
+    Map<String, Object> read(String token, PageRequest pageRequest, int id, int page);
 }

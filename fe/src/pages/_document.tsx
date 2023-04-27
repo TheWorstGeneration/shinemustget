@@ -23,6 +23,41 @@ export default function Document() {
 
         {/* 카카오 SDK import */}
         <script src="https://developers.kakao.com/sdk/js/kakao.min.js" />
+
+        {/* Google Adsense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5392145622568260"
+          crossOrigin="anonymous"
+        ></script>
+
+        {/* Google Search Console */}
+        <meta
+          name="google-site-verification"
+          content="bNFWuYuqN3-3do43-JUVELDZA62EG78qGs8yontxl_0"
+        />
+
+        {/* Naver Search Console */}
+        <meta
+          name="naver-site-verification"
+          content="8ec18060b0f53f2e6d51113506802deb9db77af8"
+        />
+
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-DK5DKVFX76"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag() { dataLayer.push(arguments); }
+              gtag('js', new Date());
+              gtag('config', 'G-DK5DKVFX76');
+            `,
+          }}
+        ></script>
       </Head>
       <body>
         <Main />
