@@ -48,7 +48,7 @@ const Video = styled.iframe<{ pageYOffset: number }>`
   scale: calc(1 + ${props => props.pageYOffset / 500});
 
   @media screen and (max-width: 500px) {
-    height: 30vh;
+    height: 50vh;
   }
 `;
 

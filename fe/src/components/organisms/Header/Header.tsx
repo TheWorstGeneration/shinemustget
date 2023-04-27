@@ -9,7 +9,7 @@ import { selectProfile } from '@/store/modules/profile';
 import { Logo } from '@/components/atoms/Logo/Logo';
 
 interface HeaderProps {
-  size: 'sm' | 'lg';
+  size: string;
 }
 
 const HeadContainer = styled.header<{ isScroll: boolean }>`
@@ -49,10 +49,10 @@ const HeaderItemList = styled.div`
 `;
 
 export const Header = ({ size }: HeaderProps) => {
-  const { isLogin } = useAppSelector(selectProfile);
+  const { imageUrl } = useAppSelector(selectProfile);
   const isScroll = usePageYOffset() > 700;
 
-  return isLogin ? (
+  return imageUrl ? (
     <HeadContainer isScroll={isScroll}>
       <Logo />
       <HeaderItemList>

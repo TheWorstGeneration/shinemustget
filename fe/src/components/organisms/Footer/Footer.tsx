@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 interface FooterProps {
-  size: 'sm' | 'lg';
+  size: string;
 }
 
 const FooterContainer = styled.footer`

@@ -17,14 +17,14 @@ const MainContainer = styled.main`
 
 export default function Landing() {
   const router = useRouter();
-  const { isLogin } = useAppSelector(selectProfile);
+  const { imageUrl } = useAppSelector(selectProfile);
 
   useEffect(() => {
-    if (isLogin) {
+    if (imageUrl !== '') {
       // /home으로 이동
       router.push('/home');
     }
-  }, [isLogin]);
+  }, [imageUrl]);
 
   return (
     <MainContainer>
@@ -35,4 +35,3 @@ export default function Landing() {
     </MainContainer>
   );
 }
-
