@@ -103,8 +103,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://k8b109.p.ssafy.io");
-        config.addAllowedOrigin("https://k8b109.p.ssafy.io");
+        config.addAllowedOrigin("http://shinemustget.com");
+        config.addAllowedOrigin("https://shinemustget.com");
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://localhost:3000");
         config.addAllowedHeader("*");
