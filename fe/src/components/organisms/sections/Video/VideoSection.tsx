@@ -11,16 +11,28 @@ const SectionStyle = styled.section`
   top: 0;
   left: 0;
 
-  /* 다음 섹션 아래로 들어감 */
-  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+
+  background-color: #000000;
+`;
+
+const Dim = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 
   width: 100vw;
   height: 100vh;
 
-  background-color: #f7e600;
+  z-index: 1;
 
-  @media screen and (max-width: 960) {
-  }
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0) 50%
+  );
 `;
 
 const Video = styled.iframe<{ pageYOffset: number }>`
@@ -30,25 +42,16 @@ const Video = styled.iframe<{ pageYOffset: number }>`
 
   transition: all 0s ease-in-out !important;
   scale: calc(1 + ${props => props.pageYOffset / 500});
-
-  @media screen and (max-width: 960px) {
-    width: 100%;
-    height: 100%;
-  }
-
-  @media screen and (max-width: 500px) {
-    width: 100%;
-    height: 50%;
-  }
 `;
 
 export const VideoSection = () => {
   const pageYOffset = usePageYOffset();
   return (
     <SectionStyle>
+      <Dim />
       <Video
         pageYOffset={pageYOffset}
-        src="https://www.youtube.com/embed/2R6gtTWmihE?autoplay=1&loop=1&playlist=2R6gtTWmihE"
+        src="https://www.youtube.com/embed/2R6gtTWmihE?autoplay=1&loop=1&playlist=2R6gtTWmihE&cc_load_policy=0"
         title="YouTube video player"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
