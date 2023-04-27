@@ -44,9 +44,18 @@ public class PodoController {
         } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
     }
 
-    //    /* 포도알 조회 */
-//    @GetMapping(value = "/detail")
 
+    /* 포도알 조회 */
+    @GetMapping(value = "/detail/{id}")
+    public ResponseEntity<?> detail(@RequestAttribute("id") String mid,
+                                      @PathVariable("id") int id){
+        List<StickerDto> stickerList = podoService.detailPodo(mid, id);
+
+        if (stickerList != null) {
+            return new ResponseEntity<>(stickerList, HttpStatus.OK);
+
+        } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
+    }
 
     /* 포도알 설정 */
     @PatchMapping(value = "/setting/{id}")
