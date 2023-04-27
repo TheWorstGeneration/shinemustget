@@ -13,7 +13,7 @@ const LargeButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 9rem;
+  width: 8rem;
   height: 3rem;
   border-radius: 0.5rem;
   background-color: #f7e600;
@@ -41,6 +41,11 @@ const SmallButton = styled.button`
   }
 `;
 
+const LoginText = styled.span`
+  font-size: 0.75rem;
+  font-weight: 900;
+`;
+
 export const KakaoButton = ({ size }: ButtonProps) => {
   const dispatch = useAppDispatch();
   const { language } = useAppSelector(selectProfile);
@@ -59,7 +64,9 @@ export const KakaoButton = ({ size }: ButtonProps) => {
   return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLogin}>
       <FontAwesomeIcon icon={faComment} />
-      <h4>{language == 'ko' ? '카카오 로그인' : 'KAKAO LOGIN'}</h4>
+      <LoginText>
+        {language == 'ko' ? '카카오 로그인' : 'KAKAO LOGIN'}
+      </LoginText>
     </LargeButton>
   ) : (
     <SmallButton type="button" onClick={handleLogin}>

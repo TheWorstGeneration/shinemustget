@@ -6,7 +6,7 @@ export interface GoalBoxContainerProps {
   content: string;
   isClear: boolean;
   smallList: GoalBoxProps[];
-  isCenter: number | undefined;
+  isCenter?: number | undefined;
 }
 
 const Container = styled.div`
