@@ -8,6 +8,7 @@ import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
+import com.project.smg.podo.dto.PodoDto;
 import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
 import com.project.smg.podo.dto.PodoCreateDto;
@@ -16,14 +17,13 @@ import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -38,8 +38,52 @@ public class PodoServiceImpl implements PodoService {
     private final EntityManager em;
 
     /**
+     * 포도송이 조회
+     */
+
+    @Override
+    public Map<String, Object> read(String token, PageRequest pageRequest, int id, int page) {
+        // 멤버 확인
+        Member member = checkMember(token);
+        Map<String, Object> result = new HashMap<>();
+        List<PodoDto> podoList = new ArrayList<>();
+        Page<Podo> podos = podoRepository.findBySmallGoalId(id ,pageRequest);
+
+        // map stream 으로 변경해보기
+        for (Podo podo : podos){
+            PodoDto podoDto = new PodoDto(podo.getId(), podo.getOneline(), podo.getMemberPodo().getPodoType().getImageUrl());
+            podoList.add(podoDto);
+        }
+
+        // 이전, 이후 페이지 존재 여부 확인
+        int totalcnt = podos.getTotalPages()-1;
+
+        // 잘못된 페이지 요청 시 종료
+        if (page> totalcnt){
+            return null;
+        }
+        if (page ==0 && totalcnt ==0){
+            result.put("isUp", false);
+            result.put("isDown", false);
+        } else if (page == totalcnt && page!=0) {
+            result.put("isDown", false);
+            result.put("isUp",true);
+        }else if(page != totalcnt && page ==0) {
+            result.put("isDown", true);
+            result.put("isUp",false);
+        }else {
+            result.put("isDown", true);
+            result.put("isUp",true);
+        }
+
+        return result;
+    }
+
+
+    /**
      * 포도알 작성하기
      */
+
     @Override
     public void create(String token, PodoCreateDto podoCreateDto) {
         // 멤버 확인
@@ -52,12 +96,8 @@ public class PodoServiceImpl implements PodoService {
         // podoType 찾기
         PodoType podoType = podoTypeRepository.findByName(podoCreateDto.getStickerType());
 
-        // MemberPodo 생성 및 DB 저장
-        MemberPodo memberPodo = MemberPodo.builder()
-                .member(member)
-                .podoType(podoType)
-                .build();
-        memberPodoRepository.save(memberPodo);
+        // MemberPodo 조회
+        MemberPodo memberPodo = memberPodoRepository.findByName(podoCreateDto.getStickerType());
 
         // podo 생성 및 DB 저장
         Podo podo = Podo.builder()
@@ -74,31 +114,31 @@ public class PodoServiceImpl implements PodoService {
     /**
      * 회원 스티커 종류
      */
+    //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
     public List<StickerDto> sticker(String token) {
         // 멤버 확인
         Member member = checkMember(token);
 
         // 멤버가 가진 포도 스티커 id 리스트
-        List<Integer> podoStickersId = memberPodoRepository.findByName(member.getId());
+        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(member.getId());
 
         // 모든 포도 스티커
         List<PodoType> podoTypes = podoTypeRepository.findAll();
 
         // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
-        List<StickerDto> stickerDtos = new ArrayList<>();
+        List<StickerDto> stickerList = new ArrayList<>();
         for (PodoType podoType : podoTypes){
             Boolean isMine = false;
             if(podoStickersId.contains(podoType.getId())){
                 isMine=true;
             }
             StickerDto stickerDto = new StickerDto(podoType.getId(), isMine, podoType.getImageUrl());
-            stickerDtos.add(stickerDto);
+            stickerList.add(stickerDto);
         }
 
-        return stickerDtos;
+        return stickerList;
     }
-
 
     private Member checkMember(String token) {
         String id = jwtService.getUserIdFromToken(token);
