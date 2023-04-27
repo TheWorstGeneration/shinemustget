@@ -18,6 +18,8 @@ import com.project.smg.podo.entity.PodoType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,8 +73,7 @@ public class PodoServiceImpl implements PodoService {
     public void create(String mid, PodoCreateDto podoCreateDto) {
 
         // small goal 확인
-        Optional<SmallGoal> smallGoal = smallGoalRepository.findById(podoCreateDto.getId());
-        SmallGoal findSmallGoal = smallGoal.orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
+        SmallGoal findSmallGoal = checkSmallGoal(podoCreateDto.getId());
 
         // podoType 찾기
         PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getStickerType());
@@ -118,11 +119,31 @@ public class PodoServiceImpl implements PodoService {
         return stickerList;
     }
 
+    /**
+     * 포도알 설정
+     * */
+    @Override
+    @Transactional
+    public void podoSetting(String mid, int id) {
+        // small goal 확인
+        SmallGoal findSmallGoal = checkSmallGoal(id);
+        // isSticker 변경
+        if (findSmallGoal.isSticker()){
+            findSmallGoal.setSticker(false);
+        }else findSmallGoal.setSticker(true);
+    }
+
 
 
     private Member checkMember(String mid) {
         Optional<Member> member = memberRepository.findById(mid);
         Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
         return findMember;
+    }
+
+    private SmallGoal checkSmallGoal(int id){
+        Optional<SmallGoal> smallGoal = smallGoalRepository.findById(id);
+        SmallGoal findSmallGoal = smallGoal.orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
+        return findSmallGoal;
     }
 }
