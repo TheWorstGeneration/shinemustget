@@ -23,8 +23,8 @@ const Dim = styled.div`
   left: 0;
   right: 0;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
   z-index: 1;
 
@@ -33,15 +33,23 @@ const Dim = styled.div`
     rgba(0, 0, 0, 1) 0%,
     rgba(0, 0, 0, 0) 50%
   );
+
+  @media screen and (max-width: 500px) {
+    background: none;
+  }
 `;
 
 const Video = styled.iframe<{ pageYOffset: number }>`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   border: none;
 
   transition: all 0s ease-in-out !important;
   scale: calc(1 + ${props => props.pageYOffset / 500});
+
+  @media screen and (max-width: 500px) {
+    height: 30vh;
+  }
 `;
 
 export const VideoSection = () => {
