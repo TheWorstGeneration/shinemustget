@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -91,9 +92,9 @@ public class JwtService {
                     } catch (UnsupportedEncodingException e) {
                         throw new RuntimeException(e);
                     }
-                })
-                .filter(accessToken -> accessToken.startsWith(BEARER))
-                .map(accessToken -> accessToken.replace(BEARER, ""));
+                });
+//                .filter(accessToken -> accessToken.startsWith(BEARER))
+//                .map(accessToken -> accessToken.replace(BEARER, ""));
 
         log.info("내 토큰 = {}", newToken.get());
 
@@ -138,6 +139,7 @@ public class JwtService {
             cookie.setPath("/");
             cookie.setMaxAge(accessTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
+//            cookie.setDomain("shinemustget.com");
             response.addCookie(cookie);
             log.info("Access Token 쿠키에 저장 완료");
             log.info("발급된 Access Token : {}", accessToken);
@@ -157,6 +159,7 @@ public class JwtService {
             cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
+//            cookie.setDomain("shinemustget.com");
             log.info("Refresh Token 쿠키에 저장 완료");
             log.info("발급된 Refresh Token : {}", refreshToken);
         } catch (UnsupportedEncodingException e) {
@@ -210,10 +213,11 @@ public class JwtService {
     /**
      * RefreshToken DB 저장(업데이트)
      */
+    @Transactional
     public void updateRefreshToken(String kakaoId, String refreshToken) {
         refreshTokenRepository.findByMemberId(kakaoId)
                 .ifPresentOrElse(
-                        token -> token.updateRefreshToken(refreshToken),
+                        token -> token.setRefreshToken(refreshToken),
                         () -> new Exception("일치하는 회원이 없습니다.")
                 );
     }

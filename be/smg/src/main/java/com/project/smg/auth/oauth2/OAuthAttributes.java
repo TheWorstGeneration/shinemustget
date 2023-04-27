@@ -12,6 +12,7 @@ import java.util.Map;
 /**
  * 각 소셜에서 받아오는 데이터가 다르므로
  * 소셜별로 데이터를 받는 데이터를 분기 처리하는 DTO 클래스
+ * 소셜 로그인 추가 등록 시 추가 작성
  */
 @Getter
 public class OAuthAttributes {
@@ -46,9 +47,7 @@ public class OAuthAttributes {
      * email에는 UUID로 중복 없는 랜덤 값 생성
      * role은 GUEST로 설정
      */
-    public Member toEntity(SocialType socialType, OAuth2UserInfo oauth2UserInfo) {
-        System.out.println(oauth2UserInfo.getId());
-
+    public Member toEntity(OAuth2UserInfo oauth2UserInfo, SocialType socialType) {
         return Member.builder()
                 .socialType(socialType)
                 .id((oauth2UserInfo.getId()))
