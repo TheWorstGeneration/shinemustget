@@ -38,6 +38,11 @@ const ButtonContainer = styled.button`
   &:hover {
     scale: 1.2;
   }
+
+  @media screen and (max-width: 500px) {
+    width: 5rem;
+    height: 5rem;
+  }
 `;
 
 export const CharacterSection = () => {

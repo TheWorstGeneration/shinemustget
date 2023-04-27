@@ -15,11 +15,12 @@ const StyledChip = styled.div`
 
   color: #ffffff;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 900;
 
-  background-color: #a2da08ee;
+  background-color: #008000;
   border-radius: 0.25rem;
   padding: 0.75rem;
+
   // Must used margin-right instead of gap for the loop to be smooth
   margin-right: 1rem;
   white-space: nowrap;
@@ -28,7 +29,6 @@ const StyledChip = styled.div`
 export const Chip = ({ context }: ChipProps) => {
   const handleEasterEgg = () => {
     alert('SSAFY 8기 경험치 1등은 대전 1반의 양희제님입니다.');
-    // https://github.com/HeeJeYang 열기
     window.open('https://github.com/HeeJeYang');
   };
 

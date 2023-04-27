@@ -25,7 +25,12 @@ const LogoLink = styled(Link)`
 
 export const Logo = () => {
   return (
-    <LogoLink href={'/'}>
+    <LogoLink
+      href={'/'}
+      passHref={true}
+      aria-label={'redirect to landing page'}
+      title={'landing page'}
+    >
       <FontAwesomeIcon
         icon={faBuromobelexperte}
         size="2xl"
