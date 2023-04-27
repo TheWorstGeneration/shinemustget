@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PodoDto {
-    private int id;
-    private String imageUrl;
+public class PodosDto {
+    private int podoCnt;
+    private List<PodoDto> podoDtoList;
+
 }

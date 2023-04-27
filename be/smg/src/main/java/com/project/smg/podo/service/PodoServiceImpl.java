@@ -9,6 +9,7 @@ import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.dto.PodoDto;
+import com.project.smg.podo.dto.PodosDto;
 import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
 import com.project.smg.podo.dto.PodoCreateDto;
@@ -35,51 +36,35 @@ public class PodoServiceImpl implements PodoService {
     private final MemberPodoRepository memberPodoRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
-    private final JwtService jwtService;
-    private final EntityManager em;
 
     /**
      * 포도송이 조회
      */
-
     @Override
-    public Map<String, Object> read(String token, PageRequest pageRequest, int id, int page) {
+    public Map<String, Object> read(String mid, int id) {
         // 멤버 확인
-        Member member = checkMember(token);
+        Member member = checkMember(mid);
+
         Map<String, Object> result = new HashMap<>();
-        Page<Podo> podos = podoRepository.findBySmallGoalId(id ,pageRequest);
+        List<Podo> podos = podoRepository.findBySmallGoalId(id);
 
-        // map stream 으로 변경해보기
-//        List<PodoDto> podoList = new ArrayList<>();
-//        for (Podo podo : podos){
-//            PodoDto podoDto = new PodoDto(podo.getId(), podo.getOneline(), podo.getMemberPodo().getPodoType().getImageUrl());
-//            podoList.add(podoDto);
-//        }
-        List<PodoDto> podoList = podos.stream()
-                .map(o -> new PodoDto(o.getId(), o.getOneline(), o.getMemberPodo().getPodoType().getImageUrl()))
-                .collect(Collectors.toList());
+        List<PodoDto> podoDtoList = podos.stream()
+        .map(o -> new PodoDto(o.getId(),  o.getMemberPodo().getPodoType().getImageUrl()))
+        .collect(Collectors.toList());
 
 
-        // 이전, 이후 페이지 존재 여부 확인
-        int totalcnt = podos.getTotalPages()-1;
+        List<PodosDto> podosList = new ArrayList<>();
 
-        // 잘못된 페이지 요청 시 종료
-        if (page> totalcnt){
-            return null;
+
+        int size = podos.size();
+        for (int i=0; i<size; i+= 26){
+            int end = Math.min(size, i+26);
+            List<PodoDto> podoDtoList1 = podoDtoList.subList(i, end);
+            PodosDto podosDto = new PodosDto(podoDtoList1.size(), podoDtoList1);
+            podosList.add(podosDto);
         }
-        if (page ==0 && totalcnt ==0){
-            result.put("isUp", false);
-            result.put("isDown", false);
-        } else if (page == totalcnt && page!=0) {
-            result.put("isDown", false);
-            result.put("isUp",true);
-        }else if(page != totalcnt && page ==0) {
-            result.put("isDown", true);
-            result.put("isUp",false);
-        }else {
-            result.put("isDown", true);
-            result.put("isUp",true);
-        }
+        result.put("pageCnt", podosList.size());
+        result.put("podosList", podosList);
 
         return result;
     }
@@ -90,9 +75,9 @@ public class PodoServiceImpl implements PodoService {
      */
 
     @Override
-    public void create(String id, PodoCreateDto podoCreateDto) {
+    public void create(String mid, PodoCreateDto podoCreateDto) {
         // 멤버 확인
-        Member member = checkMember(id);
+        Member member = checkMember(mid);
 
         // small goal 확인
         Optional<SmallGoal> smallGoal = smallGoalRepository.findById(podoCreateDto.getId());
@@ -120,12 +105,12 @@ public class PodoServiceImpl implements PodoService {
      */
     //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
-    public List<StickerDto> sticker(String id) {
+    public List<StickerDto> sticker(String mid) {
         // 멤버 확인
-        Member member = checkMember(id);
+        Member member = checkMember(mid);
 
         // 멤버가 가진 포도 스티커 id 리스트
-        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(id);
+        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(mid);
 
         // 모든 포도 스티커
         List<PodoType> podoTypes = podoTypeRepository.findAll();
@@ -145,8 +130,10 @@ public class PodoServiceImpl implements PodoService {
         return stickerList;
     }
 
-    private Member checkMember(String id) {
-        Optional<Member> member = memberRepository.findById(id);
+
+
+    private Member checkMember(String mid) {
+        Optional<Member> member = memberRepository.findById(mid);
         Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
         return findMember;
     }
