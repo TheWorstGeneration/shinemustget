@@ -1,7 +1,6 @@
 package com.project.smg.podo.service;
 
 
-import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
 import com.project.smg.member.entity.Member;
@@ -18,11 +17,7 @@ import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,8 +37,6 @@ public class PodoServiceImpl implements PodoService {
      */
     @Override
     public Map<String, Object> read(String mid, int id) {
-        // 멤버 확인
-        Member member = checkMember(mid);
 
         Map<String, Object> result = new HashMap<>();
         List<Podo> podos = podoRepository.findBySmallGoalId(id);
@@ -76,8 +69,6 @@ public class PodoServiceImpl implements PodoService {
 
     @Override
     public void create(String mid, PodoCreateDto podoCreateDto) {
-        // 멤버 확인
-        Member member = checkMember(mid);
 
         // small goal 확인
         Optional<SmallGoal> smallGoal = smallGoalRepository.findById(podoCreateDto.getId());
@@ -102,31 +93,28 @@ public class PodoServiceImpl implements PodoService {
 
     /**
      * 회원 스티커 종류
+     *
+     * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
     //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
     public List<StickerDto> sticker(String mid) {
-        // 멤버 확인
-        Member member = checkMember(mid);
 
         // 멤버가 가진 포도 스티커 id 리스트
-        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(mid);
+        List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(mid);
 
-        // 모든 포도 스티커
-        List<PodoType> podoTypes = podoTypeRepository.findAll();
-
-        // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
+        // 내가 가진 포도 스티커의 상태를 비교하며 url 가져오기
         List<StickerDto> stickerList = new ArrayList<>();
-        /*
-        for (PodoType podoType : podoTypes){
-            Boolean isMine = false;
-            if(podoStickersId.contains(podoType.getId())){
-                isMine=true;
-            }
-            StickerDto stickerDto = new StickerDto(podoType.getId(), podoType.getImageUrl());
+
+        for (MemberPodo mp : memberPodoList){
+
+            String imgUrl ="";
+            if(mp.isStatus()) imgUrl = mp.getPodoType().getImageUrl();
+            else imgUrl = mp.getPodoType().getImageLockUrl();
+
+            StickerDto stickerDto = new StickerDto(mp.getPodoType().getId(), imgUrl);
             stickerList.add(stickerDto);
         }
-*/
         return stickerList;
     }
 

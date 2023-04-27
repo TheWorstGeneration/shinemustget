@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface MemberPodoRepository extends JpaRepository<MemberPodo, Integer> {
     // 멤버가 가진 멤버 포도의 포도타입의 아이디 리스트
-    @Query("select mp.podoType.id from MemberPodo mp where mp.member.id =:memberId")
-    List<Integer> findByPodoTypeId(@Param("memberId") String id);
+    @Query("select mp from MemberPodo mp where mp.member.id =:memberId")
+    List<MemberPodo> findByPodoTypeId(@Param("memberId") String id);
     @Query("select mp from MemberPodo mp where mp.podoType.name =:stickerName")
     MemberPodo findByName(@Param("stickerName") String stickerType);
 }
