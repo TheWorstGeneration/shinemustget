@@ -28,13 +28,13 @@ public class PodoController {
 
     /* 포도알 작성 */
     @PostMapping(value = "/write")
-    public ResponseEntity<?> podoCreate(@CookieValue("accessToken") String token, @RequestBody PodoCreateDto podoCreateDto){
+    public ResponseEntity<?> podoCreate(@RequestAttribute("id") String id, @RequestBody PodoCreateDto podoCreateDto){
         try {
-            podoService.create(token, podoCreateDto);
-        } catch (Exception e){
+            podoService.create(id, podoCreateDto);
             return new ResponseEntity<>(new ResponseDto(201, "작성 완료"), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(new ResponseDto(500, "작성 실패"), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDto(500, "작성 실패"), HttpStatus.OK);
     }
 
 
@@ -61,8 +61,8 @@ public class PodoController {
 
     /* 포도알 종류 조회 */
     @GetMapping(value = "/mySticker")
-    public ResponseEntity<?> mySticker(@CookieValue("accessToken") String token){
-        List<StickerDto> stickerList = podoService.sticker(token);
+    public ResponseEntity<?> mySticker(@RequestAttribute("id") String id){
+        List<StickerDto> stickerList = podoService.sticker(id);
 
         if (stickerList != null) {
             return new ResponseEntity<>(stickerList, HttpStatus.OK);

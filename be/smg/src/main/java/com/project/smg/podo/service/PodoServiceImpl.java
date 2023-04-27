@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -46,14 +47,18 @@ public class PodoServiceImpl implements PodoService {
         // 멤버 확인
         Member member = checkMember(token);
         Map<String, Object> result = new HashMap<>();
-        List<PodoDto> podoList = new ArrayList<>();
         Page<Podo> podos = podoRepository.findBySmallGoalId(id ,pageRequest);
 
         // map stream 으로 변경해보기
-        for (Podo podo : podos){
-            PodoDto podoDto = new PodoDto(podo.getId(), podo.getOneline(), podo.getMemberPodo().getPodoType().getImageUrl());
-            podoList.add(podoDto);
-        }
+//        List<PodoDto> podoList = new ArrayList<>();
+//        for (Podo podo : podos){
+//            PodoDto podoDto = new PodoDto(podo.getId(), podo.getOneline(), podo.getMemberPodo().getPodoType().getImageUrl());
+//            podoList.add(podoDto);
+//        }
+        List<PodoDto> podoList = podos.stream()
+                .map(o -> new PodoDto(o.getId(), o.getOneline(), o.getMemberPodo().getPodoType().getImageUrl()))
+                .collect(Collectors.toList());
+
 
         // 이전, 이후 페이지 존재 여부 확인
         int totalcnt = podos.getTotalPages()-1;
@@ -85,19 +90,19 @@ public class PodoServiceImpl implements PodoService {
      */
 
     @Override
-    public void create(String token, PodoCreateDto podoCreateDto) {
+    public void create(String id, PodoCreateDto podoCreateDto) {
         // 멤버 확인
-        Member member = checkMember(token);
+        Member member = checkMember(id);
 
         // small goal 확인
         Optional<SmallGoal> smallGoal = smallGoalRepository.findById(podoCreateDto.getId());
         SmallGoal findSmallGoal = smallGoal.orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
 
         // podoType 찾기
-        PodoType podoType = podoTypeRepository.findByName(podoCreateDto.getStickerType());
+        PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getStickerType());
 
         // MemberPodo 조회
-        MemberPodo memberPodo = memberPodoRepository.findByName(podoCreateDto.getStickerType());
+        MemberPodo memberPodo = memberPodoRepository.findByName(podoType.getName());
 
         // podo 생성 및 DB 저장
         Podo podo = Podo.builder()
@@ -107,7 +112,6 @@ public class PodoServiceImpl implements PodoService {
                 .smallGoal(findSmallGoal)
                 .build();
         podoRepository.save(podo);
-
     }
 
 
@@ -116,12 +120,12 @@ public class PodoServiceImpl implements PodoService {
      */
     //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
-    public List<StickerDto> sticker(String token) {
+    public List<StickerDto> sticker(String id) {
         // 멤버 확인
-        Member member = checkMember(token);
+        Member member = checkMember(id);
 
         // 멤버가 가진 포도 스티커 id 리스트
-        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(member.getId());
+        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(id);
 
         // 모든 포도 스티커
         List<PodoType> podoTypes = podoTypeRepository.findAll();
@@ -141,8 +145,7 @@ public class PodoServiceImpl implements PodoService {
         return stickerList;
     }
 
-    private Member checkMember(String token) {
-        String id = jwtService.getUserIdFromToken(token);
+    private Member checkMember(String id) {
         Optional<Member> member = memberRepository.findById(id);
         Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
         return findMember;
