@@ -1,9 +1,15 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 
+
 export default function GrapeBoard() {
   const ImageContainer = styled.div`
   `;
+
+  const GrapeContainer = styled.div`
+      margin-bottom:16rem;
+  `;
+
   return (
     <>
       <ImageContainer>
@@ -12,7 +18,7 @@ export default function GrapeBoard() {
         width={325}
         height={400}
         alt="image"
-      ></Image>
+        ></Image>
       </ImageContainer>
     </>
   );
