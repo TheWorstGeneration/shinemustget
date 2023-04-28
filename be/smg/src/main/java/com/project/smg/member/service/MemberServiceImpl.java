@@ -2,7 +2,11 @@ package com.project.smg.member.service;
 
 import com.project.smg.member.dto.MemberInfoDto;
 import com.project.smg.member.entity.Member;
+import com.project.smg.member.entity.MemberPodo;
+import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
+import com.project.smg.podo.entity.PodoType;
+import com.project.smg.podo.repository.PodoTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -21,6 +27,8 @@ public class MemberServiceImpl implements MemberService {
     private final String BEARER_PREFIX = "Bearer ";
     private final String logoutURL = "https://kapi.kakao.com/v1/user/logout";
     private final MemberRepository memberRepository;
+    private final PodoTypeRepository podoTypeRepository;
+    private final MemberPodoRepository memberPodoRepository;
 
     /**
      * 로그아웃 서비스
@@ -45,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     *
+     * member 닉네임, 프로필 사진 전달
      * @param memberId
      * @return memberId로 DB를 조회해 member의 닉네임과 프로필사진을 전달
      */
@@ -59,8 +67,26 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void addMemberPodo(String accessToken) {
+    public void addMemberPodo(String memberId) {
+        List<PodoType> podoTypeList = podoTypeRepository.findAll();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));
 
+        for(int i = 0; i < podoTypeList.size(); i++){
+            boolean status = false;
+            if(podoTypeList.get(i).getImageLockUrl() == null)
+                status = true;
+
+            MemberPodo memberPodo = MemberPodo.builder()
+                    .member(member)
+                    .podoType(podoTypeList.get(i))
+                    .status(status)
+                    .build();
+
+            memberPodoRepository.save(memberPodo);
+            log.info("멤버 포도 저장 {}", i + 1);
+            memberPodo.addMember(member);
+        }
     }
 
 

@@ -58,7 +58,7 @@ public class MemberController {
                     response.addCookie(cookie);
                 });
 
-        String redirectUrl = "http://shinemustget.com";
+        String redirectUrl = "https://shinemustget.com";
         try {
             response.sendRedirect(redirectUrl);
         }
