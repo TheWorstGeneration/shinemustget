@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 interface FooterProps {
-  size: 'sm' | 'lg';
+  size: string;
 }
 
 const FooterContainer = styled.footer`
@@ -44,7 +44,7 @@ export const Footer = ({ size }: FooterProps) => {
   return (
     <FooterContainer>
       <CopyRight size={size} />
-      <GithubButton type="button" onClick={handleGithub}>
+      <GithubButton type="button" onClick={handleGithub} title="Go to Github">
         <FontAwesomeIcon icon={faGithub} size={'2x'} />
       </GithubButton>
     </FooterContainer>

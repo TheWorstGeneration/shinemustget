@@ -3,15 +3,15 @@ import { RootState } from '..';
 
 // state type
 export interface profileSlice {
-  isLogin: boolean;
-  isRanker: boolean;
+  imageUrl: string;
+  nickname: string;
   language: string;
 }
 
 // 초기 상태 정의
 const initialState = {
-  isLogin: false,
-  isRanker: false,
+  imageUrl: '',
+  nickname: '',
   language: 'ko',
 };
 
@@ -20,13 +20,13 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     // 액션 생성함수
-    setLogin: (state, action) => {
-      state.isLogin = true;
-      state.isRanker = action.payload.isRanker;
+    setLogin: (state, actions) => {
+      state.imageUrl = actions.payload.imageUrl;
+      state.nickname = actions.payload.nickname;
     },
     setLogout: (state) => {
-      state.isLogin = false;
-      state.isRanker = false;
+      state.imageUrl = '';
+      state.nickname = '';
     },
     setLanguage: (state, action) => {
       state.language = action.payload;

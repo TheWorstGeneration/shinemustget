@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Optional;
 
 @Slf4j
@@ -37,7 +39,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         } catch (Exception e) {
             throw e;
         }
-
     }
 
     private void loginSuccess(HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
@@ -65,7 +66,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                             refreshTokenRepository.save(token);
                         });
 
-        String redirectUrl = "http://shinemustget.com";
+        String redirectUrl = "http://shinemustget.com/home";
         response.sendRedirect(redirectUrl);
     }
 }

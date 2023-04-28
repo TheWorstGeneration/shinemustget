@@ -15,7 +15,7 @@ export function DetailedRight() {
   <DetailedRightDiv>
       <MailContainer />
       <DetailedRightButton>
-        <CompleteButton/>
+        {/* <CompleteButton/> */}
       </DetailedRightButton>
     </DetailedRightDiv>
   );

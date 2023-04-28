@@ -9,10 +9,10 @@ import { selectProfile } from '@/store/modules/profile';
 import { Logo } from '@/components/atoms/Logo/Logo';
 
 interface HeaderProps {
-  size: 'sm' | 'lg';
+  size: string;
 }
 
-const HeadContainer = styled.header<{ isScroll: boolean }>`
+const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,11 +49,11 @@ const HeaderItemList = styled.div`
 `;
 
 export const Header = ({ size }: HeaderProps) => {
-  const { isLogin } = useAppSelector(selectProfile);
+  const { imageUrl } = useAppSelector(selectProfile);
   const isScroll = usePageYOffset() > 700;
 
-  return isLogin ? (
-    <HeadContainer isScroll={isScroll}>
+  return imageUrl ? (
+    <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>
         <LanguageButton size={size} />
@@ -62,7 +62,7 @@ export const Header = ({ size }: HeaderProps) => {
       </HeaderItemList>
     </HeadContainer>
   ) : (
-    <HeadContainer isScroll={isScroll}>
+    <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>
         <LanguageButton size={size} />

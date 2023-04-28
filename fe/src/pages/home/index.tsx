@@ -1,6 +1,13 @@
 import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
+
+interface HomeProps {
+  imageUrl: string;
+  nickname: string;
+}
 
 const HomeSection = styled.section`
   display: flex;
@@ -28,7 +35,13 @@ const HomeMain = styled.main`
   }
 `;
 
-export default function Home() {
+export default function Home({ imageUrl, nickname }: HomeProps) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setLogin({ imageUrl, nickname }));
+  }, []);
+
   return (
     <HomeSection>
       <HomeMain>
@@ -37,3 +50,14 @@ export default function Home() {
     </HomeSection>
   );
 }
+
+export const getStaticProps = async () => {
+  const res = await fetch(process.env.BASE_URL + '/api/profile');
+  const data = await res.json();
+
+  return {
+    props: {
+      data,
+    },
+  };
+};

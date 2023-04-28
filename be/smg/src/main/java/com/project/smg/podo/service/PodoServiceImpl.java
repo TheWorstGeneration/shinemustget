@@ -1,29 +1,27 @@
 package com.project.smg.podo.service;
 
 
-import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
-import com.project.smg.podo.dto.PodoDto;
+import com.project.smg.podo.dto.*;
 import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
-import com.project.smg.podo.dto.PodoCreateDto;
-import com.project.smg.podo.dto.StickerDto;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,70 +32,60 @@ public class PodoServiceImpl implements PodoService {
     private final MemberPodoRepository memberPodoRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
-    private final JwtService jwtService;
-    private final EntityManager em;
 
-    /**
-     * 포도송이 조회
-     */
-
+    /** 포도송이 조회 */
     @Override
-    public Map<String, Object> read(String token, PageRequest pageRequest, int id, int page) {
-        // 멤버 확인
-        Member member = checkMember(token);
+    public Map<String, Object> read(String mid, int id) {
+
         Map<String, Object> result = new HashMap<>();
-        List<PodoDto> podoList = new ArrayList<>();
-        Page<Podo> podos = podoRepository.findBySmallGoalId(id ,pageRequest);
+        List<Podo> podos = podoRepository.findBySmallGoalId(id);
 
-        // map stream 으로 변경해보기
-        for (Podo podo : podos){
-            PodoDto podoDto = new PodoDto(podo.getId(), podo.getOneline(), podo.getMemberPodo().getPodoType().getImageUrl());
-            podoList.add(podoDto);
-        }
+        List<PodoDto> podoDtoList = podos.stream()
+        .map(o -> new PodoDto(o.getId(),  o.getMemberPodo().getPodoType().getImageUrl()))
+        .collect(Collectors.toList());
 
-        // 이전, 이후 페이지 존재 여부 확인
-        int totalcnt = podos.getTotalPages()-1;
+        List<PodosDto> podosList = new ArrayList<>();
 
-        // 잘못된 페이지 요청 시 종료
-        if (page> totalcnt){
-            return null;
+        int size = podos.size();
+        for (int i=0; i<size; i+= 26){
+            int end = Math.min(size, i+26);
+            List<PodoDto> podoDtoList1 = podoDtoList.subList(i, end);
+            PodosDto podosDto = new PodosDto(podoDtoList1.size(), podoDtoList1);
+            podosList.add(podosDto);
         }
-        if (page ==0 && totalcnt ==0){
-            result.put("isUp", false);
-            result.put("isDown", false);
-        } else if (page == totalcnt && page!=0) {
-            result.put("isDown", false);
-            result.put("isUp",true);
-        }else if(page != totalcnt && page ==0) {
-            result.put("isDown", true);
-            result.put("isUp",false);
-        }else {
-            result.put("isDown", true);
-            result.put("isUp",true);
-        }
+        result.put("pageCnt", podosList.size());
+        result.put("podosList", podosList);
 
         return result;
     }
 
-
-    /**
-     * 포도알 작성하기
-     */
-
+    /** 포도알 조회 */
     @Override
-    public void create(String token, PodoCreateDto podoCreateDto) {
-        // 멤버 확인
-        Member member = checkMember(token);
+    public PodoDetailDto detailPodo(String mid, int id) {
+        // podo 조회
+        Optional<Podo> podo = podoRepository.findById(id);
+        Podo findPodo = podo.orElseThrow(() -> new IllegalStateException("포도알이 존재하지 않습니다."));
+
+        // 날짜 변환 LocalDateTime to String
+        String createdDate = findPodo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // dto 생성 후 반환
+        PodoDetailDto podoDetailDto = new PodoDetailDto(findPodo.getId(), findPodo.getOneline(), createdDate);
+        return podoDetailDto;
+    }
+
+    /** 포도알 작성하기 */
+    @Override
+    public void create(String mid, PodoCreateDto podoCreateDto) {
 
         // small goal 확인
-        Optional<SmallGoal> smallGoal = smallGoalRepository.findById(podoCreateDto.getId());
-        SmallGoal findSmallGoal = smallGoal.orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
+        SmallGoal findSmallGoal = checkSmallGoal(podoCreateDto.getId());
 
         // podoType 찾기
-        PodoType podoType = podoTypeRepository.findByName(podoCreateDto.getStickerType());
+        PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getStickerType());
 
         // MemberPodo 조회
-        MemberPodo memberPodo = memberPodoRepository.findByName(podoCreateDto.getStickerType());
+        MemberPodo memberPodo = memberPodoRepository.findByName(podoType.getName());
 
         // podo 생성 및 DB 저장
         Podo podo = Podo.builder()
@@ -107,44 +95,57 @@ public class PodoServiceImpl implements PodoService {
                 .smallGoal(findSmallGoal)
                 .build();
         podoRepository.save(podo);
-
     }
 
 
-    /**
-     * 회원 스티커 종류
+    /** 회원 스티커 종류
+     * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
     //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
-    public List<StickerDto> sticker(String token) {
-        // 멤버 확인
-        Member member = checkMember(token);
+    public List<StickerDto> sticker(String mid) {
 
         // 멤버가 가진 포도 스티커 id 리스트
-        List<Integer> podoStickersId = memberPodoRepository.findByPodoTypeId(member.getId());
+        List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(mid);
 
-        // 모든 포도 스티커
-        List<PodoType> podoTypes = podoTypeRepository.findAll();
-
-        // 모든 포도 스티커와 내가 가진 포도 스티커를 비교하며 가지고 있는지 확인
+        // 내가 가진 포도 스티커의 상태를 비교하며 url 가져오기
         List<StickerDto> stickerList = new ArrayList<>();
-        /*
-        for (PodoType podoType : podoTypes){
-            Boolean isMine = false;
-            if(podoStickersId.contains(podoType.getId())){
-                isMine=true;
-            }
-            StickerDto stickerDto = new StickerDto(podoType.getId(), podoType.getImageUrl());
+
+        for (MemberPodo mp : memberPodoList){
+
+            String imgUrl ="";
+            if(mp.isStatus()) imgUrl = mp.getPodoType().getImageUrl();
+            else imgUrl = mp.getPodoType().getImageLockUrl();
+
+            StickerDto stickerDto = new StickerDto(mp.getPodoType().getId(), imgUrl);
             stickerList.add(stickerDto);
         }
-*/
         return stickerList;
     }
 
-    private Member checkMember(String token) {
-        String id = jwtService.getUserIdFromToken(token);
-        Optional<Member> member = memberRepository.findById(id);
+    /** 포도알 설정 */
+    @Override
+    @Transactional
+    public void podoSetting(String mid, int id) {
+        // small goal 확인
+        SmallGoal findSmallGoal = checkSmallGoal(id);
+        // isSticker 변경
+        if (findSmallGoal.isSticker()){
+            findSmallGoal.setSticker(false);
+        }else findSmallGoal.setSticker(true);
+    }
+
+
+
+    private Member checkMember(String mid) {
+        Optional<Member> member = memberRepository.findById(mid);
         Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
         return findMember;
+    }
+
+    private SmallGoal checkSmallGoal(int id){
+        Optional<SmallGoal> smallGoal = smallGoalRepository.findById(id);
+        SmallGoal findSmallGoal = smallGoal.orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
+        return findSmallGoal;
     }
 }

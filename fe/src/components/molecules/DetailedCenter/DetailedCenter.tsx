@@ -1,3 +1,4 @@
+import { useState } from "react"
 import styled from "@emotion/styled"
 import { Toggle } from "@/components/atoms/Toggle/Toggle"
 import { GrapeBoardList } from "../GrapeBoardList/GrapeBoardList"
@@ -23,22 +24,34 @@ const DetailedDivRight = styled.div`
   flex:1.25;
 `;
 
+const DetailedDivEmpty = styled.div`
+    font-size: 1.5rem;
+    padding-top: 10rem;
+    text-align: center;
+`;
+
 export function DetailedCenter() {
+  const [isOn, setisOn] = useState(false);
+
   return (
   <div>
       <DetailedDiv>
         <h1>세부 목표</h1>
-        <Toggle/>
+        <Toggle isOn={isOn} setisOn={setisOn}/>
       </DetailedDiv>
-      <DetailedDivPos>
+      { isOn?(<DetailedDivPos>
         <DetailedDivPosLeft>
           <GrapeBoardList />
         </DetailedDivPosLeft>
         <DetailedDivRight>
           <UserMemo />
-          <UserComment />
+          <UserComment/>
         </DetailedDivRight>
-      </DetailedDivPos>
+      </DetailedDivPos>) : (
+          <DetailedDivEmpty>
+            <p>포도알을 설정해 목표를 관리해보세요.</p>
+          </DetailedDivEmpty>
+      )}
     </div>
   )
 }

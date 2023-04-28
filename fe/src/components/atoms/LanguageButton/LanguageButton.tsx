@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 interface LanguageButtonProps {
-  size: 'sm' | 'lg';
+  size: string;
 }
 
 const LargeButton = styled.button`
@@ -50,12 +50,12 @@ export const LanguageButton = ({ size }: LanguageButtonProps) => {
   };
 
   return size === 'lg' ? (
-    <LargeButton type="button" onClick={handleLanguage}>
+    <LargeButton type="button" onClick={handleLanguage} title="Change Language">
       <FontAwesomeIcon icon={faGlobe} />
-      <h4>{language == 'ko' ? '한국어' : 'English'}</h4>
+      <span>{language == 'ko' ? '한국어' : 'English'}</span>
     </LargeButton>
   ) : (
-    <SmallButton type="button" onClick={handleLanguage}>
+    <SmallButton type="button" onClick={handleLanguage} title="Change Language">
       <FontAwesomeIcon icon={faGlobe} />
     </SmallButton>
   );

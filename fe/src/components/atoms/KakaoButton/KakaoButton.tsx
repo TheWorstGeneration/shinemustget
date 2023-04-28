@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 
 interface ButtonProps {
-  size: 'sm' | 'lg';
+  size: string;
 }
 
 const LargeButton = styled.button`
@@ -47,29 +47,22 @@ const LoginText = styled.span`
 `;
 
 export const KakaoButton = ({ size }: ButtonProps) => {
-  const dispatch = useAppDispatch();
   const { language } = useAppSelector(selectProfile);
 
   const handleLogin = () => {
     // TODO: 카카오 로그인 구현
-    // window.Kakao.Auth.authorize({
-    //   redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECTURI,
-    // });
-    // window.location.href = process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
-    //   ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
-    //   : '/';
-    dispatch(setLogin({ isRank: false }));
+    window.location.href = process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+      ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+      : '/';
   };
 
   return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLogin}>
       <FontAwesomeIcon icon={faComment} />
-      <LoginText>
-        {language == 'ko' ? '카카오 로그인' : 'KAKAO LOGIN'}
-      </LoginText>
+      <LoginText>{language == 'ko' ? '카카오 로그인' : 'LOGIN'}</LoginText>
     </LargeButton>
   ) : (
-    <SmallButton type="button" onClick={handleLogin}>
+    <SmallButton type="button" onClick={handleLogin} title="카카오 로그인">
       <FontAwesomeIcon icon={faComment} />
     </SmallButton>
   );

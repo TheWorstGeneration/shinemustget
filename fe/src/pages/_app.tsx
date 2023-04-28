@@ -28,17 +28,25 @@ const client = new QueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const persistor = persistStore(store);
-  const [width, setWidth] = useState(0);
-  const size = width > 500 ? 'lg' : 'sm';
+
+  const [size, setSize] = useState('lg');
 
   useEffect(() => {
     const handleResize = () => {
-      setWidth(window.innerWidth);
+      if (window.innerWidth <= 500) {
+        setSize('sm');
+      } else {
+        setSize('lg');
+      }
     };
 
     window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    // handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (

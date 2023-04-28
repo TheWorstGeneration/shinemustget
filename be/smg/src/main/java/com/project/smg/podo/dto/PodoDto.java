@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PodoDto {
     private int id;
-    private String oneline;
     private String imageUrl;
 }

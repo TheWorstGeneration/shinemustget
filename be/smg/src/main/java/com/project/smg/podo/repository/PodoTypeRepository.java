@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface PodoTypeRepository extends JpaRepository<PodoType, Integer> {
-    PodoType findByName(String stickerType);
+
+    PodoType findByImageUrl(String stickerType);
 }
