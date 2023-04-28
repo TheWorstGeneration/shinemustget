@@ -1,9 +1,16 @@
 import axios from 'axios';
 
-const getMemberInfo = async () => {
-  const res = await axios.get('https://shinemustget.com/api/memberInfo');
+interface MemberInfo {
+  imageUrl: string;
+  nickname: string;
+}
 
-  return res.data;
+const getMemberInfo = async () => {
+  const data = await axios
+    .get<MemberInfo>(`https://shinemustget.com/api/memberInfo`)
+    .then(res => res.data);
+
+  return data;
 };
 
 export default getMemberInfo;

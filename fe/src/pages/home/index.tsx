@@ -33,13 +33,17 @@ const HomeMain = styled.main`
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const data = getMemberInfo();
 
   useEffect(() => {
-    if (data) {
-      dispatch(setLogin(data));
-    }
-  }, [data]);
+    const axiosMemberInfo = async () => {
+      const memberInfo = await getMemberInfo();
+      if (memberInfo) {
+        dispatch(setLogin(memberInfo));
+      }
+    };
+
+    axiosMemberInfo();
+  }, []);
 
   return (
     <HomeSection>
