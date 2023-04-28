@@ -23,6 +23,7 @@ const profileSlice = createSlice({
   reducers: {
     // 액션 생성함수
     setLogin: (state, actions) => {
+      console.log("action", actions.payload)
       state.imageUrl = actions.payload.imageUrl;
       state.nickname = actions.payload.nickname;
       state.isLogin = true;
