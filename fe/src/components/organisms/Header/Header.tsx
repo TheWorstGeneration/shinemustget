@@ -1,12 +1,14 @@
-import { useAppSelector } from '@/hooks/useRedux';
 import { usePageYOffset } from '../../../hooks/usePageYOffset';
 import { KakaoButton } from '../../atoms/KakaoButton/KakaoButton';
 import { LanguageButton } from '../../atoms/LanguageButton/LanguageButton';
 import { LogoutButton } from '../../atoms/LogoutButton/LogoutButton';
 import { ProfileImage } from '../../atoms/ProfileImage/ProfileImage';
 import styled from '@emotion/styled';
-import { selectProfile } from '@/store/modules/profile';
 import { Logo } from '@/components/atoms/Logo/Logo';
+import { getCookie } from '@/utils/cookie';
+import { useEffect } from 'react';
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 
 interface HeaderProps {
   size: string;
@@ -49,10 +51,10 @@ const HeaderItemList = styled.div`
 `;
 
 export const Header = ({ size }: HeaderProps) => {
-  const { imageUrl } = useAppSelector(selectProfile);
   const isScroll = usePageYOffset() > 700;
+  const { isLogin } = useAppSelector(selectProfile);
 
-  return imageUrl !== '' ? (
+  return isLogin ? (
     <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>

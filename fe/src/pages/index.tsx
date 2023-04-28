@@ -18,13 +18,13 @@ const MainContainer = styled.main`
 
 export default function Landing() {
   const router = useRouter();
-  const accessToken = getCookie('accessToken');
+  const { isLogin } = useAppSelector(selectProfile);
 
   useEffect(() => {
-    if (accessToken) {
+    if (isLogin) {
       router.push('/home');
     }
-  }, [accessToken]);
+  }, [isLogin]);
 
   return (
     <MainContainer>
