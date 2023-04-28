@@ -7,12 +7,9 @@ import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
-import com.project.smg.podo.dto.PodoDto;
-import com.project.smg.podo.dto.PodosDto;
+import com.project.smg.podo.dto.*;
 import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
-import com.project.smg.podo.dto.PodoCreateDto;
-import com.project.smg.podo.dto.StickerDto;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -62,8 +61,17 @@ public class PodoServiceImpl implements PodoService {
 
     /** 포도알 조회 */
     @Override
-    public List<StickerDto> detailPodo(String mid, int id) {
-        return null;
+    public PodoDetailDto detailPodo(String mid, int id) {
+        // podo 조회
+        Optional<Podo> podo = podoRepository.findById(id);
+        Podo findPodo = podo.orElseThrow(() -> new IllegalStateException("포도알이 존재하지 않습니다."));
+
+        // 날짜 변환 LocalDateTime to String
+        String createdDate = findPodo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        // dto 생성 후 반환
+        PodoDetailDto podoDetailDto = new PodoDetailDto(findPodo.getId(), findPodo.getOneline(), createdDate);
+        return podoDetailDto;
     }
 
     /** 포도알 작성하기 */

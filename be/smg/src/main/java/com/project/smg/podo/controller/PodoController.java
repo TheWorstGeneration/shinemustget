@@ -2,6 +2,7 @@ package com.project.smg.podo.controller;
 
 import com.project.smg.common.ResponseDto;
 import com.project.smg.podo.dto.PodoCreateDto;
+import com.project.smg.podo.dto.PodoDetailDto;
 import com.project.smg.podo.dto.StickerDto;
 import com.project.smg.podo.service.PodoService;
 import lombok.RequiredArgsConstructor;
@@ -49,10 +50,10 @@ public class PodoController {
     @GetMapping(value = "/detail/{id}")
     public ResponseEntity<?> detail(@RequestAttribute("id") String mid,
                                       @PathVariable("id") int id){
-        List<StickerDto> stickerList = podoService.detailPodo(mid, id);
+        PodoDetailDto podoDetailDto = podoService.detailPodo(mid, id);
 
-        if (stickerList != null) {
-            return new ResponseEntity<>(stickerList, HttpStatus.OK);
+        if (podoDetailDto != null) {
+            return new ResponseEntity<>(podoDetailDto, HttpStatus.OK);
 
         } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
     }
