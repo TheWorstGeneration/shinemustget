@@ -33,5 +33,6 @@ public class GptBigGoal {
         }
         this.gptTitle = gptTitle;
         gptTitle.getGptBigGoals().add(this);
+
     }
 }

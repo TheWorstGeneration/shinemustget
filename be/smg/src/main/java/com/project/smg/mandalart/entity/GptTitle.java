@@ -21,6 +21,6 @@ public class GptTitle {
 
     private String content;
 
-    @OneToMany(mappedBy = "gptTitle")
+    @OneToMany(mappedBy = "gptTitle", cascade = CascadeType.PERSIST)
     private List<GptBigGoal> gptBigGoals = new ArrayList<>();
 }
