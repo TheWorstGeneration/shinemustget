@@ -4,15 +4,8 @@ import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import axios from 'axios';
 import React, { useEffect } from 'react';
-
-interface Data {
-  imageUrl: string;
-  nickname: string;
-}
-
-interface HomeProps {
-  data: Data;
-}
+import getMemberInfo from '../api/memberInfo';
+import { GetServerSideProps } from 'next';
 
 const HomeSection = styled.section`
   display: flex;
@@ -40,14 +33,16 @@ const HomeMain = styled.main`
   }
 `;
 
-export default function Home({ data }: HomeProps) {
-  const { imageUrl, nickname } = data;
+export default function Home() {
   const dispatch = useAppDispatch();
-  console.log(data);
+  const data = getMemberInfo();
 
   useEffect(() => {
-    dispatch(setLogin({ imageUrl, nickname }));
-  }, []);
+    if (data) {
+      console.log(data);
+      dispatch(setLogin(data));
+    }
+  }, [data]);
 
   return (
     <HomeSection>
@@ -57,15 +52,3 @@ export default function Home({ data }: HomeProps) {
     </HomeSection>
   );
 }
-
-export const getStaticProps = async () => {
-  const data = await axios
-    .get(process.env.BASE_URL + '/api/memberInfo')
-    .then(res => res.data);
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
