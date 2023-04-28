@@ -4,9 +4,13 @@ import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
 
-interface HomeProps {
+interface Data {
   imageUrl: string;
   nickname: string;
+}
+
+interface HomeProps {
+  data: Data;
 }
 
 const HomeSection = styled.section`
@@ -18,7 +22,7 @@ const HomeSection = styled.section`
   width: 100vw;
   height: 100vh;
 
-  padding: 0 10re;
+  padding: 0 10rem;
 
   background-color: #ffffff;
 `;
@@ -35,8 +39,10 @@ const HomeMain = styled.main`
   }
 `;
 
-export default function Home({ imageUrl, nickname }: HomeProps) {
+export default function Home({ data }: HomeProps) {
+  const { imageUrl, nickname } = data;
   const dispatch = useAppDispatch();
+  console.log(data);
 
   useEffect(() => {
     dispatch(setLogin({ imageUrl, nickname }));
@@ -52,7 +58,7 @@ export default function Home({ imageUrl, nickname }: HomeProps) {
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch(process.env.BASE_URL + '/api/profile');
+  const res = await fetch(process.env.BASE_URL + '/api/memberInfo');
   const data = await res.json();
 
   return {
