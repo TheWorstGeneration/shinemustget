@@ -44,7 +44,7 @@ export const Footer = ({ size }: FooterProps) => {
   return (
     <FooterContainer>
       <CopyRight size={size} />
-      <GithubButton type="button" onClick={handleGithub}>
+      <GithubButton type="button" onClick={handleGithub} title="Go to Github">
         <FontAwesomeIcon icon={faGithub} size={'2x'} />
       </GithubButton>
     </FooterContainer>

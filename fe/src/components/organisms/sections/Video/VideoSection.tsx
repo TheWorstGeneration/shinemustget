@@ -15,6 +15,9 @@ const SectionStyle = styled.section`
   height: 100vh;
 
   background-color: #000000;
+
+  // width 크기 즉각적으로 적용
+  transition: all 0s ease-in-out !important;
 `;
 
 const Dim = styled.div`
@@ -39,7 +42,7 @@ const Dim = styled.div`
   }
 `;
 
-const Video = styled.iframe<{ pageYOffset: number }>`
+const Video = styled.video<{ pageYOffset: number }>`
   width: 100vw;
   height: 100vh;
   border: none;
@@ -57,13 +60,9 @@ export const VideoSection = () => {
   return (
     <SectionStyle>
       <Dim />
-      <Video
-        pageYOffset={pageYOffset}
-        src="https://www.youtube.com/embed/2R6gtTWmihE?autoplay=1&loop=1&playlist=2R6gtTWmihE&cc_load_policy=0"
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      />
+      <Video pageYOffset={pageYOffset} width="250" autoPlay>
+        <source src="/assets/videos/zelda.mp4" type="video/mp4" />
+      </Video>
     </SectionStyle>
   );
 };

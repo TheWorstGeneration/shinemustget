@@ -8,7 +8,6 @@ export default function Document() {
           name="description"
           content="목표 달성을 위한 만다라트 제작 서비스"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
         {/* Facebook, Kakao Open Graph 설정 */}
