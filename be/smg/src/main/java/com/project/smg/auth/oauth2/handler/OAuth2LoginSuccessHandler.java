@@ -67,13 +67,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                         });
 
 //        String redirectUrl = "http://shinemustget.com/home";
-        String redirectUrl;
-        if (request.getServerName().equals("localhost")) {
-            redirectUrl = "http://localhost:3000/home";
-        } else {
-            redirectUrl = "http://shinemustget.com/home";
-        }
-
+        String redirectUrl = "http://localhost:3000/home";
         response.sendRedirect(redirectUrl);
     }
 }
