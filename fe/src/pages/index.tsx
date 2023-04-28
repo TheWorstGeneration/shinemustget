@@ -4,6 +4,7 @@ import { LoginSection } from '@/components/organisms/sections/Login/LoginSection
 import { VideoSection } from '@/components/organisms/sections/Video/VideoSection';
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectProfile } from '@/store/modules/profile';
+import { getCookie } from '@/utils/cookie';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -17,14 +18,13 @@ const MainContainer = styled.main`
 
 export default function Landing() {
   const router = useRouter();
-  const { imageUrl } = useAppSelector(selectProfile);
+  const accessToken = getCookie('accessToken');
 
   useEffect(() => {
-    if (imageUrl !== '') {
-      // /home으로 이동
+    if (accessToken) {
       router.push('/home');
     }
-  }, [imageUrl]);
+  }, [accessToken]);
 
   return (
     <MainContainer>
