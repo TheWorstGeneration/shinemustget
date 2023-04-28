@@ -12,7 +12,7 @@ interface CharacterProps {
 const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
   justify-content: space-between;
 
   width: 500px;
@@ -26,9 +26,14 @@ const ImageContainer = styled.div`
 
 const You = styled.h2`
   position: relative;
+  width: 100%;
 
   font-size: 3rem;
   font-weight: 600;
+
+  @media screen and (max-width: 960px) {
+    font-size: 1.5rem;
+  }
 
   @media screen and (max-width: 500px) {
     font-size: 1rem;
@@ -41,6 +46,10 @@ const CharacterImage = styled(Image)`
   width: 500px;
   height: 500px;
 
+  @media screen and (max-width: 960px) {
+    width: 400px;
+    height: 400px;
+  }
   @media screen and (max-width: 500px) {
     width: 200px;
     height: 200px;
@@ -71,10 +80,14 @@ const Name = styled.h1`
   top: 170vh;
   left: 50%;
 
-  font-size: 5rem;
+  font-size: 4rem;
   font-weight: bold;
 
   transform: translateX(-50%);
+
+  @media screen and (max-width: 960px) {
+    font-size: 2.5rem;
+  }
 
   @media screen and (max-width: 500px) {
     font-size: 1.5rem;
