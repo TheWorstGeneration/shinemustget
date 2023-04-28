@@ -7,12 +7,9 @@ import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
-import com.project.smg.podo.dto.PodoDto;
-import com.project.smg.podo.dto.PodosDto;
+import com.project.smg.podo.dto.*;
 import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
-import com.project.smg.podo.dto.PodoCreateDto;
-import com.project.smg.podo.dto.StickerDto;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,9 +33,7 @@ public class PodoServiceImpl implements PodoService {
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
 
-    /**
-     * 포도송이 조회
-     */
+    /** 포도송이 조회 */
     @Override
     public Map<String, Object> read(String mid, int id) {
 
@@ -47,9 +44,7 @@ public class PodoServiceImpl implements PodoService {
         .map(o -> new PodoDto(o.getId(),  o.getMemberPodo().getPodoType().getImageUrl()))
         .collect(Collectors.toList());
 
-
         List<PodosDto> podosList = new ArrayList<>();
-
 
         int size = podos.size();
         for (int i=0; i<size; i+= 26){
@@ -64,11 +59,22 @@ public class PodoServiceImpl implements PodoService {
         return result;
     }
 
+    /** 포도알 조회 */
+    @Override
+    public PodoDetailDto detailPodo(String mid, int id) {
+        // podo 조회
+        Optional<Podo> podo = podoRepository.findById(id);
+        Podo findPodo = podo.orElseThrow(() -> new IllegalStateException("포도알이 존재하지 않습니다."));
 
-    /**
-     * 포도알 작성하기
-     */
+        // 날짜 변환 LocalDateTime to String
+        String createdDate = findPodo.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+        // dto 생성 후 반환
+        PodoDetailDto podoDetailDto = new PodoDetailDto(findPodo.getId(), findPodo.getOneline(), createdDate);
+        return podoDetailDto;
+    }
+
+    /** 포도알 작성하기 */
     @Override
     public void create(String mid, PodoCreateDto podoCreateDto) {
 
@@ -92,9 +98,7 @@ public class PodoServiceImpl implements PodoService {
     }
 
 
-    /**
-     * 회원 스티커 종류
-     *
+    /** 회원 스티커 종류
      * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
     //TODO: 스티커가 없다면 잠긴 스티커 나오게
@@ -119,9 +123,7 @@ public class PodoServiceImpl implements PodoService {
         return stickerList;
     }
 
-    /**
-     * 포도알 설정
-     * */
+    /** 포도알 설정 */
     @Override
     @Transactional
     public void podoSetting(String mid, int id) {

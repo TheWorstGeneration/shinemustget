@@ -2,6 +2,7 @@ package com.project.smg.podo.controller;
 
 import com.project.smg.common.ResponseDto;
 import com.project.smg.podo.dto.PodoCreateDto;
+import com.project.smg.podo.dto.PodoDetailDto;
 import com.project.smg.podo.dto.StickerDto;
 import com.project.smg.podo.service.PodoService;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,18 @@ public class PodoController {
         } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
     }
 
-    //    /* 포도알 조회 */
-//    @GetMapping(value = "/detail")
 
+    /* 포도알 조회 */
+    @GetMapping(value = "/detail/{id}")
+    public ResponseEntity<?> detail(@RequestAttribute("id") String mid,
+                                      @PathVariable("id") int id){
+        PodoDetailDto podoDetailDto = podoService.detailPodo(mid, id);
+
+        if (podoDetailDto != null) {
+            return new ResponseEntity<>(podoDetailDto, HttpStatus.OK);
+
+        } return new ResponseEntity<>(new ResponseDto(500, "잘못된 페이지 번호입니다"), HttpStatus.OK);
+    }
 
     /* 포도알 설정 */
     @PatchMapping(value = "/setting/{id}")

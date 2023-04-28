@@ -12,5 +12,5 @@ import java.time.LocalDateTime;
 public class PodoDetailDto {
     private int id;
     private String oneline;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }

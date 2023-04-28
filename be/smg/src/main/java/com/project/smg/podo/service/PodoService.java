@@ -1,6 +1,7 @@
 package com.project.smg.podo.service;
 
 import com.project.smg.podo.dto.PodoCreateDto;
+import com.project.smg.podo.dto.PodoDetailDto;
 import com.project.smg.podo.dto.StickerDto;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface PodoService {
     Map<String, Object> read(String mid, int id);
 
     void podoSetting(String mid, int id);
+
+    PodoDetailDto detailPodo(String mid, int id);
 }
