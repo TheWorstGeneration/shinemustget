@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faBuromobelexperte } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,9 +26,12 @@ const LogoLink = styled(Link)`
 `;
 
 export const Logo = () => {
+  const { isLogin } = useAppSelector(selectProfile);
+  const url = isLogin ? '/home' : '/';
+
   return (
     <LogoLink
-      href={'/'}
+      href={url}
       passHref={true}
       aria-label={'redirect to landing page'}
       title={'landing page'}

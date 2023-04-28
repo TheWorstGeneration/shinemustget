@@ -2,10 +2,8 @@ import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import getMemberInfo from '../api/memberInfo';
-import { GetServerSideProps } from 'next';
 
 const HomeSection = styled.section`
   display: flex;
@@ -39,7 +37,6 @@ export default function Home() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       dispatch(setLogin(data));
     }
   }, [data]);
