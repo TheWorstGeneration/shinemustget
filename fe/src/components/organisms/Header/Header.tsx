@@ -12,7 +12,7 @@ interface HeaderProps {
   size: string;
 }
 
-const HeadContainer = styled.header<{ isScroll: boolean }>`
+const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -53,7 +53,7 @@ export const Header = ({ size }: HeaderProps) => {
   const isScroll = usePageYOffset() > 700;
 
   return imageUrl ? (
-    <HeadContainer isScroll={isScroll}>
+    <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>
         <LanguageButton size={size} />
@@ -62,7 +62,7 @@ export const Header = ({ size }: HeaderProps) => {
       </HeaderItemList>
     </HeadContainer>
   ) : (
-    <HeadContainer isScroll={isScroll}>
+    <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>
         <LanguageButton size={size} />
