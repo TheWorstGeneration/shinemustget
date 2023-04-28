@@ -35,13 +35,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("OAuth2 Login 성공");
         try {
             DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
-            loginSuccess(response, oAuth2User); // 로그인에 성공한 경우 access, refresh 토큰 생성
+            loginSuccess(request, response, oAuth2User); // 로그인에 성공한 경우 access, refresh 토큰 생성
         } catch (Exception e) {
             throw e;
         }
     }
 
-    private void loginSuccess(HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
+    private void loginSuccess(HttpServletRequest request, HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
         String memberId = oAuth2User.getAttributes().get("id").toString();
         Optional<Member> findMember = memberRepository.findById(memberId);
         Member member = findMember.orElseThrow(() -> new IllegalStateException("유저가 존재하지 않음"));
@@ -66,7 +66,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                             refreshTokenRepository.save(token);
                         });
 
-        String redirectUrl = "http://shinemustget.com/home";
+//        String redirectUrl = "http://shinemustget.com/home";
+        String redirectUrl;
+        if (request.getServerName().equals("localhost")) {
+            redirectUrl = "http://localhost:3000/home";
+        } else {
+            redirectUrl = "http://shinemustget.com/home";
+        }
+
         response.sendRedirect(redirectUrl);
     }
 }
