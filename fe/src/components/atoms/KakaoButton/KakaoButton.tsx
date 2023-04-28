@@ -59,12 +59,10 @@ export const KakaoButton = ({ size }: ButtonProps) => {
   return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLogin}>
       <FontAwesomeIcon icon={faComment} />
-      <LoginText>
-        {language == 'ko' ? '카카오 로그인' : 'KAKAO LOGIN'}
-      </LoginText>
+      <LoginText>{language == 'ko' ? '카카오 로그인' : 'LOGIN'}</LoginText>
     </LargeButton>
   ) : (
-    <SmallButton type="button" onClick={handleLogin}>
+    <SmallButton type="button" onClick={handleLogin} title="카카오 로그인">
       <FontAwesomeIcon icon={faComment} />
     </SmallButton>
   );

@@ -8,7 +8,7 @@ const LinkContainer = styled.div`
   top: 50%;
   right: 2rem;
   transform: translateY(-50%);
-  z-index: 100;
+  z-index: 200;
 
   display: flex;
   flex-direction: column;
@@ -76,17 +76,29 @@ export const Navigator = () => {
 
   return (
     <LinkContainer>
-      <NavigatorButton type="button" onClick={() => handleNavigator(0)}>
+      <NavigatorButton
+        type="button"
+        onClick={() => handleNavigator(0)}
+        title="Go to Video Section"
+      >
         <FontAwesomeIcon
           icon={curSection >= 0 && curSection < 1 ? faCircleDot : faCircle}
         />
       </NavigatorButton>
-      <NavigatorButton type="button" onClick={() => handleNavigator(1)}>
+      <NavigatorButton
+        type="button"
+        onClick={() => handleNavigator(1)}
+        title="Go to Character Section"
+      >
         <FontAwesomeIcon
           icon={curSection >= 1 && curSection < 2 ? faCircleDot : faCircle}
         />
       </NavigatorButton>
-      <NavigatorButton type="button" onClick={() => handleNavigator(2)}>
+      <NavigatorButton
+        type="button"
+        onClick={() => handleNavigator(2)}
+        title="Go to Login Section"
+      >
         <FontAwesomeIcon icon={curSection >= 2 ? faCircleDot : faCircle} />
       </NavigatorButton>
     </LinkContainer>
