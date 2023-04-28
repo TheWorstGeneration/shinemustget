@@ -139,7 +139,6 @@ public class JwtService {
             cookie.setPath("/");
             cookie.setMaxAge(accessTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
-//            cookie.setDomain("shinemustget.com");
             response.addCookie(cookie);
             log.info("Access Token 쿠키에 저장 완료");
             log.info("발급된 Access Token : {}", accessToken);
@@ -159,7 +158,6 @@ public class JwtService {
             cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
-//            cookie.setDomain("shinemustget.com");
             log.info("Refresh Token 쿠키에 저장 완료");
             log.info("발급된 Refresh Token : {}", refreshToken);
         } catch (UnsupportedEncodingException e) {
