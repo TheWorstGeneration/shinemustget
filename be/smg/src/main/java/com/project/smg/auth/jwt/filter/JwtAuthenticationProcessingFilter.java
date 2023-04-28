@@ -71,6 +71,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             String refreshToken = jwtService.extractRefreshToken(request)
                     .filter(jwtService::isTokenValid)
                     .orElse(null);
+
             log.info("Refresh Token : {}", refreshToken);
 
             Member member = memberRepository.findByRefreshToken(refreshToken)
@@ -89,6 +90,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                             .ifPresent(this::saveAuthentication));
             String memberId = jwtService.getUserIdFromToken(accessToken);
             request.setAttribute("id", memberId);
+
             filterChain.doFilter(request, response);
         }
     }
