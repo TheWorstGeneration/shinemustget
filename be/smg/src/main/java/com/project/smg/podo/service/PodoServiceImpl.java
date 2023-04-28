@@ -113,9 +113,7 @@ public class PodoServiceImpl implements PodoService {
 
         for (MemberPodo mp : memberPodoList){
 
-            String imgUrl ="";
-            if(mp.isStatus()) imgUrl = mp.getPodoType().getImageUrl();
-            else imgUrl = mp.getPodoType().getImageLockUrl();
+            String imgUrl = (mp.isStatus()) ? mp.getPodoType().getImageUrl() : mp.getPodoType().getImageLockUrl();
 
             StickerDto stickerDto = new StickerDto(mp.getPodoType().getId(), imgUrl);
             stickerList.add(stickerDto);
