@@ -29,14 +29,14 @@ export const CopyRight = ({ size }: CopyRightButtonProps) => {
 
   return size === 'lg' ? (
     <CopyRightButton type="button" onClick={handleCopyRight}>
-      <h4>Copyright</h4>
+      <span>Copyright</span>
       <FontAwesomeIcon icon={faCopyright} />
-      <h4>2023 The Worst Generation, Inc. All rights reserved.</h4>
+      <span>2023 The Worst Generation, Inc. All rights reserved.</span>
     </CopyRightButton>
   ) : (
     <CopyRightButton type="button" onClick={handleCopyRight}>
       <FontAwesomeIcon icon={faCopyright} />
-      <h4>The Worst Generation</h4>
+      <span>The Worst Generation</span>
     </CopyRightButton>
   );
 };
