@@ -2,6 +2,7 @@ import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
+import axios from 'axios';
 import React, { useEffect } from 'react';
 
 interface Data {
@@ -58,8 +59,9 @@ export default function Home({ data }: HomeProps) {
 }
 
 export const getStaticProps = async () => {
-  const res = await fetch(process.env.BASE_URL + '/api/memberInfo');
-  const data = await res.json();
+  const data = await axios
+    .get(process.env.BASE_URL + '/api/memberInfo')
+    .then(res => res.data);
 
   return {
     props: {
