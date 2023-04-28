@@ -11,11 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityManager;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -24,16 +27,16 @@ public class MandalartServiceImpl implements MandalartService {
     private String apiKey;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
-    private final RestTemplate restTemplate;
     private final GptTitleRepository gptTitleRepository;
 
+    @Async
     public ChatGptResponse getChatGptResponse(String prompt) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 간략히 나열해주세요";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 간략히 설명 빼고 나열해주세요";
 
         ChatGptRequest chatGPTRequest = new ChatGptRequest();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
@@ -71,6 +74,16 @@ public class MandalartServiceImpl implements MandalartService {
         return result;
     }
 
+    @Override
+    public HashMap<String, List<String>> getSmallGoals(List<String> bigGoal) {
+        HashMap<String, List<String>> result = new HashMap<>();
+        for(String content : bigGoal){
+            HashMap<String, List<String>> bigGoals = getBigGoals(content);
+            result.put(content, bigGoals.get(content));
+        }
+        return result;
+    }
+
     // GptTitle에 저장한 BigGoal 가져오기
     public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
         List<String> savedGptBigGoal = optional.get().getGptBigGoals()
@@ -84,13 +97,15 @@ public class MandalartServiceImpl implements MandalartService {
     public void saveGptBigGoal(String title, List<String> strings){
         List<GptBigGoal> gptBigGoals = strings.stream()
                 .map(i -> GptBigGoal.builder().content(i).build())
-                .collect(Collectors.toList());
+                    .collect(Collectors.toList());
 
         GptTitle gptTitle = GptTitle.builder()
                 .content(title)
-                .gptBigGoals(gptBigGoals)
+//                .gptBigGoals(gptBigGoals)
+                .gptBigGoals(new ArrayList<>())
                 .build();
-        for(GptBigGoal goal : gptBigGoals) goal.addGptTitle(gptTitle);
+
+        for(int i = 0; i < gptBigGoals.size(); i++) gptBigGoals.get(i).addGptTitle(gptTitle);
         gptTitleRepository.save(gptTitle);
     }
 }

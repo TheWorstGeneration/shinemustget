@@ -8,4 +8,5 @@ import java.util.List;
 public interface MandalartService {
     public ChatGptResponse getChatGptResponse(String content);
     public HashMap<String, List<String>> getBigGoals(String content);
+    public HashMap<String, List<String>> getSmallGoals(List<String> bigGoal);
 }
