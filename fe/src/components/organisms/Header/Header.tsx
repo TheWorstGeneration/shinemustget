@@ -52,7 +52,7 @@ export const Header = ({ size }: HeaderProps) => {
   const { imageUrl } = useAppSelector(selectProfile);
   const isScroll = usePageYOffset() > 700;
 
-  return imageUrl ? (
+  return imageUrl !== '' ? (
     <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>
