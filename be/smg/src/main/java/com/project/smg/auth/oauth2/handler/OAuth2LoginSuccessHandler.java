@@ -81,7 +81,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             memberService.addMemberPodo(memberId);
 
 //        String redirectUrl = "https://shinemustget.com/home";
-        String redirectUrl = "http://localhost:3000/home";
+        String redirectUrl = "http://shinemustget.com:3000/home";
         response.sendRedirect(redirectUrl);
     }
 }
