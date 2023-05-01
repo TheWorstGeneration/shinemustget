@@ -21,19 +21,32 @@ const HomeSection = styled.section`
 
 const HomeMain = styled.main`
   width: 100%;
+  height: calc(100vh + 5.5rem);
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
 
+  position: relative;
+
   margin-top: 5.5rem;
+
+  @media screen and (max-width: 960px) {
+    height: calc(100vh - 5.5rem);
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  position: absolute;
+
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 0 1rem;
 
   width: 680px;
@@ -43,7 +56,10 @@ const ButtonContainer = styled.div`
   }
 
   @media screen and (max-width: 500px) {
+    flex-direction: column;
     width: 425px;
+
+    padding: 0;
   }
 `;
 
