@@ -10,6 +10,7 @@ import com.project.smg.podo.repository.PodoTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -67,6 +68,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void addMemberPodo(String memberId) {
         List<PodoType> podoTypeList = podoTypeRepository.findAll();
         Member member = memberRepository.findById(memberId)

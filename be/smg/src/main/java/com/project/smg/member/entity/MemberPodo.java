@@ -16,8 +16,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class MemberPodo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_podo_id")
-    private String id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
@@ -30,7 +31,6 @@ public class MemberPodo {
     private PodoType podoType;
 
     private boolean status;
-
 
     public void addMember(Member member) {
         if (this.member != null) {
