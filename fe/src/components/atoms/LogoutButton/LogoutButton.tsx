@@ -1,8 +1,10 @@
 import { useAppDispatch } from '@/hooks/useRedux';
+import getKakaoLogout from '@/pages/api/kakaoLogout';
 import { setLogout } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 import Link from 'next/link';
 import React from 'react';
 
@@ -26,6 +28,8 @@ export const LogoutButton = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
+    getKakaoLogout();
+
     dispatch(setLogout());
   };
 

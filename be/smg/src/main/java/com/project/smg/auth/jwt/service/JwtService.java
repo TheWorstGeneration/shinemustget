@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,6 +141,7 @@ public class JwtService {
             cookie.setMaxAge(accessTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
+
             log.info("Access Token 쿠키에 저장 완료");
             log.info("발급된 Access Token : {}", accessToken);
         } catch (UnsupportedEncodingException e) {
@@ -158,6 +160,7 @@ public class JwtService {
             cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
+
             log.info("Refresh Token 쿠키에 저장 완료");
             log.info("발급된 Refresh Token : {}", refreshToken);
         } catch (UnsupportedEncodingException e) {
@@ -172,9 +175,28 @@ public class JwtService {
      * 쿠키를 가져온 후 "Bearer"를 삭제(""로 replace)
      */
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-        return Optional.ofNullable(Arrays.stream(request.getCookies())
+//        return Optional.ofNullable(Arrays.stream(request.getCookies())
+//                        .filter(cookie -> cookie.getName().equals("accessToken"))
+//                        .findFirst().map(Cookie::getValue)
+//                        .orElse(null))
+//                .map(accessToken -> {
+//                    try {
+//                        return URLDecoder.decode(accessToken, "UTF-8");
+//                    } catch (UnsupportedEncodingException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                })
+//                .filter(accessToken -> accessToken.startsWith(BEARER))
+//                .map(accessToken -> accessToken.replace(BEARER, ""));
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(Arrays.stream(cookies)
                         .filter(cookie -> cookie.getName().equals("accessToken"))
-                        .findFirst().map(Cookie::getValue)
+                        .findFirst()
+                        .map(Cookie::getValue)
                         .orElse(null))
                 .map(accessToken -> {
                     try {

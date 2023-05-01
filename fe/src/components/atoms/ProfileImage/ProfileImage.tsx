@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
@@ -18,7 +20,7 @@ const Profile = styled(Image)`
 `;
 
 export const ProfileImage = () => {
-  const image = 'assets/images/characters/ohtani.png';
+  const { imageUrl } = useAppSelector(selectProfile);
 
   const handleProfile = () => {
     console.log('Profile');
@@ -26,7 +28,7 @@ export const ProfileImage = () => {
 
   return (
     <ProfileButton onClick={handleProfile}>
-      <Profile src={image} alt="Profile" width={48} height={48} />
+      <Profile src={imageUrl} alt="Profile" width={48} height={48} />
     </ProfileButton>
   );
 };

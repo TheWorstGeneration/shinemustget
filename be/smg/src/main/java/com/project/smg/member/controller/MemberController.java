@@ -5,12 +5,10 @@ import com.project.smg.member.dto.MemberInfoDto;
 import com.project.smg.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
@@ -18,9 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -63,7 +58,7 @@ public class MemberController {
                     response.addCookie(cookie);
                 });
 
-        String redirectUrl = "http://shinemustget.com";
+        String redirectUrl = "https://shinemustget.com";
         try {
             response.sendRedirect(redirectUrl);
         }
@@ -81,10 +76,14 @@ public class MemberController {
     @GetMapping("/memberInfo")
     public ResponseEntity<?> memberInfo(@RequestAttribute("id") String memberId){
         MemberInfoDto memberInfoDto = memberService.memberInfo(memberId);
-        if(memberInfoDto != null)
+        if(memberInfoDto != null){
+            log.info("프로필 조회 성공");
             return new ResponseEntity(memberInfoDto, HttpStatus.OK);
-        else
+        }
+        else{
+            log.info("프로필 조회 실패");
             return new ResponseEntity<>(new ResponseDto(500, "존재하지 않는 유저 입니다."), HttpStatus.OK);
+        }
     }
 }
 

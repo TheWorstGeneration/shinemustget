@@ -3,11 +3,7 @@ import { useAppDispatch } from '@/hooks/useRedux';
 import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
-
-interface HomeProps {
-  imageUrl: string;
-  nickname: string;
-}
+import getMemberInfo from '../api/memberInfo';
 
 const HomeSection = styled.section`
   display: flex;
@@ -18,7 +14,7 @@ const HomeSection = styled.section`
   width: 100vw;
   height: 100vh;
 
-  padding: 0 10re;
+  padding: 0 10rem;
 
   background-color: #ffffff;
 `;
@@ -35,11 +31,18 @@ const HomeMain = styled.main`
   }
 `;
 
-export default function Home({ imageUrl, nickname }: HomeProps) {
+export default function Home() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setLogin({ imageUrl, nickname }));
+    const axiosMemberInfo = async () => {
+      const memberInfo = await getMemberInfo();
+      if (memberInfo) {
+        dispatch(setLogin(memberInfo));
+      }
+    };
+
+    axiosMemberInfo();
   }, []);
 
   return (
@@ -50,14 +53,3 @@ export default function Home({ imageUrl, nickname }: HomeProps) {
     </HomeSection>
   );
 }
-
-export const getStaticProps = async () => {
-  const res = await fetch(process.env.BASE_URL + '/api/profile');
-  const data = await res.json();
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
