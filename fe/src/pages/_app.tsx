@@ -1,3 +1,4 @@
+import { MoneyThings } from '@/components/molecules/MoneyThings/MoneyThings';
 import { Footer } from '@/components/organisms/Footer/Footer';
 import { Header } from '@/components/organisms/Header/Header';
 import store from '@/store';
@@ -39,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <Header />
+              <MoneyThings />
               <Component {...pageProps} />
               <Footer />
             </PersistGate>
