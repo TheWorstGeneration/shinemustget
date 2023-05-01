@@ -1,6 +1,9 @@
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import html2canvas from 'html2canvas';
 import React from 'react';
 
 const GenerateButton = styled.button`
@@ -17,7 +20,7 @@ const GenerateButton = styled.button`
 
   z-index: 200;
 
-  box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.1);
+  box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.2);
 
   &:hover {
     background-color: #eefff2;
@@ -26,6 +29,10 @@ const GenerateButton = styled.button`
     & > * {
       color: #01c027;
     }
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
   }
 `;
 
@@ -39,7 +46,19 @@ const ButtonText = styled.span`
 `;
 
 export const ImageButton = () => {
-  const handleGenerateImage = () => {};
+  const { nickname } = useAppSelector(selectProfile);
+  const handleGenerateImage = () => {
+    const mandalart = document.getElementById('mandalart');
+
+    if (mandalart) {
+      html2canvas(mandalart, { scale: 4 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `${nickname}님의 만다라트.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  };
 
   return (
     <GenerateButton type="button" onClick={handleGenerateImage}>
