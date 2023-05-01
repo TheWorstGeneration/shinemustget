@@ -8,12 +8,20 @@ const Container = styled.article`
   align-items: center;
   justify-content: center;
 
-  width: 950px;
-  height: 950px;
-
-  font-weight: 900;
+  width: 680px;
+  height: 680px;
 
   z-index: 200;
+
+  @media screen and (max-width: 960px) {
+    width: 480px;
+    height: 480px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 425px;
+    height: 425px;
+  }
 `;
 
 const Row = styled.div`
@@ -24,6 +32,18 @@ const Row = styled.div`
   width: 100%;
 
   margin-bottom: 25px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 960px) {
+    margin-bottom: 15px;
+  }
+
+  @media screen and (max-width: 500px) {
+    margin-bottom: 10px;
+  }
 `;
 
 export const Mandalart = () => {
