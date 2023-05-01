@@ -136,7 +136,6 @@ public class JwtService {
             String bearerToken = URLEncoder.encode(BEARER + accessToken, "UTF-8");
             Cookie cookie = new Cookie("accessToken", bearerToken);
             cookie.setPath("/");
-            cookie.setDomain("localhost:3000");
             cookie.setMaxAge(accessTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
@@ -156,7 +155,6 @@ public class JwtService {
             String bearerToken = URLEncoder.encode(BEARER + refreshToken, "UTF-8");
             Cookie cookie = new Cookie("refreshToken", bearerToken);
             cookie.setPath("/");
-            cookie.setDomain("localhost:3000");
             cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
