@@ -8,7 +8,8 @@ for (let i = 1; i <= 8; i++) {
         id: i,
         location: i,
         content: `Small ${i}`,
-        isPodo: false,
+        isPodo: i % 2 === 0,
+        isToday: i % 4 === 0,
         isClear: false,
     })
 }
