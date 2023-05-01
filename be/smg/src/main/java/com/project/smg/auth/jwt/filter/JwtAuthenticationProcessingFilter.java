@@ -58,6 +58,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Access Token 쿠키에서 조회");
+
+        Cookie[] cookies = request.getCookies();
+        for(int i = 0; i < cookies.length; i++){
+            System.out.println("다른 도메인 쿠키 : " + cookies[i]);
+        }
+
         String accessToken = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
