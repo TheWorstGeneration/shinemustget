@@ -3,7 +3,7 @@ server:
   servlet:
     cookie:
       same-site: None
-      secure: true
+      secure: false
 
 spring:
   application:
