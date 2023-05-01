@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -138,6 +136,7 @@ public class JwtService {
             String bearerToken = URLEncoder.encode(BEARER + accessToken, "UTF-8");
             Cookie cookie = new Cookie("accessToken", bearerToken);
             cookie.setPath("/");
+            cookie.setDomain("shinemustget.com");
             cookie.setMaxAge(accessTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
@@ -157,6 +156,7 @@ public class JwtService {
             String bearerToken = URLEncoder.encode(BEARER + refreshToken, "UTF-8");
             Cookie cookie = new Cookie("refreshToken", bearerToken);
             cookie.setPath("/");
+            cookie.setDomain("shinemustget.com");
             cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
