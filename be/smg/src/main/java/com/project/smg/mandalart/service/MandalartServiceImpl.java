@@ -1,10 +1,12 @@
 package com.project.smg.mandalart.service;
 
 import com.project.smg.mandalart.dto.*;
-import com.project.smg.mandalart.entity.GptBigGoal;
-import com.project.smg.mandalart.entity.GptTitle;
+import com.project.smg.mandalart.entity.*;
 import com.project.smg.mandalart.repository.GptBigGoalRepository;
 import com.project.smg.mandalart.repository.GptTitleRepository;
+import com.project.smg.mandalart.repository.TitleRepository;
+import com.project.smg.member.entity.Member;
+import com.project.smg.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +30,8 @@ public class MandalartServiceImpl implements MandalartService {
     private String apiKey;
     private final GptTitleRepository gptTitleRepository;
     private final GptBigGoalRepository gptBigGoalRepository;
+    private final MemberRepository memberRepository;
+    private final TitleRepository titleRepository;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     @Async
@@ -35,7 +40,8 @@ public class MandalartServiceImpl implements MandalartService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 설명 빼고 3어절 이하로 한줄씩 띄워서 적어줘";
+//        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 알려줘 응답 형식은 '1. 운동하기\n2.배달음식 줄이기\n3.' 이런 형식";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘";
 
         ChatGptRequest chatGPTRequest = new ChatGptRequest();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
@@ -75,11 +81,11 @@ public class MandalartServiceImpl implements MandalartService {
 
         return asyncChatGptResponse.thenApply(response -> {
             // 받아온 메세지 리스트로 변환
-            String[] split = response.choices.get(0).message.content.split("\n");
+                String[] split = response.choices.get(0).message.content.split("\n");
             List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(2)).collect(Collectors.toList());
 
             // GptTitle, GptBigGoal에 저장
-            saveGptBigGoal(content, bigGoals);
+//            saveGptBigGoal(content, bigGoals);
 
             // 담아서 return
             result.put(content, bigGoals);
@@ -103,6 +109,37 @@ public class MandalartServiceImpl implements MandalartService {
                     }
                     return result;
                 });
+    }
+
+    @Override
+    public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
+        Optional<Member> member = memberRepository.findById(mid);
+        Title title = Title.builder()
+                .createdAt(LocalDateTime.now())
+                .content(mandalartRequestDto.getTitle())
+                .likeCnt(0)
+                .bigGoals(new ArrayList<>())
+                .build();
+        title.addMember(member.get());
+        for(BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()){
+            BigGoal bigGoal = BigGoal.builder()
+                    .location(bigRequestDto.getLocation())
+                    .content(bigRequestDto.getContent())
+                    .smallGoals(new ArrayList<>())
+                    .build();
+            bigGoal.addTitle(title);
+            for(SmallRequestDto smallRequestDto : bigRequestDto.getSmallRequestDto()){
+                SmallGoal smallGoal = SmallGoal.builder()
+                        .location(smallRequestDto.getLocation())
+                        .content(smallRequestDto.getContent())
+                        .isSticker(false)
+                        .build();
+                smallGoal.addBigGoal(bigGoal);
+            }
+        }
+
+        titleRepository.save(title);
+
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.project.smg.mandalart.controller;
 
 import com.project.smg.common.ResponseDto;
+import com.project.smg.mandalart.dto.MandalartRequestDto;
 import com.project.smg.mandalart.dto.SmallGoalRequestDto;
 import com.project.smg.mandalart.service.MandalartService;
 
@@ -41,5 +42,11 @@ public class MandalartController {
                 return new ResponseEntity<>(stringObjectConcurrentHashMap, HttpStatus.OK);
             }
         });
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createMandalart(@RequestAttribute("id") String mid, @RequestBody MandalartRequestDto mandalartRequestDto){
+        mandalartService.createMandalart(mandalartRequestDto, mid);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

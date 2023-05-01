@@ -28,7 +28,7 @@ public class BigGoal {
     @Column(name = "clear_at")
     private LocalDateTime clearAt;
 
-    @OneToMany(mappedBy = "bigGoal")
+    @OneToMany(mappedBy = "bigGoal", cascade = CascadeType.PERSIST )
     private List<SmallGoal> smallGoals = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

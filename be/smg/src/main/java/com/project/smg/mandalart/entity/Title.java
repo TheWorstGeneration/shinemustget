@@ -37,10 +37,10 @@ public class Title {
     @Column(name = "like_cnt")
     private int likeCnt;
 
-    @OneToMany(mappedBy = "title")
+    @OneToMany(mappedBy = "title", cascade = CascadeType.PERSIST)
     private List<Likes> titleLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "title")
+    @OneToMany(mappedBy = "title", cascade = CascadeType.PERSIST)
     private List<BigGoal> bigGoals = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
