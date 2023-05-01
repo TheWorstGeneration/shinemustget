@@ -29,26 +29,6 @@ const client = new QueryClient({
 export default function App({ Component, pageProps }: AppProps) {
   const persistor = persistStore(store);
 
-  const [size, setSize] = useState('lg');
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 500) {
-        setSize('sm');
-      } else {
-        setSize('lg');
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
     <>
       <Head>
@@ -58,9 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <Hydrate state={pageProps.dehydratedState}>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <Header size={size} />
+              <Header />
               <Component {...pageProps} />
-              <Footer size={size} />
+              <Footer />
             </PersistGate>
           </Provider>
         </Hydrate>

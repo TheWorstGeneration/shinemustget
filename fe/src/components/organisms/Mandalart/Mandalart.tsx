@@ -8,12 +8,25 @@ const Container = styled.article`
   align-items: center;
   justify-content: center;
 
-  width: 950px;
-  height: 950px;
+  position: absolute;
+  top: -10rem;
+  left: 50%;
+  transform: translateX(-50%);
 
-  font-weight: 900;
+  padding: 10rem 1rem;
 
-  z-index: 200;
+  width: 712px;
+  height: 1000px;
+
+  @media screen and (max-width: 960px) {
+    width: 512px;
+    height: 800px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 457px;
+    height: 745px;
+  }
 `;
 
 const Row = styled.div`
@@ -24,6 +37,18 @@ const Row = styled.div`
   width: 100%;
 
   margin-bottom: 25px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 960px) {
+    margin-bottom: 15px;
+  }
+
+  @media screen and (max-width: 500px) {
+    margin-bottom: 10px;
+  }
 `;
 
 export const Mandalart = () => {
@@ -60,7 +85,7 @@ export const Mandalart = () => {
   secondRow.splice(1, 0, center);
 
   return (
-    <Container>
+    <Container id="mandalart">
       <Row>
         {fristRow.map(bigGoal => {
           return (

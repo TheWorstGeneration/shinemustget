@@ -1,12 +1,9 @@
 import { CopyRight } from '../../atoms/CopyRight/CopyRight';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-
-interface FooterProps {
-  size: string;
-}
+import { useInnerWidth } from '@/hooks/useInnerWidth';
 
 const FooterContainer = styled.footer`
   display: flex;
@@ -36,7 +33,8 @@ const GithubButton = styled.button`
   justify-content: center;
 `;
 
-export const Footer = ({ size }: FooterProps) => {
+export const Footer = () => {
+  const size = useInnerWidth();
   const handleGithub = () => {
     window.open('https://lab.ssafy.com/s08-final/S08P31B109');
   };

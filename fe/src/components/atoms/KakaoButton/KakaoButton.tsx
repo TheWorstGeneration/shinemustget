@@ -3,6 +3,7 @@ import { selectProfile, setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faComment } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 interface ButtonProps {
@@ -47,13 +48,15 @@ const LoginText = styled.span`
 `;
 
 export const KakaoButton = ({ size }: ButtonProps) => {
+  const router = useRouter();
   const { language } = useAppSelector(selectProfile);
 
   const handleLogin = () => {
-    // TODO: 카카오 로그인 구현
-    window.location.href = process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
-      ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
-      : '/';
+    router.push(
+      process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+        ? process.env.NEXT_PUBLIC_LOGIN_REDIRECTURI
+        : '/',
+    );
   };
 
   return size === 'lg' ? (

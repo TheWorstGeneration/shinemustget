@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 interface MemberInfo {
   imageUrl: string;
@@ -7,7 +7,11 @@ interface MemberInfo {
 
 const getMemberInfo = async () => {
   const data = await axios
-    .get<MemberInfo>(`https://shinemustget.com/api/memberInfo`)
+    .get<MemberInfo>(`https://shinemustget.com/api/memberInfo`, {
+      headers: {
+        id: 2762543073,
+      },
+    })
     .then(res => res.data);
 
   return data;
