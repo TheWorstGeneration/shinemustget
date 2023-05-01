@@ -13,8 +13,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  width: 300px;
-  height: 300px;
+  width: 210px;
+  height: 210px;
+
+  @media screen and (max-width: 960px) {
+    width: 150px;
+    height: 150px;
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 135px;
+    height: 135px;
+  }
 `;
 
 const Row = styled.div`
@@ -61,7 +71,8 @@ export const GoalBoxContainer = ({
               id={smallList?.id}
               location={smallList.location}
               content={smallList.content}
-              isPodo={smallList.isPodo}
+              isPodo={smallList?.isPodo}
+              isToday={smallList?.isToday}
               isClear={smallList.isClear}
               isCenter={smallList?.isCenter}
             />
