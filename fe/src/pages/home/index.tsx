@@ -14,8 +14,6 @@ const HomeSection = styled.section`
   width: 100vw;
   height: 100vh;
 
-  padding: 0 10rem;
-
   background-color: #ffffff;
 `;
 
@@ -26,9 +24,6 @@ const HomeMain = styled.main`
   display: flex;
   align-items: center;
   justify-content: center;
-  & > * {
-    scale: 0.75;
-  }
 `;
 
 export default function Home() {
