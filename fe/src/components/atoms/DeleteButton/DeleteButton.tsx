@@ -17,7 +17,7 @@ const ButtonStyle = styled.button`
 
   z-index: 200;
 
-  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.2);
 
   &:hover {
     background-color: #fff4f4;
@@ -26,6 +26,10 @@ const ButtonStyle = styled.button`
     & > * {
       color: #ff0909;
     }
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
   }
 `;
 
