@@ -77,7 +77,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             System.out.println(memberPodoList.get(i).toString());
         }
 
-        if (memberPodoList == null)
+        if (memberPodoList.isEmpty())
             memberService.addMemberPodo(memberId);
 
 //        String redirectUrl = "https://shinemustget.com/home";
