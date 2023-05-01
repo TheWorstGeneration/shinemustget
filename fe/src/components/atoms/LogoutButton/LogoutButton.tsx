@@ -4,11 +4,10 @@ import { setLogout } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-const LogoutLink = styled(Link)`
+const LogoutLink = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,15 +25,20 @@ const LogoutLink = styled(Link)`
 
 export const LogoutButton = () => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleLogout = () => {
-    getKakaoLogout();
+    const result = window.confirm('로그아웃 하시겠습니까?');
 
-    dispatch(setLogout());
+    if (result) {
+      getKakaoLogout();
+      dispatch(setLogout());
+      router.push('/');
+    }
   };
 
   return (
-    <LogoutLink href={'/'} onClick={handleLogout}>
+    <LogoutLink type="button" onClick={handleLogout}>
       <FontAwesomeIcon icon={faArrowRightFromBracket} />
     </LogoutLink>
   );

@@ -60,6 +60,8 @@ const ChipListContainer = styled.article`
   position: absolute;
   top: 270vh;
 
+  transition: width 0s ease-in-out;
+
   @media screen and (max-width: 500px) {
     top: 250vh;
   }

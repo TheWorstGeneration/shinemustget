@@ -39,7 +39,12 @@ const ButtonText = styled.span`
 `;
 
 export const DeleteButton = () => {
-  const handleDeleteMandalart = () => {};
+  const handleDeleteMandalart = () => {
+    const result = confirm('정말로 만다라트를 삭제하시겠습니까?');
+    if (result) {
+      console.log('만다라트 삭제');
+    }
+  };
 
   return (
     <ButtonStyle type="button" onClick={handleDeleteMandalart}>
