@@ -55,8 +55,8 @@ spring:
           kakao:
             client-id: 2e076ec2c494a09a9d214c3658d64dcf
             client-secret: tDquIYEW1gmLenqhFf4VZNAJjFrreNKZ
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-#            redirect-uri: http://shinemustget.com/api/login/oauth2/code/kakao
+            # redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+           redirect-uri: http://shinemustget.com/api/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: Kakao
