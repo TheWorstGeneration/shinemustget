@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import { faPagelines } from '@fortawesome/free-brands-svg-icons';
-import { faAddressBook } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
@@ -74,6 +73,10 @@ const Box = styled(Link)<{ isClear: boolean }>`
     color: #000000;
     background-color: #e5e5e5;
     border-color: #000000;
+
+    & > * {
+      opacity: 1;
+    }
   }
 
   @media screen and (max-width: 960px) {
@@ -93,8 +96,12 @@ const Box = styled(Link)<{ isClear: boolean }>`
 
 const Badge = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 15%;
+  left: 15%;
+
+  transform: translate(-50%, -50%);
+
+  opacity: 0.5;
 `;
 
 export const GoalBox = ({
@@ -106,6 +113,8 @@ export const GoalBox = ({
   isClear,
   isCenter,
 }: GoalBoxProps) => {
+  const icon = isToday ? faCircle : faCheckCircle;
+
   return isCenter ? (
     <CenterBox isClear={isClear} isCenter={isCenter}>
       {content}
@@ -114,7 +123,10 @@ export const GoalBox = ({
     <Box href={`/detail/${id}`} isClear={isClear}>
       {isPodo ? (
         <Badge>
-          <FontAwesomeIcon icon={faPagelines} />
+          <FontAwesomeIcon
+            icon={icon}
+            color={isToday ? '#ff0909' : '#01c027'}
+          />
         </Badge>
       ) : (
         <></>
