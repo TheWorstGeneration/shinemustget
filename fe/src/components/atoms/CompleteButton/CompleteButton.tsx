@@ -18,15 +18,9 @@ const Button = styled.button`
   }
 `;
 
-export function CompleteButton({imageUrl,onLine}: {imageUrl:any,onLine:any}) { 
-
-  const onClickHandler = () => {
-    console.log("메모 작성 완료!");
-    console.log(imageUrl);
-    console.log(onLine);
-  };
-
+export function CompleteButton() { 
+  
   return (
-    <Button onClick={onClickHandler}>완료</Button>
+    <Button>완료</Button>
   );
 }

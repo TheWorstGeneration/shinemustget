@@ -8,10 +8,8 @@ import { Logo } from '@/components/atoms/Logo/Logo';
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectProfile } from '@/store/modules/profile';
 import { useRouter } from 'next/router';
-
-interface HeaderProps {
-  size: string;
-}
+import { useEffect, useState } from 'react';
+import { useInnerWidth } from '@/hooks/useInnerWidth';
 
 const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
   display: flex;
@@ -50,10 +48,11 @@ const HeaderItemList = styled.div`
   }
 `;
 
-export const Header = ({ size }: HeaderProps) => {
+export const Header = () => {
   const router = useRouter();
   const changeYOffset = router.asPath === '/' ? 700 : 0;
 
+  const size = useInnerWidth() > 500 ? 'lg' : 'sm';
   const isScroll = usePageYOffset() > changeYOffset;
   const { isLogin } = useAppSelector(selectProfile);
 

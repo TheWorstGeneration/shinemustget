@@ -73,10 +73,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                         });
         List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(memberId);
 
-        for (int i = 0; i < memberPodoList.size(); i++) {
-            System.out.println(memberPodoList.get(i).toString());
-        }
-
         if (memberPodoList.isEmpty())
             memberService.addMemberPodo(memberId);
 

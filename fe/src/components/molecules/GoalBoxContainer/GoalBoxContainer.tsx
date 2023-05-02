@@ -88,6 +88,7 @@ export const GoalBoxContainer = ({
               location={smallList.location}
               content={smallList.content}
               isPodo={smallList.isPodo}
+              isToday={smallList?.isToday}
               isClear={smallList.isClear}
               isCenter={smallList?.isCenter}
             />
@@ -103,6 +104,7 @@ export const GoalBoxContainer = ({
               location={smallList.location}
               content={smallList.content}
               isPodo={smallList.isPodo}
+              isToday={smallList?.isToday}
               isClear={smallList.isClear}
               isCenter={smallList?.isCenter}
             />

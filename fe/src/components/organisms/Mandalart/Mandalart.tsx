@@ -8,19 +8,24 @@ const Container = styled.article`
   align-items: center;
   justify-content: center;
 
-  width: 680px;
-  height: 680px;
+  position: absolute;
+  top: -10rem;
+  left: 50%;
+  transform: translateX(-50%);
 
-  z-index: 200;
+  padding: 10rem 1rem;
+
+  width: 712px;
+  height: 1000px;
 
   @media screen and (max-width: 960px) {
-    width: 480px;
-    height: 480px;
+    width: 512px;
+    height: 800px;
   }
 
   @media screen and (max-width: 500px) {
-    width: 425px;
-    height: 425px;
+    width: 457px;
+    height: 745px;
   }
 `;
 
@@ -80,7 +85,7 @@ export const Mandalart = () => {
   secondRow.splice(1, 0, center);
 
   return (
-    <Container>
+    <Container id="mandalart">
       <Row>
         {fristRow.map(bigGoal => {
           return (
