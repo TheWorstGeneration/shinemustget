@@ -13,6 +13,12 @@ const ProfileProgressContainer = styled.div`
   box-sizing: border-box;
 
   box-shadow: 0 0 0.5rem 1px #22222225;
+
+  @media (max-width: 500px) {
+    margin: 0rem 0rem 1rem 0.5rem;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const Progress = styled.div`
@@ -46,10 +52,10 @@ export function getProgress(): ProgressProp {
     title: '주식 투자로 인생 졸업하기',
     rate: 66,
     goalList: [
-      { content: 'big goal 1', isClear: true },
-      { content: 'big goal 2', isClear: false },
-      { content: 'big goal 3', isClear: false },
-      { content: 'big goal 4', isClear: false },
+      { content: '자기주도성', isClear: true },
+      { content: '시장분석', isClear: false },
+      { content: '인내심', isClear: false },
+      { content: '경제지식', isClear: false },
       { content: 'big goal 5', isClear: false },
       { content: 'big goal 6', isClear: true },
       { content: 'big goal 7', isClear: false },
@@ -58,7 +64,7 @@ export function getProgress(): ProgressProp {
   };
 }
 
-export function ProfileGoals() {
+export const ProfileProgress = () => {
   const progressProps: ProgressProp = getProgress();
 
   const title: string = progressProps.title;

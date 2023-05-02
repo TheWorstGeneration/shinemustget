@@ -8,7 +8,7 @@ const LikeBox = styled.div`
   justify-content: end;
   align-items: center;
 
-  margin-right: 10%;
+  margin-right: 20%;
 
   > p {
     margin: 0 0 0 0.5rem;

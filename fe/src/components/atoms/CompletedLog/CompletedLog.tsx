@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 
 const CompletedLogBox = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ const CompletedLogBox = styled.div`
   text-align: center;
   font-size: 1.5rem;
 
-  overflow: scroll;
+  overflow: hidden;
 `;
 
 const Completed = styled.div`
@@ -32,19 +33,29 @@ interface CompletedLogs {
   clearAt: string;
 }
 
-export function CompletedLog(props: CompletedLogs) {
+export const CompletedLog = (props: CompletedLogs) => {
   return (
     <CompletedLogBox>
-      <span>🎉</span>
+      <Image
+        src="/assets/images/profile/congratulation_light.svg"
+        width={40}
+        height={40}
+        alt="image"
+      ></Image>
       <Completed>
         <span>
           <b>{props.content}</b>
         </span>
         <span>{props.clearAt}</span>
       </Completed>
-      <span>
-        <Invert>🎉</Invert>
-      </span>
+      <Invert>
+        <Image
+          src="/assets/images/profile/congratulation_light.svg"
+          width={40}
+          height={40}
+          alt="image"
+        ></Image>
+      </Invert>
     </CompletedLogBox>
   );
-}
+};
