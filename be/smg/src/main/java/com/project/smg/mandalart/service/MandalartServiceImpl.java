@@ -45,8 +45,7 @@ public class MandalartServiceImpl implements MandalartService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-//        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 알려줘 응답 형식은 '1. 운동하기\n2.배달음식 줄이기\n3.' 이런 형식";
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
 
         ChatGptRequestDto chatGPTRequest = new ChatGptRequestDto();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
@@ -88,10 +87,10 @@ public class MandalartServiceImpl implements MandalartService {
         return asyncChatGptResponse.thenApply(response -> {
             // 받아온 메세지 리스트로 변환
                 String[] split = response.choices.get(0).message.content.split("\n");
-            List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(2)).collect(Collectors.toList());
+            List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(3)).collect(Collectors.toList());
 
             // GptTitle, GptBigGoal에 저장
-//            saveGptBigGoal(content, bigGoals);
+            saveGptBigGoal(content, bigGoals);
 
             // 담아서 return
             result.put(content, bigGoals);
@@ -100,6 +99,7 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
     /** 만다라트 세부 목표 생성 */
+    @Transactional
     @Override
     @Async
     public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal) {
@@ -168,7 +168,6 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
     /** Gpt에 저장된 세부목표 불러오기 */
-    @Transactional
     @Async
     public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
         GptTitle gptTitle = optional.orElseThrow(() -> new IllegalStateException("저장된 Title이 없습니다."));
@@ -181,6 +180,7 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
     /** Gpt로 만든 세부목표 저장하기 */
+    @Transactional
     @Async
     public void saveGptBigGoal(String title, List<String> strings){
         List<GptBigGoal> gptBigGoals = strings.stream()
