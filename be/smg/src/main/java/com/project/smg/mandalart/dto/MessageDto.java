@@ -7,8 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Choice {
-    public int index;
-    public Message message;
-    public String finish_reason;
+public class MessageDto {
+    public String role;
+    public String content;
 }

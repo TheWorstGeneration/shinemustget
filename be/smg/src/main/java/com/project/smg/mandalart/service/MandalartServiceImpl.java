@@ -40,7 +40,7 @@ public class MandalartServiceImpl implements MandalartService {
 
     /** Gpt 요청 */
     @Async
-    public CompletableFuture<ChatGptResponse> getChatGptResponse(String prompt) {
+    public CompletableFuture<ChatGptResponseDto> getChatGptResponse(String prompt) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
@@ -48,9 +48,9 @@ public class MandalartServiceImpl implements MandalartService {
 //        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 알려줘 응답 형식은 '1. 운동하기\n2.배달음식 줄이기\n3.' 이런 형식";
         String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘";
 
-        ChatGptRequest chatGPTRequest = new ChatGptRequest();
+        ChatGptRequestDto chatGPTRequest = new ChatGptRequestDto();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
-        chatGPTRequest.setMessages(List.of(new Message("assistant", mandal))); // Input prompt for ChatGPT
+        chatGPTRequest.setMessages(List.of(new MessageDto("assistant", mandal))); // Input prompt for ChatGPT
         chatGPTRequest.setMax_tokens(300); // The maximum number of tokens to generate in the chat completion.
 
         WebClient client = WebClient.builder()
@@ -60,9 +60,9 @@ public class MandalartServiceImpl implements MandalartService {
                 .build();
 
         return client.post()
-                .body(Mono.just(chatGPTRequest), ChatGptRequest.class)
+                .body(Mono.just(chatGPTRequest), ChatGptRequestDto.class)
                 .retrieve()
-                .bodyToMono(ChatGptResponse.class)
+                .bodyToMono(ChatGptResponseDto.class)
                 .toFuture();
     }
 
@@ -83,7 +83,7 @@ public class MandalartServiceImpl implements MandalartService {
             return CompletableFuture.completedFuture(result);
         }
 
-        CompletableFuture<ChatGptResponse> asyncChatGptResponse = getChatGptResponse(content);
+        CompletableFuture<ChatGptResponseDto> asyncChatGptResponse = getChatGptResponse(content);
 
         return asyncChatGptResponse.thenApply(response -> {
             // 받아온 메세지 리스트로 변환

@@ -57,4 +57,9 @@ public class MandalartController {
         if(mainMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "메인 만타라트 조회 실패"), HttpStatus.OK);
         return new ResponseEntity<>(mainMandalart, HttpStatus.OK);
     }
+
+    @GetMapping("/searchDetail")
+    public ResponseEntity<?> getSearchDetail(@RequestAttribute("id") String mid){
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }

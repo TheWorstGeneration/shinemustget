@@ -9,10 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChatGptResponse {
+public class ChatGptResponseDto {
     public String id;
     public String object;
     public int created;
-    public List<Choice> choices;
-    public Usage usage;
+    public List<ChoiceDto> choices;
+    public UsageDto usage;
 }

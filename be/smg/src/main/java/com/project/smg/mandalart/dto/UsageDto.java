@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class InputRequest {
-    private String message;
-
+public class UsageDto {
+    public int prompt_tokens;
+    public int completion_tokens;
+    public int total_tokens;
 }
