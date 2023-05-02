@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SmallRequestDto {
+public class GptBigGoalDto {
+    private int id;
+
     private String content;
-    private int location;
 }

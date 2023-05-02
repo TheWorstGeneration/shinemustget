@@ -17,6 +17,10 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+#    async:
+#      request-timeout: 1000s
+
+
   # DB??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

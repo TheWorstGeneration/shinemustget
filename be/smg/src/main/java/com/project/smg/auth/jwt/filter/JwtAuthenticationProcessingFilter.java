@@ -59,8 +59,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Access Token 쿠키에서 조회");
         // 로컬테스트용
-        if(request.getHeader("id").equals("2762543073")){
-            System.out.println(request.getHeader("id"));
+        if(request.getHeader("id") != null && request.getHeader("id").equals("2762543073")){
             request.setAttribute("id", request.getHeader("id"));
             filterChain.doFilter(request, response);
             return;
