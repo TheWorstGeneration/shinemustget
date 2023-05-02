@@ -15,5 +15,5 @@ export const useInnerWidth = () => {
     };
   }, [innerWidth]);
 
-  return innerWidth > 500 ? 'lg' : 'sm';
+  return innerWidth;
 };
