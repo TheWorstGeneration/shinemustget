@@ -1,7 +1,7 @@
 import { useState,Dispatch,SetStateAction } from "react";
 import styled from "@emotion/styled"
 import Image from "next/image";
-import { CompleteButton } from "@/components/atoms/CompleteButton/CompleteButton";
+import { ComposeButton } from "@/components/atoms/ComposeButton/ComposeButton";
 import { StickerList } from "@/constants/stickerList";
 
 const UserCommentDiv = styled.div`
@@ -17,10 +17,14 @@ const UserCommentContentDiv = styled.div`
 `;
 
 const UserCommentImageDiv = styled.div`
+  position: relative;
+  z-index: 9999;
   padding-top:1.25rem;
 `;
 
 const UserCommentTextDiv = styled.textarea`
+  position: relative;
+  z-index: 9999;
   height: 8rem;
   width:100%;
   border:none;
@@ -39,6 +43,7 @@ const UserCommentCompleteDiv = styled.div`
 `;
 
 const UserCommentCompleteImageDiv = styled.div`
+  
   padding:0.45rem;
   flex:1;
 `;
@@ -62,7 +67,7 @@ export function UserComment() {
     <UserCommentDiv>
       <UserCommentImageDiv>
         {StickerList.map((key) => (
-          <Image src={key.imageUrl} onClick={() => { setImageUrl(key.imageUrl)}} width={32.5} height={32.5} alt="image" style={{ marginLeft: "0.75rem" }} ></Image>
+          <Image src={key.imageUrl} onClick={() => { setImageUrl(key.imageUrl); console.log(key.imageUrl); }} width={32.5} height={32.5} alt="image" style={{ marginLeft: "0.75rem" }} ></Image>
         ))}
       </UserCommentImageDiv>
       <UserCommentContentDiv>
@@ -71,10 +76,10 @@ export function UserComment() {
       <UserCommentDateDiv><p>{countLetter}/150</p></UserCommentDateDiv>
       <UserCommentCompleteDiv>
         <UserCommentCompleteImageDiv>
-          <Image src={ imageUrl} width={32.5} height={32.5} alt="Image" ></Image>
+          <Image src={ imageUrl} width={32.5} height={32.5} alt="Image"></Image>
         </UserCommentCompleteImageDiv>
         <UserCommentCompleteButtonDiv>
-          <CompleteButton imageUrl={imageUrl} onLine={onLine} />
+          <ComposeButton imageUrl={imageUrl} onLine={onLine} />
         </UserCommentCompleteButtonDiv>
       </UserCommentCompleteDiv>
     </UserCommentDiv>

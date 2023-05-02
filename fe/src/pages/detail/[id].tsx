@@ -6,7 +6,7 @@ import { DetailedRight } from "@/components/molecules/DetailedRight/DetailedRigh
 const DetailedDiv = styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 7.5rem 10rem;
+    margin: 6rem 10rem;
   `;
 
 const DetailedDivLeft = styled.div`

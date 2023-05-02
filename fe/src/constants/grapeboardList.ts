@@ -14,8 +14,74 @@ export interface podoListRecord {
 }
 
 export const podoLists: podoListRecord={ 
-  pageCnt:5,
+  pageCnt:3,
   podosList: [
+  {
+      podoCnt:3,
+      podoDtoList: [
+        {
+          id: 1,
+          imageUrl:"/assets/images/grapeBoard/smile.png"
+        },
+        {
+          id: 2,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 3,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 4,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 5,
+          imageUrl:"/assets/images/grapeBoard/smile.png"
+        },
+      ]
+    },
+  {
+      podoCnt:3,
+      podoDtoList: [
+        {
+          id: 1,
+          imageUrl:"/assets/images/grapeBoard/smile.png"
+        },
+        {
+          id: 2,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 3,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 4,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 5,
+          imageUrl:"/assets/images/grapeBoard/smile.png"
+        },
+        {
+          id: 6,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 7,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 8,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+        {
+          id: 9,
+          imageUrl:"/assets/images/grapeBoard/default.png"
+        },
+      ]
+    },
     {
       podoCnt:3,
       podoDtoList: [
