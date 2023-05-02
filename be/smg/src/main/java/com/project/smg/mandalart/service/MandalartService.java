@@ -1,5 +1,6 @@
 package com.project.smg.mandalart.service;
 
+import com.project.smg.mandalart.dto.BigDto;
 import com.project.smg.mandalart.dto.MandalartRequestDto;
 import org.springframework.scheduling.annotation.Async;
 
@@ -14,6 +15,7 @@ public interface MandalartService {
     public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal);
 
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid);
+    public BigDto getMainMandalart(String mid);
 
 
 }

@@ -49,4 +49,10 @@ public class MandalartController {
         mandalartService.createMandalart(mandalartRequestDto, mid);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+    @GetMapping("/readMain")
+    public ResponseEntity<?> getMainMandalart(@RequestAttribute("id") String mid){
+//        mandalartService.
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }

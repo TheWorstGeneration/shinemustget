@@ -111,6 +111,7 @@ public class MandalartServiceImpl implements MandalartService {
                 });
     }
 
+    @Transactional
     @Override
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
         Optional<Member> member = memberRepository.findById(mid);
@@ -139,7 +140,12 @@ public class MandalartServiceImpl implements MandalartService {
         }
 
         titleRepository.save(title);
+    }
 
+    @Override
+    public BigDto getMainMandalart(String mid) {
+        titleRepository.findTop1ByMemberOrderByClearAtDesc(mid);
+        return null;
     }
 
     @Transactional
