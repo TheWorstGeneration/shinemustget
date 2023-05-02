@@ -7,6 +7,8 @@ import com.project.smg.mandalart.repository.GptTitleRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
+import com.project.smg.podo.entity.Podo;
+import com.project.smg.podo.repository.PodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -32,8 +35,10 @@ public class MandalartServiceImpl implements MandalartService {
     private final GptBigGoalRepository gptBigGoalRepository;
     private final MemberRepository memberRepository;
     private final TitleRepository titleRepository;
+    private final PodoRepository podoRepository;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
+    /** Gpt 요청 */
     @Async
     public CompletableFuture<ChatGptResponse> getChatGptResponse(String prompt) {
         HttpHeaders headers = new HttpHeaders();
@@ -62,6 +67,7 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
 
+    /** 만다라트 타이틀 생성 */
     @Transactional
     @Override
     @Async
@@ -93,6 +99,7 @@ public class MandalartServiceImpl implements MandalartService {
         });
     }
 
+    /** 만다라트 세부 목표 생성 */
     @Override
     @Async
     public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal) {
@@ -111,6 +118,7 @@ public class MandalartServiceImpl implements MandalartService {
                 });
     }
 
+    /** 만다라트 생성 */
     @Transactional
     @Override
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
@@ -142,16 +150,29 @@ public class MandalartServiceImpl implements MandalartService {
         titleRepository.save(title);
     }
 
+    /** 만다라트 조회 */
     @Override
-    public BigDto getMainMandalart(String mid) {
-        titleRepository.findTop1ByMemberOrderByClearAtDesc(mid);
-        return null;
+    public HashMap<String, Object> getMainMandalart(String mid) {
+        Optional<Member> optional = memberRepository.findById(mid);
+        Member member = optional.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+
+        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
+        Title title = top1ByMemberOrderByIdDesc.orElseThrow(() -> new IllegalStateException("생성된 만다라트가 없습니다."));
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("title", title.getContent());
+        result.put("isClear", title.getClearAt() == null ? false : true);
+        result.put("bigList", makeBigDto(title.getBigGoals()));
+
+        return result;
     }
 
+    /** Gpt에 저장된 세부목표 불러오기 */
     @Transactional
     @Async
     public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
-        Optional<GptBigGoal> byId = gptBigGoalRepository.findById(optional.get().getId());
+        GptTitle gptTitle = optional.orElseThrow(() -> new IllegalStateException("저장된 Title이 없습니다."));
+        Optional<GptBigGoal> byId = gptBigGoalRepository.findById(gptTitle.getId());
         List<String> savedGptBigGoal = optional.get().getGptBigGoals()
                 .stream()
                 .map(i -> i.getContent())
@@ -159,6 +180,7 @@ public class MandalartServiceImpl implements MandalartService {
         return savedGptBigGoal;
     }
 
+    /** Gpt로 만든 세부목표 저장하기 */
     @Async
     public void saveGptBigGoal(String title, List<String> strings){
         List<GptBigGoal> gptBigGoals = strings.stream()
@@ -173,6 +195,48 @@ public class MandalartServiceImpl implements MandalartService {
 
         for(int i = 0; i < gptBigGoals.size(); i++) gptBigGoals.get(i).addGptTitle(gptTitle);
         gptTitleRepository.save(gptTitle);
+    }
+
+    /** BigDto 리스트 생성 */
+    public List<BigDto> makeBigDto(List<BigGoal> bigGoals){
+        List<BigDto> bigDtos = new ArrayList<>();
+        for(BigGoal bigGoal : bigGoals){
+            List<SmallDto> smallDtos = makeSmallDto(bigGoal.getSmallGoals());
+            BigDto bigDto = BigDto.builder()
+                    .location(bigGoal.getLocation())
+                    .content(bigGoal.getContent())
+                    .isClear(bigGoal.getClearAt() == null ? false : true)
+                    .smallList(smallDtos)
+                    .build();
+            bigDtos.add(bigDto);
+        }
+        return bigDtos;
+    }
+
+    /** SmallDto 리스트 생성 */
+    public List<SmallDto> makeSmallDto(List<SmallGoal> smallGoals){
+        List<SmallDto> smallDtos = new ArrayList<>();
+        for(SmallGoal smallGoal : smallGoals){
+            SmallDto smallDto = SmallDto.builder()
+                    .id(smallGoal.getId())
+                    .location(smallGoal.getLocation())
+                    .content(smallGoal.getContent())
+                    .isPodo(smallGoal.isSticker())
+                    .isToday(false)
+                    .isClear(smallGoal.getClearAt() == null ? false : true)
+                    .build();
+            
+            // 포도로 생성됬고, 가장 최근 생성된 포도가 있다면 오늘 만든 포도인지 찾기
+            if(smallDto.isPodo()){
+                Optional<Podo> top1BySmallGoalOrderByIdDesc = podoRepository.findTop1BySmallGoalOrderByIdDesc(smallGoal);
+                if(top1BySmallGoalOrderByIdDesc.isPresent()){
+                    if(top1BySmallGoalOrderByIdDesc.get().getCreatedAt().toLocalDate()
+                            .equals(LocalDate.now())) smallDto.setToday(true);
+                }
+            }
+            smallDtos.add(smallDto);
+        }
+        return smallDtos;
     }
 
 }
