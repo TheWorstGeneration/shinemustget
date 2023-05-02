@@ -2,6 +2,7 @@ import { useAppSelector } from '@/hooks/useRedux';
 import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const ProfileButton = styled.button`
@@ -20,10 +21,12 @@ const Profile = styled(Image)`
 `;
 
 export const ProfileImage = () => {
+  const router = useRouter();
+
   const { imageUrl } = useAppSelector(selectProfile);
 
   const handleProfile = () => {
-    console.log('Profile');
+    router.push('/profile');
   };
 
   return (

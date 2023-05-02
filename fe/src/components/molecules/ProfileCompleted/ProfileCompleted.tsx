@@ -13,6 +13,11 @@ const ProfileCompletedContainer = styled.div`
   overflow: hidden;
 
   box-shadow: 0 0 0.5rem 1px #22222225;
+
+  @media (max-width: 500px) {
+    width: 100%;
+    height: 50%;
+  }
 `;
 
 const Title = styled.p`
@@ -31,7 +36,7 @@ interface CompletedLogs {
   clearAt: string;
 }
 
-export function getCompletedLogs(): CompletedLogs[] {
+ function getCompletedLogs(): CompletedLogs[] {
   return [
     {
       content: '자기주도성',
@@ -54,21 +59,21 @@ export function getCompletedLogs(): CompletedLogs[] {
       clearAt: '2023년 5월 1일',
     },
     {
-      content: '유튜브 보기',
+      content: '컴포넌트 만들기',
       clearAt: '2023년 5월 1일',
     },
     {
-      content: '유튜브 보기',
+      content: '반응형 적용하기',
       clearAt: '2023년 5월 1일',
     },
     {
-      content: '유튜브 보기',
+      content: '커밋하기',
       clearAt: '2023년 5월 1일',
     },
   ];
 }
 
-export function ProfileCompleted() {
+export const ProfileCompleted = () => {
   const CompletedLogs: CompletedLogs[] = getCompletedLogs();
   return (
     <ProfileCompletedContainer>
