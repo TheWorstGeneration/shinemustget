@@ -18,9 +18,15 @@ const Button = styled.button`
   }
 `;
 
-export function CompleteButton() { 
-  
+export function ComposeButton({imageUrl,onLine}: {imageUrl:any,onLine:any}) { 
+
+  const onClickHandler = () => {
+    console.log("메모 작성 완료!");
+    console.log(imageUrl);
+    console.log(onLine);
+  };
+
   return (
-    <Button>완료</Button>
+    <Button onClick={onClickHandler}>작성</Button>
   );
 }

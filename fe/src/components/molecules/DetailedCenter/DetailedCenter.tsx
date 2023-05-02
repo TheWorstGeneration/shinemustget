@@ -13,6 +13,7 @@ const DetailedDiv = styled.div`
 
 const DetailedDivPos = styled.div`
   display: flex;
+  /* height: 100vh; */
 `;
 
 const DetailedDivPosLeft = styled.div`
