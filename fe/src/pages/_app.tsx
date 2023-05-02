@@ -1,3 +1,4 @@
+import { MailContainer } from '@/components/molecules/MailContainer/MailContrainer';
 import { MoneyThings } from '@/components/molecules/MoneyThings/MoneyThings';
 import { Footer } from '@/components/organisms/Footer/Footer';
 import { Header } from '@/components/organisms/Header/Header';
@@ -41,6 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <PersistGate loading={null} persistor={persistor}>
               <Header />
               <MoneyThings />
+              <MailContainer />
               <Component {...pageProps} />
               <Footer />
             </PersistGate>
