@@ -8,17 +8,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class RedisAlarmRepository implements AlarmRepository {
-    private static final String KEY_PREFIX = "alarm:";
-    private static final String SEQ_KEY = "alarm-sequence";
     private final RedisTemplate<String, AlarmDto> redisTemplate;
     private final RedisSequenceGenerator redisSequenceGenerator;
 
     @Override
     public void save(AlarmDto alarmDto) {
-        String key = KEY_PREFIX + alarmDto.getMemberId() + ":" + alarmDto.getId();
-        redisTemplate.opsForValue().set(key, alarmDto);
+        String keyPrefix = alarmDto.getMemberId() + ":";
+        String postIdKey = keyPrefix + "post-sequence";
 
-        Long id = redisSequenceGenerator.getNext(SEQ_KEY);
-        alarmDto.setId(id.intValue());
+        // Redis 서버의 postId 값을 가져와서 AlarmDto 객체의 id 값으로 설정
+        Long postId = redisSequenceGenerator.getNext(postIdKey);
+        String key = keyPrefix + postId;
+        alarmDto.setId(postId.intValue());
+
+        redisTemplate.opsForValue().set(key, alarmDto);
     }
 }
