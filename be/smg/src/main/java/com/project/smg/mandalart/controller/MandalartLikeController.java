@@ -6,11 +6,9 @@ import com.project.smg.mandalart.service.MandalartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -21,8 +19,16 @@ import java.util.concurrent.ExecutionException;
 public class MandalartLikeController {
     private final MandalartLikeService mandalartLikeService;
 
-    @GetMapping("/home")
-    public String get(){
-        return "eeeee";
+    /* 만다라트 좋아요 */
+    @PatchMapping("/like/{id}")
+    public ResponseEntity<?> like(@RequestAttribute("id") String mid, @PathVariable("id") int id){
+        try {
+            mandalartLikeService.mandalartLike(mid, id);
+            return new ResponseEntity<>(new ResponseDto(200, "좋아요 변경 완료"), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new ResponseDto(500, "좋아요 실패"), HttpStatus.OK);
+        }
+
     }
 }
