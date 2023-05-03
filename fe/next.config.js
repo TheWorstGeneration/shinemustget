@@ -30,7 +30,7 @@ module.exports = withPlugins(
       },
     ],
     [
-      typescript,
+      withTypescript,
       {
         typescriptLorderOptions: {
           transplieOnly: false,
