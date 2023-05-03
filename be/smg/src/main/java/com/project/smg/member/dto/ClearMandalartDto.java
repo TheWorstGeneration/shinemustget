@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClearMandalartDto {
-    List<SearchDto> searchList;
+    SearchDto searchDto;
     int id;
 }

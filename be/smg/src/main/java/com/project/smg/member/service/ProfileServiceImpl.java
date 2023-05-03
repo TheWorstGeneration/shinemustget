@@ -21,7 +21,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final TitleRepository titleRepository;
 
     private Title getTitle(String memberId) {
-        return titleRepository.findTopByMemberIdOrderByCreatedAtDesc(memberId)
+        return titleRepository.findTopByMemberIdAndClearAtIsNullOrderByCreatedAtDesc(memberId)
                 .orElse(null);
     }
 
@@ -114,7 +114,6 @@ public class ProfileServiceImpl implements ProfileService {
             return Collections.emptyList();
 
         List<ClearMandalartDto> clearMandalartDtoList = new ArrayList<>();
-        List<SearchDto> searchDtoList = new ArrayList<>();
 
         for (int i = 0; i < clearTitleList.size(); i++) {
             Title title = clearTitleList.get(i);
@@ -137,9 +136,7 @@ public class ProfileServiceImpl implements ProfileService {
                     .likeCnt(100)
                     .build();
 
-            searchDtoList.add(searchDto);
-
-            ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDtoList, title.getId());
+            ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDto, title.getId());
             clearMandalartDtoList.add(clearMandalartDto);
         }
 
