@@ -57,7 +57,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         }
 
         // 로컬테스트용
-        if(request.getHeader("id") != null && request.getHeader("id").equals("2762543073")){
+        if(request.getHeader("id") != null){
             log.info("로컬 테스트 사용");
             request.setAttribute("id", request.getHeader("id"));
             filterChain.doFilter(request, response);
