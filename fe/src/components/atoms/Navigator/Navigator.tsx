@@ -28,7 +28,7 @@ const LinkContainer = styled.div`
     height: 3rem;
     flex-direction: row;
 
-    top: calc(100vh - 4rem);
+    top: calc(100vh - 10rem);
     left: calc(50vw);
     transform: translateX(-50%);
   }
