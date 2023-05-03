@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
+import SearchResult from '@/components/molecules/SearchResult/SearchResult';
 
 const SearchSection = styled.section`
   display: flex;
@@ -18,7 +19,7 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
   background-color: #ffffff;
 
   @media (max-width: 960px) {
-    padding: 0;
+    padding: 0rem;
   }
 
   @media (max-width: 500px) {
@@ -31,7 +32,9 @@ const Search = () => {
 
   return (
     <SearchSection>
-      <SearchContainer isMaxWidth={isMaxWidth}></SearchContainer>
+      <SearchContainer isMaxWidth={isMaxWidth}>
+        <SearchResult />
+      </SearchContainer>
     </SearchSection>
   );
 };
