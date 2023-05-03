@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import { BigGoalMandalart } from '../BigGoalMandalart/BigGoalMandalart';
+import { useEffect, useState } from 'react';
+import getClearMandalart from '@/pages/api/getClearMandalart';
 
 const ProfileMandalartContainer = styled.div`
   width: 50%;
@@ -35,14 +37,14 @@ const BigGoalMandalartBox = styled.div`
 
 interface ClearMandalart {
   id: number;
-  SearchDto: SearchDto;
+  searchDto: SearchDto;
 }
 
 interface SearchDto {
   likeCnt: number;
   isLike: boolean;
   title: string;
-  bigGoalList: SearchBigDto[];
+  bigList: SearchBigDto[];
 }
 
 interface SearchBigDto {
@@ -50,90 +52,27 @@ interface SearchBigDto {
   location: number;
 }
 
-function getClearMandalart(): ClearMandalart[] {
-  return [
-    {
-      id: 1,
-      SearchDto: mandalartInfo,
-    },
-  ];
-}
-
-const bigGoalList: SearchBigDto[] = [
-  {
-    content: '자기주도성',
-    location: 1,
-  },
-  {
-    content: '시장분석',
-    location: 2,
-  },
-  {
-    content: '경제지식',
-    location: 4,
-  },
-  {
-    content: '인내심',
-    location: 3,
-  },
-  {
-    content: '등등',
-    location: 6,
-  },
-  {
-    content: '자기주도성',
-    location: 8,
-  },
-  {
-    content: '자기주도성',
-    location: 9,
-  },
-  {
-    content: '자기주도성',
-    location: 7,
-  },
-];
-
-const mandalartInfo: SearchDto = {
-  likeCnt: 23,
-  isLike: false,
-  title: '부자되기',
-  bigGoalList: bigGoalList,
-};
-
 export const ProfileMandalart = () => {
-  const clearList = getClearMandalart();
+  const [clearList, setClearList] = useState<ClearMandalart[] | null>(null);
+  useEffect(() => {
+    const axiosClearGoal = async () => {
+      const data = await getClearMandalart();
+      setClearList(data);
+    };
+
+    axiosClearGoal();
+  }, []);
 
   return (
     <ProfileMandalartContainer>
       <Title>만다라트</Title>
       <BigGoalMandalartBox>
-        {clearList.map(List => (
+        {clearList?.map(List => (
           <BigGoalMandalart
             key={List.id}
             id={List.id}
-            SearchDto={List.SearchDto}
-          />
-        ))}
-        {clearList.map(List => (
-          <BigGoalMandalart
-            key={List.id + 3}
-            id={List.id}
-            SearchDto={List.SearchDto}
-          />
-        ))}
-        {clearList.map(List => (
-          <BigGoalMandalart
-            key={List.id + 1}
-            id={List.id}
-            SearchDto={List.SearchDto}
-          />
-        ))}
-        {clearList.map(List => (
-          <BigGoalMandalart
-            key={List.id + 2}
-            id={List.id}
-            SearchDto={List.SearchDto}
+            searchDto={List.searchDto}
+            isProfile={true}
           />
         ))}
       </BigGoalMandalartBox>

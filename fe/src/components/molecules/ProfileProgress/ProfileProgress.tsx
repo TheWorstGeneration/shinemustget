@@ -1,5 +1,7 @@
 import { ProgressCircle } from '@/components/atoms/ProgressCircle/ProgressCircle';
+import getNowGoal from '@/pages/api/getNowGoal';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 const ProfileProgressContainer = styled.div`
   display: flex;
@@ -44,32 +46,27 @@ interface Goal {
 interface ProgressProp {
   title: string;
   rate: number;
-  goalList: Goal[];
-}
-
-export function getProgress(): ProgressProp {
-  return {
-    title: '주식 투자로 인생 졸업하기',
-    rate: 66,
-    goalList: [
-      { content: '자기주도성', isClear: true },
-      { content: '시장분석', isClear: false },
-      { content: '인내심', isClear: false },
-      { content: '경제지식', isClear: false },
-      { content: 'big goal 5', isClear: false },
-      { content: 'big goal 6', isClear: true },
-      { content: 'big goal 7', isClear: false },
-      { content: 'big goal 8', isClear: false },
-    ],
-  };
+  nowBigGoalDtoList: Goal[];
 }
 
 export const ProfileProgress = () => {
-  const progressProps: ProgressProp = getProgress();
+  const [progressProps, setProgressProps] = useState<ProgressProp | null>(null);
+  useEffect(() => {
+    const axiosNowGoal = async () => {
+      const data = await getNowGoal();
+      setProgressProps(data);
+    };
 
-  const title: string = progressProps.title;
-  const rate: number = progressProps.rate;
-  const goalList: Goal[] = progressProps.goalList;
+    axiosNowGoal();
+  }, []);
+
+  const title: string =
+    progressProps !== null ? progressProps.title : 'Loading..';
+  const rate: number = progressProps !== null ? progressProps.rate : 0;
+  const goalList: Goal[] =
+    progressProps !== null
+      ? progressProps.nowBigGoalDtoList
+      : [{ content: 'Loading..', isClear: false }];
 
   return (
     <ProfileProgressContainer>
@@ -84,4 +81,4 @@ export const ProfileProgress = () => {
       <ProgressCircle rate={rate} />
     </ProfileProgressContainer>
   );
-}
+};
