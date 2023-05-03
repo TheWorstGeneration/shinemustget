@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+const withPlugins = require('next-compose-plugins');
+const withPWA = require('next-pwa');
+
 const nextConfig = {
   images: {
     domains: ['localhost', 'k.kakaocdn.net'],
@@ -12,10 +15,30 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   swcMinify: true,
-  pwa: {
-    dest: 'public',
-    disable: process.env.NODE_ENV === 'development',
-  },
+  reactStrictMode: true,
 };
+
+module.exports = withPlugins(
+  [
+    [
+      withPWA,
+      {
+        pwa: {
+          dest: 'public',
+          disable: process.env.NODE_ENV === 'development',
+        },
+      },
+    ],
+    [
+      typescript,
+      {
+        typescriptLorderOptions: {
+          transplieOnly: false,
+        },
+      },
+    ],
+  ],
+  nextConfig,
+);
 
 module.exports = nextConfig;
