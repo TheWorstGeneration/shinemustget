@@ -11,6 +11,8 @@ const MainContainer = styled.main`
   align-items: center;
   justify-content: center;
 
+  position: relative;
+
   width: 100vw;
 `;
 
