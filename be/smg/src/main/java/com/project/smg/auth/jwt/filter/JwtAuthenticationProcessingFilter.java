@@ -45,6 +45,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("필터 시작");
         log.info("Access Token 쿠키에서 조회");
 
         //필터 제외 url 체크
@@ -57,6 +58,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         // 로컬테스트용
         if(request.getHeader("id") != null && request.getHeader("id").equals("2762543073")){
+            log.info("로컬 테스트 사용");
             request.setAttribute("id", request.getHeader("id"));
             filterChain.doFilter(request, response);
             return;

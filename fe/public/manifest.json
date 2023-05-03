@@ -1,0 +1,32 @@
+{
+  "background_color": "#ffffff",
+  "description": "81개의 목표를 설정하고 꾸준이 달성하기 어려운 사람을 위해 ChatGPT를 이용해 만다라트를 자동으로 제작해주는 서비스입니다. 이미지를 SNS에 공유하며 계획을 많은 사람들에게 알리면 목표를 이루기 쉬워질 것입니다. Shine Must Get과 함께 목표를 달성하기 위한 당신만의 만다라트를 제작해보세요!",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "shine must get | 목표 달성을 위한 만다라트 제작 서비스",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "shine must get",
+  "start_url": "/",
+  "theme_color": "#78f32e",
+  "categories": ["utilities"],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "type": "image/png",
+      "sizes": "340x340"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/png",
+      "sizes": "340x340"
+    }
+  ],
+  "shortcuts": [],
+  "lang": "ko",
+  "display_override": ["standalone"],
+  "edge_side_panel": {
+    "preferred_width": 1920
+  }
+}

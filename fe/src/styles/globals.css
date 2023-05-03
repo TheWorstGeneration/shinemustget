@@ -31,6 +31,8 @@ body {
   display: none;
 }
 
+
+
 section {
   /* background 컬러 */
   background-color: rgb(var(--background-rgb));

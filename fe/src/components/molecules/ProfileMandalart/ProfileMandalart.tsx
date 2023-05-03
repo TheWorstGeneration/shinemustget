@@ -11,15 +11,26 @@ const ProfileMandalartContainer = styled.div`
   padding: 0.5rem 0rem 1rem;
   box-sizing: border-box;
 
-  overflow: scroll;
+  overflow: hidden;
 
   box-shadow: 0 0 0.5rem 1px #22222225;
+
+  @media (max-width: 500px) {
+    width: 100%;
+    height: 50%;
+  }
 `;
 
 const Title = styled.p`
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 1rem;
+`;
+
+const BigGoalMandalartBox = styled.div`
+  height: 100%;
+  padding-bottom: 2rem;
+  overflow-y: scroll;
 `;
 
 interface ClearMandalart {
@@ -96,34 +107,36 @@ export const ProfileMandalart = () => {
   return (
     <ProfileMandalartContainer>
       <Title>만다라트</Title>
-      {clearList.map(List => (
-        <BigGoalMandalart
-          key={List.id}
-          id={List.id}
-          SearchDto={List.SearchDto}
-        />
-      ))}
-      {clearList.map(List => (
-        <BigGoalMandalart
-          key={List.id}
-          id={List.id}
-          SearchDto={List.SearchDto}
-        />
-      ))}
-      {clearList.map(List => (
-        <BigGoalMandalart
-          key={List.id}
-          id={List.id}
-          SearchDto={List.SearchDto}
-        />
-      ))}
-      {clearList.map(List => (
-        <BigGoalMandalart
-          key={List.id}
-          id={List.id}
-          SearchDto={List.SearchDto}
-        />
-      ))}
+      <BigGoalMandalartBox>
+        {clearList.map(List => (
+          <BigGoalMandalart
+            key={List.id}
+            id={List.id}
+            SearchDto={List.SearchDto}
+          />
+        ))}
+        {clearList.map(List => (
+          <BigGoalMandalart
+            key={List.id + 3}
+            id={List.id}
+            SearchDto={List.SearchDto}
+          />
+        ))}
+        {clearList.map(List => (
+          <BigGoalMandalart
+            key={List.id + 1}
+            id={List.id}
+            SearchDto={List.SearchDto}
+          />
+        ))}
+        {clearList.map(List => (
+          <BigGoalMandalart
+            key={List.id + 2}
+            id={List.id}
+            SearchDto={List.SearchDto}
+          />
+        ))}
+      </BigGoalMandalartBox>
     </ProfileMandalartContainer>
   );
 };
