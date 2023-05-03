@@ -61,16 +61,20 @@ export const VideoSection = () => {
   return (
     <SectionStyle>
       <Dim />
-      <Video
-        pageYOffset={pageYOffset}
-        width="250"
-        autoPlay
-        playsInline
-        muted
-        loop
-      >
-        <source src="/assets/videos/zelda.mp4" type="video/mp4" />
-      </Video>
+      <figure>
+        <Video
+          pageYOffset={pageYOffset}
+          width="250"
+          autoPlay
+          playsInline
+          muted
+          loop
+          poster="/assets/images/common/front-image.png"
+          title="zelda"
+        >
+          <source src="/assets/videos/zelda.mp4" type="video/mp4" />
+        </Video>
+      </figure>
     </SectionStyle>
   );
 };
