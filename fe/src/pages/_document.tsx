@@ -9,6 +9,7 @@ export default function Document() {
           content="목표 달성을 위한 만다라트 제작 서비스"
         />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="manifest.json" />
 
         {/* Facebook, Kakao Open Graph 설정 */}
         <meta property="og:type" content="website" />

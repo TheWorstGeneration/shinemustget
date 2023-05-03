@@ -1,20 +1,11 @@
 package com.project.smg.mandalart.service;
 
-import com.project.smg.mandalart.dto.ChatGptResponse;
-import com.project.smg.mandalart.dto.Choice;
-import com.project.smg.mandalart.dto.Message;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class MandalartServiceImplTest {

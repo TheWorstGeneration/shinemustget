@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -52,7 +53,13 @@ public class MandalartController {
 
     @GetMapping("/readMain")
     public ResponseEntity<?> getMainMandalart(@RequestAttribute("id") String mid){
-//        mandalartService.
+        HashMap<String, Object> mainMandalart = mandalartService.getMainMandalart(mid);
+        if(mainMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "메인 만타라트 조회 실패"), HttpStatus.OK);
+        return new ResponseEntity<>(mainMandalart, HttpStatus.OK);
+    }
+
+    @GetMapping("/searchDetail")
+    public ResponseEntity<?> getSearchDetail(@RequestAttribute("id") String mid){
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

@@ -7,6 +7,8 @@ import com.project.smg.mandalart.repository.GptTitleRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
+import com.project.smg.podo.entity.Podo;
+import com.project.smg.podo.repository.PodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -32,20 +35,21 @@ public class MandalartServiceImpl implements MandalartService {
     private final GptBigGoalRepository gptBigGoalRepository;
     private final MemberRepository memberRepository;
     private final TitleRepository titleRepository;
+    private final PodoRepository podoRepository;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
+    /** Gpt 요청 */
     @Async
-    public CompletableFuture<ChatGptResponse> getChatGptResponse(String prompt) {
+    public CompletableFuture<ChatGptResponseDto> getChatGptResponse(String prompt) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-//        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표를 알려줘 응답 형식은 '1. 운동하기\n2.배달음식 줄이기\n3.' 이런 형식";
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
 
-        ChatGptRequest chatGPTRequest = new ChatGptRequest();
+        ChatGptRequestDto chatGPTRequest = new ChatGptRequestDto();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
-        chatGPTRequest.setMessages(List.of(new Message("assistant", mandal))); // Input prompt for ChatGPT
+        chatGPTRequest.setMessages(List.of(new MessageDto("assistant", mandal))); // Input prompt for ChatGPT
         chatGPTRequest.setMax_tokens(300); // The maximum number of tokens to generate in the chat completion.
 
         WebClient client = WebClient.builder()
@@ -55,13 +59,14 @@ public class MandalartServiceImpl implements MandalartService {
                 .build();
 
         return client.post()
-                .body(Mono.just(chatGPTRequest), ChatGptRequest.class)
+                .body(Mono.just(chatGPTRequest), ChatGptRequestDto.class)
                 .retrieve()
-                .bodyToMono(ChatGptResponse.class)
+                .bodyToMono(ChatGptResponseDto.class)
                 .toFuture();
     }
 
 
+    /** 만다라트 타이틀 생성 */
     @Transactional
     @Override
     @Async
@@ -77,15 +82,15 @@ public class MandalartServiceImpl implements MandalartService {
             return CompletableFuture.completedFuture(result);
         }
 
-        CompletableFuture<ChatGptResponse> asyncChatGptResponse = getChatGptResponse(content);
+        CompletableFuture<ChatGptResponseDto> asyncChatGptResponse = getChatGptResponse(content);
 
         return asyncChatGptResponse.thenApply(response -> {
             // 받아온 메세지 리스트로 변환
                 String[] split = response.choices.get(0).message.content.split("\n");
-            List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(2)).collect(Collectors.toList());
+            List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(3)).collect(Collectors.toList());
 
             // GptTitle, GptBigGoal에 저장
-//            saveGptBigGoal(content, bigGoals);
+            saveGptBigGoal(content, bigGoals);
 
             // 담아서 return
             result.put(content, bigGoals);
@@ -93,6 +98,8 @@ public class MandalartServiceImpl implements MandalartService {
         });
     }
 
+    /** 만다라트 세부 목표 생성 */
+    @Transactional
     @Override
     @Async
     public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal) {
@@ -111,6 +118,7 @@ public class MandalartServiceImpl implements MandalartService {
                 });
     }
 
+    /** 만다라트 생성 */
     @Transactional
     @Override
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
@@ -142,16 +150,28 @@ public class MandalartServiceImpl implements MandalartService {
         titleRepository.save(title);
     }
 
+    /** 만다라트 조회 */
     @Override
-    public BigDto getMainMandalart(String mid) {
-        titleRepository.findTop1ByMemberOrderByClearAtDesc(mid);
-        return null;
+    public HashMap<String, Object> getMainMandalart(String mid) {
+        Optional<Member> optional = memberRepository.findById(mid);
+        Member member = optional.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+
+        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
+        Title title = top1ByMemberOrderByIdDesc.orElseThrow(() -> new IllegalStateException("생성된 만다라트가 없습니다."));
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("title", title.getContent());
+        result.put("isClear", title.getClearAt() == null ? false : true);
+        result.put("bigList", makeBigDto(title.getBigGoals()));
+
+        return result;
     }
 
-    @Transactional
+    /** Gpt에 저장된 세부목표 불러오기 */
     @Async
     public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
-        Optional<GptBigGoal> byId = gptBigGoalRepository.findById(optional.get().getId());
+        GptTitle gptTitle = optional.orElseThrow(() -> new IllegalStateException("저장된 Title이 없습니다."));
+        Optional<GptBigGoal> byId = gptBigGoalRepository.findById(gptTitle.getId());
         List<String> savedGptBigGoal = optional.get().getGptBigGoals()
                 .stream()
                 .map(i -> i.getContent())
@@ -159,6 +179,8 @@ public class MandalartServiceImpl implements MandalartService {
         return savedGptBigGoal;
     }
 
+    /** Gpt로 만든 세부목표 저장하기 */
+    @Transactional
     @Async
     public void saveGptBigGoal(String title, List<String> strings){
         List<GptBigGoal> gptBigGoals = strings.stream()
@@ -173,6 +195,48 @@ public class MandalartServiceImpl implements MandalartService {
 
         for(int i = 0; i < gptBigGoals.size(); i++) gptBigGoals.get(i).addGptTitle(gptTitle);
         gptTitleRepository.save(gptTitle);
+    }
+
+    /** BigDto 리스트 생성 */
+    public List<BigDto> makeBigDto(List<BigGoal> bigGoals){
+        List<BigDto> bigDtos = new ArrayList<>();
+        for(BigGoal bigGoal : bigGoals){
+            List<SmallDto> smallDtos = makeSmallDto(bigGoal.getSmallGoals());
+            BigDto bigDto = BigDto.builder()
+                    .location(bigGoal.getLocation())
+                    .content(bigGoal.getContent())
+                    .isClear(bigGoal.getClearAt() == null ? false : true)
+                    .smallList(smallDtos)
+                    .build();
+            bigDtos.add(bigDto);
+        }
+        return bigDtos;
+    }
+
+    /** SmallDto 리스트 생성 */
+    public List<SmallDto> makeSmallDto(List<SmallGoal> smallGoals){
+        List<SmallDto> smallDtos = new ArrayList<>();
+        for(SmallGoal smallGoal : smallGoals){
+            SmallDto smallDto = SmallDto.builder()
+                    .id(smallGoal.getId())
+                    .location(smallGoal.getLocation())
+                    .content(smallGoal.getContent())
+                    .isPodo(smallGoal.isSticker())
+                    .isToday(false)
+                    .isClear(smallGoal.getClearAt() == null ? false : true)
+                    .build();
+            
+            // 포도로 생성됬고, 가장 최근 생성된 포도가 있다면 오늘 만든 포도인지 찾기
+            if(smallDto.isPodo()){
+                Optional<Podo> top1BySmallGoalOrderByIdDesc = podoRepository.findTop1BySmallGoalOrderByIdDesc(smallGoal);
+                if(top1BySmallGoalOrderByIdDesc.isPresent()){
+                    if(top1BySmallGoalOrderByIdDesc.get().getCreatedAt().toLocalDate()
+                            .equals(LocalDate.now())) smallDto.setToday(true);
+                }
+            }
+            smallDtos.add(smallDto);
+        }
+        return smallDtos;
     }
 
 }
