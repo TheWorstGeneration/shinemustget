@@ -26,7 +26,8 @@ public class redisTest {
         stringObjectValueOperations.increment(key);
 
         Object result = stringObjectValueOperations.get(key);
-        log.info("result= {}", result);
+        System.out.println(result);
+//        log.info("result= {}", result); 배포환경에서는 테스트 log lombok 이 빠지는듯 합니다.
 
     }
 
