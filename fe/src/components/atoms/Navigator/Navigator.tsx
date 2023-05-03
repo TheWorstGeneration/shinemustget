@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 const LinkContainer = styled.div`
   position: fixed;
   top: 50%;
-  right: 2rem;
+  left: calc(100vw - 4rem);
   transform: translateY(-50%);
   z-index: 200;
 
@@ -24,15 +24,12 @@ const LinkContainer = styled.div`
   padding: 1rem;
 
   @media screen and (max-width: 500px) {
-    // 90도 회전
     width: 9rem;
     height: 3rem;
     flex-direction: row;
 
-    // 바닥에 위치
-    top: auto;
-    bottom: 4rem;
-    left: 50%;
+    top: calc(100vh - 4rem);
+    left: calc(50vw);
     transform: translateX(-50%);
   }
 `;

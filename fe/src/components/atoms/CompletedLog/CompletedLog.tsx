@@ -34,6 +34,8 @@ interface CompletedLogs {
 }
 
 export const CompletedLog = (props: CompletedLogs) => {
+  const date: string = props.clearAt.split('T')[0];
+
   return (
     <CompletedLogBox>
       <Image
@@ -46,7 +48,7 @@ export const CompletedLog = (props: CompletedLogs) => {
         <span>
           <b>{props.content}</b>
         </span>
-        <span>{props.clearAt}</span>
+        <span>{date}</span>
       </Completed>
       <Invert>
         <Image
