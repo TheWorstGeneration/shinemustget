@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public class AlarmDto {
     private int id;
     private String memberId;
-    private String title;
+    private String titleName;
+    private int titleId;
     private String message;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
