@@ -35,7 +35,6 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         String key = "like::"+id;
         // redis set 으로 사용
         SetOperations <String, String> setOperations = redisTemplate.opsForSet();
-
         // redis 조회
         // redis 에 값이 없는 경우
         if(!redisTemplate.hasKey(key)){
