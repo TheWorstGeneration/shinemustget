@@ -3,12 +3,10 @@ package com.project.smg.auth.jwt.filter;
 import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.auth.jwt.util.PasswordUtil;
 import com.project.smg.member.entity.Member;
-import com.project.smg.member.entity.RefreshToken;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -19,12 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Jwt 인증 필터
@@ -41,15 +37,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final List<String> EXCLUDE_URL =
-            Collections.unmodifiableList(
-                    Arrays.asList(
-                            "/static/**",
-                            "/favicon.ico",
-                            "/login",
-                            "/swagger-ui",
-                            "/"
-                    ));
+    private static final String[] NO_CHECK_URLS = {"/swagger-ui", "/login"};
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -57,9 +45,20 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("필터 시작");
         log.info("Access Token 쿠키에서 조회");
+
+        //필터 제외 url 체크
+        for(int i = 0; i < NO_CHECK_URLS.length; i++){
+            if (request.getRequestURI().startsWith(NO_CHECK_URLS[i])) {
+                filterChain.doFilter(request, response); // "/login" 요청이 들어오면, 다음 필터 호출
+                return;
+            }
+        }
+
         // 로컬테스트용
         if(request.getHeader("id") != null && request.getHeader("id").equals("2762543073")){
+            log.info("로컬 테스트 사용");
             request.setAttribute("id", request.getHeader("id"));
             filterChain.doFilter(request, response);
             return;
@@ -160,11 +159,5 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                         authoritiesMapper.mapAuthorities(userDetailsUser.getAuthorities()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    // Filter에서 제외할 URL 설정
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
     }
 }

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const ButtonStyle = styled.button`
@@ -43,9 +44,12 @@ const ButtonText = styled.span`
 `;
 
 export const DeleteButton = () => {
+  const router = useRouter();
+
   const handleDeleteMandalart = () => {
     const result = confirm('정말로 만다라트를 삭제하시겠습니까?');
     if (result) {
+      router.push('/create');
       console.log('만다라트 삭제');
     }
   };

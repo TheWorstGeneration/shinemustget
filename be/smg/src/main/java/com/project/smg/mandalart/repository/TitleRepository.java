@@ -4,8 +4,11 @@ import com.project.smg.mandalart.entity.Title;
 import com.project.smg.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TitleRepository extends JpaRepository<Title, Integer> {
+    Optional <Title> findTopByMemberIdOrderByCreatedAtDesc(String memberId);
+    Optional<List<Title>> findByMemberIdAndClearAtIsNotNullOrderByClearAtDesc(String memberId);
     Optional<Title> findTop1ByMemberOrderByIdDesc(Member member);
 }
