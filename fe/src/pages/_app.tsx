@@ -31,23 +31,18 @@ export default function App({ Component, pageProps }: AppProps) {
   const persistor = persistStore(store);
 
   return (
-    <>
-      <Head>
-        <title>Shine Must Get</title>
-      </Head>
-      <QueryClientProvider client={client}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <Header />
-              <MoneyThings />
-              <MailContainer />
-              <Component {...pageProps} />
-              <Footer />
-            </PersistGate>
-          </Provider>
-        </Hydrate>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={client}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Header />
+            <MoneyThings />
+            <MailContainer />
+            <Component {...pageProps} />
+            <Footer />
+          </PersistGate>
+        </Provider>
+      </Hydrate>
+    </QueryClientProvider>
   );
 }

@@ -23,28 +23,24 @@ const profileSlice = createSlice({
   reducers: {
     // 액션 생성함수
     setLogin: (state, actions) => {
-      console.log("action", actions.payload.imageUrl)
+      console.log('action', actions.payload.imageUrl);
       state.imageUrl = actions.payload.imageUrl;
       state.nickname = actions.payload.nickname;
       state.isLogin = true;
     },
-    setLogout: (state) => {
+    setLogout: state => {
       state.imageUrl = '';
       state.nickname = '';
       state.isLogin = false;
     },
     setLanguage: (state, action) => {
       state.language = action.payload;
-    }
+    },
   },
 });
 
 // 액션 생성함수
-export const { 
-  setLogin,
-  setLogout,
-  setLanguage,
- } = profileSlice.actions;
+export const { setLogin, setLogout, setLanguage } = profileSlice.actions;
 export const selectProfile = (state: RootState) => state.profile;
 // 리듀서
 export default profileSlice.reducer;

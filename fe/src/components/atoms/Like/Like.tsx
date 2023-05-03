@@ -15,16 +15,23 @@ const LikeBox = styled.div`
   }
 `;
 
-const Like = (props: { isLike: boolean; likeCnt: number }) => {
+const Like = (props: {
+  isLike: boolean;
+  likeCnt: number;
+  isProfile: boolean;
+}) => {
   const isLike = props.isLike;
   const likeCnt = props.likeCnt;
+  const isProfile = props.isProfile;
   return (
     <LikeBox>
-      {isLike ? (
-        <FontAwesomeIcon icon={fillHeart} style={{ color: '#ff0000' }} />
-      ) : (
-        <FontAwesomeIcon icon={faHeart} style={{ color: '#ff0000' }} />
-      )}
+      {isLike
+        ? !isProfile && (
+            <FontAwesomeIcon icon={fillHeart} style={{ color: '#ff0000' }} />
+          )
+        : !isProfile && (
+            <FontAwesomeIcon icon={faHeart} style={{ color: '#ff0000' }} />
+          )}
       <p>좋아요 {likeCnt}개</p>
     </LikeBox>
   );

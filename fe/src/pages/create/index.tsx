@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Head from 'next/head';
 import { useState } from 'react';
 
 const CreateSection = styled.section`
@@ -75,21 +76,39 @@ export default function Create() {
   const [goal, setGoal] = useState('');
 
   return (
-    <CreateSection>
-      <TypingContainer>
-        <TextArea
-          placeholder="당신의 최종 목표를 입력해주세요."
-          maxLength={20}
-          onChange={e => setGoal(e.target.value)}
+    <>
+      <Head>
+        <title>Shine must get | 만다라트 생성</title>
+        <meta
+          name="description"
+          content="최종 목표를 작성하고 당신만의 만다라트를 생성해 보세요."
         />
-        <TextLength>
-          <span>{goal.length}</span>
-          <span>/20</span>
-        </TextLength>
-        <SendButton>
-          <FontAwesomeIcon icon={faPaperPlane} />
-        </SendButton>
-      </TypingContainer>
-    </CreateSection>
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Shine Must Get" />
+        <meta property="og:title" content="Shine Must Get | 만다라드 생성 " />
+        <meta property="og:description" />
+        <meta
+          property="og:image"
+          content="assets/images/common/front-image.png"
+        />
+        <meta property="og:url" content="https://shinemustget.com" />
+      </Head>
+      <CreateSection>
+        <TypingContainer>
+          <TextArea
+            placeholder="당신의 최종 목표를 입력해주세요."
+            maxLength={20}
+            onChange={e => setGoal(e.target.value)}
+          />
+          <TextLength>
+            <span>{goal.length}</span>
+            <span>/20</span>
+          </TextLength>
+          <SendButton>
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </SendButton>
+        </TypingContainer>
+      </CreateSection>
+    </>
   );
 }

@@ -16,8 +16,9 @@ const SectionStyle = styled.section`
 
   background-color: #000000;
 
-  // width 크기 즉각적으로 적용
   transition: all 0s ease-in-out !important;
+
+  overflow: hidden;
 `;
 
 const Dim = styled.div`
@@ -60,7 +61,14 @@ export const VideoSection = () => {
   return (
     <SectionStyle>
       <Dim />
-      <Video pageYOffset={pageYOffset} width="250" autoPlay>
+      <Video
+        pageYOffset={pageYOffset}
+        width="250"
+        autoPlay
+        playsInline
+        muted
+        loop
+      >
         <source src="/assets/videos/zelda.mp4" type="video/mp4" />
       </Video>
     </SectionStyle>
