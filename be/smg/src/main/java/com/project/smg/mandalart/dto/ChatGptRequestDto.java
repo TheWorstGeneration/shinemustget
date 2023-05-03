@@ -9,8 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChatGptRequest {
+public class ChatGptRequestDto {
     private String model;
-    private List<Message> messages;
+    private List<MessageDto> messages;
     private Integer max_tokens;
 }

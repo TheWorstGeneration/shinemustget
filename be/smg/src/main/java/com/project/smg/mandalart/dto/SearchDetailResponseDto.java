@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Message {
-    public String role;
-    public String content;
+public class SearchDetailResponseDto {
+    private MandalartRequestDto mandalartRequestDto;
 }
