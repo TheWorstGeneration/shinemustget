@@ -1,7 +1,9 @@
 package com.project.smg.utils;
 
+import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
+import com.project.smg.mandalart.service.MandalartLikeService;
 import com.project.smg.member.entity.Likes;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
@@ -13,8 +15,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,6 +24,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Log4j2
 public class RedisSchedule {
+    private final MandalartLikeService mandalartLikeService;
     private final LikeRepository likeRepository;
     private final TitleRepository titleRepository;
     private final MemberRepository memberRepository;
@@ -36,24 +39,35 @@ public class RedisSchedule {
         Iterator<String> it = redisKeys.iterator();
 
         SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+
         while (it.hasNext()) {
 
             String key = it.next();
-            // db 에 저장을 할건데 어떻게 하지?
             int mandalartId = Integer.parseInt(key.split("::")[1]);
             Set<String> members = setOperations.members(key);
 
-            List<Likes> status1List = likeRepository.findByStatus();
+           // List<Likes> status1List = likeRepository.findByStatus();
             for (String memberId : members){
                 Likes likes = checkDB(mandalartId,memberId);
-                // db 에 없으면 like 생성
+
+                // DB 에 없으면 like 생성 후 DB 저장
                 if (likes == null){
+                    Title title = mandalartLikeService.checkTitle(mandalartId);
+                    Member member = checkMember(memberId);
 
+                    Likes newLike = Likes.builder()
+                            .title(title)
+                            .status(true)
+                            .member(member)
+                            .build();
+                    likeRepository.save(newLike);
+                    log.info("Like DB Save");
                 }else{
-                // db 있으면 redis 값 확인해서 변경
-
+                // DB 있으면 redis 값 확인해서 변경
+                    // memberId 가 redis 에 존재하면 status 1로 변경 아니면 0 변경
+                    likes.setStatus(true);
                 }
-                System.out.println(memberId);
+
             }
             // 기존 redis caching 데이터 삭제
             //redisTemplate.delete(key);
@@ -63,6 +77,13 @@ public class RedisSchedule {
 
 
         // redis caching 데이터 DB 저장
+    }
+
+
+    private Member checkMember(String mid) {
+        Optional<Member> member = memberRepository.findById(mid);
+        Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+        return findMember;
     }
     private Likes checkDB(int id, String mid) {
         Optional<Likes> like = likeRepository.findByMemberAndMandalart(id,mid);
