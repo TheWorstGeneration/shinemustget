@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "big_goal")
-public class BigGoal {
+public class    BigGoal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "big_goal_id")
@@ -28,7 +28,7 @@ public class BigGoal {
     @Column(name = "clear_at")
     private LocalDateTime clearAt;
 
-    @OneToMany(mappedBy = "bigGoal")
+    @OneToMany(mappedBy = "bigGoal", cascade = CascadeType.PERSIST )
     private List<SmallGoal> smallGoals = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

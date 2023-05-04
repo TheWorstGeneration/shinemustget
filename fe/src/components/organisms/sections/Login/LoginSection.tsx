@@ -29,8 +29,14 @@ const LoginText = styled.h1`
   font-size: 3rem;
   font-weight: 600;
 
+  transition: all 0s ease-in-out;
+
+  @media screen and (max-width: 960px) {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+  }
+
   @media screen and (max-width: 500px) {
-    font-size: 1rem;
+    font-size: clamp(1rem, 5vw, 1.5rem);
     text-align: center;
   }
 `;
@@ -53,6 +59,8 @@ const ChipListContainer = styled.article`
 
   position: absolute;
   top: 270vh;
+
+  transition: width 0s ease-in-out;
 
   @media screen and (max-width: 500px) {
     top: 250vh;

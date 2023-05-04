@@ -1,12 +1,22 @@
 package com.project.smg.mandalart.service;
 
-import com.project.smg.mandalart.dto.ChatGptResponse;
+import com.project.smg.mandalart.dto.BigDto;
+import com.project.smg.mandalart.dto.MandalartRequestDto;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface MandalartService {
-    public ChatGptResponse getChatGptResponse(String content);
-    public HashMap<String, List<String>> getBigGoals(String content);
-    public HashMap<String, List<String>> getSmallGoals(List<String> bigGoal);
+    @Async
+    public CompletableFuture<ConcurrentHashMap<String, Object>> getBigGoals(String content);
+    @Async
+    public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal);
+
+    public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid);
+    public HashMap<String, Object> getMainMandalart(String mid);
+
+
 }

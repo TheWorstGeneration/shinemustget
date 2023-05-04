@@ -32,9 +32,6 @@ body {
 }
 
 section {
-  /* background 컬러 */
-  background-color: rgb(var(--background-rgb));
-
   /* transition */
   transition: all 0s ease-in-out !important;
 }
@@ -54,7 +51,7 @@ li,
 ul,
 ol {
   /* text 컬러 */
-  color: rgb(var(--foreground-rgb));
+  color: black;
 }
 
 a {

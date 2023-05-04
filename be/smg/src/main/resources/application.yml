@@ -1,5 +1,9 @@
 server:
   port: 8080
+  servlet:
+    cookie:
+      same-site: None
+      secure: false
 
 spring:
   application:
@@ -13,6 +17,10 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+#    async:
+#      request-timeout: 1000s
+
+
   # DB??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,8 +31,8 @@ spring:
     password: smg!
 
   redis:
-    host: localhost
-    port: 6379
+    host: k8b109.p.ssafy.io
+    port: 3301
     password: ns
 
   jpa:

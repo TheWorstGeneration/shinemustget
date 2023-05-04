@@ -63,11 +63,19 @@ export const CharacterSection = () => {
 
   return (
     <SectionStyle id="character">
-      <ButtonContainer type="button" onClick={handlePrevClick}>
+      <ButtonContainer
+        type="button"
+        title="previous character"
+        onClick={handlePrevClick}
+      >
         <FontAwesomeIcon icon={faChevronLeft} size={'2x'} />
       </ButtonContainer>
       <Character src={image} alt={language === 'ko' ? koName : enName} />
-      <ButtonContainer type="button" onClick={handleNextClick}>
+      <ButtonContainer
+        type="button"
+        title="next character"
+        onClick={handleNextClick}
+      >
         <FontAwesomeIcon icon={faChevronRight} size={'2x'} />
       </ButtonContainer>
     </SectionStyle>

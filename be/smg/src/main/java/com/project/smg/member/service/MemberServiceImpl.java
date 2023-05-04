@@ -10,14 +10,13 @@ import com.project.smg.podo.repository.PodoTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,8 +31,9 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 로그아웃 서비스
+     *
      * @param accessToken 카카오 토큰
-     * 세션으로 부터 가져온 카카오 토큰을 사용해 카카오에서 제공하는 엔드포인트로 요청을 보내 로그아웃 처리
+     *                    세션으로 부터 가져온 카카오 토큰을 사용해 카카오에서 제공하는 엔드포인트로 요청을 보내 로그아웃 처리
      */
     @Override
     public void logout(String accessToken) {
@@ -54,6 +54,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * member 닉네임, 프로필 사진 전달
+     *
      * @param memberId
      * @return memberId로 DB를 조회해 member의 닉네임과 프로필사진을 전달
      */
@@ -67,14 +68,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public void addMemberPodo(String memberId) {
         List<PodoType> podoTypeList = podoTypeRepository.findAll();
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));
 
-        for(int i = 0; i < podoTypeList.size(); i++){
+        for (int i = 0; i < podoTypeList.size(); i++) {
             boolean status = false;
-            if(podoTypeList.get(i).getImageLockUrl() == null)
+            if (podoTypeList.get(i).getImageLockUrl() == null)
                 status = true;
 
             MemberPodo memberPodo = MemberPodo.builder()
@@ -88,6 +90,5 @@ public class MemberServiceImpl implements MemberService {
             memberPodo.addMember(member);
         }
     }
-
 
 }

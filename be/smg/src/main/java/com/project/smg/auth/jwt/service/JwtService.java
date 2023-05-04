@@ -15,7 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -135,24 +134,11 @@ public class JwtService {
     public void accessTokenAddCookie(HttpServletResponse response, String accessToken) {
         try {
             String bearerToken = URLEncoder.encode(BEARER + accessToken, "UTF-8");
-//            Cookie cookie = new Cookie("accessToken", bearerToken);
-//            cookie.setPath("/");
-//            cookie.setMaxAge(accessTokenCookieExpirationPeriod);
-//            cookie.setHttpOnly(true);
-//            response.addCookie(cookie);
-            Cookie cookieServer = new Cookie("accessToken", bearerToken);
-            cookieServer.setPath("/");
-            cookieServer.setMaxAge(accessTokenCookieExpirationPeriod);
-            cookieServer.setHttpOnly(true);
-            response.addCookie(cookieServer);
-
-            // 로컬 쿠키
-            Cookie cookieLocal = new Cookie("accessToken", bearerToken);
-            cookieLocal.setPath("/");
-            cookieLocal.setDomain("localhost");
-            cookieLocal.setMaxAge(accessTokenCookieExpirationPeriod);
-            cookieLocal.setHttpOnly(true);
-            response.addCookie(cookieLocal);
+            Cookie cookie = new Cookie("accessToken", bearerToken);
+            cookie.setPath("/");
+            cookie.setMaxAge(accessTokenCookieExpirationPeriod);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
 
             log.info("Access Token 쿠키에 저장 완료");
             log.info("발급된 Access Token : {}", accessToken);
@@ -167,25 +153,11 @@ public class JwtService {
     public void refreshTokenAddCookie(HttpServletResponse response, String refreshToken) {
         try {
             String bearerToken = URLEncoder.encode(BEARER + refreshToken, "UTF-8");
-//            Cookie cookie = new Cookie("refreshToken", bearerToken);
-//            cookie.setPath("/");
-//            cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
-//            cookie.setHttpOnly(true);
-//            response.addCookie(cookie);
-
-            Cookie cookieServer = new Cookie("refreshToken", bearerToken);
-            cookieServer.setPath("/");
-            cookieServer.setMaxAge(accessTokenCookieExpirationPeriod);
-            cookieServer.setHttpOnly(true);
-            response.addCookie(cookieServer);
-
-            // 로컬 쿠키
-            Cookie cookieLocal = new Cookie("refreshToken", bearerToken);
-            cookieLocal.setPath("/");
-            cookieLocal.setDomain("localhost");
-            cookieLocal.setMaxAge(accessTokenCookieExpirationPeriod);
-            cookieLocal.setHttpOnly(true);
-            response.addCookie(cookieLocal);
+            Cookie cookie = new Cookie("refreshToken", bearerToken);
+            cookie.setPath("/");
+            cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
 
             log.info("Refresh Token 쿠키에 저장 완료");
             log.info("발급된 Refresh Token : {}", refreshToken);

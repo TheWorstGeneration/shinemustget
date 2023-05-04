@@ -28,6 +28,7 @@ public class PodoController {
             podoService.create(mid, podoCreateDto);
             return new ResponseEntity<>(new ResponseDto(201, "작성 완료"), HttpStatus.OK);
         } catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(new ResponseDto(500, "작성 실패"), HttpStatus.OK);
         }
     }
@@ -65,6 +66,7 @@ public class PodoController {
             podoService.podoSetting(mid, id);
             return new ResponseEntity<>(new ResponseDto(200, "변경 완료"), HttpStatus.OK);
         } catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(new ResponseDto(500, "변경 실패"), HttpStatus.OK);
         }
     }
