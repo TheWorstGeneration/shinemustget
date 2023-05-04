@@ -1,6 +1,7 @@
 package com.project.smg.alarm.controller;
 
 import com.project.smg.alarm.service.AlarmService;
+import com.project.smg.mandalart.entity.Title;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,7 @@ public class testController {
     private final AlarmService alarmService;
 
     @PostMapping("/test")
-    public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @RequestBody HashMap<String, Object> map) {
-        String titlename = (String) map.get("titleName");
-        return new ResponseEntity<>(alarmService.saveAlarm(memberId, titlename), HttpStatus.OK);
+    public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @RequestBody Title title) {
+        return new ResponseEntity<>(alarmService.saveAlarm(memberId, title), HttpStatus.OK);
     }
 }

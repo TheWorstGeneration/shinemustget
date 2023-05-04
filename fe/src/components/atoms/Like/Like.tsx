@@ -23,14 +23,26 @@ const Like = (props: {
   const isLike = props.isLike;
   const likeCnt = props.likeCnt;
   const isProfile = props.isProfile;
+
+  const handleLikeClick = () => {
+    console.log('likeClick');
+  };
   return (
     <LikeBox>
       {isLike
         ? !isProfile && (
-            <FontAwesomeIcon icon={fillHeart} style={{ color: '#ff0000' }} />
+            <FontAwesomeIcon
+              onClick={handleLikeClick}
+              icon={fillHeart}
+              style={{ color: '#ff0000', cursor: 'pointer' }}
+            />
           )
         : !isProfile && (
-            <FontAwesomeIcon icon={faHeart} style={{ color: '#ff0000' }} />
+            <FontAwesomeIcon
+              onClick={handleLikeClick}
+              icon={faHeart}
+              style={{ color: '#ff0000', cursor: 'pointer' }}
+            />
           )}
       <p>좋아요 {likeCnt}개</p>
     </LikeBox>

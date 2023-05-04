@@ -11,6 +11,8 @@ const MandalartContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  cursor: pointer;
 `;
 
 const MandalartdBox = styled.div`
@@ -61,25 +63,13 @@ const Mandalart = styled.div<{ isCenter: boolean }>`
 
   @media (max-width: 500px) {
     > p {
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 20ch;
     }
   }
 `;
-
-interface ClearMandalart {
-  id: number;
-  searchDto: SearchDto;
-}
-
-interface SearchDto {
-  likeCnt: number;
-  isLike: boolean;
-  title: string;
-  bigList: SearchBigDto[];
-}
 
 interface SearchBigDto {
   content: string;
@@ -96,10 +86,15 @@ export const BigGoalMandalart = (props: any) => {
     },
   );
   const isProfile: boolean = props.isProfile;
+
+  const handleMandalartDetail = () => {
+    console.log('madalart detail');
+  };
+
   return (
     <>
       <Title>{title}</Title>
-      <MandalartContainer>
+      <MandalartContainer onClick={handleMandalartDetail}>
         <MandalartdBox>
           {bigGoalList?.map(bigGoal =>
             bigGoal.location == 5 ? (
