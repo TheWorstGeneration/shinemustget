@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PodoCreateDto {
     private int id;
-    private String stickerType;
+    private String imageUrl;
     private String oneline;
 
 }
