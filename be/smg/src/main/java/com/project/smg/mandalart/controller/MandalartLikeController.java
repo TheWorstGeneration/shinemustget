@@ -20,7 +20,7 @@ public class MandalartLikeController {
     private final MandalartLikeService mandalartLikeService;
 
     /* 만다라트 좋아요 */
-    @PatchMapping("/like/{id}")
+    @PostMapping("/like/{id}")
     public ResponseEntity<?> like(@RequestAttribute("id") String mid, @PathVariable("id") int id){
         try {
             mandalartLikeService.mandalartLike(mid, id);

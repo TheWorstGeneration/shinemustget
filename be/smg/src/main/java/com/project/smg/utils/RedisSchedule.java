@@ -29,7 +29,7 @@ public class RedisSchedule {
     private final RedisTemplate redisTemplate;
 
     @Transactional
-   // @Scheduled(cron = "0 0/1 * * * *")
+//    @Scheduled(cron = "0 0/1 * * * *")
     public void deleteLikeFromRedis(){
         log.info("[Scheduling] redis like caching start");
 
