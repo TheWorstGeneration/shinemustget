@@ -60,7 +60,7 @@ public class PodoController {
     }
 
     /* 포도알 설정 */
-    @PatchMapping(value = "/setting/{id}")
+    @PostMapping(value = "/setting/{id}")
     public ResponseEntity<?> setting(@RequestAttribute("id") String mid, @PathVariable("id") int id){
         try {
             podoService.podoSetting(mid, id);
