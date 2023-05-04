@@ -13,14 +13,16 @@
   "screenshots": [
     {
       "src": "assets/images/common/front-image.png",
-      "sizes": "1920x",
+      "sizes": "1920x1080",
       "type": "image/png"
     }
   ],
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
-      "sizes": "71x71"
+      "sizes": "71x71",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "windows11/SmallTile.scale-125.png",
