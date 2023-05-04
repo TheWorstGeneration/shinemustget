@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class RedisSchedule {
     private final RedisTemplate redisTemplate;
 
     @Transactional
-    @Scheduled(cron = "0 0/1 * * * *")
+   // @Scheduled(cron = "0 0/1 * * * *")
     public void deleteLikeFromRedis(){
         log.info("[Scheduling] redis like caching start");
 
@@ -43,16 +41,38 @@ public class RedisSchedule {
         while (it.hasNext()) {
 
             String key = it.next();
-            int mandalartId = Integer.parseInt(key.split("::")[1]);
-            Set<String> members = setOperations.members(key);
+            int titleId = Integer.parseInt(key.split("::")[1]);
 
-           // List<Likes> status1List = likeRepository.findByStatus();
-            for (String memberId : members){
-                Likes likes = checkDB(mandalartId,memberId);
+            List<Likes> likeByTitleIdInDBList = likeRepository.findByTitleId(titleId);
+            Set<String> membersInRedis = setOperations.members(key);
+
+            System.out.println("==============================");
+            likeByTitleIdInDBList.stream().forEach(like -> {
+                System.out.println("Like ID: " + like.getId());
+                System.out.println("User ID: " + like.getMember().getId());
+                System.out.println("Title ID: " + like.getTitle().getId());
+            });
+//            // 레디스에는 존재하고 db 에 없는 차집합
+//            Set<String> membersNotInDB = new HashSet<>(membersInRedis);
+//
+//            for (Likes likeInDB : likeByTitleIdInDBList){
+//                membersNotInDB.remove(likeInDB.getMember().getId());
+//                if (membersInRedis.contains(likeInDB.getMember().getId())){
+//
+//                }
+//            }
+//
+
+
+
+
+
+            for (String memberId : membersInRedis){
+                Likes likes = checkDB(titleId,memberId);
 
                 // DB 에 없으면 like 생성 후 DB 저장
                 if (likes == null){
-                    Title title = mandalartLikeService.checkTitle(mandalartId);
+                    Title title = mandalartLikeService.checkTitle(titleId);
                     Member member = checkMember(memberId);
 
                     Likes newLike = Likes.builder()
@@ -62,16 +82,19 @@ public class RedisSchedule {
                             .build();
                     likeRepository.save(newLike);
                     log.info("Like DB Save");
-                }else{
-                // DB 있으면 redis 값 확인해서 변경
-                    // memberId 가 redis 에 존재하면 status 1로 변경 아니면 0 변경
+                }else{    // DB 있으면
+                    // status 0
+                    // status 1로 변경 아니면 0 변경
+                    System.out.println("db 있으면 status 1로 변경");
                     likes.setStatus(true);
                 }
+                /// 취소한경우 db 에는 1 redis 에는 memberId  없는 경우
 
             }
+
+
             // 기존 redis caching 데이터 삭제
             //redisTemplate.delete(key);
-
 
         }
 

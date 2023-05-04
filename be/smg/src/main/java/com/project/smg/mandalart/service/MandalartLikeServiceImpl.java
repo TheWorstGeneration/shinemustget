@@ -22,7 +22,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
     /**
      * 좋아요
      * 1) redis 조회
-     *     o -> mid 있다면 제거, 없다면 추가
+     *     o -> memberId 있다면 제거, 없다면 추가
      *     x -> db 조회 후 없으면 레디스 새로 저장, 있으면 db 값 redis 저장
      * */
     @Override
@@ -38,18 +38,18 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         // redis 에 값이 없는 경우
         if(!redisTemplate.hasKey(key)){
             // DB 조회
-            Likes findLike = checkLike(mid);
+            Likes findLike = checkLike(mid, id);
             // DB 없음 -> redis 새로 저장
             if (findLike==null){
-                log.info("no DB, redis add");
+                log.info("no DB, new key add from Redis");
                 setOperations.add(key, mid);
             } else {
                 // DB 있음 -> DB status 변경 하고 redis 에 저장
                 if (findLike.isStatus()){
-                    log.info("exist DB, like cancel");
+                    log.info("exist DB, status update False from DB");
                     findLike.setStatus(false);
                 }else {
-                    log.info("exist DB, like , redis add");
+                    log.info("exist DB, status update True from DB, like add from Redis");
                     findLike.setStatus(true);
                     setOperations.add(key,mid);
                 }
@@ -59,10 +59,10 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         // mid 없는 경우 -> redis value 추가
         }else{
             if (setOperations.isMember(key, mid)){
-                log.info("exist redis, like cancel");
+                log.info("exist redis, like remove from Redis");
                 setOperations.remove(key, mid);
             }else{
-                log.info("exist redis, like ");
+                log.info("exist redis, like add from Redis");
                 setOperations.add(key,mid);
             }
 
@@ -74,8 +74,8 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
 
     }
 
-    public Likes checkLike(String mid) {
-        Optional<Likes> like = likeRepository.findByMember(mid);
+    public Likes checkLike(String mid, int id) {
+        Optional<Likes> like = likeRepository.findByMemberAndMandalart(id, mid);
         Likes findLike = like.orElse(null);
         return findLike;
     }
