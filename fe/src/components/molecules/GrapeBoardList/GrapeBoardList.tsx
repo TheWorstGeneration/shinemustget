@@ -17,137 +17,137 @@ const ArrowButtonDown = styled.div`
 const GrapeContainer = styled.div`
    
    >.podo-container {
-    position: relative;
-    top: -26.75rem;
-    left:8.75rem;
+    position: absolute;
+    top: 23.45rem;
+    left:34.45rem;
   }
 
   > .podo1 {
   }
 
   > .podo2 {
-    top: -29.5rem;
-    left:11.5rem;
+    top: 23.45rem;
+    left:37.15rem;
   }
 
    > .podo3 {
-    top: -32.25rem;
-    left:14.25rem;
+    top: 23.45rem;
+    left:39.9rem;
   }
 
   > .podo4 {
-    top: -32.5rem;
-    left:7.45rem;
+    top: 25.85rem;
+    left:33.25rem;
   }
 
    > .podo5 {
-    top: -35.25rem;
-    left:10.2rem;
+    top: 25.85rem;
+    left:35.95rem;
   }
 
   > .podo6 {
-    top: -38rem;
-    left:12.95rem;
+    top: 25.85rem;
+    left:38.65rem;
   }
 
   > .podo7 {
-    top: -40.75rem;
-    left:15.65rem;
+    top: 25.85rem;
+    left:41.275rem;
   }
 
   > .podo8 {
-    top: -41.25rem;
-    left:6.05rem;
+    top: 28.2rem;
+    left:31.85rem;
   }
 
   > .podo9 {
-    top: -43.9rem;
-    left:8.75rem;
+    top: 28.2rem;
+    left:34.55rem;
   }
 
   > .podo10 {
-    top: -46.7rem;
-    left:11.55rem;
+    top: 28.2rem;
+    left:37.25rem;
   }
 
   > .podo11 {
-    top: -49.4rem;
-    left:14.25rem;
+    top: 28.2rem;
+    left:40rem;
   }
 
    > .podo12{
-    top: -52.17rem;
-    left:17rem;
+    top: 28.2rem;
+    left:42.75rem;
   }
 
   > .podo13{
-    top: -52.55rem;
-    left:7.45rem;
+    top: 30.55rem;
+    left:33.15rem;
   }
 
   > .podo14{
-    top: -55.3rem;
-    left:10.15rem;
+    top: 30.55rem;
+    left:35.95rem;
   }
 
    > .podo15{
-    top: -58.05rem;
-    left:12.95rem;
+    top: 30.55rem;
+    left:38.65rem;
   }
 
   > .podo16{
-    top: -60.85rem;
-    left:15.7rem;
+    top: 30.55rem;
+    left:41.45rem;
   }
 
   > .podo17{
-    top: -61.25rem;
-    left:6.05rem;
+    top: 32.9rem;
+    left:31.85rem;
   }
 
   > .podo18{
-    top: -63.95rem;
-    left:8.85rem;
+    top: 32.9rem;
+    left:34.55rem;
   }
 
   > .podo19{
-    top: -66.75rem;
-    left:11.55rem;
+    top: 32.9rem;
+    left:37.35rem;
   }
 
    > .podo20{
-    top: -69.48rem;
-    left:14.275rem;
+    top: 32.9rem;
+    left:40rem;
   }
 
    > .podo21{
-    top: -69.95rem;
-    left:7.45rem;
+    top: 35.2rem;
+    left:33.25rem;
   }
 
   > .podo22{
-    top: -72.65rem;
-    left:10.2rem;
+    top: 35.2rem;
+    left:35.95rem;
   }
 
   > .podo23{
-    top: -75.4rem;
-    left:12.95rem;
+    top: 35.2rem;
+    left:38.65rem;
   }
 
   > .podo24{
-    top: -75.85rem;
-    left:8.75rem;
+    top: 37.55rem;
+    left:34.55rem;
   }
 
   > .podo25{
-    top: -78.6rem;
-    left:11.6rem;
+    top: 37.55rem;
+    left:37.25rem;
   }
 
   > .podo26{
-    top: -79rem;
-    left:10.15rem;
+    top: 39.9rem;
+    left:35.85rem;
   }
 `;
 
