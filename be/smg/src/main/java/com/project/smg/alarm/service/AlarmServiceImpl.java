@@ -1,6 +1,7 @@
 package com.project.smg.alarm.service;
 
 import com.project.smg.alarm.dto.AlarmDto;
+import com.project.smg.alarm.dto.SendAlarmDto;
 import com.project.smg.alarm.repository.RedisAlarmRepository;
 import com.project.smg.mandalart.entity.Title;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,5 +33,13 @@ public class AlarmServiceImpl implements AlarmService {
         redisAlarmRepository.save(alarmDto);
 
         return alarmDto;
+    }
+
+    @Override
+    public List<SendAlarmDto> alarmDtoList(String memberId) {
+        return redisAlarmRepository.getRecentAlarmsWithCursor(memberId, 10)
+                .stream()
+                .map(alarmDto -> new SendAlarmDto(alarmDto.getMessage(), alarmDto.getCreatedAt()))
+                .collect(Collectors.toList());
     }
 }
