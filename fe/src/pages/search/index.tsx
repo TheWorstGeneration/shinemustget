@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
-import SearchResult from '@/components/molecules/SearchResult/SearchResult';
+import SearchResult from '@/components/organisms/SearchResult/SearchResult';
 
 const SearchSection = styled.section`
   display: flex;
   justify-content: center;
   margin: 6.5rem 0 0;
+
+  min-height: 80vh;
 `;
 
 const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
@@ -14,16 +16,11 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
 
   width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
   padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0 10rem')};
-  height: 91vh;
 
   background-color: #ffffff;
 
   @media (max-width: 960px) {
-    padding: 0rem;
-  }
-
-  @media (max-width: 500px) {
-    height: 130vh;
+    padding: 1rem;
   }
 `;
 

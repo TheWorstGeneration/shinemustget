@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
 const SortButtonDiv = styled.div`
+  width: 100%;
+  text-align: end;
+
   > span {
     cursor: pointer;
   }
