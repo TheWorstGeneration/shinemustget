@@ -3,16 +3,27 @@ import { RootState } from '..';
 
 // state type
 export interface goalSlice {
-  row: number;
-    col: number;
-    goal: string;
+  title: string;
+  bigGoal: string[];
+  smallGoal: string[][];
+}
+
+export interface BigGoalAction {
+  index: number;
+  bigGoal: string;
+}
+
+export interface SmallGoalAction {
+  i: number;
+  j: number;
+  smallGoal: string;
 }
 
 // 초기 상태 정의
 const initialState = {
-    row: 0,
-    col: 0,
-    goal: '',
+  title: '',
+  bigGoalList: Array(8).fill(''),
+  smallGoalLists: Array(8).fill(Array(8).fill('')),
 };
 
 const goalSlice = createSlice({
@@ -20,16 +31,27 @@ const goalSlice = createSlice({
   initialState,
   reducers: {
     // 액션 생성함수
-    setGoal: (state, actions) => {
-        state.row = actions.payload.row;
-        state.col = actions.payload.col;
-        state.goal = actions.payload.goal;
+    setTitle: (state, action) => {
+      state.title = action.payload;
     },
+    setBigGoal: (state, action) => {
+      const { index, bigGoal }: BigGoalAction = action.payload;
+      state.bigGoalList[index] = bigGoal;
+    },
+    setSmallGoal: (state, action) => {
+      const { i, j, smallGoal }: SmallGoalAction = action.payload;
+      state.smallGoalLists[i][j] = smallGoal;
+    },
+    setResetGoal: (state) => {
+      state.title = '';
+      state.bigGoalList = Array(8).fill('');
+      state.smallGoalLists = Array(8).fill(Array(8).fill(''));
+    }
   },
 });
 
 // 액션 생성함수
-export const { setGoal } = goalSlice.actions;
+export const { setTitle, setBigGoal, setSmallGoal, setResetGoal } = goalSlice.actions;
 export const selectGoal = (state: RootState) => state.goal;
 // 리듀서
 export default goalSlice.reducer;
