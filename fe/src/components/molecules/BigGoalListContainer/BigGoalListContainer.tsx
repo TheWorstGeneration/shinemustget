@@ -123,26 +123,30 @@ export const BigGoalListContainer = () => {
     <BigGoalList>
       <MandalartTitle>{title}</MandalartTitle>
       {title === '' ? (
-        <></>
+        <YouCanEdit>
+          장기적인 목표를 작성할수록 좋은 결과를 가져옵니다.
+        </YouCanEdit>
       ) : (
-        bigGoalList.map((bigGoal, index) => {
-          return (
-            <BigGoalContainer>
-              <BigGoalTextField
-                key={index}
-                value={bigGoal}
-                maxLength={20}
-                onChange={e => handleChangeBigGoal(index, e.target.value)}
-              />
-              <BigGoalTextLength>{bigGoal.length}/20</BigGoalTextLength>
-            </BigGoalContainer>
-          );
-        })
+        <>
+          {bigGoalList.map((bigGoal, index) => {
+            return (
+              <BigGoalContainer>
+                <BigGoalTextField
+                  key={index}
+                  value={bigGoal}
+                  maxLength={20}
+                  onChange={e => handleChangeBigGoal(index, e.target.value)}
+                />
+                <BigGoalTextLength>{bigGoal.length}/20</BigGoalTextLength>
+              </BigGoalContainer>
+            );
+          })}
+          <YouCanEdit>수정하고 싶은 목표가 있다면 변경해 보세요.</YouCanEdit>
+          <ButtonContainer>
+            <SmallGoalCreateButton />
+          </ButtonContainer>
+        </>
       )}
-      <YouCanEdit>수정하고 싶은 목표가 있다면 변경해 보세요.</YouCanEdit>
-      <ButtonContainer>
-        <SmallGoalCreateButton />
-      </ButtonContainer>
     </BigGoalList>
   );
 };
