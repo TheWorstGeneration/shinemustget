@@ -25,6 +25,11 @@ const Container = styled.div`
     width: 135px;
     height: 135px;
   }
+
+  @media screen and (max-width: 450px) {
+    width: calc((100vw - 2rem - 50px) / 3);
+    height: calc((100vw - 2rem - 50px) / 3);
+  }
 `;
 
 const Row = styled.div`

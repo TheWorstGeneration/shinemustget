@@ -22,7 +22,6 @@ const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
 
   width: 100vw;
   height: 5.5rem;
-  // 좌우 간격 10rem, width가 줄어들면 점차 1rem으로 줄어듦
   padding: 0 10rem;
 
   backdrop-filter: ${({ isScroll }) => (isScroll ? 'blur(10px)' : 'none')};
@@ -30,6 +29,8 @@ const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
     isScroll ? 'rgba(255, 255, 255, 0.25)' : 'transparent'};
   box-shadow: ${({ isScroll }) =>
     isScroll ? '0 0.5rem .5rem 0 rgba(0, 0, 0, 0.10)' : 'none'};
+
+  transition: padding 0s;
 
   @media (max-width: 960px) {
     padding: 0 1rem;
