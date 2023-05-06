@@ -49,6 +49,13 @@ const CenterBox = styled.div<{ isClear: boolean; isCenter: number }>`
     width: 45px;
     height: 45px;
   }
+
+  @media screen and (max-width: 450px) {
+    font-size: 0.2rem;
+
+    width: calc((100vw - 2rem - 50px) / 9);
+    height: calc((100vw - 2rem - 50px) / 9);
+  }
 `;
 
 const Box = styled(Link)<{ isClear: boolean }>`
@@ -91,6 +98,13 @@ const Box = styled(Link)<{ isClear: boolean }>`
 
     width: 45px;
     height: 45px;
+  }
+
+  @media screen and (max-width: 450px) {
+    font-size: 0.2rem;
+
+    width: calc((100vw - 2rem - 50px) / 9);
+    height: calc((100vw - 2rem - 50px) / 9);
   }
 `;
 

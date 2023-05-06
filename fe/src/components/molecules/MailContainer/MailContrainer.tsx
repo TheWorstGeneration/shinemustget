@@ -20,7 +20,7 @@ const MailContainerDiv = styled.aside<{ isActive: boolean }>`
 
   z-index: 1000;
 
-  background-color: ${({ isActive }) => (isActive ? '#ffffff' : '#ffffff88')};
+  background-color: ${({ isActive }) => (isActive ? '#ffffff' : '#ffffff')};
 
   overflow-x: hidden; // 가로 스크롤 숨기기
   overflow-y: scroll; // 세로 스크롤 활성화
