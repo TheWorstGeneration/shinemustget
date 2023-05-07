@@ -1,17 +1,7 @@
 import { Dispatch,SetStateAction } from "react";
 import styled from "@emotion/styled";
 
-const ToggleArrangement = styled.div`
-  display: flex;
-`;
-
-const ToggleExplanation = styled.div`
-  flex:2;
-  margin-right:0.75rem;
-`;
-
 const ToggleContainer = styled.div`
-  flex:1;
   position: relative;
 
   > .toggle-container {
@@ -49,16 +39,11 @@ export function Toggle({ isOn, setisOn }:{ isOn: boolean, setisOn: Dispatch<SetS
   };
 
   return (
-    <ToggleArrangement>
-     <ToggleExplanation>
-        <span>포도알 설정 </span>
-     </ToggleExplanation>
      <ToggleContainer
         onClick={toggleHandler}
       >
         <div className={`toggle-container ${isOn ? "toggle--checked" : null}`}/>
         <div className={`toggle-circle ${isOn ? "toggle--checked" : null}`}/>
       </ToggleContainer>
-  </ToggleArrangement>
       );
  }

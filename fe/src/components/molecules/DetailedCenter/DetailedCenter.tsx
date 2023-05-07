@@ -1,19 +1,33 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import styled from "@emotion/styled"
 import { Toggle } from "@/components/atoms/Toggle/Toggle"
 import { GrapeBoardList } from "../GrapeBoardList/GrapeBoardList"
 import { UserComment } from "../UserComment/UserComment"
 import { UserMemo } from "../UserMemo/UserMemo"
+import { useAppSelector } from "@/hooks/useRedux"
+import podoSetting from "@/pages/api/podoSetting"
+import { selectIdx } from "@/store/modules/detailIdx";
 
 const DetailedDiv = styled.div`
   display: flex;
-  justify-content: space-between;
   margin-bottom:2.05rem;
-  `;
+`;
+
+const DetailedDivGoal = styled.div`
+`;
+
+const DetailedDivToggle = styled.div`
+  position: absolute;
+  margin-left : 32.25rem;
+  display: flex;
+`;
+
+const DetailedDivToggleDesc = styled.div`
+  margin-right: 0.55rem;
+`;
 
 const DetailedDivPos = styled.div`
   display: flex;
-  /* height: 100vh; */
 `;
 
 const DetailedDivPosLeft = styled.div`
@@ -33,12 +47,24 @@ const DetailedDivEmpty = styled.div`
 
 export function DetailedCenter() {
   const [isOn, setisOn] = useState(false);
+  const { index } = useAppSelector(selectIdx);
+
+  if (isOn) { 
+    podoSetting(index);
+  }
 
   return (
   <div>
       <DetailedDiv>
-        <h1>세부 목표</h1>
-        <Toggle isOn={isOn} setisOn={setisOn}/>
+        <DetailedDivGoal>
+          <h1>세부 목표</h1>
+        </DetailedDivGoal>
+        <DetailedDivToggle>
+          <DetailedDivToggleDesc>
+            <p>포도알 설정</p>
+          </DetailedDivToggleDesc>
+          <Toggle isOn={isOn} setisOn={setisOn}/>
+        </DetailedDivToggle>
       </DetailedDiv>
       { isOn?(<DetailedDivPos>
         <DetailedDivPosLeft>
