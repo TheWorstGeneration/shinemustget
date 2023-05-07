@@ -3,11 +3,11 @@ import { MailContainer } from '../MailContainer/MailContrainer';
 import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
 
 const DetailedRightDiv = styled.div`
-  margin-left: 1.25rem;
 `;
 
 const DetailedRightButton = styled.div`
-  margin-top: 7rem;
+  position: absolute;
+  margin-top: 38rem;
 `;
 
 export function DetailedRight() {

@@ -1,5 +1,8 @@
-import { useState,Dispatch,SetStateAction } from "react";
+import { useEffect } from "react";
 import styled from "@emotion/styled"
+import podoWrite from "@/pages/api/podoWrite";
+import { useAppSelector } from "@/hooks/useRedux";
+import { selectIdx } from "@/store/modules/detailIdx";
 
 const Button = styled.button`
   display: flex;
@@ -18,12 +21,17 @@ const Button = styled.button`
   }
 `;
 
-export function ComposeButton({imageUrl,onLine}: {imageUrl:any,onLine:any}) { 
+export function ComposeButton({ imageUrl, oneline }: { imageUrl: any, oneline: any }) {
+  const { index } = useAppSelector(selectIdx);
+
+  const propsDetail = {
+    id: index,
+    imageUrl: imageUrl,
+    oneline:oneline,
+  };
 
   const onClickHandler = () => {
-    console.log("메모 작성 완료!");
-    console.log(imageUrl);
-    console.log(onLine);
+    podoWrite(propsDetail).then(res=>console.log(res));
   };
 
   return (

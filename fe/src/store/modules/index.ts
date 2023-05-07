@@ -3,18 +3,22 @@ import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 import profile from './profile'
+import detailIdx from './detailIdx';
+
 
 const rootReducer = combineReducers({
     // reducers
-    profile,
+  profile,
+  detailIdx,
 })
 
 const persistConfig = {
     key: 'root',
     storage,
     whitelist: [
-        // reducers
-        'profile',
+      // reducers
+      'profile',
+      'detailIdx'
     ],
 };
 
