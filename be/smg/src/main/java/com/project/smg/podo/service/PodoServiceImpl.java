@@ -81,7 +81,7 @@ public class PodoServiceImpl implements PodoService {
         // small goal 확인
         SmallGoal findSmallGoal = checkSmallGoal(podoCreateDto.getId());
         // podoType 찾기
-        PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getStickerType());
+        PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getImageUrl());
         log.info("podoType.getName= {}",podoType.getName());
 
 

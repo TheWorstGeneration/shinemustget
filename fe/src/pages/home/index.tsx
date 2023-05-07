@@ -45,7 +45,7 @@ const ButtonContainer = styled.div`
 
   position: absolute;
 
-  bottom: 0;
+  top: 740px;
   left: 50%;
   transform: translateX(-50%);
   padding: 0 1rem;
@@ -53,14 +53,20 @@ const ButtonContainer = styled.div`
   width: 680px;
 
   @media screen and (max-width: 960px) {
+    top: 540px;
     width: 480px;
   }
 
   @media screen and (max-width: 500px) {
     flex-direction: column;
+    top: 485px;
     width: 425px;
-
     padding: 0;
+  }
+
+  @media screen and (max-width: 450px) {
+    top: 460px;
+    width: calc(100vw - 2rem);
   }
 `;
 
