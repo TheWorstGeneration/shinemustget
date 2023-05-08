@@ -45,7 +45,8 @@ public class MemberController {
 //            session.removeAttribute("user");
 //            log.info("logout 성공");
 //        }
-
+        memberService.logout();
+        
         // HTTP 쿠키에서 accessToken 쿠키를 찾아서 만료시키기
         Optional<Cookie> optionalCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("accessToken"))
