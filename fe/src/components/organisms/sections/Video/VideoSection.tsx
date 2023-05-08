@@ -1,3 +1,4 @@
+import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { usePageYOffset } from '../../../../hooks/usePageYOffset';
 import styled from '@emotion/styled';
 
@@ -56,13 +57,23 @@ const Video = styled.video<{ pageYOffset: number }>`
   }
 `;
 
+const VideoDiv = styled.div<{ pageYOffset: number }>`
+  transition: all 0s ease-in-out !important;
+  scale: calc(1 + ${props => props.pageYOffset / 500});
+
+  @media screen and (max-width: 500px) {
+    height: 50vh;
+  }
+`;
+
 export const VideoSection = () => {
   const pageYOffset = usePageYOffset();
+  const innerWidth = useInnerWidth();
   return (
     <SectionStyle>
       <Dim />
       <figure>
-        <Video
+        {/* <Video
           pageYOffset={pageYOffset}
           width="250"
           autoPlay
@@ -73,7 +84,16 @@ export const VideoSection = () => {
           title="zelda"
         >
           <source src="/assets/videos/zelda.mp4" type="video/mp4" />
-        </Video>
+        </Video> */}
+        <VideoDiv pageYOffset={pageYOffset}>
+          <iframe
+            width={innerWidth}
+            height="900"
+            src="https://www.youtube.com/embed/xAn5z9_AfZg?controls=0&amp;start=128&autoplay=1&mute=1&loop=1&playlist=xAn5z9_AfZg&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1&widgetid=1&cc_load_policy=1&fs=0&playsinline=1&autohide=1&color=white&theme=light"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share, fullscreen"
+          />
+        </VideoDiv>
       </figure>
     </SectionStyle>
   );
