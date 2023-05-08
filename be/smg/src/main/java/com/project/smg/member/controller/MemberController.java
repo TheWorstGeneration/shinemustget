@@ -43,7 +43,7 @@ public class MemberController {
             memberService.logout(accessToken);
 //            session.removeAttribute("access_token");
 //            session.removeAttribute("user");
-            session.invalidate();
+//            session.invalidate();
             log.info("logout 성공");
         }
 
