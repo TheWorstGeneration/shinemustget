@@ -2,12 +2,32 @@ import { selectGoal } from "@/store/modules/goal";
 import { useAppSelector } from "./useRedux";
 
 export const useMandalart = () => {
-    const { title, bigGoalList, smallGoalLists } = useAppSelector(selectGoal);
+  const { title, bigGoalList, smallGoalLists } = useAppSelector(selectGoal);
 
-    // 위에 선언된 변수들로 만다라트 데이터를 만들어서 반환
-    const mandalart = {
-        title,
-        bigGoalList,
-        smallGoalLists,
-    };
-}
+  return {
+    title,
+    isClear: false,
+    bigList: bigGoalList.map((bigGoal, index) => ({
+      location: index + 1,
+      content: bigGoal,
+      isClear: false,
+      smallList: smallGoalLists[index].map(
+        (
+          smallGoal: {
+            id: number;
+            content: string;
+            isPodo: boolean;
+            isToday: boolean;
+          },
+          index: number,
+        ) => ({
+          location: index + 1,
+          content: smallGoal.content,
+          isPodo: false,
+          isToday: false,
+          isClear: false,
+        }),
+      ),
+    })),
+  };
+};

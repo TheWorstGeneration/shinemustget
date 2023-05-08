@@ -1,5 +1,6 @@
 import { InputBox } from '@/components/atoms/InputBox/InputBox';
 import { BigGoalListContainer } from '@/components/molecules/BigGoalListContainer/BigGoalListContainer';
+import { useMandalart } from '@/hooks/useMandalart';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal } from '@/store/modules/goal';
 import { setInputBox } from '@/store/modules/modal';
@@ -25,7 +26,10 @@ const CreateSection = styled.section`
 
 export default function Create() {
   const dispatch = useAppDispatch();
-  const { title } = useAppSelector(selectGoal);
+  const { title, smallGoalLists } = useAppSelector(selectGoal);
+  const mandalart = smallGoalLists[0][0] === '' ? null : useMandalart();
+
+  console.log(mandalart);
 
   useEffect(() => {
     if (title === '') {
