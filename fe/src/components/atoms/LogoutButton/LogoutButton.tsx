@@ -33,7 +33,11 @@ export const LogoutButton = () => {
     if (result) {
       getKakaoLogout();
       dispatch(setLogout());
-      router.push('/');
+      router.push(
+        process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
+          ? process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
+          : '/',
+      );
     }
   };
 
