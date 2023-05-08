@@ -1,5 +1,6 @@
 package com.project.smg.podo.service;
 
+import com.project.smg.mandalart.entity.Title;
 import com.project.smg.podo.dto.PodoCreateDto;
 import com.project.smg.podo.dto.PodoDetailDto;
 import com.project.smg.podo.dto.StickerDto;
@@ -17,4 +18,5 @@ public interface PodoService {
     void podoSetting(String mid, int id);
 
     PodoDetailDto detailPodo(String mid, int id);
+
 }

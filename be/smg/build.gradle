@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.sonarqube' version '4.0.0.2929'
 }
 
 group = 'com.project'
@@ -19,6 +20,9 @@ repositories {
 }
 
 dependencies {
+    //Test lombok
+    testImplementation 'org.projectlombok:lombok:1.18.22'
+
     //common
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
@@ -42,9 +46,6 @@ dependencies {
     //swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
-//    //s3
-//    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.819'
-
     // ChatGpt
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.0'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
@@ -52,6 +53,11 @@ dependencies {
     // WebClient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // JSON 직렬화
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {

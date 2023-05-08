@@ -11,6 +11,8 @@ const MandalartContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  cursor: pointer;
 `;
 
 const MandalartdBox = styled.div`
@@ -19,12 +21,10 @@ const MandalartdBox = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 
-  border: 2px solid blue;
-
   overflow: hidden;
 `;
 
-const Mandalart = styled.div`
+const Mandalart = styled.div<{ isCenter: boolean }>`
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -36,7 +36,9 @@ const Mandalart = styled.div`
   padding-bottom: 32%;
   margin: 0.5%;
 
-  border: 1px solid tomato;
+  background-color: ${({ isCenter }) =>
+    isCenter === true ? '#fbcdcd' : '#dffbe5'};
+  border: 1px solid #888888;
 
   > p {
     position: absolute;
@@ -46,6 +48,7 @@ const Mandalart = styled.div`
 
     transform: translate(-50%, -50%);
 
+    color: ${({ isCenter }) => (isCenter === true ? '#ff0909' : '#01c027')};
     font-size: 0.8rem;
   }
 
@@ -60,7 +63,7 @@ const Mandalart = styled.div`
 
   @media (max-width: 500px) {
     > p {
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 20ch;
@@ -68,56 +71,52 @@ const Mandalart = styled.div`
   }
 `;
 
-interface ClearMandalart {
-  id: number;
-  SearchDto: SearchDto;
-}
-
-interface SearchDto {
-  likeCnt: number;
-  isLike: boolean;
-  title: string;
-  bigGoalList: SearchBigDto[];
-}
-
 interface SearchBigDto {
   content: string;
   location: number;
 }
 
-export const BigGoalMandalart = (prop: ClearMandalart) => {
-  const title: string = prop.SearchDto.title;
-  const likeCnt: number = prop.SearchDto.likeCnt;
-  const isLike: boolean = prop.SearchDto.isLike;
-  const bigGoalList: SearchBigDto[] = prop.SearchDto.bigGoalList.sort(
-    (o1, o2) => {
+export const BigGoalMandalart = (props: any) => {
+  const title: string = props.searchDto?.title;
+  const likeCnt: number = props.searchDto?.likeCnt;
+  const isLike: boolean = props.searchDto?.isLike;
+  const bigGoalList: SearchBigDto[] = props.searchDto?.bigList?.sort(
+    (o1: SearchBigDto, o2: SearchBigDto) => {
       return o1.location - o2.location;
     },
   );
+  const isProfile: boolean = props.isProfile;
+
+  const handleMandalartDetail = () => {
+    console.log('madalart detail');
+  };
+
   return (
     <>
       <Title>{title}</Title>
-      <MandalartContainer>
+      <MandalartContainer onClick={handleMandalartDetail}>
         <MandalartdBox>
-          {bigGoalList.map(bigGoal =>
-            bigGoal.location == 6 ? (
+          {bigGoalList?.map(bigGoal =>
+            bigGoal.location == 5 ? (
               <>
-                <Mandalart key={5}>
-                  <p>{title}</p>
+                <Mandalart key={bigGoal.location * 2 + 1} isCenter={true}>
+                  <p>
+                    <b>{title}</b>
+                  </p>
                 </Mandalart>
-                <Mandalart key={bigGoal.location}>
+                <Mandalart key={bigGoal.location} isCenter={false}>
                   <p>{bigGoal.content}</p>
                 </Mandalart>
               </>
             ) : (
-              <Mandalart key={bigGoal.location}>
+              <Mandalart key={bigGoal.location} isCenter={false}>
                 <p>{bigGoal.content}</p>
               </Mandalart>
             ),
           )}
         </MandalartdBox>
       </MandalartContainer>
-      <Like isLike={isLike} likeCnt={likeCnt} />
+      <Like isLike={isLike} likeCnt={likeCnt} isProfile={isProfile} />
     </>
   );
 };

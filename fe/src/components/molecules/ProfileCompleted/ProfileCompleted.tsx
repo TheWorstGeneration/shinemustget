@@ -1,5 +1,7 @@
 import { CompletedLog } from '@/components/atoms/CompletedLog/CompletedLog';
+import getClearGoal from '@/pages/api/getClearGoal';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 const ProfileCompletedContainer = styled.div`
   width: 50%;
@@ -36,50 +38,24 @@ interface CompletedLogs {
   clearAt: string;
 }
 
- function getCompletedLogs(): CompletedLogs[] {
-  return [
-    {
-      content: '자기주도성',
-      clearAt: '2023년 4월 19일',
-    },
-    {
-      content: '시장분석',
-      clearAt: '2023년 4월 20일',
-    },
-    {
-      content: '인내심',
-      clearAt: '2023년 4월 25일',
-    },
-    {
-      content: '경제지식',
-      clearAt: '2023년 4월 30일',
-    },
-    {
-      content: '유튜브 보기',
-      clearAt: '2023년 5월 1일',
-    },
-    {
-      content: '컴포넌트 만들기',
-      clearAt: '2023년 5월 1일',
-    },
-    {
-      content: '반응형 적용하기',
-      clearAt: '2023년 5월 1일',
-    },
-    {
-      content: '커밋하기',
-      clearAt: '2023년 5월 1일',
-    },
-  ];
-}
-
 export const ProfileCompleted = () => {
-  const CompletedLogs: CompletedLogs[] = getCompletedLogs();
+  const [completedLogs, setCompletedLogs] = useState<CompletedLogs[] | null>(
+    null,
+  );
+  useEffect(() => {
+    const axiosClearGoal = async () => {
+      const data = await getClearGoal();
+      setCompletedLogs(data);
+    };
+
+    axiosClearGoal();
+  }, []);
+
   return (
     <ProfileCompletedContainer>
       <Title>달성목표</Title>
       <CompletedBox>
-        {CompletedLogs.map(Log => (
+        {completedLogs?.map(Log => (
           <CompletedLog
             key={Log.content}
             content={Log.content}
@@ -89,4 +65,4 @@ export const ProfileCompleted = () => {
       </CompletedBox>
     </ProfileCompletedContainer>
   );
-}
+};

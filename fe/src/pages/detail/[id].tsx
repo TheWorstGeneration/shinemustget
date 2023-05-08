@@ -1,41 +1,89 @@
-import styled from "@emotion/styled";
-import { DetailedCenter } from "@/components/molecules/DetailedCenter/DetailedCenter";
-import { DetailedLeft } from "@/components/molecules/DetailedLeft/DetailedLeft";
-import { DetailedRight } from "@/components/molecules/DetailedRight/DetailedRight";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import styled from '@emotion/styled';
+import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
+import { DetailedRight } from '@/components/molecules/DetailedRight/DetailedRight';
+import Head from 'next/head';
+import { useInnerWidth } from '@/hooks/useInnerWidth';
+import { setIdx } from '@/store/modules/detailIdx';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 
 const DetailedDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 6rem 10rem;
-  `;
-
-const DetailedDivLeft = styled.div`
-  flex:0.85;
+  display: flex;
+  justify-content: space-between;
+  margin: 7rem 28rem;
 `;
 
-const DetailedDivCenter = styled.div`
-  flex:2.25;
+const DetailedDivLeft = styled.div`
+  flex: 0.85;
+`;
+
+const DetailedDivCenter = styled.section<{ isMaxWidth: boolean }>`
+  display: flex;
+  flex-direction: column;
+
+  width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
+  padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0 10rem')};
+  height: 91vh;
+
+  background-color: #ffffff;
+
+  @media (max-width: 960px) {
+    padding: 0;
+  }
+
+  @media (max-width: 500px) {
+    height: 130vh;
+  }
 `;
 
 const DetailedDivRight = styled.div`
-  flex:1;
+  flex: 1;
 `;
 
+
 export default function Detail() {
+  const isMaxWidth = useInnerWidth() >= 1440;
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setIdx(router?.query.id));
+    console.log(router?.query.id);    
+  });
 
   return (
+    <>
+      <Head>
+        <title>Shine Must Get | 만다라트 상세 페이지</title>
+        <meta
+          name="description"
+          content="포도알 스티커를 붙이며 차근차근 목표를 이루어 나가보세요."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Shine Must Get" />
+        <meta
+          property="og:title"
+          content="Shine Must Get | 만다라트 상세 페이지"
+        />
+        <meta
+          property="og:description"
+          content="포도알 스티커를 붙이며 차근차근 목표를 이루어 나가보세요."
+        />
+        <meta
+          property="og:image"
+          content="assets/images/common/front-image.png"
+        />
+        <meta property="og:url" content="https://shinemustget.com" />
+      </Head>
       <DetailedDiv>
-      <DetailedDivLeft>
-        <DetailedLeft/>
-      </DetailedDivLeft>
-      <DetailedDivCenter>
-        <DetailedCenter />
-      </DetailedDivCenter>
-      <DetailedDivRight>
-        <DetailedRight/>
-      </DetailedDivRight>
+        <DetailedDivCenter isMaxWidth={isMaxWidth}>
+          <DetailedCenter />
+        </DetailedDivCenter>
+        <DetailedDivRight>
+          <DetailedRight/>
+        </DetailedDivRight>
       </DetailedDiv>
-    );
-};
- 
-
+    </>
+  );
+}

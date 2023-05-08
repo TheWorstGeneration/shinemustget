@@ -1,5 +1,6 @@
 package com.project.smg.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NowBigGoalDto {
     String content;
+    @JsonProperty("isClear")
     boolean isClear;
 }

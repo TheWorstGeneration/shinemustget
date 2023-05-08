@@ -56,7 +56,7 @@ const UserCommentCompleteButtonDiv = styled.div`
 
 export function UserComment() {
   const [countLetter, setCountLetter] = useState(0);
-  const [onLine,setOneLine] = useState("");
+  const [oneline,setOneLine] = useState("");
   const [imageUrl,setImageUrl] = useState("");
   const handleOnChange = (e: any) => {
     setCountLetter(e.target.value.length);
@@ -79,7 +79,7 @@ export function UserComment() {
           <Image src={ imageUrl} width={32.5} height={32.5} alt="Image"></Image>
         </UserCommentCompleteImageDiv>
         <UserCommentCompleteButtonDiv>
-          <ComposeButton imageUrl={imageUrl} onLine={onLine} />
+          <ComposeButton imageUrl={"https://www.shinemustget.com/images/stickers/default.png"} oneline={oneline} />
         </UserCommentCompleteButtonDiv>
       </UserCommentCompleteDiv>
     </UserCommentDiv>

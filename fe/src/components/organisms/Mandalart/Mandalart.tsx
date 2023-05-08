@@ -27,6 +27,11 @@ const Container = styled.article`
     width: 457px;
     height: 745px;
   }
+
+  @media screen and (max-width: 450px) {
+    width: calc(100vw - 2rem);
+    height: 700px;
+  }
 `;
 
 const Row = styled.div`

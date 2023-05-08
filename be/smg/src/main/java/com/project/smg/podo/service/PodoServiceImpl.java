@@ -81,7 +81,7 @@ public class PodoServiceImpl implements PodoService {
         // small goal 확인
         SmallGoal findSmallGoal = checkSmallGoal(podoCreateDto.getId());
         // podoType 찾기
-        PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getStickerType());
+        PodoType podoType = podoTypeRepository.findByImageUrl(podoCreateDto.getImageUrl());
         log.info("podoType.getName= {}",podoType.getName());
 
 
@@ -136,12 +136,6 @@ public class PodoServiceImpl implements PodoService {
     }
 
 
-
-    private Member checkMember(String mid) {
-        Optional<Member> member = memberRepository.findById(mid);
-        Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
-        return findMember;
-    }
 
     private SmallGoal checkSmallGoal(int id){
         Optional<SmallGoal> smallGoal = smallGoalRepository.findById(id);
