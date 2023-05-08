@@ -14,11 +14,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -41,27 +47,33 @@ public class MemberServiceImpl implements MemberService {
      *                    세션으로 부터 가져온 카카오 토큰을 사용해 카카오에서 제공하는 엔드포인트로 요청을 보내 로그아웃 처리
      */
     @Override
-    public void logout() {
-        try {
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+//        try {
 //            URL url = new URL(logoutURL);
 //
 //            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 //            conn.setRequestMethod("POST");
 //            conn.setRequestProperty(AUTHORIZATION, BEARER_PREFIX + accessToken);
+//            conn.disconnect();
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getForObject(Url, String.class);
 
-            URL url = new URL(Url);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.disconnect();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.getForObject(Url, String.class);
+        // HTTP 쿠키에서 accessToken 쿠키를 찾아서 만료시키기
+        Optional<Cookie> optionalCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("accessToken"))
+                .findFirst();
+        optionalCookie.map(Stream::of)
+                .orElseGet(Stream::empty)
+                .forEach(cookie -> {
+                    cookie.setValue(null);
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                });
     }
 
     /**

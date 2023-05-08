@@ -45,19 +45,7 @@ public class MemberController {
 //            session.removeAttribute("user");
 //            log.info("logout 성공");
 //        }
-        memberService.logout();
-
-        // HTTP 쿠키에서 accessToken 쿠키를 찾아서 만료시키기
-        Optional<Cookie> optionalCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("accessToken"))
-                .findFirst();
-        optionalCookie.map(Stream::of)
-                .orElseGet(Stream::empty)
-                .forEach(cookie -> {
-                    cookie.setValue(null);
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                });
+        memberService.logout(request, response);
 
 //        String redirectUrl = "https://shinemustget.com";
 //        try {
