@@ -45,7 +45,7 @@ public class MandalartServiceImpl implements MandalartService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 20어절 미만으로 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
 
         ChatGptRequestDto chatGPTRequest = new ChatGptRequestDto();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
