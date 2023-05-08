@@ -9,6 +9,7 @@ import com.project.smg.podo.entity.PodoType;
 import com.project.smg.podo.repository.PodoTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +23,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String REST_API_KEY;
     private final String AUTHORIZATION = "Authorization";
     private final String BEARER_PREFIX = "Bearer ";
     private final String logoutURL = "https://kapi.kakao.com/v1/user/logout";
+    private final String Url = "https://kauth.kakao.com/oauth/logout?client_id=" + REST_API_KEY +"&logout_redirect_uri=http://shinemustget.com/api/kakaoLogout";
     private final MemberRepository memberRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final MemberPodoRepository memberPodoRepository;
@@ -38,13 +42,17 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void logout(String accessToken) {
         try {
-            URL url = new URL(logoutURL);
+//            URL url = new URL(logoutURL);
+//
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setRequestMethod("POST");
+//            conn.setRequestProperty(AUTHORIZATION, BEARER_PREFIX + accessToken);
+//
+//            System.out.println(conn.getResponseMessage().toString());
 
+            URL url = new URL(Url);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty(AUTHORIZATION, BEARER_PREFIX + accessToken);
-
-            System.out.println(conn.getResponseMessage().toString());
+            conn.setRequestMethod("GET");
 
             conn.disconnect();
         } catch (MalformedURLException e) {
