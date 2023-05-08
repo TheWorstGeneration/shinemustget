@@ -66,8 +66,9 @@ export const Header = () => {
         dispatch(setLogin(memberInfo));
       }
     };
-
-    axiosMemberInfo();
+    if (isLogin) {
+      axiosMemberInfo();
+    }
   }, []);
 
   return isLogin ? (
