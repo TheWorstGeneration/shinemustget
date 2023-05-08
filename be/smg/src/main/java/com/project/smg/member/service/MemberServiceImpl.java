@@ -9,18 +9,12 @@ import com.project.smg.podo.entity.PodoType;
 import com.project.smg.podo.repository.PodoTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -30,39 +24,12 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String REST_API_KEY;
-    private final String AUTHORIZATION = "Authorization";
-    private final String BEARER_PREFIX = "Bearer ";
-    private final String logoutURL = "https://kapi.kakao.com/v1/user/logout";
-    private final String Url = "https://kauth.kakao.com/oauth/logout?client_id=" + REST_API_KEY +"&logout_redirect_uri=http://shinemustget.com/api/kakaoLogout";
     private final MemberRepository memberRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final MemberPodoRepository memberPodoRepository;
 
-    /**
-     * 로그아웃 서비스
-     *
-     * @param accessToken 카카오 토큰
-     *                    세션으로 부터 가져온 카카오 토큰을 사용해 카카오에서 제공하는 엔드포인트로 요청을 보내 로그아웃 처리
-     */
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-//        try {
-//            URL url = new URL(logoutURL);
-//
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setRequestMethod("POST");
-//            conn.setRequestProperty(AUTHORIZATION, BEARER_PREFIX + accessToken);
-//            conn.disconnect();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForObject(Url, String.class);
-
         // HTTP 쿠키에서 accessToken 쿠키를 찾아서 만료시키기
         Optional<Cookie> optionalCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> cookie.getName().equals("accessToken"))

@@ -5,21 +5,14 @@ import com.project.smg.member.dto.MemberInfoDto;
 import com.project.smg.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Slf4j
 @RestController
@@ -34,25 +27,9 @@ public class MemberController {
      * @throws Exception response.sendRedirect() 메소드는 IOException을 발생시키는 Checked Exception 이므로 예외처리
      */
     @GetMapping("/kakaoLogout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-//        HttpSession session = request.getSession();
-//        String accessToken = (String) session.getAttribute("access_token");
-//
-//        // access_token이 존재하는 경우 로그아웃 처리
-//        if (accessToken != null && !"".equals(accessToken)) {
-//            memberService.logout(accessToken);
-//            session.removeAttribute("access_token");
-//            session.removeAttribute("user");
-//            log.info("logout 성공");
-//        }
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         memberService.logout(request, response);
-
-//        String redirectUrl = "https://shinemustget.com";
-//        try {
-//            response.sendRedirect(redirectUrl);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        return new ResponseEntity<>(new ResponseDto(200, "쿠키에서 토큰 만료 성공"), HttpStatus.OK);
     }
 
     /**
