@@ -1,14 +1,16 @@
 import axios from 'axios';
 
-interface SmallGoalList {
-  smallGoalList: string[];
+interface SmallGoal {
+  [key: string] : string[]
 }
 
 const getSmallGoal = async (bigGoal: string[]) => {
-  const data = await axios.get("https://shinemustget.com/api/mandalart/small-goal", {
-    params: {
+  const data = await axios.post<SmallGoal>("https://shinemustget.com/api/mandalart/small-goal", {
       bigGoal: bigGoal
-    }
+  },{
+        headers: {
+        id: 2762543073,
+        },
   }).then(res => res.data);
   return data;
 };

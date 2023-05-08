@@ -1,6 +1,8 @@
 import { InputBox } from '@/components/atoms/InputBox/InputBox';
 import { BigGoalListContainer } from '@/components/molecules/BigGoalListContainer/BigGoalListContainer';
-import { useAppDispatch } from '@/hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { selectGoal } from '@/store/modules/goal';
+import { setInputBox } from '@/store/modules/modal';
 import { setResetInputBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import Head from 'next/head';
@@ -23,9 +25,14 @@ const CreateSection = styled.section`
 
 export default function Create() {
   const dispatch = useAppDispatch();
+  const { title } = useAppSelector(selectGoal);
 
   useEffect(() => {
-    dispatch(setResetInputBox());
+    if (title === '') {
+      dispatch(setResetInputBox());
+    } else {
+      dispatch(setInputBox());
+    }
   }, []);
 
   return (

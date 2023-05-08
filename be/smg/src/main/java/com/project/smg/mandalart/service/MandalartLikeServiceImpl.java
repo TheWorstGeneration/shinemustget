@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 @Slf4j
 @Service
@@ -32,46 +33,50 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         Title findTitle = checkTitle(id);
 
         String key = "like::"+id;
+        String subKey = "change::"+id;
         // redis set 으로 사용
         SetOperations <String, String> setOperations = redisTemplate.opsForSet();
         // redis 조회
         // redis 에 값이 없는 경우
         if(!redisTemplate.hasKey(key)){
-            // DB 조회
-            Likes findLike = checkLike(mid, id);
-            // DB 없음 -> redis 새로 저장
-            if (findLike==null){
-                log.info("no DB, new key add from Redis");
-                setOperations.add(key, mid);
-            } else {
-                // DB 있음 -> DB status 변경 하고 redis 에 저장
-                if (findLike.isStatus()){
-                    log.info("exist DB, status update False from DB");
-                    findLike.setStatus(false);
-                }else {
-                    log.info("exist DB, status update True from DB, like add from Redis");
-                    findLike.setStatus(true);
-                    setOperations.add(key,mid);
-                }
+
+            // 전체 DB 가져오기 (스케쥴링 삭제)
+            // 만다라트 id 인 리스트를 다 가져와서 redis 에 저장
+            List<Likes> likeListByTitleId = likeRepository.findByTitleIdAndStatus(id, true);
+
+            for (Likes like : likeListByTitleId){
+                setOperations.add(key, like.getMember().getId());
             }
-        // redis 에 값이 있는 경우
-        // mid 있는 경우 -> redis value 제거
-        // mid 없는 경우 -> redis value 추가
-        }else{
-            if (setOperations.isMember(key, mid)){
-                log.info("exist redis, like remove from Redis");
-                setOperations.remove(key, mid);
-            }else{
-                log.info("exist redis, like add from Redis");
-                setOperations.add(key,mid);
-            }
+        }
+        if (setOperations.isMember(key, mid)){ // 좋아요 취소
+            log.info("exist redis, like remove from Redis");
+            setOperations.remove(key, mid);
+            // 변경여부체크
+            checkChange(mid, subKey, setOperations);
 
-
-
-
+        }else{ // 좋아요
+            log.info("exist redis, like add from Redis");
+            setOperations.add(key,mid);
+            // 변경여부체크
+            checkChange(mid, subKey, setOperations);
         }
 
 
+
+
+
+
+
+    }
+
+    private  void checkChange(String mid, String subKey, SetOperations<String, String> setOperations) {
+        if (setOperations.isMember(subKey, mid)) {
+            // 변경한적있냐
+            setOperations.remove(subKey, mid);
+        }else{
+            // 처음 변경
+            setOperations.add(subKey, mid);
+        }
     }
 
     public Likes checkLike(String mid, int id) {

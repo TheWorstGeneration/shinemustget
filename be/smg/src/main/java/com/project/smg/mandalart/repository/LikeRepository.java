@@ -17,4 +17,5 @@ public interface LikeRepository extends JpaRepository<Likes, Integer> {
     Optional<Likes> findByMemberAndMandalart(@Param("tid") int id, @Param("mid") String mid);
 
     List<Likes> findByTitleId(int titleId);
+    List<Likes> findByTitleIdAndStatus(int titleId, boolean status);
 }

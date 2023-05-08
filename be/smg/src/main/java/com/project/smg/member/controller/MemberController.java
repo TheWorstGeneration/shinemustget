@@ -41,9 +41,9 @@ public class MemberController {
         // access_token이 존재하는 경우 로그아웃 처리
         if (accessToken != null && !"".equals(accessToken)) {
             memberService.logout(accessToken);
-            session.removeAttribute("access_token");
-            session.removeAttribute("user");
-
+//            session.removeAttribute("access_token");
+//            session.removeAttribute("user");
+//            session.invalidate();
             log.info("logout 성공");
         }
 

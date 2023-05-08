@@ -1,23 +1,19 @@
 import { SmallGoalCreateButton } from '@/components/atoms/SmallGoalCreateButton/SmallGoalCreateButton';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal, setBigGoal } from '@/store/modules/goal';
+import { selectModal } from '@/store/modules/modal';
 import styled from '@emotion/styled';
-import {
-  faPaperPlane,
-  faPenToSquare,
-} from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const BigGoalList = styled.article`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 
   position: relative;
 
   width: 712px;
-  height: 50vh;
+  height: 100vh;
 
   @media screen and (max-width: 960px) {
     width: 512px;
@@ -29,6 +25,7 @@ const BigGoalList = styled.article`
 
   @media screen and (max-width: 450px) {
     width: calc(100vw - 2rem);
+    height: 844px;
   }
 `;
 
@@ -39,16 +36,25 @@ const MandalartTitle = styled.h1`
   color: #03510b;
 
   width: 100%;
-  height: 3rem;
 
   padding-left: 1rem;
 
   text-align: left;
 `;
 
+const BigGoals = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 50vh;
+`;
+
 const BigGoalContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
 
   width: 100%;
@@ -60,9 +66,9 @@ const BigGoalTextField = styled.textarea`
   align-items: center;
   justify-content: center;
 
-  padding: 1rem;
+  padding: 0 1rem;
   width: 100%;
-  height: 3rem;
+  height: 2rem;
 
   font-size: 1rem;
   font-weight: 600;
@@ -84,7 +90,6 @@ const BigGoalTextLength = styled.span`
   position: relative;
 
   width: 3rem;
-  height: 3rem;
 
   font-size: 0.75rem;
   font-weight: 600;
@@ -97,8 +102,8 @@ const YouCanEdit = styled.h2`
   font-weight: 600;
   line-height: 1.5;
   color: #718f80;
-
-  margin-top: 4rem;
+  text-align: center;
+  width: 100%;
 `;
 
 const ButtonContainer = styled.div`
@@ -108,12 +113,11 @@ const ButtonContainer = styled.div`
 
   width: 100%;
   height: 3rem;
-
-  margin-top: 4rem;
 `;
 
 export const BigGoalListContainer = () => {
   const { title, bigGoalList } = useAppSelector(selectGoal);
+  const { isInputBox } = useAppSelector(selectModal);
   const dispatch = useAppDispatch();
 
   const handleChangeBigGoal = (index: number, bigGoal: string) => {
@@ -124,23 +128,27 @@ export const BigGoalListContainer = () => {
       <MandalartTitle>{title}</MandalartTitle>
       {title === '' ? (
         <YouCanEdit>
-          장기적인 목표를 작성할수록 좋은 결과를 가져옵니다.
+          {isInputBox
+            ? '장기적인 목표를 작성할수록 좋은 결과를 가져옵니다.'
+            : 'Shine Must Get이 당신의 만다라트를 작성 중 입니다.'}
         </YouCanEdit>
       ) : (
         <>
-          {bigGoalList.map((bigGoal, index) => {
-            return (
-              <BigGoalContainer>
-                <BigGoalTextField
-                  key={index}
-                  value={bigGoal}
-                  maxLength={20}
-                  onChange={e => handleChangeBigGoal(index, e.target.value)}
-                />
-                <BigGoalTextLength>{bigGoal.length}/20</BigGoalTextLength>
-              </BigGoalContainer>
-            );
-          })}
+          <BigGoals>
+            {bigGoalList.map((bigGoal, index) => {
+              return (
+                <BigGoalContainer>
+                  <BigGoalTextField
+                    key={index}
+                    value={bigGoal}
+                    maxLength={20}
+                    onChange={e => handleChangeBigGoal(index, e.target.value)}
+                  />
+                  <BigGoalTextLength>{bigGoal.length}/20</BigGoalTextLength>
+                </BigGoalContainer>
+              );
+            })}
+          </BigGoals>
           <YouCanEdit>수정하고 싶은 목표가 있다면 변경해 보세요.</YouCanEdit>
           <ButtonContainer>
             <SmallGoalCreateButton />

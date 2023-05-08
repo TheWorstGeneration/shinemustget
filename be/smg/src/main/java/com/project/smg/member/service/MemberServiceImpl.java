@@ -44,6 +44,8 @@ public class MemberServiceImpl implements MemberService {
             conn.setRequestMethod("POST");
             conn.setRequestProperty(AUTHORIZATION, BEARER_PREFIX + accessToken);
 
+            System.out.println(conn.getResponseMessage().toString());
+
             conn.disconnect();
         } catch (MalformedURLException e) {
             e.printStackTrace();
