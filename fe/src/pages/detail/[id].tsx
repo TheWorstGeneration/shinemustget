@@ -1,28 +1,57 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
-import { DetailedLeft } from '@/components/molecules/DetailedLeft/DetailedLeft';
 import { DetailedRight } from '@/components/molecules/DetailedRight/DetailedRight';
 import Head from 'next/head';
+import { useInnerWidth } from '@/hooks/useInnerWidth';
+import { setIdx } from '@/store/modules/detailIdx';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 
 const DetailedDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 6rem 10rem;
+  margin: 7rem 28rem;
 `;
 
 const DetailedDivLeft = styled.div`
   flex: 0.85;
 `;
 
-const DetailedDivCenter = styled.div`
-  flex: 2.25;
+const DetailedDivCenter = styled.section<{ isMaxWidth: boolean }>`
+  display: flex;
+  flex-direction: column;
+
+  width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
+  padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0 10rem')};
+  height: 91vh;
+
+  background-color: #ffffff;
+
+  @media (max-width: 960px) {
+    padding: 0;
+  }
+
+  @media (max-width: 500px) {
+    height: 130vh;
+  }
 `;
 
 const DetailedDivRight = styled.div`
   flex: 1;
 `;
 
+
 export default function Detail() {
+  const isMaxWidth = useInnerWidth() >= 1440;
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setIdx(router?.query.id));
+    console.log(router?.query.id);    
+  });
+
   return (
     <>
       <Head>
@@ -48,14 +77,11 @@ export default function Detail() {
         <meta property="og:url" content="https://shinemustget.com" />
       </Head>
       <DetailedDiv>
-        <DetailedDivLeft>
-          <DetailedLeft />
-        </DetailedDivLeft>
-        <DetailedDivCenter>
+        <DetailedDivCenter isMaxWidth={isMaxWidth}>
           <DetailedCenter />
         </DetailedDivCenter>
         <DetailedDivRight>
-          <DetailedRight />
+          <DetailedRight/>
         </DetailedDivRight>
       </DetailedDiv>
     </>

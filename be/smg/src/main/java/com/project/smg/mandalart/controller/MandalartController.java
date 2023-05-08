@@ -33,7 +33,7 @@ public class MandalartController {
         });
     }
 
-    @GetMapping("/small-goal")
+    @PostMapping("/small-goal")
     public CompletableFuture<ResponseEntity<?>> getSmallGoal(@RequestBody SmallGoalRequestDto smallGoalRequestDto) throws InterruptedException, ExecutionException{
         CompletableFuture<ConcurrentHashMap<String, Object>> asyncBigGoals = mandalartService.getSmallGoals(smallGoalRequestDto.getBigGoal());
         return asyncBigGoals.thenApply(stringObjectConcurrentHashMap -> {

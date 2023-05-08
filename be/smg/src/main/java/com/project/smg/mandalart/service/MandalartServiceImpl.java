@@ -75,7 +75,6 @@ public class MandalartServiceImpl implements MandalartService {
 
         // DB에 저장되있는지 확인
         Optional<GptTitle> byTitle = gptTitleRepository.findByContent(content);
-
         // 있다면 DB에서 리턴
         if (byTitle.isPresent()) {
             result.put(content, getSavedGptBigGoal(byTitle));
@@ -152,17 +151,24 @@ public class MandalartServiceImpl implements MandalartService {
 
     /** 만다라트 조회 */
     @Override
+    @Transactional
     public HashMap<String, Object> getMainMandalart(String mid) {
         Optional<Member> optional = memberRepository.findById(mid);
         Member member = optional.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
 
         Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
-        Title title = top1ByMemberOrderByIdDesc.orElseThrow(() -> new IllegalStateException("생성된 만다라트가 없습니다."));
+        Title title = top1ByMemberOrderByIdDesc.orElse(null);
 
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("title", title.getContent());
-        result.put("isClear", title.getClearAt() == null ? false : true);
-        result.put("bigList", makeBigDto(title.getBigGoals()));
+        HashMap<String, Object> result;
+
+        if(title == null)
+            result = new HashMap<>();
+        else {
+            result = new HashMap<>();
+            result.put("title", title.getContent());
+            result.put("isClear", title.getClearAt() == null ? false : true);
+            result.put("bigList", makeBigDto(title.getBigGoals()));
+        }
 
         return result;
     }

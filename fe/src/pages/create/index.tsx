@@ -1,21 +1,33 @@
 import { InputBox } from '@/components/atoms/InputBox/InputBox';
+import { BigGoalListContainer } from '@/components/molecules/BigGoalListContainer/BigGoalListContainer';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setResetInputBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 const CreateSection = styled.section`
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
   position: relative;
   width: 100vw;
-  height: calc(100vh - 5.5rem);
+  height: 100vh;
   background-color: #ffffff;
 
-  padding: 1rem 0;
+  overflow: hidden;
+
+  padding-top: 6rem;
 `;
 
 export default function Create() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setResetInputBox());
+  }, []);
+
   return (
     <>
       <Head>
@@ -35,6 +47,7 @@ export default function Create() {
         <meta property="og:url" content="https://shinemustget.com" />
       </Head>
       <CreateSection>
+        <BigGoalListContainer />
         <InputBox />
       </CreateSection>
     </>
