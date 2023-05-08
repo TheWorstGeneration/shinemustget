@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setResetGoal } from '@/store/modules/goal';
 import styled from '@emotion/styled';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,12 +47,13 @@ const ButtonText = styled.span`
 
 export const DeleteButton = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleDeleteMandalart = () => {
     const result = confirm('정말로 만다라트를 삭제하시겠습니까?');
     if (result) {
+      dispatch(setResetGoal());
       router.push('/create');
-      console.log('만다라트 삭제');
     }
   };
 
