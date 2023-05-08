@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -40,26 +41,27 @@ public class MemberServiceImpl implements MemberService {
      *                    세션으로 부터 가져온 카카오 토큰을 사용해 카카오에서 제공하는 엔드포인트로 요청을 보내 로그아웃 처리
      */
     @Override
-    public void logout(String accessToken) {
+    public void logout() {
         try {
 //            URL url = new URL(logoutURL);
 //
 //            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 //            conn.setRequestMethod("POST");
 //            conn.setRequestProperty(AUTHORIZATION, BEARER_PREFIX + accessToken);
-//
-//            System.out.println(conn.getResponseMessage().toString());
 
             URL url = new URL(Url);
+
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-
             conn.disconnect();
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.getForObject(Url, String.class);
     }
 
     /**
