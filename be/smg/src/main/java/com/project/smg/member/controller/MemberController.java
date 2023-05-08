@@ -26,9 +26,6 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String REST_API_KEY;
-
     /**
      * 카카오 소셜 로그인 로그아웃 처리
      *
@@ -62,13 +59,11 @@ public class MemberController {
                 });
 
 //        String redirectUrl = "https://shinemustget.com";
-        String redirectUrl = "https://kauth.kakao.com/oauth/logout?client_id=" + REST_API_KEY +"&logout_redirect_uri=http://shinemustget.com/api/kakaoLogout";
-        System.out.println(redirectUrl);
-        try {
-            response.sendRedirect(redirectUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            response.sendRedirect(redirectUrl);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
