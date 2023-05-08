@@ -75,7 +75,6 @@ public class MandalartServiceImpl implements MandalartService {
 
         // DB에 저장되있는지 확인
         Optional<GptTitle> byTitle = gptTitleRepository.findByContent(content);
-
         // 있다면 DB에서 리턴
         if (byTitle.isPresent()) {
             result.put(content, getSavedGptBigGoal(byTitle));
