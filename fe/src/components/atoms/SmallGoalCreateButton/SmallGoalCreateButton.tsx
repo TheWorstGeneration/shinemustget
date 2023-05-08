@@ -1,6 +1,6 @@
-import { useAppSelector } from '@/hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import getSmallGoal from '@/pages/api/getSmallGoal';
-import { selectGoal } from '@/store/modules/goal';
+import { selectGoal, setSmallGoal } from '@/store/modules/goal';
 import styled from '@emotion/styled';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,13 +32,16 @@ const Button = styled.button`
 
 export const SmallGoalCreateButton = () => {
   const { bigGoalList } = useAppSelector(selectGoal);
+  const dispatch = useAppDispatch();
 
   const axiosSmallGoal = async (bigGoalList: string[]) => {
     const SmallGoalDTO = await getSmallGoal(bigGoalList);
     if (SmallGoalDTO) {
-      SmallGoalDTO.forEach((SmallGoal: any, index: any) => {
-        // dispatch(setBigGoal({ index, bigGoal }));
-        console.log(SmallGoal);
+      Object.entries(SmallGoalDTO).forEach(([key, smallGoalList]) => {
+        const i = bigGoalList.indexOf(key);
+        smallGoalList.forEach((smallGoal, j) => {
+          dispatch(setSmallGoal({ i, j, smallGoal }));
+        });
       });
     }
   };

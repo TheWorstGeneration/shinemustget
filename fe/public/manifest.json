@@ -22,7 +22,7 @@
       "src": "windows11/SmallTile.scale-100.png",
       "sizes": "71x71",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "windows11/SmallTile.scale-125.png",
@@ -342,7 +342,8 @@
     },
     {
       "src": "android/android-launchericon-512-512.png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "maskable"
     },
     {
       "src": "android/android-launchericon-192-192.png",
@@ -474,5 +475,23 @@
   "display_override": ["standalone"],
   "edge_side_panel": {
     "preferred_width": 1920
+  },
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.shine.must.get"
+    }
+  ],
+  "prefer_related_applications": false,
+  "iarc_rating_id": "0",
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
   }
 }

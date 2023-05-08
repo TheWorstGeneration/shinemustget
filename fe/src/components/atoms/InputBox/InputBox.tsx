@@ -23,7 +23,7 @@ const TypingContainer = styled.div<{ isInputBox: boolean }>`
   border: 1px solid #e0e0e0;
 
   transform: translateY(
-    ${({ isInputBox }) => (isInputBox ? '-10rem' : '10rem')}
+    ${({ isInputBox }) => (isInputBox ? '-7rem' : '10rem')}
   );
 
   @media screen and (max-width: 960px) {

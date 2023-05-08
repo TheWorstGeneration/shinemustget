@@ -4,8 +4,8 @@ import { RootState } from '..';
 // state type
 export interface goalSlice {
   title: string;
-  bigGoal: string[];
-  smallGoal: string[][];
+  bigGoalList: string[];
+  smallGoalLists: string[][];
 }
 
 export interface BigGoalAction {
