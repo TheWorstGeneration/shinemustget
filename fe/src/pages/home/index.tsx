@@ -71,19 +71,6 @@ const ButtonContainer = styled.div`
 `;
 
 export default function Home() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const axiosMemberInfo = async () => {
-      const memberInfo = await getMemberInfo();
-      if (memberInfo) {
-        dispatch(setLogin(memberInfo));
-      }
-    };
-
-    axiosMemberInfo();
-  }, []);
-
   return (
     <>
       <Head>
