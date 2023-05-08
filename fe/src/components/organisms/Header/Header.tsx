@@ -5,10 +5,12 @@ import { LogoutButton } from '../../atoms/LogoutButton/LogoutButton';
 import { ProfileImage } from '../../atoms/ProfileImage/ProfileImage';
 import styled from '@emotion/styled';
 import { Logo } from '@/components/atoms/Logo/Logo';
-import { useAppSelector } from '@/hooks/useRedux';
-import { selectProfile } from '@/store/modules/profile';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { selectProfile, setLogin } from '@/store/modules/profile';
 import { useRouter } from 'next/router';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
+import { useEffect } from 'react';
+import getMemberInfo from '@/pages/api/memberInfo';
 
 const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
   display: flex;
@@ -54,6 +56,19 @@ export const Header = () => {
   const size = useInnerWidth() > 500 ? 'lg' : 'sm';
   const isScroll = usePageYOffset() > changeYOffset;
   const { isLogin } = useAppSelector(selectProfile);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const axiosMemberInfo = async () => {
+      const memberInfo = await getMemberInfo();
+      if (memberInfo) {
+        dispatch(setLogin(memberInfo));
+      }
+    };
+
+    axiosMemberInfo();
+  }, []);
 
   return isLogin ? (
     <HeadContainer isScroll={isScroll} size={size}>
