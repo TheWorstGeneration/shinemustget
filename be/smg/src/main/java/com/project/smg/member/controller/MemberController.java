@@ -5,6 +5,7 @@ import com.project.smg.member.dto.MemberInfoDto;
 import com.project.smg.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,8 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String REST_API_KEY;
 
     /**
      * 카카오 소셜 로그인 로그아웃 처리
@@ -35,17 +38,16 @@ public class MemberController {
      */
     @GetMapping("/kakaoLogout")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        String accessToken = (String) session.getAttribute("access_token");
-
-        // access_token이 존재하는 경우 로그아웃 처리
-        if (accessToken != null && !"".equals(accessToken)) {
-            memberService.logout(accessToken);
+//        HttpSession session = request.getSession();
+//        String accessToken = (String) session.getAttribute("access_token");
+//
+//        // access_token이 존재하는 경우 로그아웃 처리
+//        if (accessToken != null && !"".equals(accessToken)) {
+//            memberService.logout(accessToken);
 //            session.removeAttribute("access_token");
 //            session.removeAttribute("user");
-//            session.invalidate();
-            log.info("logout 성공");
-        }
+//            log.info("logout 성공");
+//        }
 
         // HTTP 쿠키에서 accessToken 쿠키를 찾아서 만료시키기
         Optional<Cookie> optionalCookie = Arrays.stream(request.getCookies())
@@ -59,7 +61,9 @@ public class MemberController {
                     response.addCookie(cookie);
                 });
 
-        String redirectUrl = "https://shinemustget.com";
+//        String redirectUrl = "https://shinemustget.com";
+        String redirectUrl = "https://kauth.kakao.com/oauth/logout?client_id=" + REST_API_KEY +"&logout_redirect_uri=http://shinemustget.com/api/kakaoLogout";
+        System.out.println(redirectUrl);
         try {
             response.sendRedirect(redirectUrl);
         } catch (IOException e) {
