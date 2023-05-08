@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
@@ -39,14 +40,6 @@ public class RedisAlarmRepository implements AlarmRepository {
 
         List<AlarmDto> alarms = new ArrayList<>();
         Cursor<ZSetOperations.TypedTuple<AlarmDto>> cursor = alarmRedisTemplate.opsForZSet().scan(key, ScanOptions.scanOptions().match(pattern).count(count).build());
-//        ScanOptions options = ScanOptions.scanOptions()
-//                .match(pattern)
-//                .count(count)
-//                .order(Order.DESCENDING)
-//                .build();
-
-//        Cursor<ZSetOperations.TypedTuple<AlarmDto>> cursor = alarmRedisTemplate.opsForZSet().scan(key, options);
-
 
         while (cursor.hasNext()) {
             ZSetOperations.TypedTuple<AlarmDto> tuple = cursor.next();
