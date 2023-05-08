@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
 @Slf4j
@@ -57,7 +58,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
 
         return new DefaultOAuth2User(
-                null,
+                Collections.emptyList(),
                 attributes,
                 extractAttributes.getNameAttributeKey()
         );
