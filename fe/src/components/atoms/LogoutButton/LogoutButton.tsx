@@ -33,11 +33,11 @@ export const LogoutButton = () => {
     if (result) {
       getKakaoLogout();
       dispatch(setLogout());
-      router.push(
-        process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
-          ? process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
-          : '/',
-      );
+
+      //  process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI 이 주소 열어줘
+      window.location.href = process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
+        ? process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
+        : '/';
     }
   };
 
