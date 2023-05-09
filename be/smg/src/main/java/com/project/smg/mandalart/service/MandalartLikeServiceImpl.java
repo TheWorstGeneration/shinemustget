@@ -26,6 +26,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
      *     o -> memberId 있다면 제거, 없다면 추가
      *     x -> db 조회 후 없으면 레디스 새로 저장, 있으면 db 값 redis 저장
      * */
+    // TODO 내 만다라트에는 좋아요 못함
     @Override
     @Transactional
     public void mandalartLike(String mid, int id) {
@@ -60,13 +61,54 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
             // 변경여부체크
             checkChange(mid, subKey, setOperations);
         }
+    }
 
 
+    /**
+     * 만다라트 좋아요 여부  ( int id  => title id)
+     * redis 조회 없으면 db 조회 후 redis 저장
+     * */
+    // Todo 중복 코드 함수화
+    @Override
+    public boolean isMandalartLike(String mid, int id) {
+        Title findTitle = checkTitle(id);
+        String key = "like::"+id;
+        SetOperations <String, String> setOperations = redisTemplate.opsForSet();
 
+        boolean isLike = false;
+        if(!redisTemplate.hasKey(key)){
+            // db 조회 후 redis 저장
+            List<Likes> likeListByTitleId = likeRepository.findByTitleIdAndStatus(id, true);
+            for (Likes like : likeListByTitleId){
+                setOperations.add(key, like.getMember().getId());
+            }
+        }
+            // redis 조회
+        if (setOperations.isMember(key, mid)){ // 좋아요 여부 확인
+            isLike = true;
+        }
+        return isLike;
+    }
+    /**
+     * 만다라트 좋아요 숫자  ( int id  => title id)
+     * */
+    @Override
+    public int mandalartLikeCnt(int id) {
+        // redis 조회해서 없으면 db 조회 하고 없으면 0 redis 다시 저장
+        Title findTitle = checkTitle(id);
+        String key = "like::"+id;
+        SetOperations <String, String> setOperations = redisTemplate.opsForSet();
+        int likeCnt = 0;
+        if(!redisTemplate.hasKey(key)){
+            // db 조회
+            List<Likes> likeListByTitleId = likeRepository.findByTitleIdAndStatus(id, true);
+            for (Likes like : likeListByTitleId){
+                setOperations.add(key, like.getMember().getId());
+            }
+        }
+        likeCnt = setOperations.size(key).intValue();
 
-
-
-
+        return likeCnt;
     }
 
     private  void checkChange(String mid, String subKey, SetOperations<String, String> setOperations) {
@@ -90,6 +132,8 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         Title findTitle = title.orElseThrow(() -> new IllegalStateException("만다라트가 존재하지 않습니다."));
         return findTitle;
     }
+
+
 
 
 }

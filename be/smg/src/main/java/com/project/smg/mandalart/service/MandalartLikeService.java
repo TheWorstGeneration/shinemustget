@@ -6,4 +6,8 @@ public interface MandalartLikeService {
     void mandalartLike(String mid, int id);
 
     Title checkTitle(int id);
+
+    boolean isMandalartLike(String mid, int id);
+
+    int mandalartLikeCnt(int id);
 }
