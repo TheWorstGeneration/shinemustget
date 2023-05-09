@@ -3,6 +3,7 @@ package com.project.smg.auth.oauth2;
 import com.project.smg.auth.oauth2.userinfo.KakaoOAuth2UserInfo;
 import com.project.smg.auth.oauth2.userinfo.OAuth2UserInfo;
 import com.project.smg.member.entity.Member;
+import com.project.smg.member.entity.Role;
 import com.project.smg.member.entity.SocialType;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +51,7 @@ public class OAuthAttributes {
     public Member toEntity(OAuth2UserInfo oauth2UserInfo, SocialType socialType) {
         return Member.builder()
                 .socialType(socialType)
+                .role(Role.GUEST)
                 .id((oauth2UserInfo.getId()))
                 .nickname(oauth2UserInfo.getNickname())
                 .imageUrl(oauth2UserInfo.getImageUrl())

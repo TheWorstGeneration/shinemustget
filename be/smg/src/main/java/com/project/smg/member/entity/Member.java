@@ -18,6 +18,9 @@ public class Member {
     @Column(name = "kakao_id")
     private String id;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String password;
 
     private String nickname;
@@ -39,4 +42,8 @@ public class Member {
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private RefreshToken refreshToken;
+
+    public void authorizeUser() {
+        this.role = Role.USER;
+    }
 }

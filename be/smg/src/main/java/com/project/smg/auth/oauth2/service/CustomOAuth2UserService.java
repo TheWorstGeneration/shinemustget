@@ -1,5 +1,6 @@
 package com.project.smg.auth.oauth2.service;
 
+import com.project.smg.auth.oauth2.CustomOAuth2User;
 import com.project.smg.auth.oauth2.OAuthAttributes;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.SocialType;
@@ -56,11 +57,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
 
-        return new DefaultOAuth2User(
-                Collections.emptyList(),
-//                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+//        return new DefaultOAuth2User(
+//                Collections.emptyList(),
+//                attributes,
+//                extractAttributes.getNameAttributeKey()
+//        );
+
+        log.info("유저정보 : {}", createdUser.getRole().getKey());
+
+        return new CustomOAuth2User(
+                Collections.singleton(new SimpleGrantedAuthority(createdUser.getRole().getKey())),
                 attributes,
-                extractAttributes.getNameAttributeKey()
+                extractAttributes.getNameAttributeKey(),
+                createdUser.getRole()
         );
     }
 
@@ -79,7 +88,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      * 만약 찾은 회원이 있다면, 그대로 반환하고 없다면 saveUser()를 호출하여 회원을 저장한다.
      */
     private Member getUser(OAuthAttributes attributes, SocialType socialType) {
-        Member findUser = memberRepository.findById((attributes.getOauth2UserInfo().getId())).orElse(null);
+        Member findUser = memberRepository.findById((attributes.getOauth2UserInfo().getId()))
+                .orElse(null);
         if (findUser == null) {
             return saveUser(attributes, socialType);
         }
