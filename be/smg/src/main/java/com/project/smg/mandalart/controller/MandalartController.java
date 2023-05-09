@@ -5,12 +5,15 @@ import com.project.smg.mandalart.dto.MandalartRequestDto;
 import com.project.smg.mandalart.dto.SmallGoalRequestDto;
 import com.project.smg.mandalart.service.MandalartService;
 
+import com.project.smg.member.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -63,9 +66,10 @@ public class MandalartController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{word}")
-    public ResponseEntity<?> getSearch(@RequestAttribute("id") String mid, @PathVariable String word){
-        mandalartService.getSearchMandalart(word);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    @GetMapping("/search/{word}/{pageNo}")
+    public ResponseEntity<?> getSearch(@RequestAttribute("id") String mid, @PathVariable String word, @PathVariable String pageNo){
+        List<SearchDto> searchMandalart = mandalartService.getSearchMandalart(mid, word, pageNo);
+        if(searchMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "검색 실패"), HttpStatus.OK);
+        return new ResponseEntity<>(searchMandalart, HttpStatus.OK);
     }
 }

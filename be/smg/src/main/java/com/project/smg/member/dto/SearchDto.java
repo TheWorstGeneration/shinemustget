@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class SearchDto {
+    int id;
     String title;
     List<SearchBigDto> bigList;
     @JsonProperty("isLike")

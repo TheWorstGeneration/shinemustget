@@ -2,6 +2,7 @@ package com.project.smg.mandalart.service;
 
 import com.project.smg.mandalart.dto.BigDto;
 import com.project.smg.mandalart.dto.MandalartRequestDto;
+import com.project.smg.member.dto.SearchDto;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public interface MandalartService {
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid);
     public HashMap<String, Object> getMainMandalart(String mid);
 
-    public void getSearchMandalart(String word);
+    public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo);
 
 
 }
