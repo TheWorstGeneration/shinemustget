@@ -5,13 +5,17 @@ import com.project.smg.mandalart.entity.*;
 import com.project.smg.mandalart.repository.GptBigGoalRepository;
 import com.project.smg.mandalart.repository.GptTitleRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
+import com.project.smg.member.dto.SearchBigDto;
+import com.project.smg.member.dto.SearchDto;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.repository.PodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
@@ -26,6 +30,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +42,7 @@ public class MandalartServiceImpl implements MandalartService {
     private final MemberRepository memberRepository;
     private final TitleRepository titleRepository;
     private final PodoRepository podoRepository;
+    private final MandalartLikeService mandalartLikeService;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     /** Gpt 요청 */
@@ -46,7 +52,7 @@ public class MandalartServiceImpl implements MandalartService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 짧은 키워드로만 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
 
         ChatGptRequestDto chatGPTRequest = new ChatGptRequestDto();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
@@ -86,8 +92,8 @@ public class MandalartServiceImpl implements MandalartService {
 
         return asyncChatGptResponse.thenApply(response -> {
             // 받아온 메세지 리스트로 변환
-                String[] split = response.choices.get(0).message.content.split("\n");
-            List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(3)).collect(Collectors.toList());
+            String[] split = response.choices.get(0).message.content.split("\n");
+            List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(2)).collect(Collectors.toList());
 
             // GptTitle, GptBigGoal에 저장
             saveGptBigGoal(content, bigGoals);
@@ -174,11 +180,30 @@ public class MandalartServiceImpl implements MandalartService {
         return result;
     }
 
+    /** 만다라트 검색 */
     @Override
-    public void getSearchMandalart(String word) {
-//        PageRequest.of(0, 10, Sort.b)
-//        Optional<Title> findByContent = titleRepository.findByContentAndClearAtIsNotNullOrderByLikeCntDesc(word);
-//        if(findByContent.isPresent())
+    public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
+        PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
+        Page<Title> pageContent = titleRepository.findByContentAndClearAtIsNotNullOrderByLikeCntDesc(word, page);
+        List<Title> content = pageContent.getContent();
+
+        List<SearchDto> searchList = content.stream()
+                .map(title -> SearchDto.builder()
+                        .id(title.getId())
+                        .title(title.getContent())
+                        .isLike(mandalartLikeService.isMandalartLike(mid, title.getId()))
+                        .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
+                        .bigList(
+                                title.getBigGoals().stream().map(bigGoal ->
+                                        SearchBigDto.builder()
+                                                .content(bigGoal.getContent())
+                                                .location(bigGoal.getLocation())
+                                                .build()).collect(Collectors.toList())
+                        )
+                        .build()
+                )
+                .collect(Collectors.toList());
+        return searchList;
     }
 
     /** Gpt에 저장된 세부목표 불러오기 */
@@ -197,7 +222,7 @@ public class MandalartServiceImpl implements MandalartService {
     @Transactional
     @Async
     public void saveGptBigGoal(String title, List<String> strings){
-        List<String> split = strings.stream().map(i -> i.replaceAll(" ", "")).collect(Collectors.toList());
+        List<String> split = strings.stream().map(i -> i.trim()).collect(Collectors.toList());
 
         List<GptBigGoal> gptBigGoals = split.stream()
                 .map(i -> GptBigGoal.builder().content(i).build())
