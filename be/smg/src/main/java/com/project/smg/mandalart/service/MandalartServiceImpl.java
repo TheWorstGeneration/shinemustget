@@ -187,9 +187,12 @@ public class MandalartServiceImpl implements MandalartService {
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
         Page<Title> pageContent = titleRepository.findByContentAndClearAtIsNotNullOrderByLikeCntDesc(word, page);
+        List<SearchDto> searchList = new ArrayList<>();
+        if(pageContent.isEmpty()) return searchList;
+
         List<Title> content = pageContent.getContent();
 
-        List<SearchDto> searchList = content.stream()
+        searchList = content.stream()
                 .map(title -> SearchDto.builder()
                         .id(title.getId())
                         .title(title.getContent())
@@ -206,6 +209,11 @@ public class MandalartServiceImpl implements MandalartService {
                 )
                 .collect(Collectors.toList());
         return searchList;
+    }
+
+    @Override
+    public void getSearchDetail(String mid, int id) {
+        Optional<Title> byId = titleRepository.findById(id);
     }
 
     /** Gpt에 저장된 세부목표 불러오기 */
