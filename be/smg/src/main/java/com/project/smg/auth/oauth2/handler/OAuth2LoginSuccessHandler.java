@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,17 +92,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (memberPodoList.isEmpty())
             memberService.addMemberPodo(memberId);
 
-//        HashMap<String ,Object> mandalart = mandalartService.getMainMandalart(memberId);
-//
-//        if(mandalart.isEmpty()){
-//            String redirectUrl = "https://shinemustget.com/create";
-////            String redirectUrl = "http://localhost:3000/home";
-//            response.sendRedirect(redirectUrl);
-//        }
-//        else {
-////            String redirectUrl = "https://shinemustget.com/home";
-////            String redirectUrl = "http://localhost:3000/home";
-//            response.sendRedirect(redirectUrl);
-//        }
+        HashMap<String ,Object> mandalart = mandalartService.getMainMandalart(memberId);
+
+        if(!mandalart.isEmpty())
+            member.authorizeUser();
     }
 }
