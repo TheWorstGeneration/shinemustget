@@ -45,17 +45,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 Login 성공");
         try {
-//            DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
             loginSuccess(response, oAuth2User); // 로그인에 성공한 경우 access, refresh 토큰 생성
 
             if (oAuth2User.getRole() == Role.GUEST) {
-//                String redirectUrl = "http://localhost:3000/home";
                 response.sendRedirect(create);
             } else {
-//                String redirectUrl = "http://localhost:3000/home";
-//                response.sendRedirect("http://localhost:8080");
                 response.sendRedirect(home);
             }
         } catch (Exception e) {
@@ -92,9 +88,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (memberPodoList.isEmpty())
             memberService.addMemberPodo(memberId);
 
-        HashMap<String ,Object> mandalart = mandalartService.getMainMandalart(memberId);
+        HashMap<String, Object> mandalart = mandalartService.getMainMandalart(memberId);
 
-        if(!mandalart.isEmpty())
+        if (!mandalart.isEmpty())
             member.authorizeUser();
     }
 }

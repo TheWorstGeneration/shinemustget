@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { BigGoalMandalart } from '../BigGoalMandalart/BigGoalMandalart';
 import { useEffect, useState } from 'react';
 import getClearMandalart from '@/pages/api/getClearMandalart';
+import { useQuery } from 'react-query';
 
 const ProfileMandalartContainer = styled.div`
   width: 50%;
@@ -35,6 +36,10 @@ const BigGoalMandalartBox = styled.div`
   overflow-y: scroll;
 `;
 
+const Err = styled.div`
+  text-align: center;
+`;
+
 interface ClearMandalart {
   id: number;
   searchDto: SearchDto;
@@ -53,19 +58,18 @@ interface SearchBigDto {
 }
 
 export const ProfileMandalart = () => {
-  const [clearList, setClearList] = useState<ClearMandalart[] | null>(null);
-  useEffect(() => {
-    const axiosClearGoal = async () => {
-      const data = await getClearMandalart();
-      setClearList(data);
-    };
-
-    axiosClearGoal();
-  }, []);
+  const clearList: ClearMandalart[] | undefined = useQuery(
+    'clearMandalart',
+    getClearMandalart,
+    {
+      staleTime: 5000,
+      cacheTime: 20000,
+    },
+  ).data;
 
   return (
     <ProfileMandalartContainer>
-      <Title>만다라트</Title>
+      <Title>만다라트 </Title>
       <BigGoalMandalartBox>
         {clearList?.map(List => (
           <BigGoalMandalart
@@ -75,6 +79,7 @@ export const ProfileMandalart = () => {
             isProfile={true}
           />
         ))}
+        {!clearList && <Err>클리어한 만다라트가 없습니다.</Err>}
       </BigGoalMandalartBox>
     </ProfileMandalartContainer>
   );
