@@ -187,9 +187,12 @@ public class MandalartServiceImpl implements MandalartService {
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
         Page<Title> pageContent = titleRepository.findByContentAndClearAtIsNotNullOrderByLikeCntDesc(word, page);
+        List<SearchDto> searchList = new ArrayList<>();
+        if(pageContent.isEmpty()) return searchList;
+
         List<Title> content = pageContent.getContent();
 
-        List<SearchDto> searchList = content.stream()
+        searchList = content.stream()
                 .map(title -> SearchDto.builder()
                         .id(title.getId())
                         .title(title.getContent())
@@ -207,6 +210,42 @@ public class MandalartServiceImpl implements MandalartService {
                 .collect(Collectors.toList());
         return searchList;
     }
+
+    @Override
+    public SearchDetailResponseDto getSearchDetail(String mid, int id) {
+        SearchDetailResponseDto SearchDetailResponse = null;
+
+        Optional<Title> byId = titleRepository.findById(id);
+        if(!byId.isPresent()) return SearchDetailResponse;
+        Title title = byId.get();
+
+        SearchDetailResponse = SearchDetailResponseDto.builder()
+                .likeDto(
+                        LikeDto.builder()
+                                .isLike(mandalartLikeService.isMandalartLike(mid, id))
+                                .likeCnt(id)
+                                .build()
+                )
+                .mandalartRequestDto(
+                        MandalartRequestDto.builder()
+                                .title(title.getContent())
+                                .bigRequestDto(title.getBigGoals().stream()
+                                                .map(bigGoal -> BigRequestDto.builder()
+                                                                .content(bigGoal.getContent())
+                                                                .location(bigGoal.getLocation())
+                                                                .smallRequestDto(bigGoal.getSmallGoals().stream()
+                                                                                .map(smallGoal -> SmallRequestDto.builder()
+                                                                                                .location(smallGoal.getLocation())
+                                                                                                .content(smallGoal.getContent())
+                                                                                                .build()
+                                                                                ).collect(Collectors.toList())
+                                                                ).build()
+                                                ).collect(Collectors.toList())
+                                ).build()
+                ).build();
+        return SearchDetailResponse;
+    }
+
 
     /** Gpt에 저장된 세부목표 불러오기 */
     @Async

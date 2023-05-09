@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class SearchDetailResponseDto {
+    private LikeDto likeDto;
     private MandalartRequestDto mandalartRequestDto;
 }
