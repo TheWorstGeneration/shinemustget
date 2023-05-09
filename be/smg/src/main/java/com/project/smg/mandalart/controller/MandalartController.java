@@ -62,4 +62,10 @@ public class MandalartController {
     public ResponseEntity<?> getSearchDetail(@RequestAttribute("id") String mid){
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+    @GetMapping("/search/{word}")
+    public ResponseEntity<?> getSearch(@RequestAttribute("id") String mid, @PathVariable String word){
+        mandalartService.getSearchMandalart(word);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }

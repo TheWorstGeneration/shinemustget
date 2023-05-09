@@ -18,5 +18,7 @@ public interface MandalartService {
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid);
     public HashMap<String, Object> getMainMandalart(String mid);
 
+    public void getSearchMandalart(String word);
+
 
 }
