@@ -63,6 +63,8 @@ public class RedisSchedule {
                     // status 1로 변경 아니면 0 변경
                     likes.setStatus(!likes.isStatus());
                 }
+                // 검색을 위한 title 테이블의 like_cnt update
+                updateLikeCnt(titleId);
             }
             // 변경 redis caching 데이터 삭제
             log.info("[Scheduling] 좋아요 변경 redis caching 데이터 삭제 ");
@@ -72,12 +74,15 @@ public class RedisSchedule {
         // TODO redis 삭제는 일주일에 한 번 -> 나중에 Scheduled 로 빼기
         // 기존 redis caching 데이터 삭제
         deleteLikeFromRedis();
-        // like_cnt update
-        updateLikeCnt();
+
     }
-
-    private void updateLikeCnt() {
-
+    @Transactional
+    private void updateLikeCnt(int titleId) {
+        Title findTitle = mandalartLikeService.checkTitle(titleId);
+        // 변경된 title id 만 db 개수 조회해서 update
+        int likeCnt = likeRepository.countByTitleIdAndStatus(titleId, true).intValue();
+        findTitle.setLikeCnt(likeCnt);
+        
     }
 
 
