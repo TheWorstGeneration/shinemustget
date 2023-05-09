@@ -54,18 +54,17 @@ const UserCommentCompleteButtonDiv = styled.div`
   flex:2.75;
 `;
 
-
-export function UserComment({ stickerList }: {stickerList:sticker[]}) {
+export function UserComment({ stickerList,updatePodo,setUpdatePodo }: {stickerList:sticker[],updatePodo:boolean,setUpdatePodo:Dispatch<SetStateAction<boolean>>}) {
   const [countLetter, setCountLetter] = useState(0);
   const [oneline,setOneLine] = useState("");
-  const [imageUrl,setImageUrl] = useState("");
+  const [imageUrl,setImageUrl] = useState(stickerList == null?"":stickerList[0].imageUrl);
   const handleOnChange = (e: any) => {
     setCountLetter(e.target.value.length);
     setOneLine(e.target.value);
   };
 
   const StickerList:sticker[] = [];
-  for (let i = 0; i < 6; i++) { StickerList.push({ id:stickerList[i].id,imageUrl:stickerList[i].imageUrl}) };
+  if(stickerList !=null) for (let i = 0; i < 6; i++) { StickerList.push({ id:stickerList[i].id,imageUrl:stickerList[i].imageUrl}) };
 
   return (
     <UserCommentDiv>
@@ -83,7 +82,7 @@ export function UserComment({ stickerList }: {stickerList:sticker[]}) {
           <Image src={ imageUrl} width={32.5} height={32.5} alt="Image"></Image>
         </UserCommentCompleteImageDiv>
         <UserCommentCompleteButtonDiv>
-          <ComposeButton imageUrl={"https://www.shinemustget.com/images/stickers/default.png"} oneline={oneline}/>
+          <ComposeButton imageUrl={imageUrl} oneline={oneline} updatePodo={updatePodo } setUpdatePodo={ setUpdatePodo} />
         </UserCommentCompleteButtonDiv>
       </UserCommentCompleteDiv>
     </UserCommentDiv>

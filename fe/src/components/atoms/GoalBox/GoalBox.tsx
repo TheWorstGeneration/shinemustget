@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setPodo } from '@/store/modules/detailIdx';
 import styled from '@emotion/styled';
 import { faCheckCircle, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -129,12 +131,13 @@ export const GoalBox = ({
 }: GoalBoxProps) => {
   const icon = isToday ? faCircle : faCheckCircle;
 
+  const dispatch = useAppDispatch();
   return isCenter ? (
     <CenterBox isClear={isClear} isCenter={isCenter}>
       {content}
     </CenterBox>
   ) : (
-    <Box href={`/detail/${id}`} isClear={isClear}>
+      <Box href={`/detail/${id}`} isClear={isClear} onClick={()=>dispatch(setPodo(isPodo)) }>
       {isPodo ? (
         <Badge>
           <FontAwesomeIcon
