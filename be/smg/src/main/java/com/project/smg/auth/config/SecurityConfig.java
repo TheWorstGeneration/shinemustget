@@ -106,8 +106,6 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://shinemustget.com");
         config.addAllowedOrigin("https://shinemustget.com");
-        config.addAllowedOrigin("http://shinemustget.com:3000");
-        config.addAllowedOrigin("https://shinemustget.com:3000");
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://localhost:3000");
         config.addAllowedHeader("*");
