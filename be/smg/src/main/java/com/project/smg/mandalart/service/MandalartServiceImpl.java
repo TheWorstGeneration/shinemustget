@@ -212,9 +212,40 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
     @Override
-    public void getSearchDetail(String mid, int id) {
+    public SearchDetailResponseDto getSearchDetail(String mid, int id) {
+        SearchDetailResponseDto SearchDetailResponse = null;
+
         Optional<Title> byId = titleRepository.findById(id);
+        if(!byId.isPresent()) return SearchDetailResponse;
+        Title title = byId.get();
+
+        SearchDetailResponse = SearchDetailResponseDto.builder()
+                .likeDto(
+                        LikeDto.builder()
+                                .isLike(mandalartLikeService.isMandalartLike(mid, id))
+                                .likeCnt(id)
+                                .build()
+                )
+                .mandalartRequestDto(
+                        MandalartRequestDto.builder()
+                                .title(title.getContent())
+                                .bigRequestDto(title.getBigGoals().stream()
+                                                .map(bigGoal -> BigRequestDto.builder()
+                                                                .content(bigGoal.getContent())
+                                                                .location(bigGoal.getLocation())
+                                                                .smallRequestDto(bigGoal.getSmallGoals().stream()
+                                                                                .map(smallGoal -> SmallRequestDto.builder()
+                                                                                                .location(smallGoal.getLocation())
+                                                                                                .content(smallGoal.getContent())
+                                                                                                .build()
+                                                                                ).collect(Collectors.toList())
+                                                                ).build()
+                                                ).collect(Collectors.toList())
+                                ).build()
+                ).build();
+        return SearchDetailResponse;
     }
+
 
     /** Gpt에 저장된 세부목표 불러오기 */
     @Async

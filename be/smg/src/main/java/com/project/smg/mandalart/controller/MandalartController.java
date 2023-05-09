@@ -2,6 +2,7 @@ package com.project.smg.mandalart.controller;
 
 import com.project.smg.common.ResponseDto;
 import com.project.smg.mandalart.dto.MandalartRequestDto;
+import com.project.smg.mandalart.dto.SearchDetailResponseDto;
 import com.project.smg.mandalart.dto.SmallGoalRequestDto;
 import com.project.smg.mandalart.service.MandalartService;
 
@@ -61,15 +62,17 @@ public class MandalartController {
         return new ResponseEntity<>(mainMandalart, HttpStatus.OK);
     }
 
-    @GetMapping("/searchDetail")
-    public ResponseEntity<?> getSearchDetail(@RequestAttribute("id") String mid){
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    @GetMapping("/searchDetail/{id}")
+    public ResponseEntity<?> getSearchDetail(@RequestAttribute("id") String mid, @PathVariable int id){
+        SearchDetailResponseDto searchDetail = mandalartService.getSearchDetail(mid, id);
+        if(searchDetail == null) return new ResponseEntity<>(new ResponseDto(500, "만다라트 상세 조회 실패"), HttpStatus.OK);
+        return new ResponseEntity<>(searchDetail, HttpStatus.OK);
     }
 
     @GetMapping("/search/{word}/{pageNo}")
     public ResponseEntity<?> getSearch(@RequestAttribute("id") String mid, @PathVariable String word, @PathVariable String pageNo){
         List<SearchDto> searchMandalart = mandalartService.getSearchMandalart(mid, word, pageNo);
-        if(searchMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "검색 실패"), HttpStatus.OK);
+        if(searchMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "검색 실패"), HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(searchMandalart, HttpStatus.OK);
     }
 }
