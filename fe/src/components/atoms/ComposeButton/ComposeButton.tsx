@@ -4,6 +4,7 @@ import podoWrite from "@/pages/api/podoWrite";
 import { useAppSelector } from "@/hooks/useRedux";
 import { selectIdx } from "@/store/modules/detailIdx";
 import podoRead from "@/pages/api/podoRead";
+import { Dispatch,SetStateAction } from "react";
 
 const Button = styled.button`
   display: flex;
@@ -22,9 +23,8 @@ const Button = styled.button`
   }
 `;
 
-export function ComposeButton({ imageUrl, oneline }: { imageUrl: any, oneline: any }) {
+export function ComposeButton({ imageUrl, oneline,updatePodo,setUpdatePodo }: { imageUrl: any, oneline: any,updatePodo:boolean,setUpdatePodo:Dispatch<SetStateAction<boolean>> }) {
   const { index } = useAppSelector(selectIdx);
-  const [podoRead2,setPodoRead2] = useState<any>("");
 
   const propsDetail = {
     id: index,
@@ -33,12 +33,21 @@ export function ComposeButton({ imageUrl, oneline }: { imageUrl: any, oneline: a
   };
 
   const onClickHandler = () => {
-    podoWrite(propsDetail).then(res => {
-      setPodoRead2(res);
-      console.log(res)
-  });
-    podoRead(index);
-  };
+    if (
+        propsDetail.imageUrl == "https://www.shinemustget.com/images/stickers/lock_default.png" || 
+        propsDetail.imageUrl == "https://www.shinemustget.com/images/stickers/lock_smile.png" || 
+        propsDetail.imageUrl == "https://www.shinemustget.com/images/stickers/lock_sad.png"
+    ) {
+      alert("해당 스티커는 선택이 불가능합니다!");
+    } else { 
+      podoWrite(propsDetail).then(res => {
+        podoRead(index);
+        setUpdatePodo(!updatePodo);
+        alert("작성이 완료되었습니다!");
+      });
+    };
+  }
+    
 
   return (
     <Button onClick={onClickHandler}>작성</Button>

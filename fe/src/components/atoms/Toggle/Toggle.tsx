@@ -1,5 +1,9 @@
-import { Dispatch,SetStateAction } from "react";
+import { useEffect,Dispatch,SetStateAction } from "react";
 import styled from "@emotion/styled";
+import { useAppSelector } from "@/hooks/useRedux";
+import { setPodo } from "@/store/modules/detailIdx";
+import podoSetting from "@/pages/api/podoSetting";
+import { selectIdx } from "@/store/modules/detailIdx";
 
 const ToggleContainer = styled.div`
   position: relative;
@@ -32,18 +36,21 @@ const ToggleContainer = styled.div`
   }
 `;
 
-export function Toggle({ isOn, setisOn }:{ isOn: boolean, setisOn: Dispatch<SetStateAction<boolean>> }) {
-  
+export function Toggle({ setting,isOn,setisOn}:{ setting:boolean, isOn: boolean, setisOn: Dispatch<SetStateAction<boolean>>}) {
+  const { index } = useAppSelector(selectIdx);
+
   const toggleHandler = () => {
-    setisOn(!isOn)
+    setisOn(!isOn);
   };
 
+  useEffect(() => { podoSetting(index) }, [isOn]);
+  
   return (
      <ToggleContainer
         onClick={toggleHandler}
       >
         <div className={`toggle-container ${isOn ? "toggle--checked" : null}`}/>
-        <div className={`toggle-circle ${isOn ? "toggle--checked" : null}`}/>
+        <div className={`toggle-circle ${isOn  ? "toggle--checked" : null}`}/>
       </ToggleContainer>
       );
  }

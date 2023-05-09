@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { podoListRecord } from '@/constants/grapeboardList';
 import GrapeBoard from '@/components/atoms/GrapeBoard/GrapeBoard';
 import Image from 'next/image';
-import { useQuery } from 'react-query';
 import podoDetail from '@/pages/api/podoDetail';
 import { Dispatch,SetStateAction } from "react";
 
@@ -157,7 +156,7 @@ const GrapeContainer = styled.div`
 
 export function GrapeBoardList({ list, setPodoDetail }: {list:podoListRecord,setPodoDetail:Dispatch<SetStateAction<string>>}) {
 
-  const idx = list.pageCnt - 1;
+  const idx = list==null?0:list.pageCnt-1;
   const [listIdx, setListIdx] = useState(idx);
 
   const handleUpClick = () => {
@@ -171,7 +170,6 @@ export function GrapeBoardList({ list, setPodoDetail }: {list:podoListRecord,set
   
   const handleOnclick = (props:number) => { 
     const detail:any = podoDetail(props).then((response) => { setPodoDetail(response)});
-    
   };
 
   return (
@@ -195,7 +193,7 @@ export function GrapeBoardList({ list, setPodoDetail }: {list:podoListRecord,set
           alt="image"
         ></Image>
       </ArrowButtonDown>
-      <GrapeContainer>
+      { podosList == null?(""):(<GrapeContainer>
         <div className={`podo-container ${podosList[0] !== null ? 'podo1' : null}`}>
           {podosList[0] == null ? (
             ''
@@ -566,7 +564,7 @@ export function GrapeBoardList({ list, setPodoDetail }: {list:podoListRecord,set
             ></Image>
           )}
         </div>
-      </GrapeContainer>
+      </GrapeContainer>)}
     </>
   );
 }

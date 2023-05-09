@@ -65,7 +65,7 @@ public class MandalartController {
     @GetMapping("/searchDetail/{id}")
     public ResponseEntity<?> getSearchDetail(@RequestAttribute("id") String mid, @PathVariable int id){
         SearchDetailResponseDto searchDetail = mandalartService.getSearchDetail(mid, id);
-//        if(searchDetail == null) return new ResponseEntity<>(new ResponseDto(500, "만다라트 상세 조회 실패"), HttpStatus.OK);
+//        if(searchDetail == null) return new ResponseEntity<   >(new ResponseDto(500, "만다라트 상세 조회 실패"), HttpStatus.OK);
         return new ResponseEntity<>(searchDetail, HttpStatus.OK);
     }
 
@@ -75,4 +75,11 @@ public class MandalartController {
 //        if(searchMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "검색 실패"), HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(searchMandalart, HttpStatus.OK);
     }
+
+    @PostMapping("/clear/{id}")
+    public ResponseEntity<?> clearGoal(@RequestAttribute("id") String mid, @PathVariable int id){
+        mandalartService.clearGoal(id);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
 }

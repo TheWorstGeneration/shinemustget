@@ -10,16 +10,21 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import podoRead from '../api/podoRead';
 import podoSticker from '../api/podoSticker';
 import { selectIdx } from '@/store/modules/detailIdx';
-
+import podoIdSetting from '../api/podoIdSetting';
+import { setPodo } from '@/store/modules/detailIdx';
 
 const DetailedDiv = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 7rem 28rem;
-`;
 
-const DetailedDivLeft = styled.div`
-  flex: 0.85;
+   @media (max-width: 960px) {
+    padding: 0;
+  }
+
+   @media (max-width: 500px) {
+    height: 130vh;
+  }
 `;
 
 const DetailedDivCenter = styled.section<{ isMaxWidth: boolean }>`
@@ -43,6 +48,15 @@ const DetailedDivCenter = styled.section<{ isMaxWidth: boolean }>`
 
 const DetailedDivRight = styled.div`
   flex: 1;
+
+  
+  @media (max-width: 960px) {
+    padding: 0;
+  }
+
+   @media (max-width: 500px) {
+    height: 130vh;
+  }
 `;
 
 export interface podo {
@@ -65,19 +79,32 @@ export default function Detail() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  const [setting, setSetting] = useState<any>(false);
   const [list, setList] = useState<any>(null);
   const [stickerList, setstickerList] = useState<any>(null);
-  const [detail, setDetail] = useState<any>(null);
+  const [updatePodo, setUpdatePodo] = useState<boolean>(false);
+  const [isOn, setisOn] = useState<any>(false);
   
-  const { index }:any = useAppSelector(selectIdx);
+  const { index }: any = useAppSelector(selectIdx);
 
+  dispatch(setIdx(router?.query.id));
   useEffect(() => {
-    dispatch(setIdx(router?.query.id));
-    podoRead(index).then((response) => { setList(response) }).then(() => { setDetail(1)});
+    podoIdSetting(index).then((response) => { setisOn(response) });
+    podoRead(index).then((response) => {
+      setList(response);
+    });
     podoSticker().then((response) => { setstickerList(response) });
   }, []);
+  
+  useEffect(() => {
+    podoRead(index).then((response) => {
+      setList(response);
+    });
+  }, [updatePodo])
 
-
+  useEffect(() => {
+    podoIdSetting(index).then((response) => { setisOn(response) });
+  }, [isOn]);
   
   return (
     <>
@@ -105,7 +132,7 @@ export default function Detail() {
       </Head>
       <DetailedDiv>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
-          <DetailedCenter list={list} stickerList={...stickerList}/>
+          <DetailedCenter isOn={isOn} setisOn={setisOn } setting={setting } list={list} stickerList={...stickerList} updatePodo={ updatePodo} setUpdatePodo={setUpdatePodo} />
         </DetailedDivCenter>
         <DetailedDivRight>
           <DetailedRight/>
