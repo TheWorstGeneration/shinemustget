@@ -1,7 +1,8 @@
 import { ProgressCircle } from '@/components/atoms/ProgressCircle/ProgressCircle';
 import getNowGoal from '@/pages/api/getNowGoal';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { GetServerSideProps, GetStaticProps } from 'next';
+import { QueryClient, dehydrate, useQuery } from 'react-query';
 
 const ProfileProgressContainer = styled.div`
   display: flex;
@@ -50,23 +51,22 @@ interface ProgressProp {
 }
 
 export const ProfileProgress = () => {
-  const [progressProps, setProgressProps] = useState<ProgressProp | null>(null);
-  useEffect(() => {
-    const axiosNowGoal = async () => {
-      const data = await getNowGoal();
-      setProgressProps(data);
-    };
+  const progressProps: ProgressProp | undefined = useQuery(
+    'nowGoal',
+    getNowGoal,
+    {
+      staleTime: 5000,
+      cacheTime: 20000,
+    },
+  ).data;
 
-    axiosNowGoal();
-  }, []);
-
-  const title: string =
-    progressProps !== null ? progressProps.title : 'Loading..';
-  const rate: number = progressProps !== null ? progressProps.rate : 0;
-  const goalList: Goal[] =
-    progressProps !== null
-      ? progressProps.nowBigGoalDtoList
-      : [{ content: 'Loading..', isClear: false }];
+  const title: string = progressProps
+    ? progressProps.title
+    : '현재 진행중인 만다라트가 없습니다.';
+  const rate: number = progressProps ? progressProps.rate : 0;
+  const goalList: Goal[] = progressProps
+    ? progressProps.nowBigGoalDtoList
+    : [{ content: '현재 진행중인 만다라트가 없습니다.', isClear: false }];
 
   return (
     <ProfileProgressContainer>
