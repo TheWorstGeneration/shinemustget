@@ -5,7 +5,7 @@ const smallList: GoalBoxProps[] = [];
 
 for (let i = 1; i <= 8; i++) {
     smallList.push({
-        id: i,
+        id: i +284,
         location: i,
         content: `Small ${i}`,
         isPodo: i % 2 === 0,

@@ -1,5 +1,8 @@
 import { useState,Dispatch,SetStateAction } from "react";
 import styled from "@emotion/styled"
+import mandalartClear from "@/pages/api/mandalartClear";
+import { useAppSelector } from "@/hooks/useRedux";
+import { selectIdx } from "@/store/modules/detailIdx";
 
 const Button = styled.button`
   position: absolute;
@@ -18,9 +21,15 @@ const Button = styled.button`
   }
 `;
 
-export function CompleteButton() { 
+export function CompleteButton() {
+
+  const { index } = useAppSelector(selectIdx);
+  
+  const handleComplete = () => { 
+    mandalartClear(index);
+  };
   
   return (
-    <Button>완료</Button>
+    <Button onClick={ handleComplete}>완료</Button>
   );
 }
