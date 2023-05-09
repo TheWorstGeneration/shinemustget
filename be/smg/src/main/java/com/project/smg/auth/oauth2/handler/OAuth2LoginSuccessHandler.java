@@ -87,6 +87,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect(redirectUrl);
         }
         else {
+//            String redirectUrl = "localhost:8080/index";
             String redirectUrl = "https://shinemustget.com/home";
 //            String redirectUrl = "http://localhost:3000/home";
             response.sendRedirect(redirectUrl);
