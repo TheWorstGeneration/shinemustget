@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import styled from '@emotion/styled';
 import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
 import { DetailedRight } from '@/components/molecules/DetailedRight/DetailedRight';
@@ -7,6 +7,10 @@ import Head from 'next/head';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { setIdx } from '@/store/modules/detailIdx';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import podoRead from '../api/podoRead';
+import podoSticker from '../api/podoSticker';
+import { selectIdx } from '@/store/modules/detailIdx';
+
 
 const DetailedDiv = styled.div`
   display: flex;
@@ -41,17 +45,40 @@ const DetailedDivRight = styled.div`
   flex: 1;
 `;
 
+export interface podo {
+  id: number,
+  imageUrl:string
+}
+ 
+export interface podoList{ 
+  podoCnt: number,
+  podoDtoList: podo[],
+}
+
+export interface podoListRecord { 
+  pageCnt: number,
+  podosList:podoList[],
+}
 
 export default function Detail() {
   const isMaxWidth = useInnerWidth() >= 1440;
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  const [list, setList] = useState<any>(null);
+  const [stickerList, setstickerList] = useState<any>(null);
+  const [detail, setDetail] = useState<any>(null);
+  
+  const { index }:any = useAppSelector(selectIdx);
+
   useEffect(() => {
     dispatch(setIdx(router?.query.id));
-    console.log(router?.query.id);    
-  });
+    podoRead(index).then((response) => { setList(response) }).then(() => { setDetail(1)});
+    podoSticker().then((response) => { setstickerList(response) });
+  }, []);
 
+
+  
   return (
     <>
       <Head>
@@ -78,7 +105,7 @@ export default function Detail() {
       </Head>
       <DetailedDiv>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
-          <DetailedCenter />
+          <DetailedCenter list={list} stickerList={...stickerList}/>
         </DetailedDivCenter>
         <DetailedDivRight>
           <DetailedRight/>

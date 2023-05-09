@@ -2,7 +2,8 @@ import { useState,Dispatch,SetStateAction } from "react";
 import styled from "@emotion/styled"
 import Image from "next/image";
 import { ComposeButton } from "@/components/atoms/ComposeButton/ComposeButton";
-import { StickerList } from "@/constants/stickerList";
+import {sticker } from "@/constants/stickerList";
+import podoRead from "@/pages/api/podoRead";
 
 const UserCommentDiv = styled.div`
   box-shadow: 0 0 0.5rem 1px #22222225;
@@ -54,7 +55,7 @@ const UserCommentCompleteButtonDiv = styled.div`
 `;
 
 
-export function UserComment() {
+export function UserComment({ stickerList }: {stickerList:sticker[]}) {
   const [countLetter, setCountLetter] = useState(0);
   const [oneline,setOneLine] = useState("");
   const [imageUrl,setImageUrl] = useState("");
@@ -62,6 +63,9 @@ export function UserComment() {
     setCountLetter(e.target.value.length);
     setOneLine(e.target.value);
   };
+
+  const StickerList:sticker[] = [];
+  for (let i = 0; i < 6; i++) { StickerList.push({ id:stickerList[i].id,imageUrl:stickerList[i].imageUrl}) };
 
   return (
     <UserCommentDiv>
@@ -79,7 +83,7 @@ export function UserComment() {
           <Image src={ imageUrl} width={32.5} height={32.5} alt="Image"></Image>
         </UserCommentCompleteImageDiv>
         <UserCommentCompleteButtonDiv>
-          <ComposeButton imageUrl={"https://www.shinemustget.com/images/stickers/default.png"} oneline={oneline} />
+          <ComposeButton imageUrl={"https://www.shinemustget.com/images/stickers/default.png"} oneline={oneline}/>
         </UserCommentCompleteButtonDiv>
       </UserCommentCompleteDiv>
     </UserCommentDiv>

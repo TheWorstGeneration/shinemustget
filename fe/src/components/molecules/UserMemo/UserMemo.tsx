@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import styled from "@emotion/styled";
+import { useQuery } from 'react-query';
+import podoDetail from '@/pages/api/podoDetail';
 
 const UserMemoDiv = styled.div`
   box-shadow: 0 0 0.5rem 1px #22222225;
@@ -10,15 +13,15 @@ const UserMemoDiv = styled.div`
 const UserMemoDateDiv = styled.div`
   font-weight: 900;
   padding-top:0.5rem;
-  padding-left:12.5rem;
+  padding-left:10rem;
 `;
 
-export function UserMemo() { 
+export function UserMemo({ podoDetail }: { podoDetail: any }) {
   return (
     <UserMemoDiv>
-      <p>여기에 댓글을 작성 컴포넌트를 넣으면 세부 목표 달성 버튼은 어디에여기에 댓글을 작성 컴포넌트를 넣으면 세부 목표 달성 버튼은 어디에여기에 댓글을 작성 컴포넌트를 넣으면 세부 목표 달성 버튼은 어디에여기에 댓글을 작성 컴포넌트를 넣으면 세부 목표 달성 버튼은 어디에여기</p>
+      <p>{ podoDetail == null ? (""):(podoDetail.oneline)}</p>
       <UserMemoDateDiv>
-        <p>2023.04.26</p>
+        <p>{ podoDetail == null ? (""):(podoDetail.createdAt)}</p>
       </UserMemoDateDiv>
     </UserMemoDiv>
   );

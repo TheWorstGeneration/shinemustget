@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import Image from 'next/image';
+import { podoListRecord } from '@/constants/grapeboardList';
 import GrapeBoard from '@/components/atoms/GrapeBoard/GrapeBoard';
-import { podoLists } from '@/constants/grapeboardList';
+import Image from 'next/image';
+import { useQuery } from 'react-query';
+import podoDetail from '@/pages/api/podoDetail';
+import { Dispatch,SetStateAction } from "react";
 
 const ArrowButtonUp = styled.div`
   margin-left: 9.25rem;
@@ -152,8 +155,9 @@ const GrapeContainer = styled.div`
   }
 `;
 
-export function GrapeBoardList() {
-  const idx = podoLists.pageCnt - 1;
+export function GrapeBoardList({ list, setPodoDetail }: {list:podoListRecord,setPodoDetail:Dispatch<SetStateAction<string>>}) {
+
+  const idx = list.pageCnt - 1;
   const [listIdx, setListIdx] = useState(idx);
 
   const handleUpClick = () => {
@@ -163,7 +167,13 @@ export function GrapeBoardList() {
     if (listIdx < idx) setListIdx(listIdx + 1);
   };
 
-  const list = podoLists.podosList[listIdx].podoDtoList;
+  const podosList = list?.podosList[listIdx]?.podoDtoList;
+  
+  const handleOnclick = (props:number) => { 
+    const detail:any = podoDetail(props).then((response) => { setPodoDetail(response)});
+    
+  };
+
   return (
     <>
       <ArrowButtonUp>
@@ -186,347 +196,373 @@ export function GrapeBoardList() {
         ></Image>
       </ArrowButtonDown>
       <GrapeContainer>
-        <div className={`podo-container ${list[0] !== null ? 'podo1' : null}`}>
-          {list[0] == null ? (
+        <div className={`podo-container ${podosList[0] !== null ? 'podo1' : null}`}>
+          {podosList[0] == null ? (
             ''
           ) : (
             <Image
-              src={list[0].imageUrl}
+              src={podosList[0].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[0].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[1] !== null ? 'podo2' : null}`}>
-          {list[1] == null ? (
+        <div className={`podo-container ${podosList[1] !== null ? 'podo2' : null}`}>
+          {podosList[1] == null ? (
             ''
           ) : (
             <Image
-              src={list[1].imageUrl}
+              src={podosList[1].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[1].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[2] !== null ? 'podo3' : null}`}>
-          {list[2] == null ? (
+        <div className={`podo-container ${podosList[2] !== null ? 'podo3' : null}`}>
+          {podosList[2] == null ? (
             ''
           ) : (
             <Image
-              src={list[2].imageUrl}
+              src={podosList[2].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[2].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[3] !== null ? 'podo4' : null}`}>
-          {list[3] == null ? (
+        <div className={`podo-container ${podosList[3] !== null ? 'podo4' : null}`}>
+          {podosList[3] == null ? (
             ''
           ) : (
             <Image
-              src={list[3].imageUrl}
+              src={podosList[3].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[3].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[4] !== null ? 'podo5' : null}`}>
-          {list[4] == null ? (
+        <div className={`podo-container ${podosList[4] !== null ? 'podo5' : null}`}>
+          {podosList[4] == null ? (
             ''
           ) : (
             <Image
-              src={list[4].imageUrl}
+              src={podosList[4].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[4].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[5] !== null ? 'podo6' : null}`}>
-          {list[5] == null ? (
+        <div className={`podo-container ${podosList[5] !== null ? 'podo6' : null}`}>
+          {podosList[5] == null ? (
             ''
           ) : (
             <Image
-              src={list[5].imageUrl}
+              src={podosList[5].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[5].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[6] !== null ? 'podo7' : null}`}>
-          {list[6] == null ? (
+        <div className={`podo-container ${podosList[6] !== null ? 'podo7' : null}`}>
+          {podosList[6] == null ? (
             ''
           ) : (
             <Image
-              src={list[6].imageUrl}
+              src={podosList[6].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[6].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[7] !== null ? 'podo8' : null}`}>
-          {list[7] == null ? (
+        <div className={`podo-container ${podosList[7] !== null ? 'podo8' : null}`}>
+          {podosList[7] == null ? (
             ''
           ) : (
             <Image
-              src={list[7].imageUrl}
+              src={podosList[7].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[7].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[8] !== null ? 'podo9' : null}`}>
-          {list[8] == null ? (
+        <div className={`podo-container ${podosList[8] !== null ? 'podo9' : null}`}>
+          {podosList[8] == null ? (
             ''
           ) : (
             <Image
-              src={list[8].imageUrl}
+              src={podosList[8].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[8].id) }}  
             ></Image>
           )}
         </div>
-        <div className={`podo-container ${list[9] !== null ? 'podo10' : null}`}>
-          {list[9] == null ? (
+        <div className={`podo-container ${podosList[9] !== null ? 'podo10' : null}`}>
+          {podosList[9] == null ? (
             ''
           ) : (
             <Image
-              src={list[9].imageUrl}
+              src={podosList[9].imageUrl}
               width={40}
               height={40}
               alt="Image"
-            ></Image>
-          )}
-        </div>
-        <div
-          className={`podo-container ${list[10] !== null ? 'podo11' : null}`}
-        >
-          {list[10] == null ? (
-            ''
-          ) : (
-            <Image
-              src={list[10].imageUrl}
-              width={40}
-              height={40}
-              alt="Image"
+              onClick={() => { handleOnclick(podosList[9].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[11] !== null ? 'podo12' : null}`}
+          className={`podo-container ${podosList[10] !== null ? 'podo11' : null}`}
         >
-          {list[11] == null ? (
+          {podosList[10] == null ? (
             ''
           ) : (
             <Image
-              src={list[11].imageUrl}
+              src={podosList[10].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[10].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[12] !== null ? 'podo13' : null}`}
+          className={`podo-container ${podosList[11] !== null ? 'podo12' : null}`}
         >
-          {list[12] == null ? (
+          {podosList[11] == null ? (
             ''
           ) : (
             <Image
-              src={list[12].imageUrl}
+              src={podosList[11].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[11].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[13] !== null ? 'podo14' : null}`}
+          className={`podo-container ${podosList[12] !== null ? 'podo13' : null}`}
         >
-          {list[13] == null ? (
+          {podosList[12] == null ? (
             ''
           ) : (
             <Image
-              src={list[13].imageUrl}
+              src={podosList[12].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[12].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[14] !== null ? 'podo15' : null}`}
+          className={`podo-container ${podosList[13] !== null ? 'podo14' : null}`}
         >
-          {list[14] == null ? (
+          {podosList[13] == null ? (
             ''
           ) : (
             <Image
-              src={list[14].imageUrl}
+              src={podosList[13].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[13].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[15] !== null ? 'podo16' : null}`}
+          className={`podo-container ${podosList[14] !== null ? 'podo15' : null}`}
         >
-          {list[15] == null ? (
+          {podosList[14] == null ? (
             ''
           ) : (
             <Image
-              src={list[15].imageUrl}
+              src={podosList[14].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[14].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[16] !== null ? 'podo17' : null}`}
+          className={`podo-container ${podosList[15] !== null ? 'podo16' : null}`}
         >
-          {list[16] == null ? (
+          {podosList[15] == null ? (
             ''
           ) : (
             <Image
-              src={list[16].imageUrl}
+              src={podosList[15].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[15].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[17] !== null ? 'podo18' : null}`}
+          className={`podo-container ${podosList[16] !== null ? 'podo17' : null}`}
         >
-          {list[17] == null ? (
+          {podosList[16] == null ? (
             ''
           ) : (
             <Image
-              src={list[17].imageUrl}
+              src={podosList[16].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[16].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[18] !== null ? 'podo19' : null}`}
+          className={`podo-container ${podosList[17] !== null ? 'podo18' : null}`}
         >
-          {list[18] == null ? (
+          {podosList[17] == null ? (
             ''
           ) : (
             <Image
-              src={list[18].imageUrl}
+              src={podosList[17].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[17].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[19] !== null ? 'podo20' : null}`}
+          className={`podo-container ${podosList[18] !== null ? 'podo19' : null}`}
         >
-          {list[19] == null ? (
+          {podosList[18] == null ? (
             ''
           ) : (
             <Image
-              src={list[19].imageUrl}
+              src={podosList[18].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[18].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[20] !== null ? 'podo21' : null}`}
+          className={`podo-container ${podosList[19] !== null ? 'podo20' : null}`}
         >
-          {list[20] == null ? (
+          {podosList[19] == null ? (
             ''
           ) : (
             <Image
-              src={list[20].imageUrl}
+              src={podosList[19].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[19].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[21] !== null ? 'podo22' : null}`}
+          className={`podo-container ${podosList[20] !== null ? 'podo21' : null}`}
         >
-          {list[21] == null ? (
+          {podosList[20] == null ? (
             ''
           ) : (
             <Image
-              src={list[21].imageUrl}
+              src={podosList[20].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[20].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[22] !== null ? 'podo23' : null}`}
+          className={`podo-container ${podosList[21] !== null ? 'podo22' : null}`}
         >
-          {list[22] == null ? (
+          {podosList[21] == null ? (
             ''
           ) : (
             <Image
-              src={list[22].imageUrl}
+              src={podosList[21].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[21].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[23] !== null ? 'podo24' : null}`}
+          className={`podo-container ${podosList[22] !== null ? 'podo23' : null}`}
         >
-          {list[23] == null ? (
+          {podosList[22] == null ? (
             ''
           ) : (
             <Image
-              src={list[23].imageUrl}
+              src={podosList[22].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[22].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[24] !== null ? 'podo25' : null}`}
+          className={`podo-container ${podosList[23] !== null ? 'podo24' : null}`}
         >
-          {list[24] == null ? (
+          {podosList[23] == null ? (
             ''
           ) : (
             <Image
-              src={list[24].imageUrl}
+              src={podosList[23].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[23].id) }}  
             ></Image>
           )}
         </div>
         <div
-          className={`podo-container ${list[25] !== null ? 'podo26' : null}`}
+          className={`podo-container ${podosList[24] !== null ? 'podo25' : null}`}
         >
-          {list[25] == null ? (
+          {podosList[24] == null ? (
             ''
           ) : (
             <Image
-              src={list[25].imageUrl}
+              src={podosList[24].imageUrl}
               width={40}
               height={40}
               alt="Image"
+              onClick={() => { handleOnclick(podosList[24].id) }}  
+            ></Image>
+          )}
+        </div>
+        <div
+          className={`podo-container ${podosList[25] !== null ? 'podo26' : null}`}
+        >
+          {podosList[25] == null ? (
+            ''
+          ) : (
+            <Image
+              src={podosList[25].imageUrl}
+              width={40}
+              height={40}
+              alt="Image"
+              onClick={() => { handleOnclick(podosList[25].id) }}  
             ></Image>
           )}
         </div>
