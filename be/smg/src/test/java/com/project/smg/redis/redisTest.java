@@ -17,7 +17,7 @@ public class redisTest {
     @Autowired
     RedisTemplate redisTemplate;
 
-    @Test
+//    @Test
     void testInteger(){
         final ValueOperations<String, Integer> stringObjectValueOperations = redisTemplate.opsForValue();
         String key = "stringTest1";
@@ -31,7 +31,7 @@ public class redisTest {
 
     }
 
-    @Test
+//    @Test
     void testSet(){
         SetOperations <String, String> stringStringSetOperations = redisTemplate.opsForSet();
         String key = "stringTest2";

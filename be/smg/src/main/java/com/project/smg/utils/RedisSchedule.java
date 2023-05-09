@@ -6,6 +6,7 @@ import com.project.smg.mandalart.service.MandalartLikeService;
 import com.project.smg.member.entity.Likes;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
+import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,7 +26,8 @@ public class RedisSchedule {
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final RedisTemplate redisTemplate;
-
+    // TODO redis 삭제는 일주일에 한 번
+    // TODO DB 데이터 동기화 할 때 like Cnt 추가
     @Transactional
     @Scheduled(cron = "0 0/3 * * * *")
     public void deleteChangeLikeFromRedis() {

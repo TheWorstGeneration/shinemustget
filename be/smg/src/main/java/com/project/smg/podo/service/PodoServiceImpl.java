@@ -103,7 +103,6 @@ public class PodoServiceImpl implements PodoService {
     /** 회원 스티커 종류
      * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
-    //TODO: 스티커가 없다면 잠긴 스티커 나오게
     @Override
     public List<StickerDto> sticker(String mid) {
 

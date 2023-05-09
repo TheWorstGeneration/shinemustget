@@ -18,4 +18,6 @@ public interface LikeRepository extends JpaRepository<Likes, Integer> {
 
     List<Likes> findByTitleId(int titleId);
     List<Likes> findByTitleIdAndStatus(int titleId, boolean status);
+
+    Optional<Likes> findByTitleIdAndMemberIdAndStatus(int titleId, String memberId, boolean status);
 }
