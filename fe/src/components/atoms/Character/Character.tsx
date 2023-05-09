@@ -100,7 +100,7 @@ export const Character = ({ src, alt }: CharacterProps) => {
   return (
     <ImageContainer>
       <You>{language == 'ko' ? '당신도' : 'You are next'}</You>
-      <CharacterImage src={src} width={500} height={500} alt={alt} />
+      <CharacterImage src={src} width={500} height={500} alt={alt} priority />
       <Dim />
       <Name>{alt}.</Name>
     </ImageContainer>

@@ -1,31 +1,39 @@
-import { selectGoal } from "@/store/modules/goal";
-import { useAppSelector } from "./useRedux";
+import { selectGoal } from '@/store/modules/goal';
+import { useAppSelector } from './useRedux';
 
-export const useMandalart = () => {
+interface SmallGoal {
+  id: number;
+  location: number;
+  content: string;
+  isClear?: boolean | undefined;
+  isCenter?: number | undefined;
+}
+
+interface BigGoal {
+  location: number;
+  content: string;
+  isClear?: boolean | undefined;
+  smallList: SmallGoal[];
+  isCenter?: number | undefined;
+}
+
+export interface MandalartData {
+  title: string;
+  bigList: BigGoal[];
+}
+
+export const useMandalart = (): MandalartData => {
   const { title, bigGoalList, smallGoalLists } = useAppSelector(selectGoal);
 
   return {
     title,
-    isClear: false,
-    bigList: bigGoalList.map((bigGoal, index) => ({
+    bigList: bigGoalList.map((bigGoal: string, index) => ({
       location: index + 1,
       content: bigGoal,
-      isClear: false,
       smallList: smallGoalLists[index].map(
-        (
-          smallGoal: {
-            id: number;
-            content: string;
-            isPodo: boolean;
-            isToday: boolean;
-          },
-          index: number,
-        ) => ({
+        (smallGoal: string, index: number) => ({
           location: index + 1,
-          content: smallGoal.content,
-          isPodo: false,
-          isToday: false,
-          isClear: false,
+          content: smallGoal,
         }),
       ),
     })),

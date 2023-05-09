@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 const MailContainerDiv = styled.aside<{ isActive: boolean }>`
   position: fixed;
   top: ${({ isActive }) => (isActive ? '6.5rem' : '20px')};
-  right: ${({ isActive }) => (isActive ? 'calc(10rem - 100px)' : '26rem')};
+  right: ${({ isActive }) => (isActive ? 'calc(10rem - 100px)' : '18rem')};
 
   box-shadow: 0 0 0.5rem 1px #22222225;
   border-radius: ${({ isActive }) => (isActive ? '.5rem' : '50%')};
@@ -29,11 +29,7 @@ const MailContainerDiv = styled.aside<{ isActive: boolean }>`
   }
 
   @media screen and (max-width: 960px) {
-    right: ${({ isActive }) => (isActive ? '1rem' : '17rem')};
-  }
-
-  @media screen and (max-width: 500px) {
-    right: ${({ isActive }) => (isActive ? '1rem' : '13rem')};
+    right: ${({ isActive }) => (isActive ? '1rem' : '9rem')};
   }
 `;
 
@@ -111,12 +107,12 @@ export function MailContainer() {
 
   const handleTotalCheck = () => {
     //TODO: 전체 확인 버튼 클릭 시, 모든 메일을 확인한 것으로 처리
-    console.log('전체 확인');
+    // console.log('전체 확인');
   };
 
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
-    console.log('메일 받아오기');
+    // console.log('메일 받아오기');
   }, []);
 
   return isLandingPage ? null : (

@@ -22,7 +22,6 @@ const Profile = styled(Image)`
 
 export const ProfileImage = () => {
   const router = useRouter();
-
   const { imageUrl } = useAppSelector(selectProfile);
 
   const handleProfile = () => {
@@ -31,7 +30,16 @@ export const ProfileImage = () => {
 
   return (
     <ProfileButton onClick={handleProfile}>
-      <Profile src={imageUrl} alt="Profile" width={48} height={48} />
+      <Profile
+        src={
+          imageUrl
+            ? imageUrl
+            : 'https://search.pstatic.net/common?type=b&size=216&expire=1&refresh=true&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2F108%2F202205231938126841.png'
+        }
+        alt="Profile"
+        width={48}
+        height={48}
+      />
     </ProfileButton>
   );
 };

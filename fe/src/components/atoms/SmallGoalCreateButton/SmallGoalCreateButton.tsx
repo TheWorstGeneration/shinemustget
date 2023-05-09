@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
-import getSmallGoal from '@/pages/api/getSmallGoal';
+import postSmallGoal from '@/pages/api/postSmallGoal';
 import { selectGoal, setSmallGoal } from '@/store/modules/goal';
 import styled from '@emotion/styled';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
@@ -35,7 +35,8 @@ export const SmallGoalCreateButton = () => {
   const dispatch = useAppDispatch();
 
   const axiosSmallGoal = async (bigGoalList: string[]) => {
-    const SmallGoalDTO = await getSmallGoal(bigGoalList);
+    const SmallGoalDTO = await postSmallGoal(bigGoalList);
+    console.log('plz', SmallGoalDTO);
     if (SmallGoalDTO) {
       Object.entries(SmallGoalDTO).forEach(([key, smallGoalList]) => {
         const i = bigGoalList.indexOf(key);
