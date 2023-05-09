@@ -1,7 +1,9 @@
 import { CompletedLog } from '@/components/atoms/CompletedLog/CompletedLog';
 import getClearGoal from '@/pages/api/getClearGoal';
+import getClearMandalart from '@/pages/api/getClearMandalart';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const ProfileCompletedContainer = styled.div`
   width: 50%;
@@ -33,23 +35,25 @@ const CompletedBox = styled.div`
   overflow-y: scroll;
 `;
 
+const Err = styled.div`
+  text-align: center;
+  margin-top: 1rem;
+`;
+
 interface CompletedLogs {
   content: string;
   clearAt: string;
 }
 
 export const ProfileCompleted = () => {
-  const [completedLogs, setCompletedLogs] = useState<CompletedLogs[] | null>(
-    null,
-  );
-  useEffect(() => {
-    const axiosClearGoal = async () => {
-      const data = await getClearGoal();
-      setCompletedLogs(data);
-    };
-
-    axiosClearGoal();
-  }, []);
+  const completedLogs: CompletedLogs[] | undefined = useQuery(
+    'clearGoal',
+    getClearGoal,
+    {
+      staleTime: 5000,
+      cacheTime: 20000,
+    },
+  ).data;
 
   return (
     <ProfileCompletedContainer>
@@ -62,6 +66,8 @@ export const ProfileCompleted = () => {
             clearAt={Log.clearAt}
           />
         ))}
+        {completedLogs?.length === 0 && <Err>현재 달성한 목표가 없습니다.</Err>}
+        {!completedLogs && <Err>현재 달성한 목표가 없습니다.</Err>}
       </CompletedBox>
     </ProfileCompletedContainer>
   );

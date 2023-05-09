@@ -1,5 +1,6 @@
 import Like from '@/components/atoms/Like/Like';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
 const Title = styled.div`
   margin-top: 1rem;
@@ -11,8 +12,6 @@ const MandalartContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-
-  cursor: pointer;
 `;
 
 const MandalartdBox = styled.div`
@@ -21,6 +20,7 @@ const MandalartdBox = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 
+  cursor: pointer;
   overflow: hidden;
 `;
 
@@ -77,6 +77,8 @@ interface SearchBigDto {
 }
 
 export const BigGoalMandalart = (props: any) => {
+  const router = useRouter();
+
   const title: string = props.searchDto?.title;
   const likeCnt: number = props.searchDto?.likeCnt;
   const isLike: boolean = props.searchDto?.isLike;
@@ -86,16 +88,18 @@ export const BigGoalMandalart = (props: any) => {
     },
   );
   const isProfile: boolean = props.isProfile;
+  const id: number = props.id;
 
   const handleMandalartDetail = () => {
+    router.push(`/searchDetail/${id}`);
     console.log('madalart detail');
   };
 
   return (
     <>
       <Title>{title}</Title>
-      <MandalartContainer onClick={handleMandalartDetail}>
-        <MandalartdBox>
+      <MandalartContainer>
+        <MandalartdBox onClick={handleMandalartDetail}>
           {bigGoalList?.map(bigGoal =>
             bigGoal.location == 5 ? (
               <>
