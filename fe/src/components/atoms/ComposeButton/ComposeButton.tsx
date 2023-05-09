@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import styled from "@emotion/styled"
 import podoWrite from "@/pages/api/podoWrite";
 import { useAppSelector } from "@/hooks/useRedux";
 import { selectIdx } from "@/store/modules/detailIdx";
+import podoRead from "@/pages/api/podoRead";
 
 const Button = styled.button`
   display: flex;
@@ -23,6 +24,7 @@ const Button = styled.button`
 
 export function ComposeButton({ imageUrl, oneline }: { imageUrl: any, oneline: any }) {
   const { index } = useAppSelector(selectIdx);
+  const [podoRead2,setPodoRead2] = useState<any>("");
 
   const propsDetail = {
     id: index,
@@ -31,7 +33,11 @@ export function ComposeButton({ imageUrl, oneline }: { imageUrl: any, oneline: a
   };
 
   const onClickHandler = () => {
-    podoWrite(propsDetail).then(res=>console.log(res));
+    podoWrite(propsDetail).then(res => {
+      setPodoRead2(res);
+      console.log(res)
+  });
+    podoRead(index);
   };
 
   return (

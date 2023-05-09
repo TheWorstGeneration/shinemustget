@@ -7,6 +7,8 @@ import { UserMemo } from "../UserMemo/UserMemo"
 import { useAppSelector } from "@/hooks/useRedux"
 import podoSetting from "@/pages/api/podoSetting"
 import { selectIdx } from "@/store/modules/detailIdx";
+import { podoListRecord } from "@/constants/grapeboardList"
+import { sticker } from "@/constants/stickerList"
 
 const DetailedDiv = styled.div`
   display: flex;
@@ -45,9 +47,11 @@ const DetailedDivEmpty = styled.div`
     text-align: center;
 `;
 
-export function DetailedCenter() {
+export function DetailedCenter({ list,stickerList }: {list:podoListRecord,stickerList:sticker[]}) {
   const [isOn, setisOn] = useState(false);
   const { index } = useAppSelector(selectIdx);
+
+  const [podoDetail, setPodoDetail] = useState("");
 
   if (isOn) { 
     podoSetting(index);
@@ -68,11 +72,11 @@ export function DetailedCenter() {
       </DetailedDiv>
       { isOn?(<DetailedDivPos>
         <DetailedDivPosLeft>
-          <GrapeBoardList />
+          <GrapeBoardList list={list} setPodoDetail={setPodoDetail} />
         </DetailedDivPosLeft>
         <DetailedDivRight>
-          <UserMemo />
-          <UserComment/>
+          <UserMemo podoDetail={podoDetail} />
+          <UserComment stickerList={...stickerList } />
         </DetailedDivRight>
       </DetailedDivPos>) : (
           <DetailedDivEmpty>
