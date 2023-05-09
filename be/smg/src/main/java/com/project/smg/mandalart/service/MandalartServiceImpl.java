@@ -11,6 +11,7 @@ import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.repository.PodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
@@ -45,7 +46,7 @@ public class MandalartServiceImpl implements MandalartService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + apiKey);
 
-        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 20어절 미만으로 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
+        String mandal = prompt + "이/가 되기 위해 필요한 8가지 목표 설명을 생략하고 간략하게 키워드로만 알려줘 응답 형식은 '1. 운동하기\\n2.배달음식 줄이기\\n3.' 이런 형식으로 적어줘";
 
         ChatGptRequestDto chatGPTRequest = new ChatGptRequestDto();
         chatGPTRequest.setModel("gpt-3.5-turbo"); // Most capable GPT-3.5 model and optimized for chat.
@@ -173,6 +174,13 @@ public class MandalartServiceImpl implements MandalartService {
         return result;
     }
 
+    @Override
+    public void getSearchMandalart(String word) {
+//        PageRequest.of(0, 10, Sort.b)
+//        Optional<Title> findByContent = titleRepository.findByContentAndClearAtIsNotNullOrderByLikeCntDesc(word);
+//        if(findByContent.isPresent())
+    }
+
     /** Gpt에 저장된 세부목표 불러오기 */
     @Async
     public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
@@ -189,7 +197,9 @@ public class MandalartServiceImpl implements MandalartService {
     @Transactional
     @Async
     public void saveGptBigGoal(String title, List<String> strings){
-        List<GptBigGoal> gptBigGoals = strings.stream()
+        List<String> split = strings.stream().map(i -> i.replaceAll(" ", "")).collect(Collectors.toList());
+
+        List<GptBigGoal> gptBigGoals = split.stream()
                 .map(i -> GptBigGoal.builder().content(i).build())
                 .collect(Collectors.toList());
 
