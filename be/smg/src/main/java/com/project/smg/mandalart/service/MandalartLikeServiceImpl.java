@@ -26,7 +26,6 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
      *     o -> memberId 있다면 제거, 없다면 추가
      *     x -> db 조회 후 없으면 레디스 새로 저장, 있으면 db 값 redis 저장
      * */
-    // TODO 내 만다라트에는 좋아요 못함
     @Override
     @Transactional
     public void mandalartLike(String mid, int id) {
