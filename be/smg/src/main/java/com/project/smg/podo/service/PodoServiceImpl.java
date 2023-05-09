@@ -133,8 +133,12 @@ public class PodoServiceImpl implements PodoService {
             findSmallGoal.setSticker(false);
         }else findSmallGoal.setSticker(true);
     }
-
-
+    /** 포도알 설정 조회*/
+    @Override
+    public Boolean podoSettingRead(String mid, int id) {
+        SmallGoal findSmallGoal = checkSmallGoal(id);
+        return findSmallGoal.isSticker();
+    }
 
     private SmallGoal checkSmallGoal(int id){
         Optional<SmallGoal> smallGoal = smallGoalRepository.findById(id);

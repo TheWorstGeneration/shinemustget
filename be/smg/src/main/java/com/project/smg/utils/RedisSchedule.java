@@ -26,7 +26,6 @@ public class RedisSchedule {
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final RedisTemplate redisTemplate;
-    // TODO redis 삭제는 일주일에 한 번
     // TODO DB 데이터 동기화 할 때 like Cnt 추가
     @Transactional
     @Scheduled(cron = "0 0/3 * * * *")
@@ -70,8 +69,15 @@ public class RedisSchedule {
             redisTemplate.delete(changeKey);
 
         }
+        // TODO redis 삭제는 일주일에 한 번 -> 나중에 Scheduled 로 빼기
         // 기존 redis caching 데이터 삭제
         deleteLikeFromRedis();
+        // like_cnt update
+        updateLikeCnt();
+    }
+
+    private void updateLikeCnt() {
+
     }
 
 

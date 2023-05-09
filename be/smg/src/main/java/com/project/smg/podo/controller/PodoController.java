@@ -70,7 +70,17 @@ public class PodoController {
             return new ResponseEntity<>(new ResponseDto(500, "변경 실패"), HttpStatus.OK);
         }
     }
-
+    /*포도알 설정 여부 조회 */
+    @GetMapping(value = "/setting/{id}")
+    public ResponseEntity<?> settingRead(@RequestAttribute("id") String mid, @PathVariable("id") int id){
+        try {
+            Boolean isPodo = podoService.podoSettingRead(mid, id);
+            return new ResponseEntity<>(isPodo, HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(new ResponseDto(500, "문제발생!!! "), HttpStatus.OK);
+        }
+    }
 
 
     /* 포도알 종류 조회 */
