@@ -56,6 +56,7 @@ spring:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
     org.springframework.security: DEBUG
+    org.springframework.security.oauth2: TRACE
 
   security:
     oauth2:
