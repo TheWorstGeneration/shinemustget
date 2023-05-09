@@ -42,14 +42,14 @@ public class MemberController {
     @GetMapping("/memberInfo")
     public ResponseEntity<?> memberInfo(@RequestAttribute("id") String memberId) {
         MemberInfoDto memberInfoDto = memberService.memberInfo(memberId);
-        if (memberInfoDto != null) {
-            log.info("프로필 조회 성공");
-            return new ResponseEntity(memberInfoDto, HttpStatus.OK);
-        }
-        else {
-            log.info("프로필 조회 실패");
-            return new ResponseEntity<>(new ResponseDto(500, "존재하지 않는 유저 입니다."), HttpStatus.OK);
-        }
+//        if (memberInfoDto != null) {
+        log.info("프로필 조회 성공");
+        return new ResponseEntity(memberInfoDto, HttpStatus.OK);
+//        }
+//        else {
+//            log.info("프로필 조회 실패");
+//            return new ResponseEntity<>(new ResponseDto(500, "존재하지 않는 유저 입니다."), HttpStatus.OK);
+//        }
     }
 }
 
