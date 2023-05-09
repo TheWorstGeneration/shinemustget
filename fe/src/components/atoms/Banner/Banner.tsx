@@ -26,6 +26,7 @@ export const Banner = () => {
       width={200}
       height={400}
       onClick={handleBannerClick}
+      priority
     />
   );
 };

@@ -3,10 +3,14 @@ import { useAppDispatch } from '@/hooks/useRedux';
 import { setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
-import getMemberInfo from '../api/memberInfo';
+import getMemberInfo from '../api/getMemberInfo';
 import { ImageButton } from '@/components/atoms/ImageButton/ImageButton';
 import { DeleteButton } from '@/components/atoms/DeleteButton/DeleteButton';
 import Head from 'next/head';
+import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { GetServerSideProps } from 'next';
+import { MANDALART_READ_MAIN, MEMBER_INFO } from '@/constants/queryKey';
+import { getReadMain } from '../api/getReadMain';
 
 const HomeSection = styled.section`
   display: flex;
@@ -71,6 +75,9 @@ const ButtonContainer = styled.div`
 `;
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+  const { data } = useQuery(MEMBER_INFO, getMemberInfo);
+  dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
   return (
     <>
       <Head>
@@ -106,3 +113,13 @@ export default function Home() {
     </>
   );
 }
+
+export const getServersideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(MEMBER_INFO, getMemberInfo);
+  await queryClient.prefetchQuery(MANDALART_READ_MAIN, getReadMain);
+
+  return {
+    props: dehydrate(queryClient),
+  };
+};

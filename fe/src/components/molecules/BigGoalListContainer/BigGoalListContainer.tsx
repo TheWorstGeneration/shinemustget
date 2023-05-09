@@ -137,7 +137,7 @@ export const BigGoalListContainer = () => {
           <BigGoals>
             {bigGoalList.map((bigGoal, index) => {
               return (
-                <BigGoalContainer>
+                <BigGoalContainer key={index}>
                   <BigGoalTextField
                     key={index}
                     value={bigGoal}

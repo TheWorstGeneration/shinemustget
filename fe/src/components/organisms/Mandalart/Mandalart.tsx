@@ -1,6 +1,9 @@
 import { GoalBoxContainer } from '@/components/molecules/GoalBoxContainer/GoalBoxContainer';
-import { MANDALART } from '@/constants/mandalart';
+import { MANDALART_READ_MAIN } from '@/constants/queryKey';
+import { MandalartData, useMandalart } from '@/hooks/useMandalart';
+import { getReadMain } from '@/pages/api/getReadMain';
 import styled from '@emotion/styled';
+import { useQuery } from 'react-query';
 
 const Container = styled.article`
   display: flex;
@@ -57,7 +60,11 @@ const Row = styled.div`
 `;
 
 export const Mandalart = () => {
-  const { title, isClear, bigList } = MANDALART;
+  const { data } = useQuery<MandalartData>(MANDALART_READ_MAIN, getReadMain);
+  const mandalart = useMandalart();
+  console.log(data, mandalart);
+
+  const { title, bigList } = data ? data : mandalart;
 
   bigList.sort((a, b) => {
     return a.location - b.location;
@@ -72,8 +79,7 @@ export const Mandalart = () => {
       id: 0,
       location: bigGoal.location,
       content: bigGoal.content,
-      isPodo: false,
-      isClear: bigGoal.isClear,
+      isClear: bigGoal?.isClear,
       isCenter: 1,
     };
   });
@@ -81,7 +87,7 @@ export const Mandalart = () => {
   const center = {
     location: 0,
     content: title,
-    isClear,
+    isClear: false,
     smallList: centerSmallList,
     isCenter: 2,
   };
@@ -98,7 +104,7 @@ export const Mandalart = () => {
               key={bigGoal.location}
               location={bigGoal.location}
               content={bigGoal.content}
-              isClear={bigGoal.isClear}
+              isClear={bigGoal?.isClear}
               smallList={bigGoal.smallList}
               isCenter={bigGoal?.isCenter}
             />
