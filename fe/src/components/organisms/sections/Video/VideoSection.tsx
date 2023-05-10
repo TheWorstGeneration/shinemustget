@@ -1,6 +1,7 @@
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { usePageYOffset } from '../../../../hooks/usePageYOffset';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 const SectionStyle = styled.section`
   display: flex;
@@ -29,7 +30,7 @@ const Dim = styled.div`
   right: 0;
 
   width: 100%;
-  height: 100%;
+  height: 90%;
 
   z-index: 1;
 
@@ -68,32 +69,22 @@ const VideoDiv = styled.div<{ pageYOffset: number }>`
 
 export const VideoSection = () => {
   const pageYOffset = usePageYOffset();
-  const innerWidth = useInnerWidth();
+
   return (
     <SectionStyle>
       <Dim />
       <figure>
-        {/* <Video
+        <Video
+          controls
           pageYOffset={pageYOffset}
           width="250"
-          autoPlay
           playsInline
-          muted
-          loop
           poster="/assets/images/common/front-image.png"
-          title="zelda"
+          title="ohtani news"
+          onPlay={(e: any) => (e.target.currentTime = 129)}
         >
-          <source src="/assets/videos/zelda.mp4" type="video/mp4" />
-        </Video> */}
-        <VideoDiv pageYOffset={pageYOffset}>
-          <iframe
-            width={innerWidth}
-            height="900"
-            src="https://www.youtube.com/embed/xAn5z9_AfZg?controls=0&amp;start=128&autoplay=1&mute=1&loop=1&playlist=xAn5z9_AfZg&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1&widgetid=1&cc_load_policy=1&fs=0&playsinline=1&autohide=1&color=white&theme=light"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share, fullscreen"
-          />
-        </VideoDiv>
+          <source src="/assets/videos/news.mp4" type="video/mp4" />
+        </Video>
       </figure>
     </SectionStyle>
   );

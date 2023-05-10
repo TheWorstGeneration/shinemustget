@@ -1,5 +1,7 @@
 import { InputBox } from '@/components/atoms/InputBox/InputBox';
 import { BigGoalListContainer } from '@/components/molecules/BigGoalListContainer/BigGoalListContainer';
+import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
+import { MANDALART_READ_MAIN, MEMBER_INFO } from '@/constants/queryKey';
 import { useMandalart } from '@/hooks/useMandalart';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal } from '@/store/modules/goal';
@@ -8,6 +10,12 @@ import { setResetInputBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { useEffect } from 'react';
+import { QueryClient, dehydrate, hydrate, useQuery } from 'react-query';
+import getMemberInfo from '../api/getMemberInfo';
+import { getReadMain } from '../api/getReadMain';
+import { GetServerSideProps } from 'next';
+import { setLogin } from '@/store/modules/profile';
+import { CreateButton } from '@/components/atoms/CreateButton/CreateButton';
 
 const CreateSection = styled.section`
   display: flex;
@@ -16,7 +24,7 @@ const CreateSection = styled.section`
   justify-content: start;
   position: relative;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #ffffff;
 
   overflow: hidden;
@@ -24,20 +32,25 @@ const CreateSection = styled.section`
   padding-top: 6rem;
 `;
 
+const FinalCreateStep = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  position: relative;
+  width: 100vw;
+  height: calc(100vh + 3rem);
+  background-color: #ffffff;
+`;
+
 export default function Create() {
   const dispatch = useAppDispatch();
   const { title, smallGoalLists } = useAppSelector(selectGoal);
   const mandalart = smallGoalLists[0][0] === '' ? null : useMandalart();
 
-  console.log(mandalart);
-
-  useEffect(() => {
-    if (title === '') {
-      dispatch(setResetInputBox());
-    } else {
-      dispatch(setInputBox());
-    }
-  }, []);
+  const { data } = useQuery(MEMBER_INFO, getMemberInfo);
+  console.log(data?.imageUrl, data?.nickname);
+  dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
 
   return (
     <>
@@ -58,9 +71,25 @@ export default function Create() {
         <meta property="og:url" content="https://shinemustget.com" />
       </Head>
       <CreateSection>
-        <BigGoalListContainer />
+        {mandalart === null ? (
+          <BigGoalListContainer />
+        ) : (
+          <FinalCreateStep>
+            <Mandalart />
+            <CreateButton />
+          </FinalCreateStep>
+        )}
         <InputBox />
       </CreateSection>
     </>
   );
 }
+
+export const getServersideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(MEMBER_INFO, getMemberInfo);
+
+  return {
+    props: dehydrate(queryClient),
+  };
+};

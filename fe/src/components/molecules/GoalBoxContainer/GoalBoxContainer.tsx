@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 export interface GoalBoxContainerProps {
   location: number;
   content: string;
-  isClear: boolean;
+  isClear: boolean | undefined;
   smallList: GoalBoxProps[];
-  isCenter?: number | undefined;
+  isCenter: number | undefined;
 }
 
 const Container = styled.div`
@@ -42,6 +42,7 @@ const Row = styled.div`
 
 export const GoalBoxContainer = ({
   content,
+  location,
   isClear,
   smallList,
   isCenter,
@@ -69,11 +70,12 @@ export const GoalBoxContainer = ({
   return (
     <Container>
       <Row>
-        {fristRow.map(smallList => {
+        {fristRow.map((smallList, index) => {
           return (
             <GoalBox
-              key={smallList.location}
+              key={index + 1}
               id={smallList?.id}
+              i={location}
               location={smallList.location}
               content={smallList.content}
               isPodo={smallList?.isPodo}
@@ -85,11 +87,12 @@ export const GoalBoxContainer = ({
         })}
       </Row>
       <Row>
-        {secondRow.map(smallList => {
+        {secondRow.map((smallList, index) => {
           return (
             <GoalBox
-              key={smallList.id}
+              key={(index + 1) * 10}
               id={smallList.id}
+              i={location}
               location={smallList.location}
               content={smallList.content}
               isPodo={smallList.isPodo}
@@ -101,11 +104,12 @@ export const GoalBoxContainer = ({
         })}
       </Row>
       <Row>
-        {thirdRow.map(smallList => {
+        {thirdRow.map((smallList, index) => {
           return (
             <GoalBox
-              key={smallList.id}
+              key={(index + 1) * 100}
               id={smallList.id}
+              i={location}
               location={smallList.location}
               content={smallList.content}
               isPodo={smallList.isPodo}
