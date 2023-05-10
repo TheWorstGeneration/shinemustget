@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/hooks/useRedux';
-import getKakaoLogout from '@/pages/api/kakaoLogout';
+import getKakaoLogout from '@/pages/api/getKakaoLogout';
 import { setLogout } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
@@ -34,7 +34,6 @@ export const LogoutButton = () => {
       getKakaoLogout();
       dispatch(setLogout());
 
-      //  process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI 이 주소 열어줘
       window.location.href = process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
         ? process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
         : '/';

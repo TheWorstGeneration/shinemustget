@@ -1,18 +1,23 @@
 import { ProfileLog } from '@/components/organisms/ProfileLog/ProfileLog';
 import { ProfileProgress } from '@/components/molecules/ProfileProgress/ProfileProgress';
 import styled from '@emotion/styled';
-import { MailContainer } from '@/components/molecules/MailContainer/MailContrainer';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import Head from 'next/head';
+import { QueryClient, dehydrate, useQuery } from 'react-query';
+import getClearGoal from '../api/getClearGoal';
+import { GetServerSideProps } from 'next';
+import getNowGoal from '../api/getNowGoal';
+import getClearMandalart from '../api/getClearMandalart';
+import { cacheTime, staleTime } from '@/constants/queryKey';
 
-const Temp = styled.section`
+const ProfileTop = styled.section`
   display: flex;
   justify-content: center;
-  margin: 6.5rem 0 0;
 `;
 
 const ProfileSection = styled.section<{ isMaxWidth: boolean }>`
   display: flex;
+  margin: 6.5rem 0 0;
   flex-direction: column;
 
   width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
@@ -30,12 +35,13 @@ const ProfileSection = styled.section<{ isMaxWidth: boolean }>`
   }
 `;
 
-const Mail = styled.section`
-  margin-left: 0.5rem;
-`;
-
-export const Profile = () => {
+export const Profile = (props: any) => {
   const isMaxWidth = useInnerWidth() >= 1440;
+
+  const progressProps = useQuery('nowGoal', getNowGoal, {
+    staleTime: 5000,
+    cacheTime: 20000,
+  }).data;
 
   return (
     <>
@@ -58,17 +64,35 @@ export const Profile = () => {
         />
         <meta property="og:url" content="https://shinemustget.com" />
       </Head>
-      <Temp>
+      <ProfileTop>
         <ProfileSection isMaxWidth={isMaxWidth}>
           <ProfileProgress />
           <ProfileLog />
         </ProfileSection>
-        <Mail>
-          <MailContainer />
-        </Mail>
-      </Temp>
+      </ProfileTop>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery('nowGoal', getNowGoal, {
+    staleTime: 10000,
+    cacheTime: 20000,
+  });
+  await queryClient.prefetchQuery('clearMandalart', getClearMandalart, {
+    staleTime: 10000,
+    cacheTime: 20000,
+  });
+  await queryClient.prefetchQuery('clearGoal', getClearGoal, {
+    staleTime: 10000,
+    cacheTime: 20000,
+  });
+
+  return {
+    props: dehydrate(queryClient),
+  };
 };
 
 export default Profile;

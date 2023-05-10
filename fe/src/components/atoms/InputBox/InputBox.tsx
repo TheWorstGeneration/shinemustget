@@ -88,7 +88,6 @@ export const InputBox = () => {
 
   const axiosBigGoal = async (input: string) => {
     const bigGoalDTO = await getBigGoal(input);
-    console.log(bigGoalDTO);
     if (bigGoalDTO) {
       dispatch(setTitle(input));
       bigGoalDTO[input].forEach((bigGoal, index) => {

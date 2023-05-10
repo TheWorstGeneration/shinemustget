@@ -28,7 +28,7 @@ export const MANDALART_READ_CLEAR_GOAL = `${BASE_URL}/mandalart/readClearGoal`;
 // 완료된 만다라트 조회
 export const MANDALART_READ_CLEAR_MANDALART = `${BASE_URL}/mandalart/readClearMandalart`;
 // 만다라트 삭제
-export const MANDALART_DELETE = `${BASE_URL}/mandalart/delete`;
+export const MANDALART_DELETE = `${BASE_URL}/profile/delete`;
 // 세부 목표 달성 완료
 export const MANDALART_CLEAR = `${BASE_URL}/mandalart/clear`;
 

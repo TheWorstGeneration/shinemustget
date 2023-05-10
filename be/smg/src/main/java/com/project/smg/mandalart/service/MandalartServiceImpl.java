@@ -4,6 +4,7 @@ import com.project.smg.mandalart.dto.*;
 import com.project.smg.mandalart.entity.*;
 import com.project.smg.mandalart.repository.GptBigGoalRepository;
 import com.project.smg.mandalart.repository.GptTitleRepository;
+import com.project.smg.mandalart.repository.SmallGoalRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
 import com.project.smg.member.dto.SearchBigDto;
 import com.project.smg.member.dto.SearchDto;
@@ -43,6 +44,7 @@ public class MandalartServiceImpl implements MandalartService {
     private final TitleRepository titleRepository;
     private final PodoRepository podoRepository;
     private final MandalartLikeService mandalartLikeService;
+    private final SmallGoalRepository smallGoalRepository;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     /** Gpt 요청 */
@@ -246,6 +248,16 @@ public class MandalartServiceImpl implements MandalartService {
         return SearchDetailResponse;
     }
 
+    /** 세부목표 완료 */
+    @Override
+    public void clearGoal(int id) {
+        Optional<SmallGoal> byId = smallGoalRepository.findById(id);
+        if(byId.isPresent()){
+            SmallGoal smallGoal = byId.get();
+            smallGoal.setClearAt(LocalDateTime.now());
+            smallGoalRepository.save(smallGoal);
+        }
+    }
 
     /** Gpt에 저장된 세부목표 불러오기 */
     @Async

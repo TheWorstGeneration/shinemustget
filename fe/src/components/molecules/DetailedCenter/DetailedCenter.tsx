@@ -9,6 +9,8 @@ import podoSetting from "@/pages/api/podoSetting"
 import { selectIdx } from "@/store/modules/detailIdx";
 import { podoListRecord } from "@/constants/grapeboardList"
 import { sticker } from "@/constants/stickerList"
+import { Dispatch, SetStateAction } from "react";
+import { setPodo } from "@/store/modules/detailIdx"
 
 const DetailedDiv = styled.div`
   display: flex;
@@ -47,15 +49,11 @@ const DetailedDivEmpty = styled.div`
     text-align: center;
 `;
 
-export function DetailedCenter({ list,stickerList }: {list:podoListRecord,stickerList:sticker[]}) {
-  const [isOn, setisOn] = useState(false);
-  const { index } = useAppSelector(selectIdx);
-
+export function DetailedCenter({ isOn,setisOn,setting,list,stickerList,updatePodo,setUpdatePodo }: {isOn:boolean,setisOn:Dispatch<SetStateAction<boolean>>,setting:any, list:podoListRecord,stickerList:sticker[],updatePodo:boolean, setUpdatePodo:Dispatch<SetStateAction<boolean>>}) {
+  
+  
   const [podoDetail, setPodoDetail] = useState("");
-
-  if (isOn) { 
-    podoSetting(index);
-  }
+  
 
   return (
   <div>
@@ -67,7 +65,7 @@ export function DetailedCenter({ list,stickerList }: {list:podoListRecord,sticke
           <DetailedDivToggleDesc>
             <p>포도알 설정</p>
           </DetailedDivToggleDesc>
-          <Toggle isOn={isOn} setisOn={setisOn}/>
+          <Toggle setting={setting } isOn={isOn} setisOn={setisOn} />
         </DetailedDivToggle>
       </DetailedDiv>
       { isOn?(<DetailedDivPos>
@@ -76,7 +74,7 @@ export function DetailedCenter({ list,stickerList }: {list:podoListRecord,sticke
         </DetailedDivPosLeft>
         <DetailedDivRight>
           <UserMemo podoDetail={podoDetail} />
-          <UserComment stickerList={...stickerList } />
+          <UserComment stickerList={...stickerList} updatePodo={updatePodo} setUpdatePodo={setUpdatePodo} />
         </DetailedDivRight>
       </DetailedDivPos>) : (
           <DetailedDivEmpty>
