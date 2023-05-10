@@ -1,9 +1,10 @@
 import axios from "axios";
+import { PODO_READ_PODO } from "@/constants/queryKey";
 
 interface podoId { id: number }
 
 const podoRead = async (props:number) => {
-  const data = await axios.get<podoId>(`https://shinemustget.com/api/podo/readPodo/${props}`, {
+  const data = await axios.get<podoId>(PODO_READ_PODO+`${props}`, {
     headers: {
       id: 2762543073,
     },

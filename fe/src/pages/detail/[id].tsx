@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import podoRead from '../api/podoRead';
 import podoSticker from '../api/podoSticker';
 import { selectIdx } from '@/store/modules/detailIdx';
-import podoIdSetting from '../api/podoIdSetting';
 import podoSetting from '../api/podoSetting';
 import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
 
