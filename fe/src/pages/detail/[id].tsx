@@ -10,6 +10,7 @@ import podoRead from '../api/podoRead';
 import podoSticker from '../api/podoSticker';
 import { selectIdx } from '@/store/modules/detailIdx';
 import podoIdSetting from '../api/podoIdSetting';
+import podoSetting from '../api/podoSetting';
 import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
 
 const HeadDiv = styled.div`
@@ -29,7 +30,7 @@ const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
    @media (max-width: 960px) {
     display: flex;
     justify-content: column;
-     height: 100vh;
+    height: 100vh;
   }
 
    @media (max-width: 500px) {
@@ -86,11 +87,12 @@ export default function Detail() {
   const [updatePodo, setUpdatePodo] = useState<boolean>(false);
   const [isOn, setisOn] = useState<any>(false);
   
-  const { index }: any = useAppSelector(selectIdx);
+  const { index,isPodo } = useAppSelector(selectIdx);
 
   dispatch(setIdx(router?.query.id));
+  
   useEffect(() => {
-    podoIdSetting(index).then((response) => { setisOn(response) });
+    setisOn(isPodo);
     podoRead(index).then((response) => {
       setList(response);
     });
@@ -103,10 +105,6 @@ export default function Detail() {
     });
   }, [updatePodo])
 
-  useEffect(() => {
-    podoIdSetting(index).then((response) => { setisOn(response) });
-  }, [isOn]);
-  
   return (
     <>
       <HeadDiv>

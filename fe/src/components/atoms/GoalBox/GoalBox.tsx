@@ -212,8 +212,8 @@ export const GoalBox = ({
   ) : (
     <Box
       href={`/detail/${id}`}
-      isClear={isClear ? isClear : false}
-      onClick={() => dispatch(setPodo(isPodo))}
+          isClear={isClear ? isClear : false}
+          onClick={() => dispatch(setPodo({content:content,isPodo:isPodo}))}
     >
       {isPodo ? (
         <Badge>

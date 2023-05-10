@@ -5,12 +5,14 @@ import { RootState } from '..';
 export interface idxSlice {
   index: number;
   isPodo: boolean;
+  content: string;
 }
 
 // 초기 상태 정의
 const initialState = {
   index: 0,
-  isPodo:false,
+  isPodo: false,
+  content:null,
 };
 
 const detailSlice = createSlice({
@@ -21,8 +23,10 @@ const detailSlice = createSlice({
     setIdx: (state, action) => { 
       state.index = action.payload;
     },
-    setPodo: (state, action) => { 
-      state.isPodo = action.payload;
+    setPodo: (state, action) => {
+      state.isPodo = action.payload.isPodo;
+      state.content = action.payload.content;
+
     }
   },
 });
