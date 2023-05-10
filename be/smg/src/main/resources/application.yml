@@ -75,6 +75,7 @@ spring:
               - profile_nickname
               - profile_image
 
+
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
