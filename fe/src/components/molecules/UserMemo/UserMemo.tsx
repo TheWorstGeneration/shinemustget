@@ -5,7 +5,6 @@ const UserMemoDiv = styled.div`
   border-radius: 0.55rem;
   padding: 1rem;
   height: 15.5rem;
-  width: 20.5rem;
 
   .memoContent{
     word-wrap: break-word;
