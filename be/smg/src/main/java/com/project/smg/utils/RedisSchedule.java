@@ -76,7 +76,7 @@ public class RedisSchedule {
 
     }
     @Transactional
-    void updateLikeCnt(int titleId) {
+    public void updateLikeCnt(int titleId) {
         Title findTitle = mandalartLikeService.checkTitle(titleId);
         // 변경된 title id 만 db 개수 조회해서 update
         int likeCnt = likeRepository.countByTitleIdAndStatus(titleId, true).intValue();
