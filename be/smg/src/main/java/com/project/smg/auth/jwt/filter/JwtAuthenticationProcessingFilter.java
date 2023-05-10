@@ -20,7 +20,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Jwt 인증 필터
@@ -49,7 +48,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("Access Token 쿠키에서 조회");
 
         //필터 제외 url 체크
-        for(int i = 0; i < NO_CHECK_URLS.length; i++){
+        for (int i = 0; i < NO_CHECK_URLS.length; i++) {
             if (request.getRequestURI().startsWith(NO_CHECK_URLS[i])) {
                 filterChain.doFilter(request, response); // "/login" 요청이 들어오면, 다음 필터 호출
                 return;
@@ -57,7 +56,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         }
 
         // 로컬테스트용
-        if(request.getHeader("id") != null){
+        if (request.getHeader("id") != null) {
             log.info("로컬 테스트 사용");
             request.setAttribute("id", request.getHeader("id"));
             filterChain.doFilter(request, response);
@@ -70,7 +69,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         log.info("Access Token : {}", accessToken);
 
-        if(accessToken == null) {
+        if (accessToken == null) {
             log.info("필터에서 Refresh Token 사용");
             log.info("Refresh Token 쿠키에서 조회");
 
@@ -90,7 +89,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
-        if(accessToken != null) {
+        if (accessToken != null) {
             log.info("필터에서 Access Token 사용");
             jwtService.extractId(accessToken)
                     .ifPresent(id -> memberRepository.findById(id)
@@ -103,10 +102,10 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     /**
-     *  [쿠키에 저장된 리프레시 토큰 확인 & 액세스 토큰/리프레시 토큰 재발급 메소드]
-     *  엑세스 토큰 만료 시 리프레시 토큰 검증 과정을 통해 엑세스 토큰 재발급
-     *  reIssueRefreshToken()로 리프레시 토큰 재발급 & DB에 리프레시 토큰 업데이트 메소드 호출
-     *  그 후 JwtService.refreshTokenAddCookie()으로 쿠키에 리프레시 토큰 저장
+     * [쿠키에 저장된 리프레시 토큰 확인 & 액세스 토큰/리프레시 토큰 재발급 메소드]
+     * 엑세스 토큰 만료 시 리프레시 토큰 검증 과정을 통해 엑세스 토큰 재발급
+     * reIssueRefreshToken()로 리프레시 토큰 재발급 & DB에 리프레시 토큰 업데이트 메소드 호출
+     * 그 후 JwtService.refreshTokenAddCookie()으로 쿠키에 리프레시 토큰 저장
      */
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String memberId) {
