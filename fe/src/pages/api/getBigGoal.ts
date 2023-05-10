@@ -4,12 +4,16 @@ import axios from 'axios';
 type BigGoal = string;
 
 export interface BigGoalDTO {
-    [title: string] : BigGoal[];
+  [title: string]: BigGoal[];
 }
 
 const getBigGoal = async (content: string) => {
   const data = await axios
-    .get<BigGoalDTO>(`${MANDALART_BIG_GOAL}/${content}`).then(res => res.data);
+    .get<BigGoalDTO>(`${MANDALART_BIG_GOAL}/${content}`)
+    .then(res => res.data)
+    .catch(() =>
+      alert('저희의 ChatGPT 사용요금이 예상 범위를 뛰어 넘어 버렸습니다. 😭'),
+    );
   return data;
 };
 
