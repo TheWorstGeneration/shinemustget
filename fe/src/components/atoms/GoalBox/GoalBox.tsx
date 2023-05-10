@@ -199,7 +199,6 @@ export const GoalBox = ({
     setInput(smallGoal);
   };
 
-  const dispatch = useAppDispatch();
   return isCenter ? (
     <CenterBox isClear={isClear ? isClear : false} isCenter={isCenter}>
       {content}
@@ -211,7 +210,11 @@ export const GoalBox = ({
       onChange={handleChangeSmallGoal}
     />
   ) : (
-      <Box href={`/detail/${id}`} isClear={isClear ? isClear : false} onClick={()=>dispatch(setPodo(isPodo)) }>
+    <Box
+      href={`/detail/${id}`}
+      isClear={isClear ? isClear : false}
+      onClick={() => dispatch(setPodo(isPodo))}
+    >
       {isPodo ? (
         <Badge>
           <FontAwesomeIcon
