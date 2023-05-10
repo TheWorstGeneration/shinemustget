@@ -24,7 +24,6 @@ import java.util.*;
 public class RedisSchedule {
     private final MandalartLikeService mandalartLikeService;
     private final LikeRepository likeRepository;
-    private final MemberRepository memberRepository;
     private final RedisTemplate redisTemplate;
     @Transactional
     @Scheduled(cron = "0 0/3 * * * *")
@@ -44,12 +43,12 @@ public class RedisSchedule {
             Set<String> membersChangeInRedis = setOperations.members(changeKey);
 
             for (String memberId : membersChangeInRedis) {
-                Likes likes = checkDB(titleId, memberId);
+                Likes likes = mandalartLikeService.checkLike(memberId, titleId);
 
                 // DB 에 없으면 like 생성 후 DB 저장
                 if (likes == null) {
                     Title title = mandalartLikeService.checkTitle(titleId);
-                    Member member = checkMember(memberId);
+                    Member member = mandalartLikeService.checkMember(memberId);
 
                     Likes newLike = Likes.builder()
                             .title(title)
@@ -95,19 +94,7 @@ public class RedisSchedule {
             String likeKey = likeKeys.next();
             redisTemplate.delete(likeKey);
         }
-
     }
 
-    private Member checkMember(String mid) {
-        Optional<Member> member = memberRepository.findById(mid);
-        Member findMember = member.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
-        return findMember;
-    }
-
-    private Likes checkDB(int id, String mid) {
-        Optional<Likes> like = likeRepository.findByMemberAndMandalart(id, mid);
-        Likes findLike = like.orElse(null);
-        return findLike;
-    }
 
 }

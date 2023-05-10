@@ -4,6 +4,7 @@ import com.project.smg.mandalart.entity.BigGoal;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.TitleRepository;
+import com.project.smg.mandalart.service.MandalartLikeService;
 import com.project.smg.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
     private final TitleRepository titleRepository;
+    private final MandalartLikeService mandalartLikeService;
 
     private Title getTitle(String memberId) {
         return titleRepository.findTopByMemberIdAndClearAtIsNullOrderByCreatedAtDesc(memberId)
@@ -131,9 +133,8 @@ public class ProfileServiceImpl implements ProfileService {
             SearchDto searchDto = SearchDto.builder()
                     .title(title.getContent())
                     .bigList(searchBigDtoList)
-                    // 나중에 고쳐야함
-                    .isLike(true)
-                    .likeCnt(100)
+                    .isLike(mandalartLikeService.isMandalartLike(memberId, title.getId()))
+                    .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
                     .build();
 
             ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDto, title.getId());

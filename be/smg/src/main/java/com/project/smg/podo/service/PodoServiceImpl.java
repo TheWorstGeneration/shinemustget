@@ -141,8 +141,7 @@ public class PodoServiceImpl implements PodoService {
     }
 
     private SmallGoal checkSmallGoal(int id){
-        Optional<SmallGoal> smallGoal = smallGoalRepository.findById(id);
-        SmallGoal findSmallGoal = smallGoal.orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
-        return findSmallGoal;
+        SmallGoal smallGoal = smallGoalRepository.findById(id).orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
+        return smallGoal;
     }
 }

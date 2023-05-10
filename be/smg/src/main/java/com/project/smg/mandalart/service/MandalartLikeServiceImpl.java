@@ -4,6 +4,8 @@ import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
 import com.project.smg.member.entity.Likes;
+import com.project.smg.member.entity.Member;
+import com.project.smg.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +22,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
     private final TitleRepository titleRepository;
     private final LikeRepository likeRepository;
     private final RedisTemplate redisTemplate;
+    private final MemberRepository memberRepository;
     /**
      * 좋아요
      * 1) redis 조회
@@ -92,7 +95,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         return likeCnt;
     }
 
-    private  void checkChange(String mid, String subKey, SetOperations<String, String> setOperations) {
+    public void checkChange(String mid, String subKey, SetOperations<String, String> setOperations) {
         if (setOperations.isMember(subKey, mid)) {
             // 변경한적있냐
             setOperations.remove(subKey, mid);
@@ -101,22 +104,24 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
             setOperations.add(subKey, mid);
         }
     }
-
+    @Override
     public Likes checkLike(String mid, int id) {
-        Optional<Likes> like = likeRepository.findByMemberAndMandalart(id, mid);
-        Likes findLike = like.orElse(null);
-        return findLike;
+        Likes like = likeRepository.findByMemberAndMandalart(id, mid).orElse(null);
+        return like;
     }
     @Override
     public Title checkTitle(int id) {
-        Optional<Title> title = titleRepository.findById(id);
-        Title findTitle = title.orElseThrow(() -> new IllegalStateException("만다라트가 존재하지 않습니다."));
-        return findTitle;
+        Title title = titleRepository.findById(id).orElseThrow(() -> new IllegalStateException("만다라트가 존재하지 않습니다."));
+        return title;
+    }
+    @Override
+    public Member checkMember(String mid) {
+        Member findMember = memberRepository.findById(mid).orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+        return findMember;
     }
 
-    private void saveRedisLike(int id, String key, SetOperations<String, String> setOperations) {
+    public void saveRedisLike(int id, String key, SetOperations<String, String> setOperations) {
         if(!redisTemplate.hasKey(key)){
-
             // 전체 DB 가져오기 (스케쥴링 삭제)
             // 만다라트 id 인 리스트를 다 가져와서 redis like 에 저장
             List<Likes> likeListByTitleId = likeRepository.findByTitleIdAndStatus(id, true);
@@ -126,7 +131,6 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
             }
         }
     }
-
 
 
 }
