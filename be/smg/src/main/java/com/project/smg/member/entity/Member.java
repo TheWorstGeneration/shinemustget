@@ -46,4 +46,8 @@ public class Member {
     public void authorizeUser() {
         this.role = Role.USER;
     }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
