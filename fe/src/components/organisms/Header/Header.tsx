@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { useEffect } from 'react';
 import getMemberInfo from '@/pages/api/getMemberInfo';
+import { SearchBar } from '@/components/atoms/SearchBar/SearchBar';
 
 const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`
   display: flex;
@@ -61,7 +62,7 @@ export const Header = () => {
     <HeadContainer isScroll={isScroll} size={size}>
       <Logo />
       <HeaderItemList>
-        <LanguageButton size={size} />
+        <SearchBar />
         <LogoutButton />
         <ProfileImage />
       </HeaderItemList>
