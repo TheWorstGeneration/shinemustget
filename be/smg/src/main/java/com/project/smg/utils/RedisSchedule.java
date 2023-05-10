@@ -26,7 +26,6 @@ public class RedisSchedule {
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final RedisTemplate redisTemplate;
-    // TODO DB 데이터 동기화 할 때 like Cnt 추가
     @Transactional
     @Scheduled(cron = "0 0/3 * * * *")
     public void deleteChangeLikeFromRedis() {
@@ -77,7 +76,7 @@ public class RedisSchedule {
 
     }
     @Transactional
-    void updateLikeCnt(int titleId) {
+    public void updateLikeCnt(int titleId) {
         Title findTitle = mandalartLikeService.checkTitle(titleId);
         // 변경된 title id 만 db 개수 조회해서 update
         int likeCnt = likeRepository.countByTitleIdAndStatus(titleId, true).intValue();
