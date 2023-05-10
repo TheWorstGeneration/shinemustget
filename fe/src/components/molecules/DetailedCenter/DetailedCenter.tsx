@@ -7,6 +7,8 @@ import { UserMemo } from "../UserMemo/UserMemo"
 import { podoListRecord } from "@/constants/grapeboardList"
 import { sticker } from "@/constants/stickerList"
 import { Dispatch, SetStateAction } from "react";
+import { useAppSelector } from "@/hooks/useRedux"
+import { selectIdx } from "@/store/modules/detailIdx"
 
 const DetailedOverDiv = styled.div`
   @media (max-width: 960px) {
@@ -84,22 +86,20 @@ const DetailedDivEmpty = styled.div`
     align-items: center;
 `;
 
-export function DetailedCenter({ isOn,setisOn,setting,list,stickerList,updatePodo,setUpdatePodo }: {isOn:boolean,setisOn:Dispatch<SetStateAction<boolean>>,setting:any, list:podoListRecord,stickerList:sticker[],updatePodo:boolean, setUpdatePodo:Dispatch<SetStateAction<boolean>>}) {
-  
+export function DetailedCenter({ isOn, setisOn, setting,list,stickerList,updatePodo,setUpdatePodo }: {isOn:boolean,setisOn:Dispatch<SetStateAction<boolean>>,setting:any, list:podoListRecord,stickerList:sticker[],updatePodo:boolean, setUpdatePodo:Dispatch<SetStateAction<boolean>>}) {
   
   const [podoDetail, setPodoDetail] = useState("");
-  
-
+  const content = useAppSelector(selectIdx).content;
   return (
     <DetailedOverDiv >
       <DetailedDiv>
         <DetailedDivGoal>
-          <h1>세부 목표</h1>
+          <h1>{ content}</h1>
           <DetailedDivToggle>
           <DetailedDivToggleDesc>
             <p>포도알 설정</p>
           </DetailedDivToggleDesc>
-          <Toggle setting={setting } isOn={isOn} setisOn={setisOn} />
+          <Toggle setting={setting } isOn={isOn} setisOn={setisOn}/>
         </DetailedDivToggle>
         </DetailedDivGoal>
       </DetailedDiv>

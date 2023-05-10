@@ -36,15 +36,16 @@ const ToggleContainer = styled.div`
   }
 `;
 
-export function Toggle({ setting,isOn,setisOn}:{ setting:boolean, isOn: boolean, setisOn: Dispatch<SetStateAction<boolean>>}) {
+export function Toggle({ setting,isOn,setisOn}:{ setting:boolean, isOn: boolean,setisOn: Dispatch<SetStateAction<boolean>>}) {
   const { index } = useAppSelector(selectIdx);
+
+  if (isOn) setisOn(true);
 
   const toggleHandler = () => {
     setisOn(!isOn);
+    podoSetting(index);
   };
 
-  useEffect(() => { podoSetting(index) }, [isOn]);
-  
   return (
      <ToggleContainer
         onClick={toggleHandler}
