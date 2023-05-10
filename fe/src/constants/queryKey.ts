@@ -19,11 +19,11 @@ export const MANDALART_LIKE = `${BASE_URL}/mandalart/like`;
 // 만다라트 검색
 export const MANDALART_SEARCH_DETAIL = `${BASE_URL}/mandalart/searchDetail/`;
 // 현재 목표 조회
-export const MANDALART_READ_NOW_GOAL = `${BASE_URL}/mandalart/readNowGoal`;
+export const MANDALART_READ_NOW_GOAL = `${BASE_URL}/profile/readNowGoal`;
 // 달성 목표 조회
-export const MANDALART_READ_CLEAR_GOAL = `${BASE_URL}/mandalart/readClearGoal`;
+export const MANDALART_READ_CLEAR_GOAL = `${BASE_URL}/profile/readClearGoal`;
 // 완료된 만다라트 조회
-export const MANDALART_READ_CLEAR_MANDALART = `${BASE_URL}/mandalart/readClearMandalart`;
+export const MANDALART_READ_CLEAR_MANDALART = `${BASE_URL}/profile/readClearMandalart`;
 // 만다라트 삭제
 export const MANDALART_DELETE = `${BASE_URL}/profile/delete`;
 // 세부 목표 달성 완료
