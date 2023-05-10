@@ -26,7 +26,7 @@ const HomeSection = styled.section`
 
 const HomeMain = styled.main`
   width: 100%;
-  height: calc(100vh + 5.5rem);
+  height: calc(100vh + 6rem);
 
   display: flex;
   flex-direction: column;
@@ -38,7 +38,7 @@ const HomeMain = styled.main`
   margin-top: 5.5rem;
 
   @media screen and (max-width: 960px) {
-    height: calc(100vh - 5.5rem);
+    height: 100vh;
   }
 `;
 
