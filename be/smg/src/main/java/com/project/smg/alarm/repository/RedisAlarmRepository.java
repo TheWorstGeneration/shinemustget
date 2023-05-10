@@ -32,35 +32,41 @@ public class RedisAlarmRepository implements AlarmRepository {
     }
 
     // Cursor 값을 사용하여 지속적으로 AlarmDto 객체를 가져오는 메소드
+//    @Override
+//    public List<AlarmDto> getRecentAlarmsWithCursor(String memberId, int limit) {
+//        String key = memberId;
+//        String pattern = "*";
+//        int count = limit;
+//
+//        List<AlarmDto> alarms = new ArrayList<>();
+//        Cursor<ZSetOperations.TypedTuple<AlarmDto>> cursor = alarmRedisTemplate.opsForZSet().scan(key, ScanOptions.scanOptions().match(pattern).count(count).build());
+//
+//        while (cursor.hasNext()) {
+//            ZSetOperations.TypedTuple<AlarmDto> tuple = cursor.next();
+//            alarms.add(tuple.getValue());
+//        }
+//
+//        return alarms;
+//    }
     @Override
     public List<AlarmDto> getRecentAlarmsWithCursor(String memberId, int limit) {
         String key = memberId;
         String pattern = "*";
         int count = limit;
+        long cursor = 0;
 
         List<AlarmDto> alarms = new ArrayList<>();
-        Cursor<ZSetOperations.TypedTuple<AlarmDto>> cursor = alarmRedisTemplate.opsForZSet().scan(key, ScanOptions.scanOptions().match(pattern).count(count).build());
-
-        while (cursor.hasNext()) {
-            ZSetOperations.TypedTuple<AlarmDto> tuple = cursor.next();
-            alarms.add(tuple.getValue());
-        }
+        ScanOptions options = ScanOptions.scanOptions().match(pattern).count(count).build();
+        do {
+            Cursor<ZSetOperations.TypedTuple<AlarmDto>> scanCursor = zSetOperations.scan(key, options);
+            while (scanCursor.hasNext()) {
+                ZSetOperations.TypedTuple<AlarmDto> tuple = scanCursor.next();
+                alarms.add(tuple.getValue());
+            }
+            cursor = scanCursor.getPosition();
+        } while (cursor > 0);
 
         return alarms;
     }
 
-    //    private final RedisSequenceGenerator redisSequenceGenerator;
-
-    //    @Override
-//    public void save(AlarmDto alarmDto) {
-//        String keyPrefix = alarmDto.getMemberId() + "::";
-//        String postIdKey = keyPrefix + "post-sequence";
-//
-//        // Redis 서버의 postId 값을 가져와서 AlarmDto 객체의 id 값으로 설정
-//        Long postId = redisSequenceGenerator.getNext(postIdKey);
-//        String key = keyPrefix + postId;
-//        alarmDto.setId(postId.intValue());
-//
-//        redisTemplate.opsForValue().set(key, alarmDto);
-//    }
 }
