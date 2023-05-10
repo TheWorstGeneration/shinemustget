@@ -91,7 +91,7 @@ export const BigGoalMandalart = (props: any) => {
   const id: number = props.id;
 
   const handleMandalartDetail = () => {
-    router.push(`/search/detail/${id}`);
+    router.push(`/search/${id}`);
     console.log('madalart detail');
   };
 
