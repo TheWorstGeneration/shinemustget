@@ -1,3 +1,4 @@
+import { PODO_WRITE } from "@/constants/queryKey";
 import axios from "axios";
 
 interface podoCreate { 
@@ -7,7 +8,7 @@ interface podoCreate {
 }
 
 const podoWrite = async ( props:podoCreate) => {
-  const data =  await axios.post<podoCreate>(`https://shinemustget.com/api/podo/write`, {
+  const data =  await axios.post<podoCreate>(PODO_WRITE, {
       id: props.id,
       imageUrl: props.imageUrl,
       oneline:props.oneline,
