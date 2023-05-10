@@ -3,6 +3,7 @@ import { MANDALART_READ_MAIN } from '@/constants/queryKey';
 import { MandalartData, useMandalart } from '@/hooks/useMandalart';
 import { getReadMain } from '@/pages/api/getReadMain';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 
 const Container = styled.article`
@@ -62,9 +63,15 @@ const Row = styled.div`
 export const Mandalart = () => {
   const { data } = useQuery<MandalartData>(MANDALART_READ_MAIN, getReadMain);
   const mandalart = useMandalart();
-  console.log(data, mandalart);
 
-  const { title, bigList } = data ? data : mandalart;
+  const router = useRouter();
+  const { pathname } = router;
+
+  console.log('data :', data);
+  console.log('mandalart :', mandalart);
+
+  const { title, bigList }: MandalartData =
+    pathname === '/home' ? (data ? data : mandalart) : mandalart;
 
   bigList.sort((a, b) => {
     return a.location - b.location;
