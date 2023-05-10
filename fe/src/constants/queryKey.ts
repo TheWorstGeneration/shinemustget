@@ -17,7 +17,7 @@ export const MANDALART_READ_MAIN = `${BASE_URL}/mandalart/readMain`;
 // 만다라트 좋아요
 export const MANDALART_LIKE = `${BASE_URL}/mandalart/like`;
 // 만다라트 검색
-export const MANDALART_SEARCH_DETAIL = `${BASE_URL}/mandalart/searchDetail`;
+export const MANDALART_SEARCH_DETAIL = `${BASE_URL}/mandalart/searchDetail/`;
 // 현재 목표 조회
 export const MANDALART_READ_NOW_GOAL = `${BASE_URL}/mandalart/readNowGoal`;
 // 달성 목표 조회
@@ -34,11 +34,11 @@ export const PODO_CREATE = `${BASE_URL}/podo/setting`;
 // 포도알 작성
 export const PODO_WRITE = `${BASE_URL}/podo/write`;
 // 포도송이 조회
-export const PODO_READ_PODO = `${BASE_URL}/podo/readPodo`;
+export const PODO_READ_PODO = `${BASE_URL}/podo/readPodo/`;
 // 회원 포도알 스티커 조회
 export const PODO_MY_STICKER = `${BASE_URL}/podo/mySticker`;
 // 포도알 조회
-export const PODO_DETAIL = `${BASE_URL}/podo/detail`;
+export const PODO_DETAIL = `${BASE_URL}/podo/detail/`;
 
 // staleTime 5분
 export const staleTime = 1000 * 60 * 5;
