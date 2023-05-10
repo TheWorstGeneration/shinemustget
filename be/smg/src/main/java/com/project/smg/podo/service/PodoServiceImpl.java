@@ -12,6 +12,7 @@ import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
+import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -73,7 +74,8 @@ public class PodoServiceImpl implements PodoService {
         PodoDetailDto podoDetailDto = new PodoDetailDto(findPodo.getId(), findPodo.getOneline(), createdDate);
         return podoDetailDto;
     }
-
+    // TODO isWriteToday - 포도알 하루에 한 번만 작성 되어야 함
+    // TODO is30daysClear - special podo 여부
     /** 포도알 작성하기 */
     @Override
     public void create(String mid, PodoCreateDto podoCreateDto) {
@@ -98,6 +100,7 @@ public class PodoServiceImpl implements PodoService {
                 .build();
         podoRepository.save(podo);
     }
+
 
 
     /** 회원 스티커 종류
@@ -138,6 +141,17 @@ public class PodoServiceImpl implements PodoService {
     public Boolean podoSettingRead(String mid, int id) {
         SmallGoal findSmallGoal = checkSmallGoal(id);
         return findSmallGoal.isSticker();
+    }
+
+    /** 스페셜 포도 여부
+     * 스페셜 포도를 소유하고 있지 않다면 (memberpodo 의 podoType 4로 확인)
+     * smallgoal_id 랑 memberId 가 같고 created_at 이 오늘?어제? 까지 연속 26일때
+     * 스페셜 포도 부여 (memberpodo podotype 4~6 까지 1로 변경)
+     * */
+    public boolean specialClear(){
+        boolean is30daysClear = false;
+
+        return is30daysClear;
     }
 
     private SmallGoal checkSmallGoal(int id){
