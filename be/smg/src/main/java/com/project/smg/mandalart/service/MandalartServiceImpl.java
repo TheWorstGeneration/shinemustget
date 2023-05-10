@@ -96,12 +96,12 @@ public class MandalartServiceImpl implements MandalartService {
             // 받아온 메세지 리스트로 변환
             String[] split = response.choices.get(0).message.content.split("\n");
             List<String> bigGoals = Arrays.stream(split).map(i -> i.substring(2)).collect(Collectors.toList());
-
+            List<String> trimBigGoals = bigGoals.stream().map(i -> i.trim()).collect(Collectors.toList());
             // GptTitle, GptBigGoal에 저장
-            saveGptBigGoal(content, bigGoals);
+            saveGptBigGoal(content, trimBigGoals);
 
             // 담아서 return
-            result.put(content, bigGoals);
+            result.put(content, trimBigGoals);
             return result;
         });
     }
@@ -275,9 +275,7 @@ public class MandalartServiceImpl implements MandalartService {
     @Transactional
     @Async
     public void saveGptBigGoal(String title, List<String> strings){
-        List<String> split = strings.stream().map(i -> i.trim()).collect(Collectors.toList());
-
-        List<GptBigGoal> gptBigGoals = split.stream()
+        List<GptBigGoal> gptBigGoals = strings.stream()
                 .map(i -> GptBigGoal.builder().content(i).build())
                 .collect(Collectors.toList());
 
