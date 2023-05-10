@@ -43,8 +43,6 @@ const SmallButton = styled.button`
 `;
 
 export const LanguageButton = ({ size }: LanguageButtonProps) => {
-  const router = useRouter();
-  const { pathname } = router;
   const { language } = useAppSelector(selectProfile);
   const dispatch = useAppDispatch();
 
@@ -52,7 +50,7 @@ export const LanguageButton = ({ size }: LanguageButtonProps) => {
     dispatch(setLanguage(language == 'ko' ? 'en' : 'ko'));
   };
 
-  return pathname !== '/' ? null : size === 'lg' ? (
+  return size === 'lg' ? (
     <LargeButton type="button" onClick={handleLanguage} title="Change Language">
       <FontAwesomeIcon icon={faGlobe} />
       <span>{language == 'ko' ? '한국어' : 'English'}</span>
