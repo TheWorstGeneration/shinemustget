@@ -20,11 +20,7 @@ interface SearchBigDto {
 
 const getClearMandalart = async () => {
   const data = await axios
-    .get<ClearMandalart[]>(MANDALART_READ_CLEAR_MANDALART, {
-      headers: {
-        id: 2762543073,
-      },
-    })
+    .get<ClearMandalart[]>(MANDALART_READ_CLEAR_MANDALART)
     .then(res => res.data);
 
   return data;

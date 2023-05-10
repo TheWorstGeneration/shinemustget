@@ -8,11 +8,7 @@ interface CompletedLogs {
 
 const getClearGoal = async () => {
   const data = await axios
-    .get<CompletedLogs[]>(MANDALART_READ_CLEAR_GOAL, {
-      headers: {
-        id: 2762543073,
-      },
-    })
+    .get<CompletedLogs[]>(MANDALART_READ_CLEAR_GOAL)
     .then(res => res.data);
 
   return data;

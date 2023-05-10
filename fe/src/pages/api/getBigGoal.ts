@@ -8,11 +8,7 @@ export interface BigGoalDTO {
 
 const getBigGoal = async (content: string) => {
   const data = await axios
-    .get<BigGoalDTO>(`https://shinemustget.com/api/mandalart/big-goal/${content}`,{
-        headers: {
-        id: 2762543073,
-        },
-    }).then(res => res.data);
+    .get<BigGoalDTO>(`https://shinemustget.com/api/mandalart/big-goal/${content}`).then(res => res.data);
   return data;
 };
 

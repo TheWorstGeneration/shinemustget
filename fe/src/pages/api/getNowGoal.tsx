@@ -14,11 +14,7 @@ interface ProgressProp {
 
 const getNowGoal = async () => {
   const data = await axios
-    .get<ProgressProp>(MANDALART_READ_NOW_GOAL, {
-      headers: {
-        id: 2762543073,
-      },
-    })
+    .get<ProgressProp>(MANDALART_READ_NOW_GOAL)
     .then(res => res.data);
 
   return data;
