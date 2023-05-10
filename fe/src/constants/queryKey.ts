@@ -5,7 +5,7 @@ const BASE_URL="https://shinemustget.com/api"
 // 유저 정보 조회
 export const MEMBER_INFO = `${BASE_URL}/memberInfo`;
 // 카카오 로그아웃
-export const KAKAO_LOGOUT = `${BASE_URL}/kakaoLogin`;
+export const KAKAO_LOGOUT = `${BASE_URL}/kakaoLogout`;
 
 
 
