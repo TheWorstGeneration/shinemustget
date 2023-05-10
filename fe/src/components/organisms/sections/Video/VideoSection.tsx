@@ -79,7 +79,7 @@ export const VideoSection = () => {
           pageYOffset={pageYOffset}
           width="250"
           playsInline
-          poster="/assets/images/common/front-image.png"
+          poster="/assets/images/common/poster.png"
           title="ohtani news"
           onPlay={(e: any) => (e.target.currentTime = 129)}
         >

@@ -187,7 +187,7 @@ export const GoalBox = ({
   isCenter,
 }: GoalBoxProps) => {
   const [input, setInput] = useState(content ? content : '');
-  const icon = isToday ? faCircle : faCheckCircle;
+  const icon = isToday ? faCheckCircle : faCircle;
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { pathname } = router;
@@ -212,14 +212,14 @@ export const GoalBox = ({
   ) : (
     <Box
       href={`/detail/${id}`}
-      isClear={isClear ? isClear : false}
-      onClick={() => dispatch(setPodo(isPodo))}
+          isClear={isClear ? isClear : false}
+          onClick={() => dispatch(setPodo({content:content,isPodo:isPodo}))}
     >
       {isPodo ? (
         <Badge>
           <FontAwesomeIcon
             icon={icon}
-            color={isToday ? '#ff0909' : '#01c027'}
+            color={isToday ? '#01c027' : '#ff0909'}
           />
         </Badge>
       ) : (

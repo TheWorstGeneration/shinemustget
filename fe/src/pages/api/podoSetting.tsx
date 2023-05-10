@@ -9,6 +9,8 @@ const podoSetting = async (props:number) => {
     },
   }).then(res => res.data);
 
+  console.log("data", data);
+
   return data;
 }
  
