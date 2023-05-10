@@ -97,13 +97,15 @@ const BigGoalTextLength = styled.span`
   color: #718f80;
 `;
 
-const YouCanEdit = styled.h2`
+const YouCanEdit = styled.h2<{ isInputBox: boolean }>`
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.5;
   color: #718f80;
   text-align: center;
   width: 100%;
+  transform: ${props =>
+    props.isInputBox ? 'translateY(-10em)' : 'translateY(0)'};
 `;
 
 const ButtonContainer = styled.div`
@@ -127,7 +129,7 @@ export const BigGoalListContainer = () => {
     <BigGoalList>
       <MandalartTitle>{title}</MandalartTitle>
       {title === '' ? (
-        <YouCanEdit>
+        <YouCanEdit isInputBox={isInputBox}>
           {isInputBox
             ? '장기적인 목표를 작성할수록 좋은 결과를 가져옵니다.'
             : 'Shine Must Get이 당신의 만다라트를 작성 중 입니다.'}
@@ -149,7 +151,9 @@ export const BigGoalListContainer = () => {
               );
             })}
           </BigGoals>
-          <YouCanEdit>수정하고 싶은 목표가 있다면 변경해 보세요.</YouCanEdit>
+          <YouCanEdit isInputBox={isInputBox}>
+            수정하고 싶은 목표가 있다면 변경해 보세요.
+          </YouCanEdit>
           <ButtonContainer>
             <SmallGoalCreateButton />
           </ButtonContainer>
