@@ -12,11 +12,7 @@ const podoWrite = async ( props:podoCreate) => {
       id: props.id,
       imageUrl: props.imageUrl,
       oneline:props.oneline,
-    }, {
-    headers: {
-      id: 2762543073,
-    },
-  }).then(res => res.data);
+    }).then(res => res.data);
 
   return data;
 }

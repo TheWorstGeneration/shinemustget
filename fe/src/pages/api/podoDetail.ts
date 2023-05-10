@@ -4,11 +4,7 @@ import axios from "axios";
 interface podoId { id: number }
 
 const podoDetail = async (props:number) => {
-  const data = await axios.get(PODO_CREATE, {
-    headers: {
-      id: 2762543073,
-    },
-  }).then(res => res.data);
+  const data = await axios.get(PODO_CREATE).then(res => res.data);
 
   return data;
 }

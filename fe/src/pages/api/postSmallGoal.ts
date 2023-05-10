@@ -11,12 +11,7 @@ const postSmallGoal = async (bigGoal: string[]) => {
       MANDALART_SMALL_GOAL,
       {
         bigGoal,
-      },
-      {
-        headers: {
-          id: 2762543073,
-        },
-      },
+      }
     )
     .then(res => res.data);
   return data;
