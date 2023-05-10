@@ -55,9 +55,9 @@ export const DeleteButton = () => {
     const result = confirm('정말로 만다라트를 삭제하시겠습니까?');
     if (result) {
       deleteMandalart();
-      // dispatch(setResetGoal());
-      // dispatch(setResetInputBox());
-      // router.push('/create');
+      dispatch(setResetGoal());
+      dispatch(setResetInputBox());
+      router.push('/create');
     }
   };
 

@@ -22,6 +22,7 @@ for (let i = 1; i <= 8; i++) {
         content: `Big ${i}`,
         isClear: false,
         smallList,
+        isCenter: undefined
     })
 }
 

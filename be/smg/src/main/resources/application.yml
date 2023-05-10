@@ -67,6 +67,7 @@ spring:
             client-secret: tDquIYEW1gmLenqhFf4VZNAJjFrreNKZ
 #            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             redirect-uri: http://shinemustget.com/api/login/oauth2/code/kakao
+#            redirect-uri: http://k8b109.p.ssafy.io/api/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: Kakao

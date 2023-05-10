@@ -16,7 +16,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   swcMinify: true,
-  reactStrictMode: true,
 };
 
 module.exports = withPlugins(
