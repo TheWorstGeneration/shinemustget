@@ -1,5 +1,5 @@
 import { MEMBER_INFO } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 interface MemberInfo {
   imageUrl: string;
@@ -7,7 +7,7 @@ interface MemberInfo {
 }
 
 const getMemberInfo = async () => {
-  const data = await axios
+  const data = await customAxios
     .get<MemberInfo>(MEMBER_INFO)
     .then(res => res.data);
 

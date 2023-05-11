@@ -1,8 +1,7 @@
 import { ProgressCircle } from '@/components/atoms/ProgressCircle/ProgressCircle';
 import getNowGoal from '@/pages/api/getNowGoal';
 import styled from '@emotion/styled';
-import { GetServerSideProps, GetStaticProps } from 'next';
-import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 const ProfileProgressContainer = styled.div`
   display: flex;

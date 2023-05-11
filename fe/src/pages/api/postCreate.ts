@@ -1,5 +1,5 @@
 import { MANDALART_CREATE } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 interface smallRequestDto {
   content: string;
@@ -18,7 +18,7 @@ interface PostCreateProps {
 }
 
 export const postCreate = async ({ title, bigRequestDto }: PostCreateProps) => {
-  const data = await axios
+  const data = await customAxios
     .post(MANDALART_CREATE, {
       title,
       bigRequestDto,

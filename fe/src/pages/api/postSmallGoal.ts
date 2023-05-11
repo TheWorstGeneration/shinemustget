@@ -1,12 +1,12 @@
 import { MANDALART_SMALL_GOAL } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 interface SmallGoalList {
   [bigGoal: string]: string[];
 }
 
 const postSmallGoal = async (bigGoal: string[]) => {
-  const data = await axios
+  const data = await customAxios
     .post<SmallGoalList>(MANDALART_SMALL_GOAL, {
       bigGoal,
     })

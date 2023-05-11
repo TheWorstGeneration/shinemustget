@@ -1,8 +1,6 @@
 import { CompletedLog } from '@/components/atoms/CompletedLog/CompletedLog';
 import getClearGoal from '@/pages/api/getClearGoal';
-import getClearMandalart from '@/pages/api/getClearMandalart';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const ProfileCompletedContainer = styled.div`

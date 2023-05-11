@@ -1,5 +1,5 @@
 import { MANDALART_READ_CLEAR_GOAL } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 interface CompletedLogs {
   content: string;
@@ -7,7 +7,7 @@ interface CompletedLogs {
 }
 
 const getClearGoal = async () => {
-  const data = await axios
+  const data = await customAxios
     .get<CompletedLogs[]>(MANDALART_READ_CLEAR_GOAL)
     .then(res => res.data);
 
