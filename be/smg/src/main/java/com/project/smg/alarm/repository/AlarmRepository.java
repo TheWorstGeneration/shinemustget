@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface AlarmRepository {
     void save(AlarmDto alarmDto);
-    Map<String, Object> getLatestAlarms(String memberId, Double lastScore, int count);
+    Map<String, Object> getLatestAlarms(String memberId, double lastScore);
 }

@@ -27,36 +27,59 @@ public class RedisAlarmRepository implements AlarmRepository {
         zSetOperations.add(alarmDto.getMemberId(), alarmDto, chatUtils.changeLocalDateTimeToDouble(alarmDto.getCreatedAt()));
     }
 
-    public Map<String, Object> getLatestAlarms(String memberId, Double lastScore, int count) {
-        // 마지막으로 조회된 객체의 다음 객체부터 역순으로 일정 개수의 객체를 조회
-        Set<AlarmDto> alarms;
-
-        if (lastScore != null) {
-            alarms = zSetOperations.reverseRangeByScore(memberId, lastScore - 1, 0, 0, count);
-            System.out.println(alarms.toString());
-        } else {
-            alarms = zSetOperations.reverseRangeByScore(memberId, Double.POSITIVE_INFINITY, 0, 0, count);
-        }
-
-        // Set을 List로 변환
-        List<AlarmDto> alarmList = new ArrayList<>(alarms);
-
-        for(int i = 0; i < alarmList.size(); i++){
-            System.out.println(alarmList.get(i).toString());
-        }
-
-        // 조회된 객체의 개수와 마지막 객체의 Score 값을 포함한 Map 생성
+    public Map<String, Object> getLatestAlarms(String memberId, double lastScore) {
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("count", alarmList.size());
-        if (!alarmList.isEmpty()) {
-            resultMap.put("lastScore", chatUtils.changeLocalDateTimeToDouble(alarmList.get(alarmList.size() - 1).getCreatedAt()));
+
+        if (lastScore == 0) {
+            // 처음부터 조회하는 경우
+            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, Double.POSITIVE_INFINITY, 0, 10);
+
+            List<AlarmDto> alarmList = new ArrayList<>();
+            for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
+                alarmList.add(tuple.getValue());
+            }
+
+            resultMap.put("alarms", alarmList);
+
+            if (alarmList.size() < 10) {
+                resultMap.put("lastScore", -1.0); // 더 이상 조회할 데이터가 없음을 표시
+            } else {
+                double newLastScore = alarms.iterator().next().getScore(); // 다음 조회의 시작점 Score 값을 추출
+                resultMap.put("lastScore", newLastScore);
+            }
+
+            System.out.println(resultMap.get("lastScore") + " " + resultMap.get("lastScore").getClass().getName());
+
+        } else if (lastScore > 0) {
+            // 이전 조회의 시작점을 기준으로 이어서 조회하는 경우
+            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, lastScore, 0, 0, 10);
+
+            List<AlarmDto> alarmList = new ArrayList<>();
+            for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
+                alarmList.add(tuple.getValue());
+            }
+
+            resultMap.put("alarms", alarmList);
+            resultMap.put("count", alarmList.size());
+
+            if (alarmList.size() < 10) {
+                resultMap.put("lastScore", -1.0); // 더 이상 조회할 데이터가 없음을 표시
+            } else {
+                double newLastScore = alarms.iterator().next().getScore(); // 다음 조회의 시작점 Score 값을 추출
+                resultMap.put("lastScore", newLastScore);
+            }
+
+            alarmList.stream().forEach(System.out::println);
+            System.out.println(resultMap.get("lastScore") + " " + resultMap.get("lastScore").getClass().getName());
+
+        } else {
+            // 잘못된 lastScore 값이 전달된 경우
+            resultMap.put("alarms", Collections.emptyList());
+            resultMap.put("lastScore", -1.0);
         }
-        else {
-            resultMap.put("lastScore", -1.0); // 빈 Set이 반환된 경우
-        }
-        resultMap.put("alarms", alarmList);
-        // Map 반환
+
         return resultMap;
     }
+
 
 }

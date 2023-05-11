@@ -9,5 +9,5 @@ import java.util.Map;
 
 public interface AlarmService {
     AlarmDto saveAlarm(String memberId, int id);
-    Map<String, Object> alarmDtoList(String memberId, Double lastSocre, int count);
+    Map<String, Object> alarmDtoList(String memberId, double lastSocre);
 }
