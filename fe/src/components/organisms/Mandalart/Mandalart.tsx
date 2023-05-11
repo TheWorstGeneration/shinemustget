@@ -93,7 +93,7 @@ export const Mandalart = () => {
   const center = {
     location: 0,
     content: title,
-    isClear: false,
+    isClear: data.isClear ? data.isClear : false,
     smallList: centerSmallList,
     isCenter: 2,
   };
