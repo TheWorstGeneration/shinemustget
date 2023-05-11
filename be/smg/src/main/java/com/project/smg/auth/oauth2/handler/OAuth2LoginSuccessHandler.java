@@ -6,7 +6,6 @@ import com.project.smg.mandalart.service.MandalartService;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.entity.RefreshToken;
-import com.project.smg.member.entity.Role;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
@@ -21,16 +20,13 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-//@Transactional
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
@@ -47,14 +43,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info("OAuth2 Login 성공");
         try {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-
             loginSuccess(response, oAuth2User); // 로그인에 성공한 경우 access, refresh 토큰 생성
-
-            if (oAuth2User.getRole() == Role.GUEST) {
-                response.sendRedirect(create);
-            } else {
-                response.sendRedirect(home);
-            }
         } catch (Exception e) {
             throw e;
         }
@@ -89,11 +78,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (memberPodoList.isEmpty())
             memberService.addMemberPodo(memberId);
 
-        HashMap<String, Object> mandalart = mandalartService.getMainMandalart(memberId);
-
-        if (!mandalart.isEmpty()){
+        if (!mandalartService.getMainMandalart(memberId).isEmpty()) {
             member.authorizeUser();
             memberRepository.save(member);
+            response.sendRedirect(home);
         }
+
+        response.sendRedirect(create);
     }
 }
