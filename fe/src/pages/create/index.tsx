@@ -5,11 +5,8 @@ import { MANDALART_READ_MAIN, MEMBER_INFO } from '@/constants/queryKey';
 import { useMandalart } from '@/hooks/useMandalart';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal } from '@/store/modules/goal';
-import { setInputBox } from '@/store/modules/modal';
-import { setResetInputBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import Head from 'next/head';
-import { useEffect } from 'react';
 import { QueryClient, dehydrate, hydrate, useQuery } from 'react-query';
 import getMemberInfo from '../api/getMemberInfo';
 import { getReadMain } from '../api/getReadMain';
@@ -45,11 +42,10 @@ const FinalCreateStep = styled.div`
 
 export default function Create() {
   const dispatch = useAppDispatch();
-  const { title, smallGoalLists } = useAppSelector(selectGoal);
+  const { smallGoalLists } = useAppSelector(selectGoal);
   const mandalart = smallGoalLists[0][0] === '' ? null : useMandalart();
 
   const { data } = useQuery(MEMBER_INFO, getMemberInfo);
-  console.log(data?.imageUrl, data?.nickname);
   dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
 
   return (
@@ -88,6 +84,7 @@ export default function Create() {
 export const getServersideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(MEMBER_INFO, getMemberInfo);
+  await queryClient.prefetchQuery(MANDALART_READ_MAIN, getReadMain);
 
   return {
     props: dehydrate(queryClient),

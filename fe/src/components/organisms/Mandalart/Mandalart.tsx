@@ -61,14 +61,10 @@ const Row = styled.div`
 `;
 
 export const Mandalart = () => {
-  const { data } = useQuery<MandalartData>(MANDALART_READ_MAIN, getReadMain);
-  const mandalart = useMandalart();
-
   const router = useRouter();
   const { pathname } = router;
-
-  console.log('data :', data);
-  console.log('mandalart :', mandalart);
+  const { data } = useQuery(MANDALART_READ_MAIN, getReadMain);
+  const mandalart = useMandalart();
 
   const { title, bigList }: MandalartData =
     pathname === '/home' ? (data ? data : mandalart) : mandalart;
