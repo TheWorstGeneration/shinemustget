@@ -1,4 +1,5 @@
 import { MANDALART_SMALL_GOAL } from '@/constants/queryKey';
+import { customAxios } from '@/utils/axios';
 import axios from 'axios';
 
 interface SmallGoalList {
@@ -6,14 +7,16 @@ interface SmallGoalList {
 }
 
 const postSmallGoal = async (bigGoal: string[]) => {
-  const data = await axios
+  const data = await customAxios
     .post<SmallGoalList>(MANDALART_SMALL_GOAL, {
       bigGoal,
     })
     .then(res => res.data)
-    .catch(() =>
-      alert('저희의 ChatGPT 사용요금이 예상 범위를 뛰어 넘어 버렸습니다. 😭'),
-    );
+    .catch(err => {
+      alert('저희의 ChatGPT 사용요금이 예상 범위를 뛰어 넘어 버렸습니다. 😭');
+      console.log(err);
+    });
+
   return data;
 };
 

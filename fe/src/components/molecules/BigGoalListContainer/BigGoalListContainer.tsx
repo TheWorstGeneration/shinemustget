@@ -61,12 +61,38 @@ const BigGoalContainer = styled.div`
   border-bottom: 1px solid #e0e0e0;
 `;
 
+const BigGoalText = styled.h2`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #1e9457;
+`;
+
+const BigGoalNumber = styled.h3`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 2rem;
+  height: 2.5rem;
+
+  margin: 0 1rem;
+
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1e9457;
+`;
+
 const BigGoalTextField = styled.textarea`
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0 1rem;
   width: 100%;
   height: 2rem;
 
@@ -137,9 +163,14 @@ export const BigGoalListContainer = () => {
       ) : (
         <>
           <BigGoals>
+            <BigGoalContainer>
+              <BigGoalText>중간 목표</BigGoalText>
+              <BigGoalTextLength>글자 수</BigGoalTextLength>
+            </BigGoalContainer>
             {bigGoalList.map((bigGoal, index) => {
               return (
                 <BigGoalContainer key={index}>
+                  <BigGoalNumber>{index + 1}.</BigGoalNumber>
                   <BigGoalTextField
                     key={index}
                     value={bigGoal}
@@ -153,6 +184,9 @@ export const BigGoalListContainer = () => {
           </BigGoals>
           <YouCanEdit isInputBox={isInputBox}>
             수정하고 싶은 목표가 있다면 변경해 보세요.
+            <br />
+            <br />
+            20자 이하의 목표를 작성하시는 것을 추천드립니다.
           </YouCanEdit>
           <ButtonContainer>
             <SmallGoalCreateButton />

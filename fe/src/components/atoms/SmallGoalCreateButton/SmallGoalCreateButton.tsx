@@ -41,6 +41,7 @@ export const SmallGoalCreateButton = () => {
       Object.entries(SmallGoalDTO).forEach(([key, smallGoalList]) => {
         const i = bigGoalList.indexOf(key);
         smallGoalList.forEach((smallGoal, j) => {
+          console.log(i, j, smallGoal);
           dispatch(setSmallGoal({ i, j, smallGoal }));
         });
       });
