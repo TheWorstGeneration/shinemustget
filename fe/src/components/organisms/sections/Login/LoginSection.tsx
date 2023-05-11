@@ -75,7 +75,7 @@ export const LoginSection = () => {
     <SectionStyle id="login">
       <LoginText>
         {language == 'ko'
-          ? '만다트라를 만들어 목표를 달성해 보세요.'
+          ? '만다라트를 만들어 목표를 달성해 보세요.'
           : 'Try to achieve your goals by making a mandalart.'}
       </LoginText>
       <KakaoButton size={'lg'} />

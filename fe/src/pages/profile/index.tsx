@@ -8,7 +8,6 @@ import getClearGoal from '../api/getClearGoal';
 import { GetServerSideProps } from 'next';
 import getNowGoal from '../api/getNowGoal';
 import getClearMandalart from '../api/getClearMandalart';
-import { cacheTime, staleTime } from '@/constants/queryKey';
 
 const ProfileTop = styled.section`
   display: flex;

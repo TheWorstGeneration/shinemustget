@@ -12,12 +12,9 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
@@ -45,10 +42,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         SocialType socialType = getSocialType(registrationId);
 
         String userNameAttributeName = userRequest
-                                        .getClientRegistration()
-                                        .getProviderDetails()
-                                        .getUserInfoEndpoint()
-                                        .getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
+                .getClientRegistration()
+                .getProviderDetails()
+                .getUserInfoEndpoint()
+                .getUserNameAttributeName(); // OAuth2 로그인 시 키(PK)가 되는 값
 
         Map<String, Object> attributes = oAuth2User.getAttributes(); // 소셜 로그인에서 API가 제공하는 userInfo의 Json 값(유저 정보들)
 
@@ -56,12 +53,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 
         Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
-
-//        return new DefaultOAuth2User(
-//                Collections.emptyList(),
-//                attributes,
-//                extractAttributes.getNameAttributeKey()
-//        );
 
         log.info("유저정보 : {}", createdUser.getRole().getKey());
 
@@ -77,7 +68,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      * 카카오 로그인 외 추가적인 소셜 로그인 기능을 확장 할 수도 있어 메소드 생성
      */
     private SocialType getSocialType(String registrationId) {
-        if(KAKAO.equals(registrationId)) {
+        if (KAKAO.equals(registrationId)) {
             return SocialType.KAKAO;
         }
         return SocialType.KAKAO;
@@ -90,6 +81,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private Member getUser(OAuthAttributes attributes, SocialType socialType) {
         Member findUser = memberRepository.findById((attributes.getOauth2UserInfo().getId()))
                 .orElse(null);
+
+        if (findUser.getImageUrl() != attributes.getOauth2UserInfo().getImageUrl()) {
+            findUser.updateImageUrl(attributes.getOauth2UserInfo().getImageUrl());
+            memberRepository.save(findUser);
+        }
+
         if (findUser == null) {
             return saveUser(attributes, socialType);
         }

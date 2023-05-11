@@ -8,11 +8,7 @@ interface MemberInfo {
 
 const getMemberInfo = async () => {
   const data = await axios
-    .get<MemberInfo>(MEMBER_INFO, {
-      headers: {
-        id: 2762543073,
-      },
-    })
+    .get<MemberInfo>(MEMBER_INFO)
     .then(res => res.data);
 
   return data;

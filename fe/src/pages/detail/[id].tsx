@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { useEffect,useState } from 'react';
 import styled from '@emotion/styled';
 import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
-import { DetailedRight } from '@/components/molecules/DetailedRight/DetailedRight';
 import Head from 'next/head';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { setIdx } from '@/store/modules/detailIdx';
@@ -10,35 +9,40 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import podoRead from '../api/podoRead';
 import podoSticker from '../api/podoSticker';
 import { selectIdx } from '@/store/modules/detailIdx';
-import podoIdSetting from '../api/podoIdSetting';
-import { setPodo } from '@/store/modules/detailIdx';
+import podoSetting from '../api/podoSetting';
+import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
 
-const DetailedDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 7rem 28rem;
-
-   @media (max-width: 960px) {
-    padding: 0;
-  }
-
-   @media (max-width: 500px) {
-    height: 130vh;
-  }
+const HeadDiv = styled.div`
+  margin-bottom:7rem;
 `;
 
-const DetailedDivCenter = styled.section<{ isMaxWidth: boolean }>`
+const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
   display: flex;
-  flex-direction: column;
+  height: 130vh;
+  margin: 0 auto;
+  justify-content: center;
 
   width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
   padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0 10rem')};
-  height: 91vh;
 
-  background-color: #ffffff;
+
+   @media (max-width: 960px) {
+    display: flex;
+    justify-content: column;
+    height: 100vh;
+  }
+
+   @media (max-width: 500px) {
+    display: flex;
+    justify-content: column;
+    height: 160vh;
+  }
+`;
+
+const DetailedDivCenter = styled.div<{ isMaxWidth: boolean }>`
 
   @media (max-width: 960px) {
-    padding: 0;
+    padding: 1rem;
   }
 
   @media (max-width: 500px) {
@@ -47,15 +51,12 @@ const DetailedDivCenter = styled.section<{ isMaxWidth: boolean }>`
 `;
 
 const DetailedDivRight = styled.div`
-  flex: 1;
-
   
   @media (max-width: 960px) {
     padding: 0;
   }
 
    @media (max-width: 500px) {
-    height: 130vh;
   }
 `;
 
@@ -85,11 +86,12 @@ export default function Detail() {
   const [updatePodo, setUpdatePodo] = useState<boolean>(false);
   const [isOn, setisOn] = useState<any>(false);
   
-  const { index }: any = useAppSelector(selectIdx);
+  const { index,isPodo } = useAppSelector(selectIdx);
 
   dispatch(setIdx(router?.query.id));
+  
   useEffect(() => {
-    podoIdSetting(index).then((response) => { setisOn(response) });
+    setisOn(isPodo);
     podoRead(index).then((response) => {
       setList(response);
     });
@@ -102,41 +104,37 @@ export default function Detail() {
     });
   }, [updatePodo])
 
-  useEffect(() => {
-    podoIdSetting(index).then((response) => { setisOn(response) });
-  }, [isOn]);
-  
   return (
     <>
-      <Head>
-        <title>Shine Must Get | 만다라트 상세 페이지</title>
-        <meta
-          name="description"
-          content="포도알 스티커를 붙이며 차근차근 목표를 이루어 나가보세요."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Shine Must Get" />
-        <meta
-          property="og:title"
-          content="Shine Must Get | 만다라트 상세 페이지"
-        />
-        <meta
-          property="og:description"
-          content="포도알 스티커를 붙이며 차근차근 목표를 이루어 나가보세요."
-        />
-        <meta
-          property="og:image"
-          content="assets/images/common/front-image.png"
-        />
-        <meta property="og:url" content="https://shinemustget.com" />
-      </Head>
-      <DetailedDiv>
+      <HeadDiv>
+        <Head>
+          <title>Shine Must Get | 만다라트 상세 페이지</title>
+          <meta
+            name="description"
+            content="포도알 스티커를 붙이며 차근차근 목표를 이루어 나가보세요."
+          />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="Shine Must Get" />
+          <meta
+            property="og:title"
+            content="Shine Must Get | 만다라트 상세 페이지"
+          />
+          <meta
+            property="og:description"
+            content="포도알 스티커를 붙이며 차근차근 목표를 이루어 나가보세요."
+          />
+          <meta
+            property="og:image"
+            content="assets/images/common/front-image.png"
+          />
+          <meta property="og:url" content="https://shinemustget.com" />
+        </Head>
+      </HeadDiv>
+      <DetailedDiv isMaxWidth={isMaxWidth}>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
-          <DetailedCenter isOn={isOn} setisOn={setisOn } setting={setting } list={list} stickerList={...stickerList} updatePodo={ updatePodo} setUpdatePodo={setUpdatePodo} />
+          <DetailedCenter isOn={isOn} setisOn={setisOn} setting={setting} list={list} stickerList={...stickerList} updatePodo={updatePodo} setUpdatePodo={setUpdatePodo} />
+          <CompleteButton></CompleteButton>
         </DetailedDivCenter>
-        <DetailedDivRight>
-          <DetailedRight/>
-        </DetailedDivRight>
       </DetailedDiv>
     </>
   );

@@ -6,6 +6,7 @@ import com.project.smg.mandalart.repository.*;
 import com.project.smg.member.dto.SearchBigDto;
 import com.project.smg.member.dto.SearchDto;
 import com.project.smg.member.entity.Member;
+import com.project.smg.member.entity.Role;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.repository.PodoRepository;
@@ -152,9 +153,12 @@ public class MandalartServiceImpl implements MandalartService {
                 smallGoal.addBigGoal(bigGoal);
             }
         }
+
         Member newMember = member
                 .orElse(null);
         newMember.authorizeUser();
+        memberRepository.save(newMember);
+
         titleRepository.save(title);
     }
 
@@ -165,7 +169,7 @@ public class MandalartServiceImpl implements MandalartService {
         Optional<Member> optional = memberRepository.findById(mid);
         Member member = optional.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
 
-        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
+        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberAndDeletedAtIsNullOrderByIdDesc(member);
         Title title = top1ByMemberOrderByIdDesc.orElse(null);
 
         HashMap<String, Object> result;

@@ -1,3 +1,4 @@
+import { MANDALART_READ_NOW_GOAL } from '@/constants/queryKey';
 import axios from 'axios';
 
 interface Goal {
@@ -13,11 +14,7 @@ interface ProgressProp {
 
 const getNowGoal = async () => {
   const data = await axios
-    .get<ProgressProp>(`https://shinemustget.com/api/profile/readNowGoal`, {
-      headers: {
-        id: 2762543073,
-      },
-    })
+    .get<ProgressProp>(MANDALART_READ_NOW_GOAL)
     .then(res => res.data);
 
   return data;
