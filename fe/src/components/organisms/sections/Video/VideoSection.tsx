@@ -30,17 +30,19 @@ const Dim = styled.div`
   right: 0;
 
   width: 100%;
-  height: 90%;
+  height: 50%;
 
   z-index: 1;
 
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0) 50%
+    rgba(0, 0, 0, 0) 100%
   );
 
   @media screen and (max-width: 500px) {
+    height: 30%;
+
     background: none;
   }
 `;
@@ -50,15 +52,6 @@ const Video = styled.video<{ pageYOffset: number }>`
   height: 100vh;
   border: none;
 
-  transition: all 0s ease-in-out !important;
-  scale: calc(1 + ${props => props.pageYOffset / 500});
-
-  @media screen and (max-width: 500px) {
-    height: 50vh;
-  }
-`;
-
-const VideoDiv = styled.div<{ pageYOffset: number }>`
   transition: all 0s ease-in-out !important;
   scale: calc(1 + ${props => props.pageYOffset / 500});
 

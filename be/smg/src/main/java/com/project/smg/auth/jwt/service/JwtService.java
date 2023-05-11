@@ -134,7 +134,7 @@ public class JwtService {
     public void accessTokenAddCookie(HttpServletResponse response, String accessToken) {
         try {
             String bearerToken = URLEncoder.encode(BEARER + accessToken, "UTF-8");
-            Cookie cookie = new Cookie("access", bearerToken);
+            Cookie cookie = new Cookie("accessToken", bearerToken);
             cookie.setPath("/");
             cookie.setMaxAge(accessTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
@@ -153,7 +153,7 @@ public class JwtService {
     public void refreshTokenAddCookie(HttpServletResponse response, String refreshToken) {
         try {
             String bearerToken = URLEncoder.encode(BEARER + refreshToken, "UTF-8");
-            Cookie cookie = new Cookie("refresh", bearerToken);
+            Cookie cookie = new Cookie("refreshToken", bearerToken);
             cookie.setPath("/");
             cookie.setMaxAge(refreshTokenCookieExpirationPeriod);
             cookie.setHttpOnly(true);
@@ -173,26 +173,13 @@ public class JwtService {
      * 쿠키를 가져온 후 "Bearer"를 삭제(""로 replace)
      */
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-//        return Optional.ofNullable(Arrays.stream(request.getCookies())
-//                        .filter(cookie -> cookie.getName().equals("accessToken"))
-//                        .findFirst().map(Cookie::getValue)
-//                        .orElse(null))
-//                .map(accessToken -> {
-//                    try {
-//                        return URLDecoder.decode(accessToken, "UTF-8");
-//                    } catch (UnsupportedEncodingException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                })
-//                .filter(accessToken -> accessToken.startsWith(BEARER))
-//                .map(accessToken -> accessToken.replace(BEARER, ""));
         Cookie[] cookies = request.getCookies();
         if (cookies == null) {
             return Optional.empty();
         }
 
         return Optional.ofNullable(Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals("access"))
+                        .filter(cookie -> cookie.getName().equals("accessToken"))
                         .findFirst()
                         .map(Cookie::getValue)
                         .orElse(null))
@@ -214,7 +201,7 @@ public class JwtService {
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
         return Optional.ofNullable(Arrays.stream(request.getCookies())
-                        .filter(c -> c.getName().equals("refresh"))
+                        .filter(c -> c.getName().equals("refreshToken"))
                         .findFirst().map(Cookie::getValue)
                         .orElse(null))
                 .map(accessToken -> {

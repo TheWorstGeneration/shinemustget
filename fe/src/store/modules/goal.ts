@@ -40,7 +40,7 @@ const goalSlice = createSlice({
     },
     setSmallGoal: (state, action) => {
       const { i, j, smallGoal }: SmallGoalAction = action.payload;
-      state.smallGoalLists[i][j] = smallGoal;
+      state.smallGoalLists[i - 1][j - 1] = smallGoal;
     },
     setResetGoal: (state) => {
       state.title = '';

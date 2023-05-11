@@ -22,10 +22,6 @@ export const postCreate = async ({ title, bigRequestDto }: PostCreateProps) => {
     .post(MANDALART_CREATE, {
       title,
       bigRequestDto,
-    }, {
-        headers: {
-        id: 2762543073,
-        },
     })
     .then(res => res.data);
 

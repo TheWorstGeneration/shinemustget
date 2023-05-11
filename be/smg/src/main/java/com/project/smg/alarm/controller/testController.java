@@ -17,8 +17,8 @@ public class testController {
     private final AlarmService alarmService;
 
     @PostMapping("/test")
-    public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @RequestBody Title title) {
-        return new ResponseEntity<>(alarmService.saveAlarm(memberId, title), HttpStatus.OK);
+    public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @PathVariable("id") int id) {
+        return new ResponseEntity<>(alarmService.saveAlarm(memberId, id), HttpStatus.OK);
     }
 
     @GetMapping ("/getTest")

@@ -167,7 +167,7 @@ public class MandalartServiceImpl implements MandalartService {
         Optional<Member> optional = memberRepository.findById(mid);
         Member member = optional.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
 
-        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
+        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberAndDeletedAtIsNullOrderByIdDesc(member);
         Title title = top1ByMemberOrderByIdDesc.orElse(null);
 
         HashMap<String, Object> result;

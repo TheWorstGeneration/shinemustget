@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
 }
@@ -8,7 +8,7 @@
     --foreground-rgb: 255, 255, 255;
     --background-rgb: 0, 0, 0;
   }
-}
+} */
 
 /*여기서 부터*/
 * {
@@ -64,11 +64,11 @@ button {
   cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
 
 @font-face {
   font-family: 'Pacifico';
