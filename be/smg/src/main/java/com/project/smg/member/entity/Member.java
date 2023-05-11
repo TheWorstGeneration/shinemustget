@@ -4,6 +4,7 @@ import com.project.smg.mandalart.entity.Title;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +44,12 @@ public class Member {
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private RefreshToken refreshToken;
 
+    @Transactional
     public void authorizeUser() {
         this.role = Role.USER;
     }
 
+    @Transactional
     public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
