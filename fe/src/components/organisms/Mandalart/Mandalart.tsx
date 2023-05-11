@@ -93,7 +93,11 @@ export const Mandalart = () => {
   const center = {
     location: 0,
     content: title,
-    isClear: data?.isClear ? data.isClear : false,
+    isClear: data?.isClear
+      ? pathname === '/home'
+        ? data.isClear
+        : false
+      : false,
     smallList: centerSmallList,
     isCenter: 2,
   };
