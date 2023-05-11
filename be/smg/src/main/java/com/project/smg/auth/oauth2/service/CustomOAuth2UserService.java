@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Map;
 
@@ -54,12 +55,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
 
-//        return new DefaultOAuth2User(
-//                Collections.emptyList(),
-//                attributes,
-//                extractAttributes.getNameAttributeKey()
-//        );
-
         log.info("유저정보 : {}", createdUser.getRole().getKey());
 
         return new CustomOAuth2User(
@@ -84,7 +79,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
      * attributes에 들어있는 소셜 로그인의 식별값 id를 통해 회원을 찾아 반환하는 메소드
      * 만약 찾은 회원이 있다면, 그대로 반환하고 없다면 saveUser()를 호출하여 회원을 저장한다.
      */
-    private Member getUser(OAuthAttributes attributes, SocialType socialType) {
+    @Transactional
+    public Member getUser(OAuthAttributes attributes, SocialType socialType) {
         Member findUser = memberRepository.findById((attributes.getOauth2UserInfo().getId()))
                 .orElse(null);
 
