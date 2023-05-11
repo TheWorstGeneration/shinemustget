@@ -15,7 +15,7 @@ export interface GoalBoxProps {
   content: string;
   isPodo?: boolean | undefined;
   isToday?: boolean | undefined;
-  isClear: boolean;
+  isClear?: boolean | undefined;
   isCenter?: number | undefined;
 }
 
@@ -76,7 +76,7 @@ const CenterBox = styled.div<{ isClear: boolean; isCenter: number }>`
   }
 `;
 
-const TextFieldBox = styled.textarea<{ isClear: boolean }>`
+const TextFieldBox = styled.textarea`
   position: relative;
 
   display: flex;
@@ -90,11 +90,9 @@ const TextFieldBox = styled.textarea<{ isClear: boolean }>`
   width: 70px;
   height: 70px;
 
-  // 여러줄 입력 가능하며 스크롤 가능
   white-space: wrap;
   overflow: scroll;
 
-  //textarea 수직 중앙
   line-height: 1.5;
   padding-top: 0.5rem;
 
@@ -217,19 +215,15 @@ export const GoalBox = ({
   console.log(content, isClear);
 
   return isCenter ? (
-    <CenterBox isClear={isClear} isCenter={isCenter}>
+    <CenterBox isClear={isClear ? isClear : false} isCenter={isCenter}>
       {content}
     </CenterBox>
   ) : isCreate ? (
-    <TextFieldBox
-      isClear={isClear}
-      value={input}
-      onChange={handleChangeSmallGoal}
-    />
+    <TextFieldBox value={input} onChange={handleChangeSmallGoal} />
   ) : (
     <Box
       href={`/detail/${id}`}
-      isClear={isClear}
+      isClear={isClear ? isClear : false}
       onClick={() => dispatch(setPodo({ content: content, isPodo: isPodo }))}
     >
       {isPodo ? (
