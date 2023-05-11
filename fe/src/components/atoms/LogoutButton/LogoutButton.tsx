@@ -41,7 +41,7 @@ export const LogoutButton = () => {
   };
 
   return (
-    <LogoutLink type="button" onClick={handleLogout}>
+    <LogoutLink type="button" title="로그아웃" onClick={handleLogout}>
       <FontAwesomeIcon icon={faArrowRightFromBracket} />
     </LogoutLink>
   );
