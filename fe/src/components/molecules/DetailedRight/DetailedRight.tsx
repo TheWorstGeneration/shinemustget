@@ -7,8 +7,8 @@ const DetailedRightButton = styled.div`
 
 export function DetailedRight() {
   return (
-      <DetailedRightButton>
-        <CompleteButton />
-      </DetailedRightButton>
+    <DetailedRightButton>
+      <CompleteButton />
+    </DetailedRightButton>
   );
 }

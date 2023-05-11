@@ -6,13 +6,11 @@ const meta: Meta<typeof ProfileImage> = {
   title: 'Atoms/ProfileImage',
   component: ProfileImage,
   tags: ['autodocs'],
-  argTypes: {
-  },
+  argTypes: {},
 };
 
 export default meta;
 type Story = StoryObj<typeof ProfileImage>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Primary: Story = {
-};
+export const Primary: Story = {};

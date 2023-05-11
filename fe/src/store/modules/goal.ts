@@ -42,16 +42,17 @@ const goalSlice = createSlice({
       const { i, j, smallGoal }: SmallGoalAction = action.payload;
       state.smallGoalLists[i][j] = smallGoal;
     },
-    setResetGoal: (state) => {
+    setResetGoal: state => {
       state.title = '';
       state.bigGoalList = Array(8).fill('');
       state.smallGoalLists = Array(8).fill(Array(8).fill(''));
-    }
+    },
   },
 });
 
 // 액션 생성함수
-export const { setTitle, setBigGoal, setSmallGoal, setResetGoal } = goalSlice.actions;
+export const { setTitle, setBigGoal, setSmallGoal, setResetGoal } =
+  goalSlice.actions;
 export const selectGoal = (state: RootState) => state.goal;
 // 리듀서
 export default goalSlice.reducer;

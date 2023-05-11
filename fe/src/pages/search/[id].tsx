@@ -4,9 +4,13 @@ import searchDetail from '../api/searchDetail';
 
 const SearchDetail = () => {
   const router = useRouter();
-  const { id }:any = router.query;
+  const { id }: any = router.query;
 
-  useEffect(() => { searchDetail(id).then((res) => { console.log(res) }) });
+  useEffect(() => {
+    searchDetail(id).then(res => {
+      console.log(res);
+    });
+  });
 
   return (
     <div>

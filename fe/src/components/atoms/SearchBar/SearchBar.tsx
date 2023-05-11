@@ -13,7 +13,7 @@ const SearchBarContainer = styled.div`
   background-color: #ffffff;
   box-shadow: 0 0 0.5rem 1px #22222225;
   padding: 1rem;
-  
+
   &:hover {
     width: 30rem;
   }

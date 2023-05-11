@@ -1,7 +1,6 @@
 import { MANDALART_SMALL_GOAL } from '@/constants/queryKey';
 import { customAxios } from '@/utils/axios';
 
-
 interface SmallGoalList {
   [bigGoal: string]: string[];
 }
