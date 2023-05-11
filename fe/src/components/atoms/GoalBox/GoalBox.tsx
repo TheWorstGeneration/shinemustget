@@ -15,7 +15,7 @@ export interface GoalBoxProps {
   content: string;
   isPodo?: boolean | undefined;
   isToday?: boolean | undefined;
-  isClear?: boolean | undefined;
+  isClear: boolean;
   isCenter?: number | undefined;
 }
 
@@ -214,20 +214,22 @@ export const GoalBox = ({
     setInput(smallGoal);
   };
 
+  console.log(content, isClear);
+
   return isCenter ? (
-    <CenterBox isClear={isClear ? isClear : false} isCenter={isCenter}>
+    <CenterBox isClear={isClear} isCenter={isCenter}>
       {content}
     </CenterBox>
   ) : isCreate ? (
     <TextFieldBox
-      isClear={isClear ? isClear : false}
+      isClear={isClear}
       value={input}
       onChange={handleChangeSmallGoal}
     />
   ) : (
     <Box
       href={`/detail/${id}`}
-      isClear={isClear ? isClear : false}
+      isClear={isClear}
       onClick={() => dispatch(setPodo({ content: content, isPodo: isPodo }))}
     >
       {isPodo ? (
@@ -237,9 +239,7 @@ export const GoalBox = ({
             color={isToday ? '#01c027' : '#ff0909'}
           />
         </Badge>
-      ) : (
-        <></>
-      )}
+      ) : null}
       {content}
     </Box>
   );
