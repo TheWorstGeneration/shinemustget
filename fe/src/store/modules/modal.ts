@@ -2,26 +2,26 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 
 export interface modalSlice {
-    isInputBox: boolean;
-};
+  isInputBox: boolean;
+}
 
 // 초기 상태 정의
 const initialState = {
-    isInputBox: true,
+  isInputBox: true,
 };
 
 const modalSlice = createSlice({
-    name: 'modal',
-    initialState,
-    reducers: {
-        // 액션 생성함수
-        setResetInputBox: (state) => {
-            state.isInputBox = true;
-        },
-        setInputBox: (state) => {
-            state.isInputBox = false;
-        }
+  name: 'modal',
+  initialState,
+  reducers: {
+    // 액션 생성함수
+    setResetInputBox: state => {
+      state.isInputBox = true;
     },
+    setInputBox: state => {
+      state.isInputBox = false;
+    },
+  },
 });
 // 액션 생성함수
 export const { setResetInputBox, setInputBox } = modalSlice.actions;

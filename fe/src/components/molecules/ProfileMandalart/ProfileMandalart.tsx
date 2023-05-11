@@ -79,7 +79,9 @@ export const ProfileMandalart = () => {
             isProfile={true}
           />
         ))}
-        {!clearList && <Err>클리어한 만다라트가 없습니다.</Err>}
+        {clearList && clearList.length === 0 && (
+          <Err>클리어한 만다라트가 없습니다.</Err>
+        )}
       </BigGoalMandalartBox>
     </ProfileMandalartContainer>
   );

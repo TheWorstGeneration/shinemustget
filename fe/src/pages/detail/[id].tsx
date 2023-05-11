@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
 import Head from 'next/head';
@@ -13,7 +13,7 @@ import podoSetting from '../api/podoSetting';
 import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
 
 const HeadDiv = styled.div`
-  margin-bottom:7rem;
+  margin-bottom: 7rem;
 `;
 
 const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
@@ -25,14 +25,13 @@ const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
   width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
   padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0 10rem')};
 
-
-   @media (max-width: 960px) {
+  @media (max-width: 960px) {
     display: flex;
     justify-content: column;
     height: 100vh;
   }
 
-   @media (max-width: 500px) {
+  @media (max-width: 500px) {
     display: flex;
     justify-content: column;
     height: 160vh;
@@ -40,7 +39,6 @@ const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
 `;
 
 const DetailedDivCenter = styled.div<{ isMaxWidth: boolean }>`
-
   @media (max-width: 960px) {
     padding: 1rem;
   }
@@ -51,28 +49,27 @@ const DetailedDivCenter = styled.div<{ isMaxWidth: boolean }>`
 `;
 
 const DetailedDivRight = styled.div`
-  
   @media (max-width: 960px) {
     padding: 0;
   }
 
-   @media (max-width: 500px) {
+  @media (max-width: 500px) {
   }
 `;
 
 export interface podo {
-  id: number,
-  imageUrl:string
-}
- 
-export interface podoList{ 
-  podoCnt: number,
-  podoDtoList: podo[],
+  id: number;
+  imageUrl: string;
 }
 
-export interface podoListRecord { 
-  pageCnt: number,
-  podosList:podoList[],
+export interface podoList {
+  podoCnt: number;
+  podoDtoList: podo[];
+}
+
+export interface podoListRecord {
+  pageCnt: number;
+  podosList: podoList[];
 }
 
 export default function Detail() {
@@ -85,24 +82,26 @@ export default function Detail() {
   const [stickerList, setstickerList] = useState<any>(null);
   const [updatePodo, setUpdatePodo] = useState<boolean>(false);
   const [isOn, setisOn] = useState<any>(false);
-  
-  const { index,isPodo } = useAppSelector(selectIdx);
+
+  const { index, isPodo } = useAppSelector(selectIdx);
 
   dispatch(setIdx(router?.query.id));
-  
+
   useEffect(() => {
     setisOn(isPodo);
-    podoRead(index).then((response) => {
+    podoRead(index).then(response => {
       setList(response);
     });
-    podoSticker().then((response) => { setstickerList(response) });
+    podoSticker().then(response => {
+      setstickerList(response);
+    });
   }, []);
-  
+
   useEffect(() => {
-    podoRead(index).then((response) => {
+    podoRead(index).then(response => {
       setList(response);
     });
-  }, [updatePodo])
+  }, [updatePodo]);
 
   return (
     <>
@@ -132,7 +131,15 @@ export default function Detail() {
       </HeadDiv>
       <DetailedDiv isMaxWidth={isMaxWidth}>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
-          <DetailedCenter isOn={isOn} setisOn={setisOn} setting={setting} list={list} stickerList={...stickerList} updatePodo={updatePodo} setUpdatePodo={setUpdatePodo} />
+          <DetailedCenter
+            isOn={isOn}
+            setisOn={setisOn}
+            setting={setting}
+            list={list}
+            stickerList={...stickerList}
+            updatePodo={updatePodo}
+            setUpdatePodo={setUpdatePodo}
+          />
           <CompleteButton></CompleteButton>
         </DetailedDivCenter>
       </DetailedDiv>

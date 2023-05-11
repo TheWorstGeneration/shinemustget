@@ -6,14 +6,11 @@ const meta: Meta<typeof GoalBoxContainer> = {
   title: 'Molecules/GoalBoxContainer',
   component: GoalBoxContainer,
   tags: ['autodocs'],
-  argTypes: {
-
-  },
+  argTypes: {},
 };
 
 export default meta;
 type Story = StoryObj<typeof GoalBoxContainer>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Primary: Story = { 
-};
+export const Primary: Story = {};

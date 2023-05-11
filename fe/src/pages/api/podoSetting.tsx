@@ -7,7 +7,7 @@ interface podoId {
 
 const podoSetting = async (props: number) => {
   const data = await customAxios
-    .post<podoId>(PODO_CREATE + `/${props}`, {})
+    .post<podoId>(PODO_CREATE + `${props}`, {})
     .then(res => res.data);
 
   console.log('data', data);

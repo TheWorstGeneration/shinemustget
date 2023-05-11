@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006 -s ./public",
-    "build-storybook": "storybook build -s public"
+    "build-storybook": "storybook build -s public",
+    "format": "prettier --check ./src",
+    "format:fix": "prettier --write ./src"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
