@@ -53,15 +53,7 @@ const UserCommentCompleteButtonDiv = styled.div`
   flex: 2.75;
 `;
 
-export function UserComment({
-  stickerList,
-  updatePodo,
-  setUpdatePodo,
-}: {
-  stickerList: sticker[];
-  updatePodo: boolean;
-  setUpdatePodo: Dispatch<SetStateAction<boolean>>;
-}) {
+export function UserComment({ stickerList }: { stickerList: sticker[] }) {
   const [countLetter, setCountLetter] = useState(0);
   const [oneline, setOneLine] = useState('');
   const [imageUrl, setImageUrl] = useState(
@@ -113,12 +105,7 @@ export function UserComment({
           <Image src={imageUrl} width={32.5} height={32.5} alt="Image"></Image>
         </UserCommentCompleteImageDiv>
         <UserCommentCompleteButtonDiv>
-          <ComposeButton
-            imageUrl={imageUrl}
-            oneline={oneline}
-            updatePodo={updatePodo}
-            setUpdatePodo={setUpdatePodo}
-          />
+          <ComposeButton imageUrl={imageUrl} oneline={oneline} />
         </UserCommentCompleteButtonDiv>
       </UserCommentCompleteDiv>
     </UserCommentDiv>

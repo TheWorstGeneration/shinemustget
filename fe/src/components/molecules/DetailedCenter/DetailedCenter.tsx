@@ -85,24 +85,16 @@ const DetailedDivEmpty = styled.div`
 `;
 
 export function DetailedCenter({
-  isOn,
-  setisOn,
-  setting,
   list,
   stickerList,
-  updatePodo,
-  setUpdatePodo,
 }: {
-  isOn: boolean;
-  setisOn: Dispatch<SetStateAction<boolean>>;
-  setting: any;
   list: podoListRecord;
   stickerList: sticker[];
-  updatePodo: boolean;
-  setUpdatePodo: Dispatch<SetStateAction<boolean>>;
 }) {
+  const { isPodo, isToday } = useAppSelector(selectIdx);
   const [podoDetail, setPodoDetail] = useState('');
   const content = useAppSelector(selectIdx).content;
+
   return (
     <DetailedOverDiv>
       <DetailedDiv>
@@ -112,22 +104,18 @@ export function DetailedCenter({
             <DetailedDivToggleDesc>
               <p>포도알 설정</p>
             </DetailedDivToggleDesc>
-            <Toggle setting={setting} isOn={isOn} setisOn={setisOn} />
+            <Toggle />
           </DetailedDivToggle>
         </DetailedDivGoal>
       </DetailedDiv>
-      {isOn ? (
+      {isPodo ? (
         <DetailedDivPos>
           <DetailedDivPosLeft>
             <GrapeBoardList list={list} setPodoDetail={setPodoDetail} />
           </DetailedDivPosLeft>
           <DetailedDivRight>
             <UserMemo podoDetail={podoDetail} />
-            <UserComment
-              stickerList={...stickerList}
-              updatePodo={updatePodo}
-              setUpdatePodo={setUpdatePodo}
-            />
+            <UserComment stickerList={...stickerList} />
           </DetailedDivRight>
         </DetailedDivPos>
       ) : (

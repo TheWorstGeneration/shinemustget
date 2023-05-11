@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import podoWrite from '@/pages/api/podoWrite';
-import { useAppSelector } from '@/hooks/useRedux';
-import { selectIdx } from '@/store/modules/detailIdx';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { selectIdx, setIsToday } from '@/store/modules/detailIdx';
 import podoRead from '@/pages/api/podoRead';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -26,16 +26,12 @@ const Button = styled.button`
 export function ComposeButton({
   imageUrl,
   oneline,
-  updatePodo,
-  setUpdatePodo,
 }: {
   imageUrl: any;
   oneline: any;
-  updatePodo: boolean;
-  setUpdatePodo: Dispatch<SetStateAction<boolean>>;
 }) {
-  const { index } = useAppSelector(selectIdx);
-
+  const { index, isToday } = useAppSelector(selectIdx);
+  const dispatch = useAppDispatch();
   const propsDetail = {
     id: index,
     imageUrl: imageUrl,
@@ -55,11 +51,20 @@ export function ComposeButton({
     } else {
       podoWrite(propsDetail).then(res => {
         podoRead(index);
-        setUpdatePodo(!updatePodo);
+        dispatch(setIsToday());
         alert('작성이 완료되었습니다!');
       });
     }
   };
 
-  return <Button onClick={onClickHandler}>작성</Button>;
+  return (
+    <Button
+      type="button"
+      title="스티커 작성"
+      disabled={isToday ? true : false}
+      onClick={onClickHandler}
+    >
+      작성
+    </Button>
+  );
 }

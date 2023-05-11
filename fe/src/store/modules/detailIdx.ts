@@ -6,6 +6,7 @@ export interface idxSlice {
   index: number;
   isPodo: boolean;
   content: string;
+  isToday: boolean;
 }
 
 // 초기 상태 정의
@@ -13,6 +14,7 @@ const initialState = {
   index: 0,
   isPodo: false,
   content: null,
+  isToday: false,
 };
 
 const detailSlice = createSlice({
@@ -26,12 +28,19 @@ const detailSlice = createSlice({
     setPodo: (state, action) => {
       state.isPodo = action.payload.isPodo;
       state.content = action.payload.content;
+      state.isToday = action.payload.isToday;
     },
+    setIsPodo: (state) => {
+      state.isPodo = !state.isPodo;
+    },
+    setIsToday: (state) => {
+      state.isToday = !state.isToday;
+    }
   },
 });
 
 // 액션 생성함수
-export const { setIdx, setPodo } = detailSlice.actions;
+export const { setIdx, setPodo, setIsPodo, setIsToday } = detailSlice.actions;
 export const selectIdx = (state: RootState) => state.detailIdx;
 // 리듀서
 export default detailSlice.reducer;

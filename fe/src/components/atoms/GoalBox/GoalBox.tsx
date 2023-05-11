@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { setIdx } from '@/store/modules/detailIdx';
 
 export interface GoalBoxProps {
   id?: number | undefined;
@@ -212,6 +213,11 @@ export const GoalBox = ({
     setInput(smallGoal);
   };
 
+  const handleGoToDetail = () => {
+    dispatch(setPodo({ content: content, isPodo: isPodo, isToday: isToday }));
+    dispatch(setIdx(id ? id : 0));
+  };
+
   return isCenter ? (
     <CenterBox isClear={isClear ? isClear : false} isCenter={isCenter}>
       {content}
@@ -222,7 +228,7 @@ export const GoalBox = ({
     <Box
       href={`/detail/${id}`}
       isClear={isClear ? isClear : false}
-      onClick={() => dispatch(setPodo({ content: content, isPodo: isPodo }))}
+      onClick={handleGoToDetail}
     >
       {isPodo ? (
         <Badge>

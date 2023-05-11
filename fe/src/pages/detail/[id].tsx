@@ -74,21 +74,12 @@ export interface podoListRecord {
 
 export default function Detail() {
   const isMaxWidth = useInnerWidth() >= 1440;
-  const router = useRouter();
-  const dispatch = useAppDispatch();
 
-  const [setting, setSetting] = useState<any>(false);
   const [list, setList] = useState<any>(null);
   const [stickerList, setstickerList] = useState<any>(null);
-  const [updatePodo, setUpdatePodo] = useState<boolean>(false);
-  const [isOn, setisOn] = useState<any>(false);
-
-  const { index, isPodo } = useAppSelector(selectIdx);
-
-  dispatch(setIdx(router?.query.id));
+  const { index, isPodo, isToday } = useAppSelector(selectIdx);
 
   useEffect(() => {
-    setisOn(isPodo);
     podoRead(index).then(response => {
       setList(response);
     });
@@ -99,9 +90,10 @@ export default function Detail() {
 
   useEffect(() => {
     podoRead(index).then(response => {
+      console.log(response);
       setList(response);
     });
-  }, [updatePodo]);
+  }, [isToday]);
 
   return (
     <>
@@ -131,15 +123,7 @@ export default function Detail() {
       </HeadDiv>
       <DetailedDiv isMaxWidth={isMaxWidth}>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
-          <DetailedCenter
-            isOn={isOn}
-            setisOn={setisOn}
-            setting={setting}
-            list={list}
-            stickerList={...stickerList}
-            updatePodo={updatePodo}
-            setUpdatePodo={setUpdatePodo}
-          />
+          <DetailedCenter list={list} stickerList={...stickerList} />
           <CompleteButton></CompleteButton>
         </DetailedDivCenter>
       </DetailedDiv>
