@@ -3,6 +3,8 @@ package com.project.smg.podo.service;
 
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
+import com.project.smg.mandalart.service.MandalartLikeService;
+import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
@@ -26,11 +28,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PodoServiceImpl implements PodoService {
-    private final MemberRepository memberRepository;
     private final SmallGoalRepository smallGoalRepository;
     private final MemberPodoRepository memberPodoRepository;
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
+    private final MandalartLikeService mandalartLikeService;
 
     /** 포도송이 조회 */
     @Override
@@ -72,7 +74,7 @@ public class PodoServiceImpl implements PodoService {
         PodoDetailDto podoDetailDto = new PodoDetailDto(findPodo.getId(), findPodo.getOneline(), createdDate);
         return podoDetailDto;
     }
-    // TODO isWriteToday - 포도알 하루에 한 번만 작성 되어야 함 -> 일단 special 부터
+
     // TODO is26daysClear - special podo 여부 : true 면 알림호출
     // TODO is30daysClear - special podo 지속여부 - > 로그인 성공할때마다 확인
     /** 포도알 작성하기 */
@@ -127,6 +129,7 @@ public class PodoServiceImpl implements PodoService {
 
                     log.info("스페셜 포도 축하합니다 ^^ !! ");
                     setSpecialMemberPodo(mid);
+                    setSpecialDate(mid);
                     return true;
                 }
             }
@@ -134,6 +137,12 @@ public class PodoServiceImpl implements PodoService {
         log.info("스페셜 포도 아닙니다 ..");
         return false;
     }
+    @Transactional
+    private void setSpecialDate(String mid) {
+        Member findMember = mandalartLikeService.checkMember(mid);
+        findMember.setSpecialStickerDate(LocalDateTime.now());
+    }
+
     @Transactional
     void setSpecialMemberPodo(String mid){
         List<MemberPodo> byPodoTypeStatus0 = memberPodoRepository.findByPodoTypeStatus0(mid);
@@ -176,9 +185,7 @@ public class PodoServiceImpl implements PodoService {
         // small goal 확인
         SmallGoal findSmallGoal = checkSmallGoal(id);
         // isSticker 변경
-        if (findSmallGoal.isSticker()){
-            findSmallGoal.setSticker(false);
-        }else findSmallGoal.setSticker(true);
+        findSmallGoal.setSticker(!findSmallGoal.isSticker());
     }
     /** 포도알 설정 조회*/
     @Override
@@ -186,8 +193,6 @@ public class PodoServiceImpl implements PodoService {
         SmallGoal findSmallGoal = checkSmallGoal(id);
         return findSmallGoal.isSticker();
     }
-
-
 
     private SmallGoal checkSmallGoal(int id){
         SmallGoal smallGoal = smallGoalRepository.findById(id).orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));

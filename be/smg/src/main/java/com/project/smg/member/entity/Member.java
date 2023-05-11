@@ -4,10 +4,12 @@ import com.project.smg.mandalart.entity.Title;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Builder
@@ -30,6 +32,9 @@ public class Member {
     @Column(name = "social_type")
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
+
+    @Column(name = "special_sticker_date")
+    private LocalDateTime specialStickerDate;
 
     @OneToMany(mappedBy = "member")
     private List<Likes> memberLikes = new ArrayList<>();
