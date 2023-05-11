@@ -37,7 +37,7 @@ public class ProfileController {
         }
         else {
             log.info("BigGoal 리스트 조회 실패");
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
     }
 
@@ -50,7 +50,7 @@ public class ProfileController {
         }
         else {
             log.info("완료 목록 조회 실패");
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
     }
 
@@ -63,7 +63,7 @@ public class ProfileController {
         }
         else {
             log.info("완료한 만다라트 조회 실패");
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
     }
 
