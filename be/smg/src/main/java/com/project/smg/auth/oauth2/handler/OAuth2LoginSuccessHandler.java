@@ -83,7 +83,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             memberRepository.save(member);
             response.sendRedirect(home);
         }
+        else {
+            response.sendRedirect(create);
+        }
 
-        response.sendRedirect(create);
     }
 }
