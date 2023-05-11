@@ -1,6 +1,5 @@
 import { MANDALART_READ_CLEAR_GOAL } from '@/constants/queryKey';
 import { customAxios } from '@/utils/axios';
-import axios from 'axios';
 
 interface CompletedLogs {
   content: string;
