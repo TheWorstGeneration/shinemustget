@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
     }
 
+    @Transactional
     private void loginSuccess(HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
         String memberId = oAuth2User.getAttributes().get("id").toString();
         Optional<Member> findMember = memberRepository.findById(memberId);
