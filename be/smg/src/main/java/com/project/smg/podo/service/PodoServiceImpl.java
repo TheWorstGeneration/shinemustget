@@ -73,10 +73,11 @@ public class PodoServiceImpl implements PodoService {
         return podoDetailDto;
     }
     // TODO isWriteToday - 포도알 하루에 한 번만 작성 되어야 함 -> 일단 special 부터
-    // TODO is30daysClear - special podo 여부 : true 면 알림호출
+    // TODO is26daysClear - special podo 여부 : true 면 알림호출
     // TODO is30daysClear - special podo 지속여부 - > 로그인 성공할때마다 확인
     /** 포도알 작성하기 */
     @Override
+    @Transactional
     public void create(String mid, PodoCreateDto podoCreateDto) {
 
         // small goal 확인
@@ -97,6 +98,10 @@ public class PodoServiceImpl implements PodoService {
                 .smallGoal(findSmallGoal)
                 .build();
         podoRepository.save(podo);
+
+        // 스페셜 포도 알림 여부
+        boolean is26daysClear = isSpecialClear(mid, podoCreateDto.getId());
+        log.info("is26daysClear= {}",is26daysClear);
     }
 
 
@@ -106,25 +111,37 @@ public class PodoServiceImpl implements PodoService {
      * 스페셜 포도 부여 (memberpodo podotype 4~6 까지 1로 변경)
      * + 포도 회수 기간 줄지 말지 고민
      * */
+    @Transactional
     public boolean isSpecialClear(String mid, int id){
-//        boolean is30daysClear = false;  staus 로 구분해야함
         boolean isSpecial = memberPodoRepository.isfindByPodoTypeId(4, mid);
         if (!isSpecial){
             // 현재 날짜 받아서 date 25일 전이 뺀거랑 같으면 true
             LocalDate nowminus25days = LocalDateTime.now().minusDays(25).toLocalDate();
             log.info("nowminus25days= {}",nowminus25days);
             List<Podo> bySmallGoalId = podoRepository.findBySmallGoalIdDesc(id);
+            log.info("연속 포도 달성날짜 = {}일",bySmallGoalId.size());
             if (bySmallGoalId.size() >=26 ){
                 LocalDate createdAt = bySmallGoalId.get(25).getCreatedAt().toLocalDate();
                 log.info("createdAt= {}",createdAt);
                 if (nowminus25days.equals(createdAt)){
+
                     log.info("스페셜 포도 축하합니다 ^^ !! ");
+                    setSpecialMemberPodo(mid);
+                    return true;
                 }
             }
         }
-        return isSpecial;
+        log.info("스페셜 포도 아닙니다 ..");
+        return false;
     }
-
+    @Transactional
+    void setSpecialMemberPodo(String mid){
+        List<MemberPodo> byPodoTypeStatus0 = memberPodoRepository.findByPodoTypeStatus0(mid);
+        log.info("스페셜 포도 부여합니다 ^^ !!");
+        for (MemberPodo mp : byPodoTypeStatus0){
+            mp.setStatus(true);
+        }
+    }
     // podoType id 로 memberpodo 찾기
     private MemberPodo checkMemberPodo(String mid, PodoType podoType) {
         MemberPodo memberPodo = memberPodoRepository.findByName(podoType.getId(), mid).orElseThrow(() -> new IllegalStateException("멤버 포도가 존재하지 않습니다."));
