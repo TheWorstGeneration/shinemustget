@@ -143,8 +143,8 @@ const Box = styled(Link)<{ isClear: boolean }>`
   width: 70px;
   height: 70px;
 
-  color: ${({ isClear }) => (isClear ? '#333333' : '#545700')};
-  background-color: ${({ isClear }) => (isClear ? '#f5f5f5' : '#EFFFAD')};
+  color: ${({ isClear }) => (isClear ? '#545700' : '#333333')};
+  background-color: ${({ isClear }) => (isClear ? '#EFFFAD' : '#f5f5f5')};
   border: 1px solid #888888;
 
   &:hover {
@@ -211,8 +211,6 @@ export const GoalBox = ({
     dispatch(setSmallGoal({ i: bigLocation, j: location - 1, smallGoal }));
     setInput(smallGoal);
   };
-
-  console.log(content, isClear);
 
   return isCenter ? (
     <CenterBox isClear={isClear ? isClear : false} isCenter={isCenter}>
