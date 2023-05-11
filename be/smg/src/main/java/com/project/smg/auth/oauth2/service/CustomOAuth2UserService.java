@@ -85,7 +85,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(null);
 
         if (findUser.getImageUrl() != attributes.getOauth2UserInfo().getImageUrl()) {
-            findUser.updateImageUrl(attributes.getOauth2UserInfo().getImageUrl());
+            findUser.setImageUrl(attributes.getOauth2UserInfo().getImageUrl());
         }
 
         if (findUser == null) {

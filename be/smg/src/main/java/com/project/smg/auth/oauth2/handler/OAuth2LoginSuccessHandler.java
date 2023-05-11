@@ -61,7 +61,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     @Transactional
-    private void loginSuccess(HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
+    public void loginSuccess(HttpServletResponse response, DefaultOAuth2User oAuth2User) throws IOException {
         String memberId = oAuth2User.getAttributes().get("id").toString();
         Optional<Member> findMember = memberRepository.findById(memberId);
         Member member = findMember.orElseThrow(() -> new IllegalStateException("유저가 존재하지 않음"));
@@ -93,6 +93,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         HashMap<String, Object> mandalart = mandalartService.getMainMandalart(memberId);
 
         if (!mandalart.isEmpty())
-            member.authorizeUser();
+            member.setRole(Role.USER);
+//            member.authorizeUser();
     }
 }
