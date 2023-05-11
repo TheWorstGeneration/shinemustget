@@ -1,10 +1,10 @@
 import { MANDALART_SEARCH_DETAIL } from "@/constants/queryKey";
-import axios from "axios";
+import { customAxios } from "@/utils/axios";
 
 interface podoId { id: number }
 
 const searchDetail = async (props:number) => {
-  const data = await axios.post<podoId>(MANDALART_SEARCH_DETAIL+`${props}`, {}).then(res => res.data);
+  const data = await customAxios.post<podoId>(MANDALART_SEARCH_DETAIL+`${props}`, {}).then(res => res.data);
   
   return data;
 }

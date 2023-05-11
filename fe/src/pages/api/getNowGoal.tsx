@@ -1,6 +1,5 @@
 import { MANDALART_READ_NOW_GOAL } from '@/constants/queryKey';
-import axios from 'axios';
-
+import { customAxios } from '@/utils/axios';
 interface Goal {
   content: string;
   isClear: boolean;
@@ -13,7 +12,7 @@ interface ProgressProp {
 }
 
 const getNowGoal = async () => {
-  const data = await axios
+  const data = await customAxios
     .get<ProgressProp>(MANDALART_READ_NOW_GOAL)
     .then(res => res.data);
 

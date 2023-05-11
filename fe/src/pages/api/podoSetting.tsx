@@ -1,10 +1,10 @@
-import axios from "axios";
 import { PODO_CREATE } from "@/constants/queryKey";
+import { customAxios } from "@/utils/axios";
 
 interface podoId { id: number }
 
 const podoSetting = async (props:number) => {
-  const data = await axios.post<podoId>(PODO_CREATE+`${props}`, {}).then(res => res.data);
+  const data = await customAxios.post<podoId>(PODO_CREATE+`${props}`, {}).then(res => res.data);
 
   console.log("data", data);
 

@@ -1,5 +1,5 @@
 import { PODO_WRITE } from "@/constants/queryKey";
-import axios from "axios";
+import { customAxios } from "@/utils/axios";
 
 interface podoCreate { 
   id: number,
@@ -8,7 +8,7 @@ interface podoCreate {
 }
 
 const podoWrite = async ( props:podoCreate) => {
-  const data =  await axios.post<podoCreate>(PODO_WRITE, {
+  const data =  await customAxios.post<podoCreate>(PODO_WRITE, {
       id: props.id,
       imageUrl: props.imageUrl,
       oneline:props.oneline,
