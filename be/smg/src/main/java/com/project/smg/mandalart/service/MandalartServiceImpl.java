@@ -9,6 +9,7 @@ import com.project.smg.mandalart.repository.TitleRepository;
 import com.project.smg.member.dto.SearchBigDto;
 import com.project.smg.member.dto.SearchDto;
 import com.project.smg.member.entity.Member;
+import com.project.smg.member.entity.Role;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.repository.PodoRepository;
@@ -156,7 +157,8 @@ public class MandalartServiceImpl implements MandalartService {
         }
         Member newMember = member
                 .orElse(null);
-        newMember.authorizeUser();
+//        newMember.authorizeUser();
+        newMember.setRole(Role.USER);
         titleRepository.save(title);
     }
 

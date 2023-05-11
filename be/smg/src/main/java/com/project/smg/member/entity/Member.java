@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Builder
@@ -43,11 +44,11 @@ public class Member {
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private RefreshToken refreshToken;
 
-    public void authorizeUser() {
-        this.role = Role.USER;
-    }
-
-    public void updateImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+//    public void authorizeUser() {
+//        this.role = Role.USER;
+//    }
+//
+//    public void updateImageUrl(String imageUrl) {
+//        this.imageUrl = imageUrl;
+//    }
 }
