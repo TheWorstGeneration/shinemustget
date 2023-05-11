@@ -36,7 +36,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final String[] NO_CHECK_URLS = {"/swagger-ui", "/login", "/actuator", "/ws"};
+    private static final String[] NO_CHECK_URLS = {"/swagger-ui", "/login", "/actuator"};
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -51,6 +51,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         for (int i = 0; i < NO_CHECK_URLS.length; i++) {
             if (request.getRequestURI().startsWith(NO_CHECK_URLS[i])) {
                 filterChain.doFilter(request, response); // "/login" 요청이 들어오면, 다음 필터 호출
+                log.info("필터 제외 url");
                 return;
             }
         }
