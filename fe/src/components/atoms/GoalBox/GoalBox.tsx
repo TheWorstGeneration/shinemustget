@@ -195,7 +195,8 @@ export const GoalBox = ({
 
   const handleChangeSmallGoal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const smallGoal = e.target.value;
-    dispatch(setSmallGoal({ i, j: location, smallGoal }));
+    const bigLocation = i ? i - 1 : 0;
+    dispatch(setSmallGoal({ i: bigLocation, j: location - 1, smallGoal }));
     setInput(smallGoal);
   };
 
@@ -212,8 +213,8 @@ export const GoalBox = ({
   ) : (
     <Box
       href={`/detail/${id}`}
-          isClear={isClear ? isClear : false}
-          onClick={() => dispatch(setPodo({content:content,isPodo:isPodo}))}
+      isClear={isClear ? isClear : false}
+      onClick={() => dispatch(setPodo({ content: content, isPodo: isPodo }))}
     >
       {isPodo ? (
         <Badge>
