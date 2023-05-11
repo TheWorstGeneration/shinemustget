@@ -87,6 +87,7 @@ const TextFieldBox = styled.textarea<{ isClear: boolean }>`
 
   color: #888888;
   background-color: #f5f5f5;
+  border-radius: 0;
   border: 1px solid #888888;
 
   &:hover {

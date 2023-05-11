@@ -22,7 +22,7 @@ const StyledButton = styled.button`
   justify-content: center;
 
   position: absolute;
-  top: 95vh;
+  top: 100vh;
   left: 50vw;
   transform: translate(-50%, -50%);
 
