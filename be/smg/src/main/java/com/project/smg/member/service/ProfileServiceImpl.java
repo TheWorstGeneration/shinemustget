@@ -85,7 +85,7 @@ public class ProfileServiceImpl implements ProfileService {
         Title title = getTitle(memberId);
 
         if (title == null)
-            return null;
+            return Collections.emptyList();
 
         List<BigGoal> bigGoalList = getBigGoalList(title);
         List<SmallGoal> smallGoalList = getSmallGoalList(bigGoalList);

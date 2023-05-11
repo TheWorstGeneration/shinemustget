@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 import searchDetail from '../api/searchDetail';
 import { GoalBoxContainer } from '@/components/molecules/GoalBoxContainer/GoalBoxContainer';

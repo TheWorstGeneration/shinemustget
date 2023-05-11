@@ -33,9 +33,22 @@ const CenterBox = styled.div<{ isClear: boolean; isCenter: number }>`
   width: 70px;
   height: 70px;
 
-  background-color: ${({ isCenter }) =>
-    isCenter === 2 ? '#fbcdcd' : '#dffbe5'};
-  color: ${({ isCenter }) => (isCenter === 2 ? '#ff0909' : '#01c027')};
+  background-color: ${({ isCenter, isClear }) =>
+    isCenter === 2
+      ? isClear
+        ? '#AD0000'
+        : '#FEFBFB'
+      : isClear
+      ? '#006616'
+      : '#FBFEFC'};
+  color: ${({ isCenter, isClear }) =>
+    isCenter === 2
+      ? isClear
+        ? '#FEFBFB'
+        : '#AD0000'
+      : isClear
+      ? '#FBFEFC'
+      : '#006616'};
   border: 1px solid #888888;
 
   white-space: wrap;
@@ -63,7 +76,7 @@ const CenterBox = styled.div<{ isClear: boolean; isCenter: number }>`
   }
 `;
 
-const TextFieldBox = styled.textarea<{ isClear: boolean }>`
+const TextFieldBox = styled.textarea`
   position: relative;
 
   display: flex;
@@ -77,16 +90,15 @@ const TextFieldBox = styled.textarea<{ isClear: boolean }>`
   width: 70px;
   height: 70px;
 
-  // 여러줄 입력 가능하며 스크롤 가능
   white-space: wrap;
   overflow: scroll;
 
-  //textarea 수직 중앙
   line-height: 1.5;
   padding-top: 0.5rem;
 
-  color: #888888;
+  color: #333333;
   background-color: #f5f5f5;
+  border-radius: 0;
   border: 1px solid #888888;
 
   &:hover {
@@ -131,8 +143,8 @@ const Box = styled(Link)<{ isClear: boolean }>`
   width: 70px;
   height: 70px;
 
-  color: #888888;
-  background-color: #f5f5f5;
+  color: ${({ isClear }) => (isClear ? '#333333' : '#545700')};
+  background-color: ${({ isClear }) => (isClear ? '#f5f5f5' : '#EFFFAD')};
   border: 1px solid #888888;
 
   &:hover {
@@ -195,25 +207,24 @@ export const GoalBox = ({
 
   const handleChangeSmallGoal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const smallGoal = e.target.value;
-    dispatch(setSmallGoal({ i, j: location, smallGoal }));
+    const bigLocation = i ? i - 1 : 0;
+    dispatch(setSmallGoal({ i: bigLocation, j: location - 1, smallGoal }));
     setInput(smallGoal);
   };
+
+  console.log(content, isClear);
 
   return isCenter ? (
     <CenterBox isClear={isClear ? isClear : false} isCenter={isCenter}>
       {content}
     </CenterBox>
   ) : isCreate ? (
-    <TextFieldBox
-      isClear={isClear ? isClear : false}
-      value={input}
-      onChange={handleChangeSmallGoal}
-    />
+    <TextFieldBox value={input} onChange={handleChangeSmallGoal} />
   ) : (
     <Box
       href={`/detail/${id}`}
-          isClear={isClear ? isClear : false}
-          onClick={() => dispatch(setPodo({content:content,isPodo:isPodo}))}
+      isClear={isClear ? isClear : false}
+      onClick={() => dispatch(setPodo({ content: content, isPodo: isPodo }))}
     >
       {isPodo ? (
         <Badge>
@@ -222,9 +233,7 @@ export const GoalBox = ({
             color={isToday ? '#01c027' : '#ff0909'}
           />
         </Badge>
-      ) : (
-        <></>
-      )}
+      ) : null}
       {content}
     </Box>
   );

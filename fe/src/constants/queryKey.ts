@@ -30,7 +30,7 @@ export const MANDALART_DELETE = `${BASE_URL}/profile/delete`;
 export const MANDALART_CLEAR = `${BASE_URL}/mandalart/clear`;
 
 // 포도알 설정
-export const PODO_CREATE = `${BASE_URL}/podo/setting`;
+export const PODO_CREATE = `${BASE_URL}/podo/setting/`;
 // 포도알 작성
 export const PODO_WRITE = `${BASE_URL}/podo/write`;
 // 포도송이 조회

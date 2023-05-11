@@ -1,5 +1,4 @@
-export interface sticker{ 
-  id: number,
-  imageUrl:string,
+export interface sticker {
+  id: number;
+  imageUrl: string;
 }
-
