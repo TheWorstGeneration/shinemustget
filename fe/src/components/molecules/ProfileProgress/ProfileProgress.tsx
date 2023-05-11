@@ -60,10 +60,10 @@ export const ProfileProgress = () => {
     },
   ).data;
 
-  const title: string = progressProps
+  const title: string = progressProps?.title
     ? progressProps.title
     : '현재 진행중인 만다라트가 없습니다.';
-  const rate: number = progressProps ? progressProps.rate : 0;
+  const rate: number = progressProps?.rate ? progressProps.rate : 0;
   const goalList: Goal[] = progressProps
     ? progressProps.nowBigGoalDtoList
     : [{ content: '현재 진행중인 만다라트가 없습니다.', isClear: false }];
@@ -72,7 +72,7 @@ export const ProfileProgress = () => {
     <ProfileProgressContainer>
       <Progress>
         <Title>{title}</Title>
-        {goalList.map(Goal => (
+        {goalList?.map(Goal => (
           <BigGoals key={Goal.content} isClear={Goal.isClear}>
             {Goal.content}
           </BigGoals>

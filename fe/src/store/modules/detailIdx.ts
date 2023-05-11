@@ -12,7 +12,7 @@ export interface idxSlice {
 const initialState = {
   index: 0,
   isPodo: false,
-  content:null,
+  content: null,
 };
 
 const detailSlice = createSlice({
@@ -20,19 +20,18 @@ const detailSlice = createSlice({
   initialState,
   reducers: {
     // 액션 생성함수
-    setIdx: (state, action) => { 
+    setIdx: (state, action) => {
       state.index = action.payload;
     },
     setPodo: (state, action) => {
       state.isPodo = action.payload.isPodo;
       state.content = action.payload.content;
-
-    }
+    },
   },
 });
 
 // 액션 생성함수
-export const { setIdx,setPodo } = detailSlice.actions;
+export const { setIdx, setPodo } = detailSlice.actions;
 export const selectIdx = (state: RootState) => state.detailIdx;
 // 리듀서
 export default detailSlice.reducer;

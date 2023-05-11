@@ -6,14 +6,11 @@ const meta: Meta<typeof Logo> = {
   title: 'Atoms/Logo',
   component: Logo,
   tags: ['autodocs'],
-  argTypes: {
-
-  },
+  argTypes: {},
 };
 
 export default meta;
 type Story = StoryObj<typeof Logo>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Primary: Story = { 
-};
+export const Primary: Story = {};

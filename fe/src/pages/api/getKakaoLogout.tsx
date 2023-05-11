@@ -1,8 +1,8 @@
 import { KAKAO_LOGOUT } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 const getKakaoLogout = async () => {
-  await axios.get(KAKAO_LOGOUT);
+  await customAxios.get(KAKAO_LOGOUT);
 };
 
 export default getKakaoLogout;

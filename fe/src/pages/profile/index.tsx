@@ -37,11 +37,6 @@ const ProfileSection = styled.section<{ isMaxWidth: boolean }>`
 export const Profile = (props: any) => {
   const isMaxWidth = useInnerWidth() >= 1440;
 
-  const progressProps = useQuery('nowGoal', getNowGoal, {
-    staleTime: 5000,
-    cacheTime: 20000,
-  }).data;
-
   return (
     <>
       <Head>
