@@ -19,5 +19,7 @@ public interface PodoService {
 
     PodoDetailDto detailPodo(String mid, int id);
 
-    Boolean podoSettingRead(String mid, int id);
+    boolean podoSettingRead(String mid, int id);
+
+    boolean isSpecialClear(String mid, int id);
 }

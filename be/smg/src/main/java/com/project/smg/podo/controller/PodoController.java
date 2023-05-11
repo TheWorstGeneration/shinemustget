@@ -92,4 +92,9 @@ public class PodoController {
             return new ResponseEntity<>(stickerList, HttpStatus.OK);
         }else return new ResponseEntity<>(new ResponseDto(500, "반환 실패"), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/testSpecial/{id}")
+    public ResponseEntity<?> testSpecial(@RequestAttribute("id") String mid, @PathVariable("id") int id) {
+        return new ResponseEntity<>(podoService.isSpecialClear(mid, id), HttpStatus.OK);
+    }
 }

@@ -14,5 +14,9 @@ import java.util.Optional;
 public interface PodoRepository extends JpaRepository<Podo, Integer> {
     @Query("select p from Podo p where p.smallGoal.id =:smallGoalId")
     List<Podo> findBySmallGoalId(@Param("smallGoalId") int id);
+
+    @Query("select p from Podo p where p.smallGoal.id =:smallGoalId ORDER BY p.createdAt DESC")
+    List<Podo> findBySmallGoalIdDesc(@Param("smallGoalId") int id);
     Optional<Podo> findTop1BySmallGoalOrderByIdDesc(SmallGoal smallGoal);
+
 }
