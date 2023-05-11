@@ -84,6 +84,8 @@ spring:
             user-name-attribute: id
   elasticsearch:
     uris: k8b109.p.ssafy.io:9200
+    username: elastic
+    password: changeme
 
 
 

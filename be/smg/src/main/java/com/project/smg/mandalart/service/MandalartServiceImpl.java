@@ -2,10 +2,7 @@ package com.project.smg.mandalart.service;
 
 import com.project.smg.mandalart.dto.*;
 import com.project.smg.mandalart.entity.*;
-import com.project.smg.mandalart.repository.GptBigGoalRepository;
-import com.project.smg.mandalart.repository.GptTitleRepository;
-import com.project.smg.mandalart.repository.SmallGoalRepository;
-import com.project.smg.mandalart.repository.TitleRepository;
+import com.project.smg.mandalart.repository.*;
 import com.project.smg.member.dto.SearchBigDto;
 import com.project.smg.member.dto.SearchDto;
 import com.project.smg.member.entity.Member;
@@ -46,6 +43,7 @@ public class MandalartServiceImpl implements MandalartService {
     private final PodoRepository podoRepository;
     private final MandalartLikeService mandalartLikeService;
     private final SmallGoalRepository smallGoalRepository;
+    private final SearchRepository searchRepository;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     /** Gpt 요청 */
@@ -192,20 +190,20 @@ public class MandalartServiceImpl implements MandalartService {
     @Override
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
-        Page<Title> pageContent = titleRepository.findByContentAndClearAtIsNotNullOrderByLikeCntDesc(word, page);
+        Page<SearchDocument> pageEls = searchRepository.findAllByTitleOrderByLikeCntDesc(word, page);
         List<SearchDto> searchList = new ArrayList<>();
-        if(pageContent.isEmpty()) return searchList;
+        if(pageEls.isEmpty()) return searchList;
 
-        List<Title> content = pageContent.getContent();
+        List<SearchDocument> content = pageEls.getContent();
 
         searchList = content.stream()
                 .map(title -> SearchDto.builder()
                         .id(title.getId())
-                        .title(title.getContent())
+                        .title(title.getTitle())
                         .isLike(mandalartLikeService.isMandalartLike(mid, title.getId()))
                         .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
                         .bigList(
-                                title.getBigGoals().stream().map(bigGoal ->
+                                title.getBigList().stream().map(bigGoal ->
                                         SearchBigDto.builder()
                                                 .content(bigGoal.getContent())
                                                 .location(bigGoal.getLocation())
@@ -217,6 +215,8 @@ public class MandalartServiceImpl implements MandalartService {
         return searchList;
     }
 
+
+    /** 만다라트 상세 조회 */
     @Override
     public SearchDetailResponseDto getSearchDetail(String mid, int id) {
         SearchDetailResponseDto SearchDetailResponse = null;
@@ -261,6 +261,24 @@ public class MandalartServiceImpl implements MandalartService {
             smallGoal.setClearAt(LocalDateTime.now());
             smallGoalRepository.save(smallGoal);
         }
+    }
+
+    /** 완료된 만다라트 ElasticSearch에 저장 */
+    public void saveClearTitle(Title title) {
+        SearchDocument search = SearchDocument.builder()
+                .id(title.getId())
+                .title(title.getContent())
+                .bigList(
+                        title.getBigGoals().stream()
+                                .map(bigGoal -> new SearchBigDocument().builder()
+                                        .id(bigGoal.getId())
+                                        .content(bigGoal.getContent())
+                                        .location(bigGoal.getLocation())
+                                        .build()).collect(Collectors.toList())
+                )
+                .likeCnt(title.getLikeCnt())
+                .build();
+        searchRepository.save(search);
     }
 
     /** Gpt에 저장된 세부목표 불러오기 */
