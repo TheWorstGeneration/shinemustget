@@ -44,7 +44,7 @@ public class ProfileController {
     @GetMapping("/readClearGoal")
     public ResponseEntity<?> clearGoal(@RequestAttribute("id") String memberId) {
         List<ClearDto> clearDtoList = profileService.ClearList(memberId);
-        if (!clearDtoList.isEmpty() || clearDtoList != null) {
+        if (!clearDtoList.isEmpty()) {
             log.info("완료 목록 조회 성공");
             return new ResponseEntity<>(clearDtoList, HttpStatus.OK);
         }
