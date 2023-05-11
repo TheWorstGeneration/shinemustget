@@ -155,10 +155,12 @@ public class MandalartServiceImpl implements MandalartService {
                 smallGoal.addBigGoal(bigGoal);
             }
         }
+
         Member newMember = member
                 .orElse(null);
-//        newMember.authorizeUser();
-        newMember.setRole(Role.USER);
+        newMember.authorizeUser();
+        memberRepository.save(newMember);
+
         titleRepository.save(title);
     }
 
