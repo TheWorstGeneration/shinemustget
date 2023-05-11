@@ -3,7 +3,6 @@ package com.project.smg.podo.service;
 
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
-import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
@@ -12,16 +11,15 @@ import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.entity.PodoType;
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -74,8 +72,9 @@ public class PodoServiceImpl implements PodoService {
         PodoDetailDto podoDetailDto = new PodoDetailDto(findPodo.getId(), findPodo.getOneline(), createdDate);
         return podoDetailDto;
     }
-    // TODO isWriteToday - 포도알 하루에 한 번만 작성 되어야 함
-    // TODO is30daysClear - special podo 여부
+    // TODO isWriteToday - 포도알 하루에 한 번만 작성 되어야 함 -> 일단 special 부터
+    // TODO is30daysClear - special podo 여부 : true 면 알림호출
+    // TODO is30daysClear - special podo 지속여부 - > 로그인 성공할때마다 확인
     /** 포도알 작성하기 */
     @Override
     public void create(String mid, PodoCreateDto podoCreateDto) {
@@ -88,8 +87,7 @@ public class PodoServiceImpl implements PodoService {
 
 
         // MemberPodo 조회
-        Optional<MemberPodo> memberPodo = memberPodoRepository.findByName(podoType.getId(), mid);
-        MemberPodo findMemberPodo = memberPodo.orElseThrow(() -> new IllegalStateException("멤버 포도가 존재하지 않습니다."));
+        MemberPodo findMemberPodo = checkMemberPodo(mid, podoType);
 
         // podo 생성 및 DB 저장
         Podo podo = Podo.builder()
@@ -102,7 +100,36 @@ public class PodoServiceImpl implements PodoService {
     }
 
 
+    /** 스페셜 포도 여부
+     * 스페셜 포도를 소유하고 있지 않다면 (memberpodo 의 podoType 4로 확인)
+     * smallgoal_id 랑 memberId 가 같고 created_at 이 오늘?어제? 까지 연속 26일때
+     * 스페셜 포도 부여 (memberpodo podotype 4~6 까지 1로 변경)
+     * + 포도 회수 기간 줄지 말지 고민
+     * */
+    public boolean isSpecialClear(String mid, int id){
+//        boolean is30daysClear = false;  staus 로 구분해야함
+        boolean isSpecial = memberPodoRepository.isfindByPodoTypeId(4, mid);
+        if (!isSpecial){
+            // 현재 날짜 받아서 date 25일 전이 뺀거랑 같으면 true
+            LocalDate nowminus25days = LocalDateTime.now().minusDays(25).toLocalDate();
+            log.info("nowminus25days= {}",nowminus25days);
+            List<Podo> bySmallGoalId = podoRepository.findBySmallGoalIdDesc(id);
+            if (bySmallGoalId.size() >=26 ){
+                LocalDate createdAt = bySmallGoalId.get(25).getCreatedAt().toLocalDate();
+                log.info("createdAt= {}",createdAt);
+                if (nowminus25days.equals(createdAt)){
+                    log.info("스페셜 포도 축하합니다 ^^ !! ");
+                }
+            }
+        }
+        return isSpecial;
+    }
 
+    // podoType id 로 memberpodo 찾기
+    private MemberPodo checkMemberPodo(String mid, PodoType podoType) {
+        MemberPodo memberPodo = memberPodoRepository.findByName(podoType.getId(), mid).orElseThrow(() -> new IllegalStateException("멤버 포도가 존재하지 않습니다."));
+        return memberPodo;
+    }
     /** 회원 스티커 종류
      * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
@@ -138,21 +165,12 @@ public class PodoServiceImpl implements PodoService {
     }
     /** 포도알 설정 조회*/
     @Override
-    public Boolean podoSettingRead(String mid, int id) {
+    public boolean podoSettingRead(String mid, int id) {
         SmallGoal findSmallGoal = checkSmallGoal(id);
         return findSmallGoal.isSticker();
     }
 
-    /** 스페셜 포도 여부
-     * 스페셜 포도를 소유하고 있지 않다면 (memberpodo 의 podoType 4로 확인)
-     * smallgoal_id 랑 memberId 가 같고 created_at 이 오늘?어제? 까지 연속 26일때
-     * 스페셜 포도 부여 (memberpodo podotype 4~6 까지 1로 변경)
-     * */
-    public boolean specialClear(){
-        boolean is30daysClear = false;
 
-        return is30daysClear;
-    }
 
     private SmallGoal checkSmallGoal(int id){
         SmallGoal smallGoal = smallGoalRepository.findById(id).orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));

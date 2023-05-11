@@ -14,4 +14,10 @@ public interface MemberPodoRepository extends JpaRepository<MemberPodo, Integer>
     List<MemberPodo> findByPodoTypeId(@Param("memberId") String id);
     @Query("select mp from MemberPodo mp where mp.podoType.id =:ptid and mp.member.id=:mid")
     Optional<MemberPodo> findByName(@Param("ptid")int ptid, @Param("mid")String mid);
+
+    @Query("select count(mp) > 0 from MemberPodo mp where mp.podoType.id =:ptid and mp.member.id=:mid and mp.status =true")
+    boolean isfindByPodoTypeId(@Param("ptid") int ptid, @Param("mid")String mid);
+
+
+
 }
