@@ -192,6 +192,7 @@ public class MandalartServiceImpl implements MandalartService {
     @Override
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
+//        Page<SearchDocument> pageEls = searchRepository.findByTitle(word, page);
         Page<SearchDocument> pageEls = searchRepository.findAllByTitleOrderByLikeCntDesc(word, page);
         List<SearchDto> searchList = new ArrayList<>();
         if(pageEls.isEmpty()) return searchList;
@@ -264,7 +265,7 @@ public class MandalartServiceImpl implements MandalartService {
         if(byId.isPresent()){
             SmallGoal smallGoal = byId.get();
             smallGoal.setClearAt(LocalDateTime.now());
-            if(isFinishBigGoal(smallGoal) && title.isPresent()){
+            if(smallGoal.isSticker() && isFinishBigGoal(smallGoal) && title.isPresent()){
                 checkFinishTitle(title.get());
             }
             smallGoalRepository.save(smallGoal);
