@@ -161,6 +161,7 @@ public class MandalartServiceImpl implements MandalartService {
         memberRepository.save(newMember);
 
         titleRepository.save(title);
+        saveClearTitle(title);
     }
 
     /** 만다라트 조회 */
@@ -286,7 +287,11 @@ public class MandalartServiceImpl implements MandalartService {
                 }
             }
         }
-        if(check) title.setClearAt(LocalDateTime.now());
+        if(check) {
+            title.setClearAt(LocalDateTime.now());
+            titleRepository.save(title);
+            saveClearTitle(title);
+        }
     }
 
     /** 세부목표 완료시 빅골 완료되는지 체크 */
