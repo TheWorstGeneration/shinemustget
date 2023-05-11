@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 export interface GoalBoxContainerProps {
   location: number;
   content: string;
-  isClear: boolean | undefined;
+  isClear: boolean;
   smallList: GoalBoxProps[];
   isCenter: number | undefined;
 }
