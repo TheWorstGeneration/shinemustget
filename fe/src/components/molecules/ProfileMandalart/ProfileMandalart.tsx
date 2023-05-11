@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { BigGoalMandalart } from '../BigGoalMandalart/BigGoalMandalart';
-import { useEffect, useState } from 'react';
-import getClearMandalart from '@/pages/api/getClearMandalart';
 import { useQuery } from 'react-query';
+import getClearMandalart from '@/pages/api/getClearMandalart';
 
 const ProfileMandalartContainer = styled.div`
   width: 50%;

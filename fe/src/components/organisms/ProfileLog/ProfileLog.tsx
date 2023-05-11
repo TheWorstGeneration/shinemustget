@@ -1,8 +1,6 @@
 import { ProfileCompleted } from '@/components/molecules/ProfileCompleted/ProfileCompleted';
 import { ProfileMandalart } from '@/components/molecules/ProfileMandalart/ProfileMandalart';
-import getNowGoal from '@/pages/api/getNowGoal';
 import styled from '@emotion/styled';
-import { useQuery } from 'react-query';
 
 const ProfileLogContainer = styled.div`
   display: flex;

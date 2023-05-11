@@ -1,5 +1,5 @@
 import { MANDALART_READ_CLEAR_MANDALART } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 interface ClearMandalart {
   id: number;
@@ -19,7 +19,7 @@ interface SearchBigDto {
 }
 
 const getClearMandalart = async () => {
-  const data = await axios
+  const data = await customAxios
     .get<ClearMandalart[]>(MANDALART_READ_CLEAR_MANDALART)
     .then(res => res.data);
 
