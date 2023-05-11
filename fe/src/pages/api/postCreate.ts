@@ -1,5 +1,5 @@
 import { MANDALART_CREATE } from '@/constants/queryKey';
-import axios from 'axios';
+import { customAxios } from '@/utils/axios';
 
 interface smallRequestDto {
   content: string;
@@ -18,12 +18,16 @@ interface PostCreateProps {
 }
 
 export const postCreate = async ({ title, bigRequestDto }: PostCreateProps) => {
-  const data = await axios
+  const data = await customAxios
     .post(MANDALART_CREATE, {
       title,
       bigRequestDto,
     })
-    .then(res => res.data);
+    .then(res => res.data)
+    .catch(err => {
+      alert('저희의 ChatGPT 사용요금이 예상 범위를 뛰어 넘어 버렸습니다. 😭');
+      console.log(err);
+    });
 
   return data;
 };
