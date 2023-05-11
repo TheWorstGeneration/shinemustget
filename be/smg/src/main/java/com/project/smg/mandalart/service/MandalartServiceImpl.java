@@ -265,9 +265,7 @@ public class MandalartServiceImpl implements MandalartService {
         if(byId.isPresent()){
             SmallGoal smallGoal = byId.get();
             smallGoal.setClearAt(LocalDateTime.now());
-            if(smallGoal.isSticker() && isFinishBigGoal(smallGoal) && title.isPresent()){
-                checkFinishTitle(title.get());
-            }
+            if(isFinishBigGoal(smallGoal) && title.isPresent()) checkFinishTitle(title.get());
             smallGoalRepository.save(smallGoal);
         }
     }
@@ -280,8 +278,8 @@ public class MandalartServiceImpl implements MandalartService {
             // 아직 완료하지 못한것 중에
             if(bigGoal.getClearAt() == null){
                 for(SmallGoal smallGoal : bigGoal.getSmallGoals()){
-                    // 스티커인데 완료 못했으면 빅골 완료 x
-                    if(smallGoal.isSticker() && smallGoal.getClearAt() == null){
+                    // 완료 못했으면 빅골 완료 x
+                    if(smallGoal.getClearAt() == null){
                         check = false;
                         return;
                     }
@@ -303,7 +301,7 @@ public class MandalartServiceImpl implements MandalartService {
         if(byId.isPresent()){
             BigGoal bigGoal = byId.get();
             for(SmallGoal goal : bigGoal.getSmallGoals()){
-                if(goal.isSticker() && goal.getClearAt() == null) check = false;
+                if(goal.getClearAt() == null) check = false;
             }
             if(check){
                 bigGoal.setClearAt(LocalDateTime.now());
