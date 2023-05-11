@@ -44,6 +44,7 @@ public class MandalartServiceImpl implements MandalartService {
     private final MandalartLikeService mandalartLikeService;
     private final SmallGoalRepository smallGoalRepository;
     private final SearchRepository searchRepository;
+    private final BigGoalRepository bigGoalRepository;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     /** Gpt 요청 */
@@ -160,6 +161,7 @@ public class MandalartServiceImpl implements MandalartService {
         memberRepository.save(newMember);
 
         titleRepository.save(title);
+        saveClearTitle(title);
     }
 
     /** 만다라트 조회 */
@@ -190,6 +192,7 @@ public class MandalartServiceImpl implements MandalartService {
     @Override
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
+//        Page<SearchDocument> pageEls = searchRepository.findByTitle(word, page);
         Page<SearchDocument> pageEls = searchRepository.findAllByTitleOrderByLikeCntDesc(word, page);
         List<SearchDto> searchList = new ArrayList<>();
         if(pageEls.isEmpty()) return searchList;
@@ -253,14 +256,58 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
     /** 세부목표 완료 */
+    @Transactional
     @Override
-    public void clearGoal(int id) {
+    public void clearGoal(String mid, int id) {
+        Optional<Title> title = titleRepository.findTopByMemberIdAndClearAtIsNullOrderByCreatedAtDesc(mid);
         Optional<SmallGoal> byId = smallGoalRepository.findById(id);
+        System.out.println("test");
         if(byId.isPresent()){
             SmallGoal smallGoal = byId.get();
             smallGoal.setClearAt(LocalDateTime.now());
+            if(isFinishBigGoal(smallGoal) && title.isPresent()) checkFinishTitle(title.get());
             smallGoalRepository.save(smallGoal);
         }
+    }
+
+    /** 빅골 완료시 타이틀 완료되는지 체크 */
+    @Transactional
+    public void checkFinishTitle(Title title){
+        boolean check = true;
+        for(BigGoal bigGoal : title.getBigGoals()){
+            // 아직 완료하지 못한것 중에
+            if(bigGoal.getClearAt() == null){
+                for(SmallGoal smallGoal : bigGoal.getSmallGoals()){
+                    // 완료 못했으면 빅골 완료 x
+                    if(smallGoal.getClearAt() == null){
+                        check = false;
+                        return;
+                    }
+                }
+            }
+        }
+        if(check) {
+            title.setClearAt(LocalDateTime.now());
+            titleRepository.save(title);
+            saveClearTitle(title);
+        }
+    }
+
+    /** 세부목표 완료시 빅골 완료되는지 체크 */
+    @Transactional
+    public boolean isFinishBigGoal(SmallGoal smallGoal){
+        boolean check = true;
+        Optional<BigGoal> byId = bigGoalRepository.findById(smallGoal.getBigGoal().getId());
+        if(byId.isPresent()){
+            BigGoal bigGoal = byId.get();
+            for(SmallGoal goal : bigGoal.getSmallGoals()){
+                if(goal.getClearAt() == null) check = false;
+            }
+            if(check){
+                bigGoal.setClearAt(LocalDateTime.now());
+            }
+        }
+        return check;
     }
 
     /** 완료된 만다라트 ElasticSearch에 저장 */

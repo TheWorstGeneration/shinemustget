@@ -18,6 +18,5 @@ public class WebSocketController {
     public void handleLikeRequest(WebSocketSession session, @PathVariable("id") int id) {
         String memberId = (String) session.getAttributes().get("memberId");
         alarmService.saveAlarm(memberId, id);
-        alarmService.sendLikeNotification(memberId);
     }
 }

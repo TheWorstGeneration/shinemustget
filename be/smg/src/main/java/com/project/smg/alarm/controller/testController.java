@@ -16,13 +16,8 @@ import java.util.HashMap;
 public class testController {
     private final AlarmService alarmService;
 
-    @PostMapping("/test")
+    @PostMapping("/test/{id}")
     public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @PathVariable("id") int id) {
         return new ResponseEntity<>(alarmService.saveAlarm(memberId, id), HttpStatus.OK);
-    }
-
-    @GetMapping ("/getTest")
-    public ResponseEntity<?> testget(@RequestAttribute("id") String memberId) {
-        return new ResponseEntity<>(alarmService.alarmDtoList(memberId), HttpStatus.OK);
     }
 }

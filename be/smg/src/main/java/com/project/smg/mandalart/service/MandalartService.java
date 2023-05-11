@@ -23,6 +23,6 @@ public interface MandalartService {
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo);
 
     public SearchDetailResponseDto getSearchDetail(String mid, int id);
-    public void clearGoal(int id);
+    public void clearGoal(String mid, int id);
 
 }

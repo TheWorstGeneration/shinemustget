@@ -4,7 +4,7 @@ import axios from "axios";
 interface podoId { id: number }
 
 const searchDetail = async (props:number) => {
-  const data = await axios.post<podoId>(MANDALART_SEARCH_DETAIL+`${props}`, {}).then(res => res.data);
+  const data = await axios.get<podoId>(MANDALART_SEARCH_DETAIL + `${props}`).then(res => res.data);
   
   return data;
 }

@@ -6,9 +6,7 @@ const meta: Meta<typeof VideoSection> = {
   title: 'Organisms/sections/VideoSection',
   component: VideoSection,
   tags: ['autodocs'],
-  argTypes: {
-    
-  },
+  argTypes: {},
 };
 
 export default meta;
@@ -16,6 +14,5 @@ type Story = StoryObj<typeof VideoSection>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Primary: Story = {
-  args: {
-  },
+  args: {},
 };

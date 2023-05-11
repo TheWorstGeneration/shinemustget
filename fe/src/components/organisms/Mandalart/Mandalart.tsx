@@ -66,6 +66,9 @@ export const Mandalart = () => {
   const { data } = useQuery(MANDALART_READ_MAIN, getReadMain);
   const mandalart = useMandalart();
 
+  console.log('data', data);
+  console.log('mandalart', mandalart);
+
   const { title, bigList }: MandalartData =
     pathname === '/home' ? (data ? data : mandalart) : mandalart;
 
@@ -90,7 +93,11 @@ export const Mandalart = () => {
   const center = {
     location: 0,
     content: title,
-    isClear: false,
+    isClear: data?.isClear
+      ? pathname === '/home'
+        ? data.isClear
+        : false
+      : false,
     smallList: centerSmallList,
     isCenter: 2,
   };

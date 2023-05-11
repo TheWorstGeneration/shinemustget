@@ -56,6 +56,5 @@ export const Primary: Story = {
     content: 'Content',
     isPodo: false,
     isClear: false,
-
   },
 };

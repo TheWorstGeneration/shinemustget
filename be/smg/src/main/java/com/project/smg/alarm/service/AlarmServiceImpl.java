@@ -15,8 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 public class AlarmServiceImpl implements AlarmService {
     private final RedisAlarmRepository redisAlarmRepository;
     private final TitleRepository titleRepository;
-    private final CustomWebSocketHandler customWebSocketHandler;
 
     @Override
     public AlarmDto saveAlarm(String memberId, int id) {
@@ -46,24 +44,25 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public List<SendAlarmDto> alarmDtoList(String memberId) {
-        return redisAlarmRepository.getRecentAlarmsWithCursor(memberId, 10)
-                .stream()
-                .map(alarmDto -> new SendAlarmDto(alarmDto.getMessage(), alarmDto.getCreatedAt()))
-                .collect(Collectors.toList());
-    }
+    public Map<String, Object> alarmDtoList(String memberId, double lastSocre) {
+        log.info("메세지 목록 가져오기");
+        Map<String, Object> map = redisAlarmRepository.getLatestAlarms(memberId, lastSocre);
+        List<AlarmDto> alarmDtoList = (List<AlarmDto>) map.get("alarms");
 
-    @Override
-    public void sendLikeNotification(String memberId) {
-        List<WebSocketSession> sessions = customWebSocketHandler.getUserSessions(memberId);
-        if (sessions != null && !sessions.isEmpty()) {
-            for (WebSocketSession session : sessions) {
-                try {
-                    session.sendMessage(new TextMessage("다른 사용자가 만다라트에 좋아요 표시를 했습니다."));
-                } catch (IOException e) {
-                    log.error("Failed to send like notification to session: {}", session.getId(), e);
-                }
-            }
-        }
+        List<SendAlarmDto> sendAlarmDtoList = alarmDtoList.stream()
+                .map(dto -> new SendAlarmDto(dto.getMessage(), dto.getCreatedAt()))
+                .collect(Collectors.toList());
+
+        double nextSocre = (double) map.get("lastScore");
+
+        log.info("메세지 조회 {}", sendAlarmDtoList.size());
+        log.info("nextSocre {}", nextSocre);
+
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("sendAlarmDtoList", sendAlarmDtoList);
+        result.put("nextSocre", nextSocre);
+
+        return result;
     }
 }

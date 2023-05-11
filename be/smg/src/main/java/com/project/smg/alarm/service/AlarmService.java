@@ -5,9 +5,9 @@ import com.project.smg.alarm.dto.SendAlarmDto;
 import com.project.smg.mandalart.entity.Title;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AlarmService {
     AlarmDto saveAlarm(String memberId, int id);
-    List<SendAlarmDto> alarmDtoList(String memberId);
-    void sendLikeNotification(String memberId);
+    Map<String, Object> alarmDtoList(String memberId, double lastSocre);
 }
