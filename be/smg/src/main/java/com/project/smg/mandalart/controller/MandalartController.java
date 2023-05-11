@@ -1,6 +1,5 @@
 package com.project.smg.mandalart.controller;
 
-import com.project.smg.common.ResponseDto;
 import com.project.smg.mandalart.dto.MandalartRequestDto;
 import com.project.smg.mandalart.dto.SearchDetailResponseDto;
 import com.project.smg.mandalart.dto.SmallGoalRequestDto;
@@ -10,7 +9,6 @@ import com.project.smg.member.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -81,5 +79,4 @@ public class MandalartController {
         mandalartService.clearGoal(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
 }
