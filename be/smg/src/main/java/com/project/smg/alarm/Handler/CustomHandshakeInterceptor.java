@@ -14,14 +14,14 @@ import java.util.Map;
 public class CustomHandshakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        log.info("HandshakeInterceptor 시작");
         if (request instanceof ServletServerHttpRequest) {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             HttpServletRequest httpServletRequest = servletRequest.getServletRequest();
-            String memberId = (String) httpServletRequest.getAttribute("memberId");
-
+            String memberId = (String) httpServletRequest.getAttribute("id");
             if (memberId != null) {
                 // 사용자 인증 및 권한 부여 로직
-                attributes.put("memberId", memberId);
+                attributes.put("id", memberId);
                 return true;
             }
         }
