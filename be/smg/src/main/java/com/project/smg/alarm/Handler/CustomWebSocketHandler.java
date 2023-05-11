@@ -46,9 +46,9 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         addSession(memberId, session);
         log.info("연결한 유저 {}", memberId);
 
-        Map<String, Object> result = alarmService.alarmDtoList(memberId, 0.0, 10);
+        Map<String, Object> result = alarmService.alarmDtoList(memberId, 0.0);
         List<SendAlarmDto> alarmDtoList = (List<SendAlarmDto>) result.get("sendAlarmDtoList");
-        Double nextSocre = (Double) result.get("nextSocre");
+        double nextSocre = (double) result.get("nextSocre");
 
         log.info("메세지 조회 {}", alarmDtoList.size());
 

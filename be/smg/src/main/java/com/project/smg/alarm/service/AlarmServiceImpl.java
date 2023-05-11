@@ -15,10 +15,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,13 +44,19 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public Map<String, Object> alarmDtoList(String memberId, Double lastSocre, int count) {
+    public Map<String, Object> alarmDtoList(String memberId, double lastSocre) {
         log.info("메세지 목록 가져오기");
-        Map<String, Object> map = redisAlarmRepository.getLatestAlarms(memberId, lastSocre, count);
-        List<SendAlarmDto> sendAlarmDtoList = (List<SendAlarmDto>) map.get("alarms");
-        Double nextSocre = (Double) map.get("lastScore");
+        Map<String, Object> map = redisAlarmRepository.getLatestAlarms(memberId, lastSocre);
+        List<AlarmDto> alarmDtoList = (List<AlarmDto>) map.get("alarms");
+
+        List<SendAlarmDto> sendAlarmDtoList = alarmDtoList.stream()
+                .map(dto -> new SendAlarmDto(dto.getMessage(), dto.getCreatedAt()))
+                .collect(Collectors.toList());
+
+        double nextSocre = (double) map.get("lastScore");
 
         log.info("메세지 조회 {}", sendAlarmDtoList.size());
+        log.info("nextSocre {}", nextSocre);
 
         Map<String, Object> result = new HashMap<>();
 
