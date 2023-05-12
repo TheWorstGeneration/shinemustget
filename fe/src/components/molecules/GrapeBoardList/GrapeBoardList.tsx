@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { podoListRecord } from '@/constants/grapeboardList';
 import GrapeBoard from '@/components/atoms/GrapeBoard/GrapeBoard';
 import Image from 'next/image';
 import podoDetail from '@/pages/api/podoDetail';
 import { Dispatch, SetStateAction } from 'react';
+import { useAppSelector } from '@/hooks/useRedux';
+import { Podos, selectIdx } from '@/store/modules/detailIdx';
 
 const ArrowButtonUp = styled.div`
   margin-left: 9.25rem;
@@ -155,26 +157,23 @@ const GrapeContainer = styled.div`
 `;
 
 export function GrapeBoardList({
-  list,
   setPodoDetail,
 }: {
-  list: podoListRecord;
   setPodoDetail: Dispatch<SetStateAction<string>>;
 }) {
-  const idx = list == null ? 0 : list.pageCnt - 1;
-  const [listIdx, setListIdx] = useState(idx);
+  const { pageCnt, podosList }: Podos = useAppSelector(selectIdx).podosDtoList;
+
+  const [listIdx, setListIdx] = useState(pageCnt - 1);
 
   const handleUpClick = () => {
-    if (listIdx > 0) setListIdx(listIdx - 1);
+    if (pageCnt > 0) setListIdx(listIdx - 1);
   };
   const handleDownClick = () => {
-    if (listIdx < idx) setListIdx(listIdx + 1);
+    if (listIdx < pageCnt) setListIdx(listIdx + 1);
   };
 
-  const podosList = list?.podosList[listIdx]?.podoDtoList;
-
   const handleOnclick = (props: number) => {
-    const detail: any = podoDetail(props).then(response => {
+    podoDetail(props).then(response => {
       setPodoDetail(response);
     });
   };

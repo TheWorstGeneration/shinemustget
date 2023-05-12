@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import mandalartClear from '@/pages/api/mandalartClear';
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectIdx } from '@/store/modules/detailIdx';
+import { useRouter } from 'next/router';
 
 const Button = styled.button`
   margin-top: 3rem;
@@ -21,10 +22,16 @@ const Button = styled.button`
 
 export function CompleteButton() {
   const { index } = useAppSelector(selectIdx);
+  const router = useRouter();
 
   const handleComplete = () => {
     mandalartClear(index);
+    router.push('/home');
   };
 
-  return <Button onClick={handleComplete}>완료</Button>;
+  return (
+    <Button type="button" title="세부 목표 달성" onClick={handleComplete}>
+      완료
+    </Button>
+  );
 }
