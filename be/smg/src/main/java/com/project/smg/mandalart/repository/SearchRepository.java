@@ -14,10 +14,10 @@ import java.util.Optional;
 
 @Setting(settingPath = "/elasticsearch/index_settings.json")
 public interface SearchRepository extends ElasticsearchRepository<SearchDocument, Integer> {
-//    Page<SearchDocument> findAllByTitleOrderByLikeCntDesc(String title, Pageable pageable);
+    Page<SearchDocument> findAllByTitleOrderByLikeCntDesc(String title, Pageable pageable);
 
 //    @Query("{\"bool\": {\"must\": {\"query_string\": {\"query\": \"?0\", \"fields\": [\"title.nori\"], \"analyzer\": \"my_nori_analyzer\"}}}}")
-    Page<SearchDocument> findAllByTitleOrderByLikeCntDesc(String title, Pageable pageable);
+//    Page<SearchDocument> findAllByTitleOrderByLikeCntDesc(String title, Pageable pageable);
 
 
 }
