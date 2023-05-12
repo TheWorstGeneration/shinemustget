@@ -1,7 +1,7 @@
-import { MandalartData } from "@/hooks/useMandalart";
-import { GoalBoxContainer2 } from "../GoalBoxContainer2/GoalBoxContainer2";
-import styled from "@emotion/styled";
-import { GoalBoxProps } from "@/components/atoms/GoalBox/GoalBox";
+import { MandalartData } from '@/hooks/useMandalart';
+import { GoalBoxContainer2 } from '../GoalBoxContainer2/GoalBoxContainer2';
+import styled from '@emotion/styled';
+import { GoalBoxProps } from '@/components/atoms/GoalBox/GoalBox';
 
 const Container = styled.article`
   display: flex;
@@ -57,25 +57,26 @@ const Row = styled.div`
   }
 `;
 
-const SearchDetailContainer = ({ mandalart }: { mandalart: any  }) => {
-  
+const SearchDetailContainer = ({ mandalart }: { mandalart: any }) => {
   const bigList = mandalart?.mandalartRequestDto?.bigRequestDto;
-  console.log(mandalart, "4");
-  console.log(bigList, "5");
+  console.log(mandalart, '4');
+  console.log(bigList, '5');
 
   const firstRow = bigList.slice(0, 3);
-  console.log("firstRow", firstRow);
+  console.log('firstRow', firstRow);
   const secondRow = bigList.slice(3, 5);
   const thirdRow = bigList.slice(5, 8);
 
-  const centerSmallList = bigList.map((bigGoal: { location: any; content: any; }) => {
-    return {
-      id: 0,
-      location: bigGoal.location,
-      content: bigGoal.content,
-      isCenter: 1,
-    };
-  });
+  const centerSmallList = bigList.map(
+    (bigGoal: { location: any; content: any }) => {
+      return {
+        id: 0,
+        location: bigGoal.location,
+        content: bigGoal.content,
+        isCenter: 1,
+      };
+    },
+  );
 
   const center = {
     location: 0,
@@ -88,49 +89,72 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any  }) => {
   secondRow.splice(1, 0, center);
 
   return (
-      <Container id="mandalart">
+    <Container id="mandalart">
       <Row>
-        { firstRow != null}{firstRow?.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
-          return (
-            <GoalBoxContainer2
-              key={bigGoal.location}
-              location={bigGoal.location}
-              content={bigGoal.content}
-              smallList={bigGoal.smallRequestDto}
-              isCenter={bigGoal?.isCenter}
-            />
-          );
-        })}
+        {firstRow != null}
+        {firstRow?.map(
+          (bigGoal: {
+            location: number;
+            content: string;
+            smallRequestDto: GoalBoxProps[];
+            isCenter: number | undefined;
+          }) => {
+            return (
+              <GoalBoxContainer2
+                key={bigGoal.location}
+                location={bigGoal.location}
+                content={bigGoal.content}
+                smallList={bigGoal.smallRequestDto}
+                isCenter={bigGoal?.isCenter}
+              />
+            );
+          },
+        )}
       </Row>
       <Row>
-        { secondRow != null}{secondRow?.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
-          return (
-            <GoalBoxContainer2
-              key={bigGoal.location}
-              location={bigGoal.location}
-              content={bigGoal.content}
-              smallList={bigGoal.smallRequestDto}
-              isCenter={bigGoal?.isCenter}
-            />
-          );
-        })}
+        {secondRow != null}
+        {secondRow?.map(
+          (bigGoal: {
+            location: number;
+            content: string;
+            smallRequestDto: GoalBoxProps[];
+            isCenter: number | undefined;
+          }) => {
+            return (
+              <GoalBoxContainer2
+                key={bigGoal.location}
+                location={bigGoal.location}
+                content={bigGoal.content}
+                smallList={bigGoal.smallRequestDto}
+                isCenter={bigGoal?.isCenter}
+              />
+            );
+          },
+        )}
       </Row>
       <Row>
-        { thirdRow != null }{thirdRow?.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
-          return (
-            <GoalBoxContainer2
-              key={bigGoal.location}
-              location={bigGoal.location}
-              content={bigGoal.content}
-              smallList={bigGoal.smallRequestDto}
-              isCenter={bigGoal?.isCenter}
-            />
-          );
-        })}
+        {thirdRow != null}
+        {thirdRow?.map(
+          (bigGoal: {
+            location: number;
+            content: string;
+            smallRequestDto: GoalBoxProps[];
+            isCenter: number | undefined;
+          }) => {
+            return (
+              <GoalBoxContainer2
+                key={bigGoal.location}
+                location={bigGoal.location}
+                content={bigGoal.content}
+                smallList={bigGoal.smallRequestDto}
+                isCenter={bigGoal?.isCenter}
+              />
+            );
+          },
+        )}
       </Row>
     </Container>
-    )
-    
+  );
 };
 
 export default SearchDetailContainer;

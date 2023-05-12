@@ -10,7 +10,7 @@ const searchDetail = async (props: number) => {
     .get<podoId>(MANDALART_SEARCH_DETAIL + `/${props}`)
     .then(res => res.data);
 
-  console.log(data,"data");
+  console.log(data, 'data');
   return data;
 };
 

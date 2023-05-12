@@ -1,8 +1,12 @@
 import SortButton from '@/components/atoms/SortButton/SortButton';
 import { BigGoalMandalart } from '@/components/molecules/BigGoalMandalart/BigGoalMandalart';
+import { MANDALART_SEARCH } from '@/constants/queryKey';
 import getClearMandalart from '@/pages/api/getClearMandalart';
+import getSearch from '@/pages/api/getSearch';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const SearchResultContainer = styled.div`
   width: 100%;
@@ -23,16 +27,12 @@ const SearchMandalartBox = styled.div`
   }
 `;
 
-interface ClearMandalart {
-  id: number;
-  searchDto: SearchDto;
-}
-
 interface SearchDto {
-  likeCnt: number;
-  isLike: boolean;
+  id: number;
   title: string;
   bigList: SearchBigDto[];
+  likeCnt: number;
+  isLike: boolean;
 }
 
 interface SearchBigDto {
@@ -41,33 +41,73 @@ interface SearchBigDto {
 }
 
 const SearchResult = () => {
-  const [searchList, setSearchList] = useState<ClearMandalart[] | null>(null);
-  // 검색결과 요청으로 바꿔야함
+  const [searchList, setSearchList] = useState<SearchDto[] | []>([]);
+
+  const [page, setPage] = useState<number>(0);
+
+  const router = useRouter();
+  const id: string | string[] | undefined = router.query.id; // 경로 변수 가져오기
+
+  const nextData = useQuery(MANDALART_SEARCH, () => getSearch(id, page));
+
   useEffect(() => {
-    const axiosClearGoal = async () => {
-      const data = await getClearMandalart();
-      setSearchList(data);
-    };
+    if (nextData.isSuccess) {
+      setSearchList(prevSearchList => [...prevSearchList, ...nextData.data]);
+    }
+  }, [nextData.data]);
 
-    axiosClearGoal();
-  }, []);
-
+  // 검색 결과 인덱스
   const [sortIndex, setSortIndex] = useState<string>('like');
 
+  // 좋아요, 최신순 변경
   useEffect(() => {
     if (sortIndex === 'like') {
-      const sortedList = searchList?.sort(
-        (o1: ClearMandalart, o2: ClearMandalart) => {
-          return o1.searchDto.likeCnt - o2.searchDto.likeCnt;
-        },
-      );
+      // 좋아요순으로 요청
     } else {
+      // 최신순으로 요청
     }
   }, [sortIndex]);
 
+  // 좋아요, 최신순 변경
   const handleChangeSort = (index: string) => {
     setSortIndex(index);
   };
+
+  // 다음 페이지 불러오기
+  useEffect(() => {
+    nextData.refetch();
+  }, [page]);
+
+  // 바닥인지 감지
+  const [isBottom, setIsBottom] = useState(false);
+
+  // 스크롤 위치 감지
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, clientHeight, scrollHeight } =
+        document.documentElement;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        setIsBottom(true);
+      } else {
+        setIsBottom(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  // 스크롤이 바닥에 왔을 때 실행할거
+  useEffect(() => {
+    if (isBottom) {
+      if (nextData.data?.length === 10) {
+        setPage(prevPage => prevPage + 1);
+      }
+    }
+  }, [isBottom]);
 
   return (
     <>
@@ -78,7 +118,7 @@ const SearchResult = () => {
             <BigGoalMandalart
               key={List.id}
               id={List.id}
-              searchDto={List.searchDto}
+              searchDto={List}
               isProfile={false}
             />
           </SearchMandalartBox>
