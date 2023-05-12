@@ -74,9 +74,4 @@ public class MandalartController {
         return new ResponseEntity<>(searchMandalart, HttpStatus.OK);
     }
 
-    @PostMapping("/clear/{id}")
-    public ResponseEntity<?> clearGoal(@RequestAttribute("id") String mid, @PathVariable int id){
-        mandalartService.clearGoal(mid, id);
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
 }
