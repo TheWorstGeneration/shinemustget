@@ -64,22 +64,19 @@ const Row = styled.div`
 `;
 
 const SearchDetail = () => {
-
   // const dispatch = useAppDispatch();
-  const [s,setS] = useState<any>(null);
-  
+  const [s, setS] = useState<any>(null);
+
   useEffect(() => {
-    searchDetail(8).then((res) => {
-      console.log(res, "res");
+    searchDetail(8).then(res => {
+      console.log(res, 'res');
       // console.log(s.mandalartRequestDto, "ssss");
     });
   });
 
-
-  // if (mandalart != null) { 
+  // if (mandalart != null) {
   // const bigList = mandalart;
 
-  
   // const fristRow = bigList.slice(0, 3);
   // const secondRow = bigList.slice(3, 5);
   // const thirdRow = bigList.slice(5, 8);
@@ -103,10 +100,8 @@ const SearchDetail = () => {
   // // secondRow의 두번째 요소에 center를 삽입
   // secondRow.splice(1, 0, center);
   // }
-  
-  return (
-      <>sdssdsd</>
-  );
+
+  return <>sdssdsd</>;
 };
 
 export default SearchDetail;

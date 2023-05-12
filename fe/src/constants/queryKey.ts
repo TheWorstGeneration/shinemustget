@@ -17,6 +17,8 @@ export const MANDALART_READ_MAIN = `${BASE_URL}/mandalart/readMain`;
 // 만다라트 좋아요
 export const MANDALART_LIKE = `${BASE_URL}/mandalart/like`;
 // 만다라트 검색
+export const MANDALART_SEARCH = `${BASE_URL}/mandalart/search/`;
+// 만다라트 상세조회
 export const MANDALART_SEARCH_DETAIL = `${BASE_URL}/mandalart/searchDetail/`;
 // 현재 목표 조회
 export const MANDALART_READ_NOW_GOAL = `${BASE_URL}/profile/readNowGoal`;

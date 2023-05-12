@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { BigGoalMandalart } from '../BigGoalMandalart/BigGoalMandalart';
-import { useEffect, useState } from 'react';
 import getClearMandalart from '@/pages/api/getClearMandalart';
 import { useQuery } from 'react-query';
+import { MANDALART_READ_CLEAR_MANDALART } from '@/constants/queryKey';
 
 const ProfileMandalartContainer = styled.div`
   width: 50%;
@@ -59,7 +59,7 @@ interface SearchBigDto {
 
 export const ProfileMandalart = () => {
   const clearList: ClearMandalart[] | undefined = useQuery(
-    'clearMandalart',
+    MANDALART_READ_CLEAR_MANDALART,
     getClearMandalart,
     {
       staleTime: 5000,

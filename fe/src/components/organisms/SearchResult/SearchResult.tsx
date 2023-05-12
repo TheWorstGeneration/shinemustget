@@ -52,10 +52,10 @@ const SearchResult = () => {
     axiosClearGoal();
   }, []);
 
-  const [changeSortIndex, setChangeSortIndex] = useState<string>('like');
+  const [sortIndex, setSortIndex] = useState<string>('like');
 
   useEffect(() => {
-    if (changeSortIndex === 'like') {
+    if (sortIndex === 'like') {
       const sortedList = searchList?.sort(
         (o1: ClearMandalart, o2: ClearMandalart) => {
           return o1.searchDto.likeCnt - o2.searchDto.likeCnt;
@@ -63,92 +63,16 @@ const SearchResult = () => {
       );
     } else {
     }
-  }, [changeSortIndex]);
+  }, [sortIndex]);
+
+  const handleChangeSort = (index: string) => {
+    setSortIndex(index);
+  };
 
   return (
     <>
       <SearchResultContainer>
-        <SortButton />
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
-        {searchList?.map(List => (
-          <SearchMandalartBox>
-            <BigGoalMandalart
-              key={List.id}
-              id={List.id}
-              searchDto={List.searchDto}
-              isProfile={false}
-            />
-          </SearchMandalartBox>
-        ))}
+        <SortButton onClick={handleChangeSort} />
         {searchList?.map(List => (
           <SearchMandalartBox>
             <BigGoalMandalart
