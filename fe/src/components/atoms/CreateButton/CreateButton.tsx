@@ -75,8 +75,8 @@ export const CreateButton = () => {
     };
   });
 
-  const handleCreateMandalart = () => {
-    postCreate({ title: mandalart.title, bigRequestDto: bigRequestDto });
+  const handleCreateMandalart = async () => {
+    await postCreate({ title: mandalart.title, bigRequestDto: bigRequestDto });
     router.push('/home');
   };
   return (

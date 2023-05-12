@@ -1,8 +1,8 @@
 import { ProgressCircle } from '@/components/atoms/ProgressCircle/ProgressCircle';
+import { MANDALART_READ_NOW_GOAL } from '@/constants/queryKey';
 import getNowGoal from '@/pages/api/getNowGoal';
 import styled from '@emotion/styled';
-import { GetServerSideProps, GetStaticProps } from 'next';
-import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 const ProfileProgressContainer = styled.div`
   display: flex;
@@ -52,7 +52,7 @@ interface ProgressProp {
 
 export const ProfileProgress = () => {
   const progressProps: ProgressProp | undefined = useQuery(
-    'nowGoal',
+    MANDALART_READ_NOW_GOAL,
     getNowGoal,
     {
       staleTime: 5000,

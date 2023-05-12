@@ -2,7 +2,6 @@ import { InputBox } from '@/components/atoms/InputBox/InputBox';
 import { BigGoalListContainer } from '@/components/molecules/BigGoalListContainer/BigGoalListContainer';
 import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
 import { MANDALART_READ_MAIN, MEMBER_INFO } from '@/constants/queryKey';
-import { useMandalart } from '@/hooks/useMandalart';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal } from '@/store/modules/goal';
 import styled from '@emotion/styled';
@@ -43,7 +42,6 @@ const FinalCreateStep = styled.div`
 export default function Create() {
   const dispatch = useAppDispatch();
   const { smallGoalLists } = useAppSelector(selectGoal);
-  const mandalart = smallGoalLists[0][0] === '' ? null : useMandalart();
 
   const { data } = useQuery(MEMBER_INFO, getMemberInfo);
   dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
@@ -67,7 +65,7 @@ export default function Create() {
         <meta property="og:url" content="https://shinemustget.com" />
       </Head>
       <CreateSection>
-        {mandalart === null ? (
+        {smallGoalLists[0][0] === '' ? (
           <BigGoalListContainer />
         ) : (
           <FinalCreateStep>

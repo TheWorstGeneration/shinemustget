@@ -9,13 +9,14 @@ const SortButtonDiv = styled.div`
   }
 `;
 
-const SortButton = () => {
+const SortButton = (props: any) => {
   const handleChangeSortLike = () => {
-    console.log('like');
+    props.onClick('like');
   };
   const handleChangeSortRecently = () => {
-    console.log('recently');
+    props.onClick('recently');
   };
+
   return (
     <SortButtonDiv>
       <span onClick={handleChangeSortLike}>좋아요</span> |{' '}

@@ -8,6 +8,11 @@ import getClearGoal from '../api/getClearGoal';
 import { GetServerSideProps } from 'next';
 import getNowGoal from '../api/getNowGoal';
 import getClearMandalart from '../api/getClearMandalart';
+import {
+  MANDALART_READ_CLEAR_GOAL,
+  MANDALART_READ_CLEAR_MANDALART,
+  MANDALART_READ_NOW_GOAL,
+} from '@/constants/queryKey';
 
 const ProfileTop = styled.section`
   display: flex;
@@ -71,15 +76,19 @@ export const Profile = (props: any) => {
 export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery('nowGoal', getNowGoal, {
+  await queryClient.prefetchQuery(MANDALART_READ_NOW_GOAL, getNowGoal, {
     staleTime: 10000,
     cacheTime: 20000,
   });
-  await queryClient.prefetchQuery('clearMandalart', getClearMandalart, {
-    staleTime: 10000,
-    cacheTime: 20000,
-  });
-  await queryClient.prefetchQuery('clearGoal', getClearGoal, {
+  await queryClient.prefetchQuery(
+    MANDALART_READ_CLEAR_MANDALART,
+    getClearMandalart,
+    {
+      staleTime: 10000,
+      cacheTime: 20000,
+    },
+  );
+  await queryClient.prefetchQuery(MANDALART_READ_CLEAR_GOAL, getClearGoal, {
     staleTime: 10000,
     cacheTime: 20000,
   });

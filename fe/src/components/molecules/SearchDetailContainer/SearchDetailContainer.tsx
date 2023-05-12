@@ -1,7 +1,5 @@
-const SearchDetailContainer = () => { 
-  return(
-    <> dfdfdfdf</>
-    )
+const SearchDetailContainer = () => {
+  return <> dfdfdfdf</>;
 };
 
 export default SearchDetailContainer;
