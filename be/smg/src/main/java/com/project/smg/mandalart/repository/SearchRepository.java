@@ -16,7 +16,8 @@ import java.util.Optional;
 public interface SearchRepository extends ElasticsearchRepository<SearchDocument, Integer> {
     Page<SearchDocument> findAllByTitleOrderByLikeCntDesc(String title, Pageable pageable);
 
-//    @Query("{ \"bool\": { \"should\": [ { \"match\": { \"title\": { \"query\": \"?0\", \"analyzer\": \"standard\" } } }, { \"match\": { \"title.nori\": { \"query\": \"?0\", \"analyzer\": \"my_nori_analyzer\" } } }, { \"match\": { \"title.ngram\": { \"query\": \"?0\", \"analyzer\": \"my_ngram_analyzer\" } } } ] } }")
-//    Page<SearchDocument> findByTitle(@Param("query") String query, Pageable pageable);
+//    @Query("{\"bool\": {\"must\": {\"query_string\": {\"query\": \"?0\", \"fields\": [\"title.nori\"], \"analyzer\": \"my_nori_analyzer\"}}}}")
+//    Page<SearchDocument> findAllByTitleOrderByLikeCntDesc(String title, Pageable pageable);
+
 
 }
