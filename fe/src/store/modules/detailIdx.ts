@@ -25,16 +25,15 @@ const initialState = {
   isPodo: false,
   content: null,
   isToday: false,
-  podosDtoList: 
-    {
-      pageCnt: 0,
-      podosList: [
-        {
-          id: 0,
-          imageUrl: '',
-        },
-      ],
-    },
+  podosDtoList: {
+    pageCnt: 0,
+    podosList: [
+      {
+        id: 0,
+        imageUrl: '',
+      },
+    ],
+  },
 };
 
 const detailSlice = createSlice({

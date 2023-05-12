@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import SearchDetailContainer from '@/components/molecules/SearchDetailContainer/SearchDetailContainer';
 import searchDetail from '../api/searchDetail';
@@ -58,27 +58,25 @@ const Row = styled.div`
 `;
 
 const SearchDetail = (mandalart: any) => {
-  console.log("mandalart", mandalart);
+  console.log('mandalart', mandalart);
 
   return (
     <>
-      { mandalart!= null} && <SearchDetailContainer mandalart={mandalart} />
+      {mandalart != null} && <SearchDetailContainer mandalart={mandalart} />
     </>
   );
 };
 
 export async function getServerSideProps(context: any) {
-
   try {
     const mandalart = searchDetail(8);
-    
+
     return {
-       props: mandalart 
+      props: mandalart,
     };
-  } catch (err) { 
-    console.log("에러 발생함띠", err);
+  } catch (err) {
+    console.log('에러 발생함띠', err);
   }
 }
 
 export default SearchDetail;
-
