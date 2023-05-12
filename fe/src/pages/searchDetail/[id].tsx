@@ -62,7 +62,7 @@ const SearchDetail = (mandalart: any) => {
 
   return (
     <>
-      <SearchDetailContainer mandalart={mandalart} />
+      { mandalart!= null} && <SearchDetailContainer mandalart={mandalart} />
     </>
   );
 };

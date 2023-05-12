@@ -64,6 +64,7 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any  }) => {
   console.log(bigList, "5");
 
   const firstRow = bigList.slice(0, 3);
+  console.log("firstRow", firstRow);
   const secondRow = bigList.slice(3, 5);
   const thirdRow = bigList.slice(5, 8);
 
@@ -76,26 +77,20 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any  }) => {
     };
   });
 
-  // const center = {
-  //   location: 0,
-  //   content: title,
-  //   isClear: data?.isClear
-  //     ? pathname === '/home'
-  //       ? data.isClear
-  //       : false
-  //     : false,
-  //   smallList: centerSmallList,
-  //   isCenter: 2,
-  // };
-
+  const center = {
+    location: 0,
+    content: mandalart.mandalartRequestDto.title,
+    smallList: centerSmallList,
+    isCenter: 2,
+  };
 
   // secondRow의 두번째 요소에 center를 삽입
-  // secondRow.splice(1, 0, center);
+  secondRow.splice(1, 0, center);
 
   return (
       <Container id="mandalart">
       <Row>
-        {firstRow.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
+        { firstRow != null}{firstRow?.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
           return (
             <GoalBoxContainer2
               key={bigGoal.location}
@@ -108,7 +103,7 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any  }) => {
         })}
       </Row>
       <Row>
-        {secondRow.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
+        { secondRow != null}{secondRow?.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
           return (
             <GoalBoxContainer2
               key={bigGoal.location}
@@ -121,7 +116,7 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any  }) => {
         })}
       </Row>
       <Row>
-        {thirdRow.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
+        { thirdRow != null }{thirdRow?.map((bigGoal: { location: number; content: string; smallRequestDto: GoalBoxProps[]; isCenter: number | undefined; }) => {
           return (
             <GoalBoxContainer2
               key={bigGoal.location}
