@@ -76,7 +76,6 @@ public class PodoServiceImpl implements PodoService {
     }
 
     // TODO is26daysClear - special podo 여부 : true 면 알림호출
-    // TODO is30daysClear - special podo 지속여부 - > 로그인 성공할때마다 확인
     /** 포도알 작성하기 */
     @Override
     @Transactional
@@ -109,23 +108,22 @@ public class PodoServiceImpl implements PodoService {
 
     /** 스페셜 포도 여부
      * 스페셜 포도를 소유하고 있지 않다면 (memberpodo 의 podoType 4로 확인)
-     * smallgoal_id 랑 memberId 가 같고 created_at 이 오늘?어제? 까지 연속 26일때
+     * smallgoal_id 랑 memberId 가 같고 created_at 이 오늘까지 연속 26일때
      * 스페셜 포도 부여 (memberpodo podotype 4~6 까지 1로 변경)
-     * + 포도 회수 기간 줄지 말지 고민
      * */
     @Transactional
     public boolean isSpecialClear(String mid, int id){
         boolean isSpecial = memberPodoRepository.isfindByPodoTypeId(4, mid);
         if (!isSpecial){
             // 현재 날짜 받아서 date 25일 전이 뺀거랑 같으면 true
-            LocalDate nowminus25days = LocalDateTime.now().minusDays(25).toLocalDate();
-            log.info("nowminus25days= {}",nowminus25days);
+            LocalDate nowMinus25days = LocalDateTime.now().minusDays(25).toLocalDate();
+            log.info("nowMinus25days= {}",nowMinus25days);
             List<Podo> bySmallGoalId = podoRepository.findBySmallGoalIdDesc(id);
             log.info("연속 포도 달성날짜 = {}일",bySmallGoalId.size());
             if (bySmallGoalId.size() >=26 ){
                 LocalDate createdAt = bySmallGoalId.get(25).getCreatedAt().toLocalDate();
                 log.info("createdAt= {}",createdAt);
-                if (nowminus25days.equals(createdAt)){
+                if (nowMinus25days.equals(createdAt)){
 
                     log.info("스페셜 포도 축하합니다 ^^ !! ");
                     setSpecialMemberPodo(mid);
@@ -151,11 +149,32 @@ public class PodoServiceImpl implements PodoService {
             mp.setStatus(true);
         }
     }
-    // podoType id 로 memberpodo 찾기
-    private MemberPodo checkMemberPodo(String mid, PodoType podoType) {
-        MemberPodo memberPodo = memberPodoRepository.findByName(podoType.getId(), mid).orElseThrow(() -> new IllegalStateException("멤버 포도가 존재하지 않습니다."));
-        return memberPodo;
+
+    // TODO checkSpecialStickerTime - special podo 사용가능시간 - > 로그인 성공할때마다 확인
+    /** 스페셜 포도 지속시간 확인 - 로그인 시 확인
+     * member 의 specialStickerDate 가  null 이 아니면 (스페셜 포도가 있으면)
+     *      현재 날짜를 받아서 한달 minus 해주고 그 specialStickerDate와 비교
+     *      다시 null
+     * */
+    @Override
+    @Transactional
+    public void checkSpecialStickerTime(Member member) {
+        if (member.getSpecialStickerDate() != null){
+            log.info("스페셜 포도 검사 들어갑니다.");
+            LocalDate nowMinus1Month = LocalDateTime.now().minusMonths(1).toLocalDate();
+            LocalDate memberDate = member.getSpecialStickerDate().toLocalDate();
+            if (nowMinus1Month.isAfter(memberDate)){
+                member.setSpecialStickerDate(null);
+                log.info("스페셜 포도 권한이 사라졌습니다");
+            }else {
+                log.info("아직 더 쓸 수 있어요 ");
+            }
+        }else {
+            log.info("스페셜 포도 검사 대상자 아닙니다.");
+        }
+
     }
+
     /** 회원 스티커 종류
      * memberpodo 를 돌면서 status 가 false 이면 podoType의 imageLockUrl를 보내준다
      */
@@ -197,5 +216,11 @@ public class PodoServiceImpl implements PodoService {
     private SmallGoal checkSmallGoal(int id){
         SmallGoal smallGoal = smallGoalRepository.findById(id).orElseThrow(() -> new IllegalStateException("세부 목표가 존재하지 않습니다."));
         return smallGoal;
+    }
+
+    // podoType id 로 memberpodo 찾기
+    private MemberPodo checkMemberPodo(String mid, PodoType podoType) {
+        MemberPodo memberPodo = memberPodoRepository.findByName(podoType.getId(), mid).orElseThrow(() -> new IllegalStateException("멤버 포도가 존재하지 않습니다."));
+        return memberPodo;
     }
 }
