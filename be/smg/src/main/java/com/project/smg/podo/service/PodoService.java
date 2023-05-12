@@ -1,6 +1,6 @@
 package com.project.smg.podo.service;
 
-import com.project.smg.mandalart.entity.Title;
+import com.project.smg.member.entity.Member;
 import com.project.smg.podo.dto.PodoCreateDto;
 import com.project.smg.podo.dto.PodoDetailDto;
 import com.project.smg.podo.dto.StickerDto;
@@ -22,4 +22,6 @@ public interface PodoService {
     boolean podoSettingRead(String mid, int id);
 
     boolean isSpecialClear(String mid, int id);
+
+    void checkSpecialStickerTime(Member member);
 }
