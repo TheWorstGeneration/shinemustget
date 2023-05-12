@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
-const SearchBarContainer = styled.div`
+const SearchBarContainer = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: end;
-  width: 3rem;
+  width: ${({ isSelected }) => (isSelected ? '30rem' : '3rem')};
+
   height: 3rem;
   border: none;
   border-radius: 1.5rem;
@@ -20,8 +22,13 @@ const SearchBarContainer = styled.div`
 `;
 
 export const SearchBar = () => {
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleSearchBarSelect = () => {
+    setIsSelected(prev => !prev);
+  };
   return (
-    <SearchBarContainer>
+    <SearchBarContainer isSelected={isSelected} onClick={handleSearchBarSelect}>
       <FontAwesomeIcon icon={faSearch} />
     </SearchBarContainer>
   );

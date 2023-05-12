@@ -56,9 +56,7 @@ const UserCommentCompleteButtonDiv = styled.div`
 export function UserComment({ stickerList }: { stickerList: sticker[] }) {
   const [countLetter, setCountLetter] = useState(0);
   const [oneline, setOneLine] = useState('');
-  const [imageUrl, setImageUrl] = useState(
-    stickerList == null ? '' : stickerList[0].imageUrl,
-  );
+  const [imageUrl, setImageUrl] = useState('https://www.shinemustget.com/images/stickers/default.png');
   const handleOnChange = (e: any) => {
     setCountLetter(e.target.value.length);
     setOneLine(e.target.value);

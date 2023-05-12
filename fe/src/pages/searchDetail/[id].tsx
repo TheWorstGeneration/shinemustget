@@ -58,8 +58,6 @@ const Row = styled.div`
 `;
 
 const SearchDetail = (mandalart: any) => {
-  console.log('mandalart', mandalart);
-
   return (
     <>
       {mandalart != null} && <SearchDetailContainer mandalart={mandalart} />

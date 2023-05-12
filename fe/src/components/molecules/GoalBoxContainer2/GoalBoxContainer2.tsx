@@ -50,11 +50,13 @@ export const GoalBoxContainer2 = ({
   //   return a.location - b.location;
   // });
 
-  console.log('smallList', smallList);
+  // console.log('smallList', smallList);
 
   const firstRow = smallList?.slice(0, 3);
   const secondRow = smallList?.slice(3, 5);
   const thirdRow = smallList?.slice(5, 8);
+
+  console.log(smallList);
 
   const center = {
     location: 0,
@@ -68,7 +70,7 @@ export const GoalBoxContainer2 = ({
   return (
     <Container>
       <Row>
-        {firstRow.map((smallList, index) => {
+        {firstRow?.map((smallList, index) => {
           return (
             <GoalBox
               key={index + 1}
@@ -82,7 +84,7 @@ export const GoalBoxContainer2 = ({
         })}
       </Row>
       <Row>
-        {secondRow.map((smallList, index) => {
+        {secondRow?.map((smallList, index) => {
           return (
             <GoalBox
               key={(index + 1) * 10}
@@ -96,7 +98,7 @@ export const GoalBoxContainer2 = ({
         })}
       </Row>
       <Row>
-        {thirdRow.map((smallList, index) => {
+        {thirdRow?.map((smallList, index) => {
           return (
             <GoalBox
               key={(index + 1) * 100}
