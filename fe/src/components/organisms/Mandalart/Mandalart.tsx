@@ -66,11 +66,8 @@ export const Mandalart = () => {
   const { data } = useQuery(MANDALART_READ_MAIN, getReadMain);
   const mandalart = useMandalart();
 
-  console.log('data', data);
-  console.log('mandalart', mandalart);
-
   const { title, bigList }: MandalartData =
-    pathname === '/home' ? (data ? data : mandalart) : mandalart;
+    pathname === '/home' ? (data?.bigList ? data : mandalart) : mandalart;
 
   bigList.sort((a, b) => {
     return a.location - b.location;

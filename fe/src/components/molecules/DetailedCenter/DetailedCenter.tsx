@@ -4,9 +4,7 @@ import { Toggle } from '@/components/atoms/Toggle/Toggle';
 import { GrapeBoardList } from '../GrapeBoardList/GrapeBoardList';
 import { UserComment } from '../UserComment/UserComment';
 import { UserMemo } from '../UserMemo/UserMemo';
-import { podoListRecord } from '@/constants/grapeboardList';
 import { sticker } from '@/constants/stickerList';
-import { Dispatch, SetStateAction } from 'react';
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectIdx } from '@/store/modules/detailIdx';
 
@@ -84,13 +82,7 @@ const DetailedDivEmpty = styled.div`
   align-items: center;
 `;
 
-export function DetailedCenter({
-  list,
-  stickerList,
-}: {
-  list: podoListRecord;
-  stickerList: sticker[];
-}) {
+export function DetailedCenter({ stickerList }: { stickerList: sticker[] }) {
   const { isPodo, isToday } = useAppSelector(selectIdx);
   const [podoDetail, setPodoDetail] = useState('');
   const content = useAppSelector(selectIdx).content;
@@ -111,7 +103,7 @@ export function DetailedCenter({
       {isPodo ? (
         <DetailedDivPos>
           <DetailedDivPosLeft>
-            <GrapeBoardList list={list} setPodoDetail={setPodoDetail} />
+            <GrapeBoardList setPodoDetail={setPodoDetail} />
           </DetailedDivPosLeft>
           <DetailedDivRight>
             <UserMemo podoDetail={podoDetail} />
