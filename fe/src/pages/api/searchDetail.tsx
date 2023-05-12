@@ -7,9 +7,10 @@ interface podoId {
 
 const searchDetail = async (props: number) => {
   const data = await customAxios
-    .post<podoId>(MANDALART_SEARCH_DETAIL + `${props}`, {})
+    .get<podoId>(MANDALART_SEARCH_DETAIL + `/${props}`)
     .then(res => res.data);
 
+  console.log(data, 'data');
   return data;
 };
 

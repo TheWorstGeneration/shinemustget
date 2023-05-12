@@ -3,7 +3,7 @@ import { ProfileProgress } from '@/components/molecules/ProfileProgress/ProfileP
 import styled from '@emotion/styled';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import Head from 'next/head';
-import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { QueryClient, dehydrate } from 'react-query';
 import getClearGoal from '../api/getClearGoal';
 import { GetServerSideProps } from 'next';
 import getNowGoal from '../api/getNowGoal';

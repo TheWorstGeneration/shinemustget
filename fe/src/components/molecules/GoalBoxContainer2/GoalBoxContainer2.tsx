@@ -46,28 +46,29 @@ export const GoalBoxContainer2 = ({
   isCenter,
 }: GoalBoxContainerProps) => {
   // smallGoal의 location을 기준으로 정렬
-  smallList.sort((a, b) => {
-    return a.location - b.location;
-  });
+  // smallList.sort((a, b) => {
+  //   return a.location - b.location;
+  // });
 
-  const fristRow = smallList.slice(0, 3);
-  const secondRow = smallList.slice(3, 5);
-  const thirdRow = smallList.slice(5, 8);
+  console.log('smallList', smallList);
+
+  const firstRow = smallList?.slice(0, 3);
+  const secondRow = smallList?.slice(3, 5);
+  const thirdRow = smallList?.slice(5, 8);
 
   const center = {
     location: 0,
     content,
-    isPodo: false,
     isCenter: isCenter ? isCenter : 1,
   };
 
   // secondRow의 두번째 요소에 center를 삽입
-  secondRow.splice(1, 0, center);
+  secondRow?.splice(1, 0, center);
 
   return (
     <Container>
       <Row>
-        {fristRow.map((smallList, index) => {
+        {firstRow.map((smallList, index) => {
           return (
             <GoalBox
               key={index + 1}

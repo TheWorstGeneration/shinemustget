@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import bannerUrl from '../../../../public/assets/images/common/banner.webp';
 
 const BannerImage = styled(Image)`
   position: relative;
@@ -12,7 +13,6 @@ const BannerImage = styled(Image)`
 `;
 
 export const Banner = () => {
-  const path = 'assets/images/common/banner.webp';
   const handleBannerClick = () => {
     window.open(
       'https://www.ssafy.com/ksp/servlet/swp.content.controller.SwpContentServlet?p_process=select-content-view&p_menu_cd=M0201&p_content_cd=C0201',
@@ -21,11 +21,12 @@ export const Banner = () => {
   };
   return (
     <BannerImage
-      src={path}
+      src={bannerUrl}
       alt="banner"
       width={200}
       height={400}
       onClick={handleBannerClick}
+      placeholder="blur"
       priority
     />
   );

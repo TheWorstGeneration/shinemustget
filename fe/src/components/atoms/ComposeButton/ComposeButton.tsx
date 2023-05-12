@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import podoWrite from '@/pages/api/podoWrite';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectIdx, setIsToday } from '@/store/modules/detailIdx';
 import podoRead from '@/pages/api/podoRead';
-import { Dispatch, SetStateAction } from 'react';
 
-const Button = styled.button`
+const Button = styled.button<{ isToday: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,11 +13,12 @@ const Button = styled.button`
   height: 3rem;
   box-shadow: 0 0 0.5rem 1px #22222225;
   padding: 0.5rem;
-  color: #a3da08;
+  color: ${({ isToday }) => (isToday ? '#88888888' : '#a3da08')};
   font-weight: 900;
 
   &:hover {
-    box-shadow: 0 0 1rem 1px #22222250;
+    box-shadow: 0 0 0.5rem 1px
+      ${({ isToday }) => (isToday ? '#22222225' : '#22222250')};
   }
 `;
 
@@ -49,10 +48,8 @@ export function ComposeButton({
     ) {
       alert('해당 스티커는 선택이 불가능합니다!');
     } else {
-      podoWrite(propsDetail).then(res => {
-        podoRead(index);
+      podoWrite(propsDetail).then(() => {
         dispatch(setIsToday());
-        alert('작성이 완료되었습니다!');
       });
     }
   };
@@ -61,7 +58,8 @@ export function ComposeButton({
     <Button
       type="button"
       title="스티커 작성"
-      disabled={isToday ? true : false}
+      isToday={isToday}
+      disabled={isToday}
       onClick={onClickHandler}
     >
       작성

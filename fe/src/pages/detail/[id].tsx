@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
 import Head from 'next/head';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
-import { setIdx } from '@/store/modules/detailIdx';
+import { setIdx, setPodosList } from '@/store/modules/detailIdx';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import podoRead from '../api/podoRead';
 import podoSticker from '../api/podoSticker';
@@ -73,27 +73,20 @@ export interface podoListRecord {
 }
 
 export default function Detail() {
+  const dispatch = useAppDispatch();
   const isMaxWidth = useInnerWidth() >= 1440;
 
-  const [list, setList] = useState<any>(null);
   const [stickerList, setstickerList] = useState<any>(null);
-  const { index, isPodo, isToday } = useAppSelector(selectIdx);
-
+  const { index, isToday } = useAppSelector(selectIdx);
   useEffect(() => {
     podoRead(index).then(response => {
-      setList(response);
+      dispatch(setPodosList(response));
+      console.log(response);
     });
     podoSticker().then(response => {
       setstickerList(response);
     });
-  }, []);
-
-  useEffect(() => {
-    podoRead(index).then(response => {
-      console.log(response);
-      setList(response);
-    });
-  }, [isToday]);
+  }, [index, isToday]);
 
   return (
     <>
@@ -123,7 +116,7 @@ export default function Detail() {
       </HeadDiv>
       <DetailedDiv isMaxWidth={isMaxWidth}>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
-          <DetailedCenter list={list} stickerList={...stickerList} />
+          <DetailedCenter stickerList={...stickerList} />
           <CompleteButton></CompleteButton>
         </DetailedDivCenter>
       </DetailedDiv>
