@@ -37,19 +37,19 @@ const CenterBox = styled.div<{ isClear: boolean; isCenter: number }>`
   background-color: ${({ isCenter, isClear }) =>
     isCenter === 2
       ? isClear
-        ? '#AD0000'
-        : '#FEFBFB'
+        ? '#8A0000'
+        : '#FFCCCC'
       : isClear
-      ? '#006616'
-      : '#FBFEFC'};
+      ? '#005C24'
+      : '#D6F5E1'};
   color: ${({ isCenter, isClear }) =>
     isCenter === 2
       ? isClear
-        ? '#FEFBFB'
-        : '#AD0000'
+        ? '#FFCCCC'
+        : '#8A0000'
       : isClear
-      ? '#FBFEFC'
-      : '#006616'};
+      ? '#D6F5E1'
+      : '#005C24'};
   border: 1px solid #888888;
 
   white-space: wrap;
@@ -150,7 +150,7 @@ const Box = styled(Link)<{ isClear: boolean }>`
 
   &:hover {
     color: #000000;
-    background-color: #e5e5e5;
+    background-color: ${({ isClear }) => (isClear ? '#DFEF9D' : '#e5e5e5')};
     border-color: #000000;
   }
 
@@ -230,7 +230,7 @@ export const GoalBox = ({
       isClear={isClear ? isClear : false}
       onClick={handleGoToDetail}
     >
-      {isPodo ? (
+      {isPodo && !isClear ? (
         <Badge>
           <FontAwesomeIcon
             icon={icon}
