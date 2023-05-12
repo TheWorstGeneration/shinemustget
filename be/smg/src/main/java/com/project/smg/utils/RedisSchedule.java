@@ -69,7 +69,7 @@ public class RedisSchedule {
             redisTemplate.delete(changeKey);
 
         }
-        // TODO redis 삭제는 일주일에 한 번 -> 나중에 Scheduled 로 빼기
+        // Todo redis 삭제는 일주일에 한 번 -> 나중에 Scheduled 로 빼기
         // 기존 redis caching 데이터 삭제
         deleteLikeFromRedis();
 
@@ -82,7 +82,6 @@ public class RedisSchedule {
         findTitle.setLikeCnt(likeCnt);
         
     }
-
 
     private void deleteLikeFromRedis() {
         // 기존 redis caching 데이터 삭제
