@@ -24,5 +24,4 @@ public interface MandalartService {
 
     public SearchDetailResponseDto getSearchDetail(String mid, int id);
     public void clearGoal(String mid, int id);
-
 }

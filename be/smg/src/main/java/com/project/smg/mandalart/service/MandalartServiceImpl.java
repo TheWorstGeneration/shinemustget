@@ -1,5 +1,7 @@
 package com.project.smg.mandalart.service;
 
+import co.elastic.clients.elasticsearch._types.analysis.Tokenizer;
+import co.elastic.clients.elasticsearch._types.analysis.TokenizerBuilders;
 import com.project.smg.mandalart.dto.*;
 import com.project.smg.mandalart.entity.*;
 import com.project.smg.mandalart.repository.*;
@@ -11,10 +13,16 @@ import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.repository.PodoRepository;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
@@ -45,6 +53,7 @@ public class MandalartServiceImpl implements MandalartService {
     private final SmallGoalRepository smallGoalRepository;
     private final SearchRepository searchRepository;
     private final BigGoalRepository bigGoalRepository;
+    private final ElasticsearchOperations elasticsearchOperations;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
     /** Gpt 요청 */
@@ -192,11 +201,20 @@ public class MandalartServiceImpl implements MandalartService {
     @Override
     public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
-        Page<SearchDocument> pageEls = searchRepository.findAllByTitleOrderByLikeCntDesc(word, page);
-        List<SearchDto> searchList = new ArrayList<>();
-        if(pageEls.isEmpty()) return searchList;
 
-        List<SearchDocument> content = pageEls.getContent();
+
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchQuery("title.ngram", word))
+                .withPageable(page)
+                .build();
+
+        SearchHits<SearchDocument> search = elasticsearchOperations.search(searchQuery, SearchDocument.class);
+        List<SearchDocument> content = search.stream()
+                .map(SearchHit::getContent)
+                .collect(Collectors.toList());
+
+        List<SearchDto> searchList = new ArrayList<>();
+        if(search.isEmpty()) return searchList;
 
         searchList = content.stream()
                 .map(title -> SearchDto.builder()
@@ -308,6 +326,7 @@ public class MandalartServiceImpl implements MandalartService {
         }
         return check;
     }
+
 
     /** 완료된 만다라트 ElasticSearch에 저장 */
     public void saveClearTitle(Title title) {

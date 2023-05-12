@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "search_title")
+@Document(indexName = "search_test1")
 public class SearchDocument {
     @Id
     @Field(type = FieldType.Integer)
