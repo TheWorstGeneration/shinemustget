@@ -172,7 +172,6 @@ public class PodoServiceImpl implements PodoService {
         }else {
             log.info("스페셜 포도 검사 대상자 아닙니다.");
         }
-
     }
 
     /** 회원 스티커 종류
@@ -180,7 +179,6 @@ public class PodoServiceImpl implements PodoService {
      */
     @Override
     public List<StickerDto> sticker(String mid) {
-
         // 멤버가 가진 포도 스티커 id 리스트
         List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(mid);
 
