@@ -7,7 +7,6 @@ import com.project.smg.mandalart.service.MandalartLikeService;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.repository.MemberPodoRepository;
-import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.dto.*;
 import com.project.smg.podo.repository.PodoRepository;
 import com.project.smg.podo.repository.PodoTypeRepository;
@@ -156,6 +155,7 @@ public class PodoServiceImpl implements PodoService {
      *      현재 날짜를 받아서 한달 minus 해주고 그 specialStickerDate와 비교
      *      다시 null
      * */
+
     @Override
     @Transactional
     public void checkSpecialStickerTime(Member member) {
