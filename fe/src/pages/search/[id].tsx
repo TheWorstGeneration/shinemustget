@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
 import SearchResult from '@/components/organisms/SearchResult/SearchResult';
-import { useRouter } from 'next/router';
 import { MANDALART_SEARCH } from '@/constants/queryKey';
-import { QueryClient } from 'react-query';
+import { QueryClient, dehydrate } from 'react-query';
+import getSearch from '../api/getSearch';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const SearchSection = styled.section`
   display: flex;
@@ -27,10 +30,13 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
   }
 `;
 
-const Search = ({ searchData }: any) => {
+const Search = (props: any) => {
   const isMaxWidth = useInnerWidth() >= 1440;
 
-  console.log(searchData);
+  const router = useRouter();
+  const { id } = router.query; // 경로 변수 가져오기
+
+  const [searchList, setSearchList] = useState(props.queries[0].state.data);
 
   return (
     <SearchSection>
@@ -41,22 +47,23 @@ const Search = ({ searchData }: any) => {
   );
 };
 
-export async function getServerSideProps(context: any) {
-  const { query } = context;
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const queryClient = new QueryClient();
+  const { query } = context;
+  const searchData = query.id;
 
-  // await queryClient.prefetchQuery(MANDALART_SEARCH, getSearch, {
-  //   staleTime: 10000,
-  //   cacheTime: 20000,
-  // });
-
-  const searchData = query.id; // 데이터 가져오는 로직
+  await queryClient.prefetchQuery(
+    MANDALART_SEARCH,
+    () => getSearch(searchData, 0),
+    {
+      staleTime: 10000,
+      cacheTime: 20000,
+    },
+  );
 
   return {
-    props: {
-      searchData,
-    },
+    props: dehydrate(queryClient),
   };
-}
+};
 
 export default Search;
