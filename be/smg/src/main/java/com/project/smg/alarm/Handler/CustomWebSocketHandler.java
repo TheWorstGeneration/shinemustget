@@ -1,7 +1,7 @@
 package com.project.smg.alarm.Handler;
 
 import com.project.smg.alarm.dto.SendAlarmDto;
-import com.project.smg.alarm.service.AlarmService;
+import com.project.smg.alarm.service.AlarmMakeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;
@@ -10,8 +10,6 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,21 +17,21 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomWebSocketHandler extends TextWebSocketHandler {
-    private final Map<String, List<WebSocketSession>> userSessions = new HashMap<>();
-    private final AlarmService alarmService;
+    private final Map<String, WebSocketSession> userSessions = new HashMap<>();
+    private final AlarmMakeService alarmMakeService;
 
     public void addSession(String memberId, WebSocketSession session) {
-        userSessions.computeIfAbsent(memberId, k -> new ArrayList<>()).add(session);
+        if (!userSessions.containsKey(memberId)) {
+            userSessions.put(memberId, session);
+        }
     }
 
-    public List<WebSocketSession> getUserSessions(String memberId) {
-        return userSessions.getOrDefault(memberId, new ArrayList<>());
+    public WebSocketSession getUserSession(String memberId) {
+        return userSessions.get(memberId);
     }
 
-    public void removeSession(String memberId, WebSocketSession session) {
-        List<WebSocketSession> sessions = getUserSessions(memberId);
-        sessions.remove(session);
-        if (sessions.isEmpty()) {
+    public void removeSession(String memberId) {
+        if (userSessions.containsKey(memberId)) {
             userSessions.remove(memberId);
         }
     }
@@ -46,9 +44,9 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         addSession(memberId, session);
         log.info("연결한 유저 {}", memberId);
 
-        Map<String, Object> result = alarmService.alarmDtoList(memberId, 0.0);
+        Map<String, Object> result = alarmMakeService.alarmDtoList(memberId, 0.0);
         List<SendAlarmDto> alarmDtoList = (List<SendAlarmDto>) result.get("sendAlarmDtoList");
-        double nextSocre = (double) result.get("nextSocre");
+        double nextScore = (double) result.get("nextScore");
 
         log.info("메세지 조회 {}", alarmDtoList.size());
 
@@ -59,7 +57,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             session.sendMessage(message);
         }
 
-        session.sendMessage(new TextMessage(Double.toString(nextSocre)));
+        session.sendMessage(new TextMessage(Double.toString(nextScore)));
 
         log.info("메세지 조회 성공");
     }
@@ -71,9 +69,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        String memberId = (String) session.getAttributes().get("memberId");
-        removeSession(memberId, session);
-        log.info("소켓 연결 종료");
+        String memberId = (String) session.getAttributes().get("id");
+        removeSession(memberId);
+        log.info("유저 로그아웃 {}", memberId);
+        log.info("소켓 연결 종료 {}", status);
+        session.close();
     }
 
 }

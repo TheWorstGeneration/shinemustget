@@ -1,27 +1,24 @@
 package com.project.smg.alarm.service;
 
-import com.project.smg.alarm.Handler.CustomWebSocketHandler;
 import com.project.smg.alarm.dto.AlarmDto;
 import com.project.smg.alarm.dto.SendAlarmDto;
 import com.project.smg.alarm.repository.RedisAlarmRepository;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.TitleRepository;
-import com.project.smg.mandalart.service.MandalartLikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AlarmServiceImpl implements AlarmService {
+public class AlarmMakeServiceImpl implements AlarmMakeService {
     private final RedisAlarmRepository redisAlarmRepository;
     private final TitleRepository titleRepository;
 
@@ -53,15 +50,15 @@ public class AlarmServiceImpl implements AlarmService {
                 .map(dto -> new SendAlarmDto(dto.getMessage(), dto.getCreatedAt()))
                 .collect(Collectors.toList());
 
-        double nextSocre = (double) map.get("lastScore");
+        double nextScore = (double) map.get("lastScore");
 
         log.info("메세지 조회 {}", sendAlarmDtoList.size());
-        log.info("nextSocre {}", nextSocre);
+        log.info("nextScore {}", nextScore);
 
         Map<String, Object> result = new HashMap<>();
 
         result.put("sendAlarmDtoList", sendAlarmDtoList);
-        result.put("nextSocre", nextSocre);
+        result.put("nextScore", nextScore);
 
         return result;
     }
