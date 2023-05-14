@@ -22,6 +22,8 @@ const getSearch = async (
     .get<SearchDto[]>(MANDALART_SEARCH + queryKey + `/${page}`)
     .then(res => res.data);
 
+  console.log('axios search');
+
   return data;
 };
 

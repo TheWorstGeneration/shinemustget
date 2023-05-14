@@ -31,8 +31,6 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
 const Search = (props: any) => {
   const isMaxWidth = useInnerWidth() >= 1440;
 
-  console.log(props);
-
   return (
     <SearchSection>
       <SearchContainer isMaxWidth={isMaxWidth}>

@@ -51,6 +51,9 @@ const SearchResult = () => {
   const nextData = useQuery(MANDALART_SEARCH, () => getSearch(id, page));
 
   useEffect(() => {
+    if (searchList === nextData.data) {
+      setSearchList([]);
+    }
     if (nextData.isSuccess) {
       setSearchList(prevSearchList => [...prevSearchList, ...nextData.data]);
     }
@@ -76,7 +79,14 @@ const SearchResult = () => {
   // 다음 페이지 불러오기
   useEffect(() => {
     nextData.refetch();
-  }, [page]);
+  }, [page, id]);
+
+  // 검색어 변경시
+  useEffect(() => {
+    setSearchList([]);
+    setPage(0);
+    nextData.refetch();
+  }, [id]);
 
   // 바닥인지 감지
   const [isBottom, setIsBottom] = useState(false);
