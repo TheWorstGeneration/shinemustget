@@ -199,16 +199,26 @@ public class MandalartServiceImpl implements MandalartService {
 
     /** 만다라트 검색 */
     @Override
-    public List<SearchDto> getSearchMandalart(String mid, String word, String pageNo) {
-        PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10, Sort.by("likeCnt").descending());
+    public List<SearchDto> getSearchMandalart(String mid, String option, String word, String pageNo) {
+        PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10);
+        Sort sort = Sort.by(Sort.Direction.DESC, "likeCnt");
 
+        NativeSearchQuery query = null;
 
-        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchQuery("title.ngram", word))
-                .withPageable(page)
-                .build();
+        if(option.equals("like")){
+            query = new NativeSearchQueryBuilder()
+                    .withQuery(QueryBuilders.matchQuery("title.ngram", word))
+                    .withPageable(page)
+                    .withSort(sort)
+                    .build();
+        }else if(option.equals("accuracy")){
+             query = new NativeSearchQueryBuilder()
+                    .withQuery(QueryBuilders.matchQuery("title.ngram", word))
+                    .withPageable(page)
+                    .build();
+        }
 
-        SearchHits<SearchDocument> search = elasticsearchOperations.search(searchQuery, SearchDocument.class);
+        SearchHits<SearchDocument> search = elasticsearchOperations.search(query, SearchDocument.class);
         List<SearchDocument> content = search.stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
@@ -286,6 +296,7 @@ public class MandalartServiceImpl implements MandalartService {
             smallGoalRepository.save(smallGoal);
         }
     }
+
 
     /** 빅골 완료시 타이틀 완료되는지 체크 */
     @Transactional

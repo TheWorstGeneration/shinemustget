@@ -67,9 +67,9 @@ public class MandalartController {
         return new ResponseEntity<>(searchDetail, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{word}/{pageNo}")
-    public ResponseEntity<?> getSearch(@RequestAttribute("id") String mid, @PathVariable String word, @PathVariable String pageNo){
-        List<SearchDto> searchMandalart = mandalartService.getSearchMandalart(mid, word, pageNo);
+    @GetMapping("/search/{option}/{word}/{pageNo}")
+    public ResponseEntity<?> getSearch(@RequestAttribute("id") String mid, @PathVariable String option, @PathVariable String word, @PathVariable String pageNo){
+        List<SearchDto> searchMandalart = mandalartService.getSearchMandalart(mid, option, word, pageNo);
 //        if(searchMandalart.isEmpty()) return new ResponseEntity<>(new ResponseDto(500, "검색 실패"), HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(searchMandalart, HttpStatus.OK);
     }
