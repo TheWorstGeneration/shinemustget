@@ -10,6 +10,7 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,5 +75,20 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         log.info("유저 로그아웃 {}", memberId);
         log.info("소켓 연결 종료 {}", status);
         session.close();
+    }
+
+    public void sendMessageToUser(String memberId, String message) {
+        WebSocketSession session = userSessions.get(memberId);
+        if (session != null && session.isOpen()) {
+            TextMessage textMessage = new TextMessage(message);
+            try {
+                session.sendMessage(textMessage);
+            } catch (IOException e) {
+                // 메시지 전송 중 오류 처리
+                log.error("메세지 전송 실패 : {}", memberId, e);
+            }
+        } else {
+            log.warn("수신자의 세션이 닫혀있거나 존재하지 않음 : {}", memberId);
+        }
     }
 }
