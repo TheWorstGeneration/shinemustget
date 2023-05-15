@@ -9,5 +9,12 @@ export const useSocket = () => {
     console.log('소켓 메시지 수신: ', event.data);
   };
 
+  socket.onmessage = function(event) {
+  const message = event.data;
+  console.log('받은 메시지:', message);
+
+  // 여기에서 메시지를 처리하거나 원하는 동작을 수행할 수 있습니다.
+  };
+
   return socket;
 };
