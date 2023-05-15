@@ -1,11 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import postSmallGoal from '@/pages/api/postSmallGoal';
 import { selectGoal, setSmallGoal } from '@/store/modules/goal';
+import { selectModal, setCreateButton } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Button = styled.button`
+const Button = styled.button<{ createButton: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,15 +30,24 @@ const Button = styled.button`
   svg {
     margin-right: 0.5rem;
   }
+
+  // createButton이 true일 때만 적용되는 css
+  ${({ createButton }) =>
+    createButton &&
+    `
+    color: #1e9457;
+    background-color: #ffffff;
+  `}
 `;
 
 export const SmallGoalCreateButton = () => {
   const { bigGoalList } = useAppSelector(selectGoal);
+  const { createButton } = useAppSelector(selectModal);
+
   const dispatch = useAppDispatch();
 
   const axiosSmallGoal = async (bigGoalList: string[]) => {
     const SmallGoalDTO = await postSmallGoal(bigGoalList);
-    console.log('plz', SmallGoalDTO);
     if (SmallGoalDTO) {
       Object.entries(SmallGoalDTO).forEach(([key, smallGoalList]) => {
         const i = bigGoalList.indexOf(key);
@@ -49,6 +60,7 @@ export const SmallGoalCreateButton = () => {
 
   const handleCreateSmallGoal = () => {
     axiosSmallGoal(bigGoalList);
+    dispatch(setCreateButton());
   };
 
   return (
@@ -56,8 +68,13 @@ export const SmallGoalCreateButton = () => {
       type="button"
       title="중간 목표를 기반으로 세부 목표를 작성합니다."
       onClick={handleCreateSmallGoal}
+      createButton={createButton}
+      disabled={createButton}
     >
-      <FontAwesomeIcon icon={faPaperPlane} />
+      <FontAwesomeIcon
+        icon={createButton ? faSpinner : faPaperPlane}
+        spinPulse={createButton}
+      />
       세부 목표 작성
     </Button>
   );

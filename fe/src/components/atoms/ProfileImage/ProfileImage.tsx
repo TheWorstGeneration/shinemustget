@@ -22,10 +22,15 @@ const Profile = styled(Image)`
 
 export const ProfileImage = () => {
   const router = useRouter();
+  const { pathname } = router;
   const { imageUrl } = useAppSelector(selectProfile);
 
   const handleProfile = () => {
-    router.push('/profile');
+    if (pathname === '/create') {
+      alert(' 먼저 만다라트를 제작해주세요!');
+    } else {
+      router.push('/profile');
+    }
   };
 
   return (
