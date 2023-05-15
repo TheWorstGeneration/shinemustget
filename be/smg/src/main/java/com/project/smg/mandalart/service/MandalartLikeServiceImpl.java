@@ -45,9 +45,13 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         saveRedisLike(id, key, setOperations);
 
         if (setOperations.isMember(key, mid)){ // 좋아요 취소
-            log.info("Redis에 좋아요 삭제");
-            setOperations.remove(key, mid);
-            // 변경여부체크
+            if(setOperations.isMember(subKey, mid)){
+                setOperations.add(key,mid);
+                log.info("좋아요 유지");
+            }else {
+                log.info("Redis에 좋아요 삭제");
+                setOperations.remove(key, mid);
+            }// 변경여부체크
             checkChange(mid, subKey, setOperations);
 
         }else{ // 좋아요
