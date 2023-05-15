@@ -5,7 +5,7 @@ import com.project.smg.member.entity.Likes;
 import com.project.smg.member.entity.Member;
 
 public interface MandalartLikeService {
-    void mandalartLike(String mid, int id);
+    void mandalartLike(String mid, int id) throws Exception;
 
     Title checkTitle(int id);
 

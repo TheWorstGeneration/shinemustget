@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { faBuromobelexperte } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const LogoLink = styled(Link)`
   display: flex;
@@ -28,10 +29,13 @@ const LogoLink = styled(Link)`
 export const Logo = () => {
   const { isLogin } = useAppSelector(selectProfile);
   const url = isLogin ? '/home' : '/';
+  const router = useRouter();
+  const { pathname } = router;
+  const isCreatePage = pathname === '/create';
 
   return (
     <LogoLink
-      href={url}
+      href={isCreatePage ? '/create' : url}
       passHref={true}
       aria-label={'redirect to landing page'}
       title={'landing page'}

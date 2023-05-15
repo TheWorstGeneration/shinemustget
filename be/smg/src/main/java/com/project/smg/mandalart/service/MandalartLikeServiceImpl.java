@@ -1,6 +1,6 @@
 package com.project.smg.mandalart.service;
 
-import com.project.smg.alarm.service.sendService;
+import com.project.smg.alarm.service.AlarmSendService;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
     private final LikeRepository likeRepository;
     private final RedisTemplate redisTemplate;
     private final MemberRepository memberRepository;
-    private final sendService sendService;
+    private final AlarmSendService alarmSendService;
     /**
      * 좋아요
      * 1) redis 조회
@@ -33,7 +32,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
      * */
     @Override
     @Transactional
-    public void mandalartLike(String mid, int id) {
+    public void mandalartLike(String mid, int id) throws Exception {
         // Title 확인
         Title findTitle = checkTitle(id);
         String key = "like::"+id;
@@ -46,9 +45,13 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         saveRedisLike(id, key, setOperations);
 
         if (setOperations.isMember(key, mid)){ // 좋아요 취소
-            log.info("Redis에 좋아요 삭제");
-            setOperations.remove(key, mid);
-            // 변경여부체크
+            if(setOperations.isMember(subKey, mid)){
+                setOperations.add(key,mid);
+                log.info("좋아요 유지");
+            }else {
+                log.info("Redis에 좋아요 삭제");
+                setOperations.remove(key, mid);
+            }// 변경여부체크
             checkChange(mid, subKey, setOperations);
 
         }else{ // 좋아요
@@ -56,7 +59,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
             setOperations.add(key,mid);
             // 변경여부체크
             checkChange(mid, subKey, setOperations);
-            sendService.sendAlarm(id);
+            alarmSendService.sendAlarm(id);
         }
     }
 

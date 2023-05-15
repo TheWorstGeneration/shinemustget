@@ -214,7 +214,14 @@ export const GoalBox = ({
   };
 
   const handleGoToDetail = () => {
-    dispatch(setPodo({ content: content, isPodo: isPodo, isToday: isToday }));
+    dispatch(
+      setPodo({
+        content: content,
+        isPodo: isPodo,
+        isToday: isToday,
+        isClear: isClear,
+      }),
+    );
     dispatch(setIdx(id ? id : 0));
   };
 

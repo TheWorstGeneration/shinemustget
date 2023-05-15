@@ -21,7 +21,7 @@ const Button = styled.button`
 `;
 
 export function CompleteButton() {
-  const { index } = useAppSelector(selectIdx);
+  const { index, content, isClear } = useAppSelector(selectIdx);
   const router = useRouter();
 
   const handleComplete = () => {
@@ -30,8 +30,13 @@ export function CompleteButton() {
   };
 
   return (
-    <Button type="button" title="세부 목표 달성" onClick={handleComplete}>
-      완료
+    <Button
+      type="button"
+      title="세부 목표 달성"
+      onClick={handleComplete}
+      disabled={isClear}
+    >
+      {isClear ? '이미 완료된 목표입니다.' : `${content} 완료하기`}
     </Button>
   );
 }

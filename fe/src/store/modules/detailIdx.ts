@@ -21,6 +21,7 @@ export interface idxSlice {
   isPodo: boolean;
   content: string;
   isToday: boolean;
+  isClear: boolean;
   result: Result;
 }
 
@@ -30,6 +31,7 @@ const initialState = {
   isPodo: false,
   content: null,
   isToday: false,
+  isClear: false,
   result: {
     pageCnt: 0,
     podosList: [
@@ -58,6 +60,7 @@ const detailSlice = createSlice({
       state.isPodo = action.payload.isPodo;
       state.content = action.payload.content;
       state.isToday = action.payload.isToday;
+      state.isClear = action.payload.isClear;
     },
     setIsPodo: state => {
       state.isPodo = !state.isPodo;
