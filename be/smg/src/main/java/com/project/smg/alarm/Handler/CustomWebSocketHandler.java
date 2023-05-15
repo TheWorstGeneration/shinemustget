@@ -50,8 +50,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
         log.info("메세지 조회 {}", alarmDtoList.size());
 
-        for(int i = 0; i < alarmDtoList.size(); i++){
-            String msg = alarmDtoList.get(i).getMessage() + " " + alarmDtoList.get(i).getCreatedAt();
+        for (int i = 0; i < alarmDtoList.size(); i++) {
+            String msg = alarmDtoList.get(i).getMessage() + " " + alarmDtoList.get(i).getFormattedCreatedAt();
             System.out.println(i + " " + msg);
             TextMessage message = new TextMessage(msg);
             session.sendMessage(message);
@@ -75,5 +75,4 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         log.info("소켓 연결 종료 {}", status);
         session.close();
     }
-
 }

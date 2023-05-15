@@ -10,10 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,12 +27,17 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
         Title title = titleRepository.findById(id).orElse(null);
 
         String message = "다른 사용자가 " + title.getContent() + " 만다라트에 좋아요 표시를 했습니다.";
+
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
         AlarmDto alarmDto = AlarmDto.builder()
                 .memberId(memberId)
                 .titleName(title.getContent())
                 .titleId(title.getId())
                 .message(message)
                 .createdAt(LocalDateTime.now())
+                .formattedCreatedAt(time.format(formatter))
                 .build();
 
         redisAlarmRepository.save(alarmDto);
@@ -44,12 +49,8 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
     public Map<String, Object> alarmDtoList(String memberId, double lastSocre) {
         log.info("메세지 목록 가져오기");
         Map<String, Object> map = redisAlarmRepository.getLatestAlarms(memberId, lastSocre);
-        List<AlarmDto> alarmDtoList = (List<AlarmDto>) map.get("alarms");
 
-        List<SendAlarmDto> sendAlarmDtoList = alarmDtoList.stream()
-                .map(dto -> new SendAlarmDto(dto.getMessage(), dto.getCreatedAt()))
-                .collect(Collectors.toList());
-
+        List<SendAlarmDto> sendAlarmDtoList = (List<SendAlarmDto>) map.get("alarms");
         double nextScore = (double) map.get("lastScore");
 
         log.info("메세지 조회 {}", sendAlarmDtoList.size());

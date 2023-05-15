@@ -20,11 +20,12 @@ public class sendServiceImpl implements sendService{
     @Override
     public void sendAlarm(String memberId, int id) {
         Title title = titleRepository.findById(id).orElse(null);
+
         String opponentId = title.getMember().getId();
 
         WebSocketSession session = customWebSocketHandler.getUserSession(opponentId);
         AlarmDto alarmDto = alarmMakeService.saveAlarm(opponentId, id);
-        TextMessage message = new TextMessage(alarmDto.getMessage() + " " + alarmDto.getCreatedAt());
+        TextMessage message = new TextMessage(alarmDto.getMessage() + " " + alarmDto.getFormattedCreatedAt());
 
     }
 

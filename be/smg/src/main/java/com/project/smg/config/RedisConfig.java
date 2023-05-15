@@ -59,7 +59,6 @@ public class RedisConfig {
         return alarmRedisTemplate;
     }
 
-
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
