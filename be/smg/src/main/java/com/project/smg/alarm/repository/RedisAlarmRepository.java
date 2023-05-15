@@ -57,19 +57,17 @@ public class RedisAlarmRepository implements AlarmRepository {
                 resultMap.put("lastScore", newLastScore);
             }
 
-            System.out.println(resultMap.get("lastScore") + " " + resultMap.get("lastScore").getClass().getName());
 
         } else if (lastScore > 0) {
             // 이전 조회의 시작점을 기준으로 이어서 조회하는 경우
-            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, lastScore, 0, 0, 10);
+            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, lastScore, Double.POSITIVE_INFINITY, 0, 10);
 
-            List<AlarmDto> alarmList = new ArrayList<>();
+            List<SendAlarmDto> alarmList = new ArrayList<>();
             for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
-                alarmList.add(tuple.getValue());
+                alarmList.add(new SendAlarmDto(tuple.getValue().getMessage(), tuple.getValue().getFormattedCreatedAt()));
             }
 
             resultMap.put("alarms", alarmList);
-            resultMap.put("count", alarmList.size());
 
             if (alarmList.size() < 10) {
                 resultMap.put("lastScore", -1.0); // 더 이상 조회할 데이터가 없음을 표시
@@ -77,9 +75,6 @@ public class RedisAlarmRepository implements AlarmRepository {
                 double newLastScore = alarms.iterator().next().getScore(); // 다음 조회의 시작점 Score 값을 추출
                 resultMap.put("lastScore", newLastScore);
             }
-
-            alarmList.stream().forEach(System.out::println);
-            System.out.println(resultMap.get("lastScore") + " " + resultMap.get("lastScore").getClass().getName());
 
         } else {
             // 잘못된 lastScore 값이 전달된 경우
