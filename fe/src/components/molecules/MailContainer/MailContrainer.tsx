@@ -116,7 +116,7 @@ export function MailContainer() {
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
-    console.log(socket);
+    console.log("뿎",socket);
   }, []);
 
   return isLandingPage ? null : (
