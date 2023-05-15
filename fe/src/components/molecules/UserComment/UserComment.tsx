@@ -57,7 +57,7 @@ export function UserComment({ stickerList }: { stickerList: sticker[] }) {
   const [countLetter, setCountLetter] = useState(0);
   const [oneline, setOneLine] = useState('');
   const [imageUrl, setImageUrl] = useState(
-    stickerList == null ? '' : stickerList[0].imageUrl,
+    'https://www.shinemustget.com/images/stickers/default.png',
   );
   const handleOnChange = (e: any) => {
     setCountLetter(e.target.value.length);

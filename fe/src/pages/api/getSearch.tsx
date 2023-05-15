@@ -22,6 +22,9 @@ const getSearch = async (
     .get<SearchDto[]>(MANDALART_SEARCH + queryKey + `/${page}`)
     .then(res => res.data);
 
+  console.log('key', queryKey);
+  console.log('page', page);
+
   return data;
 };
 

@@ -1,6 +1,7 @@
 package com.project.smg.alarm.repository;
 
 import com.project.smg.alarm.dto.AlarmDto;
+import com.project.smg.alarm.dto.SendAlarmDto;
 import com.project.smg.alarm.utils.ChatUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,9 +35,17 @@ public class RedisAlarmRepository implements AlarmRepository {
             // 처음부터 조회하는 경우
             Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, Double.POSITIVE_INFINITY, 0, 10);
 
-            List<AlarmDto> alarmList = new ArrayList<>();
+            List<SendAlarmDto> alarmList = new ArrayList<>();
             for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
-                alarmList.add(tuple.getValue());
+                alarmList.add(new SendAlarmDto(tuple.getValue().getMessage(), tuple.getValue().getFormattedCreatedAt()));
+//                AlarmDto alarm = tuple.getValue();
+//
+//                // createdAt 필드 형식화
+//                LocalDateTime createdAt = alarm.getCreatedAt();
+//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//                String formattedCreatedAt = createdAt.format(formatter);
+//
+//                alarmList.add(new SendAlarmDto(alarm.getMessage(), formattedCreatedAt));
             }
 
             resultMap.put("alarms", alarmList);

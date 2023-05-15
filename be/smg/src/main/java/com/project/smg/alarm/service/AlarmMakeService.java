@@ -7,7 +7,7 @@ import com.project.smg.mandalart.entity.Title;
 import java.util.List;
 import java.util.Map;
 
-public interface AlarmService {
+public interface AlarmMakeService {
     AlarmDto saveAlarm(String memberId, int id);
     Map<String, Object> alarmDtoList(String memberId, double lastSocre);
 }

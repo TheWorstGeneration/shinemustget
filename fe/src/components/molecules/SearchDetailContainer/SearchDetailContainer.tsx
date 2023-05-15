@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { GoalBoxProps } from '@/components/atoms/GoalBox/GoalBox';
 
 const Container = styled.article`
+  margin-top: 5.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,11 +60,8 @@ const Row = styled.div`
 
 const SearchDetailContainer = ({ mandalart }: { mandalart: any }) => {
   const bigList = mandalart?.mandalartRequestDto?.bigRequestDto;
-  console.log(mandalart, '4');
-  console.log(bigList, '5');
 
   const firstRow = bigList.slice(0, 3);
-  console.log('firstRow', firstRow);
   const secondRow = bigList.slice(3, 5);
   const thirdRow = bigList.slice(5, 8);
 
@@ -81,7 +79,7 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any }) => {
   const center = {
     location: 0,
     content: mandalart.mandalartRequestDto.title,
-    smallList: centerSmallList,
+    smallRequestDto: centerSmallList,
     isCenter: 2,
   };
 
@@ -120,6 +118,7 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any }) => {
             smallRequestDto: GoalBoxProps[];
             isCenter: number | undefined;
           }) => {
+            console.log(bigGoal);
             return (
               <GoalBoxContainer2
                 key={bigGoal.location}

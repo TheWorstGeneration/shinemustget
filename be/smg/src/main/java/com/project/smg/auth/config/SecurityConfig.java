@@ -29,7 +29,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+//@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 

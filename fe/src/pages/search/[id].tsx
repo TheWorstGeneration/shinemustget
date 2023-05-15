@@ -5,8 +5,8 @@ import { MANDALART_SEARCH } from '@/constants/queryKey';
 import { QueryClient, dehydrate } from 'react-query';
 import getSearch from '../api/getSearch';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import SockJS from 'sockjs-client';
 
 const SearchSection = styled.section`
   display: flex;
@@ -33,10 +33,8 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
 const Search = (props: any) => {
   const isMaxWidth = useInnerWidth() >= 1440;
 
-  const router = useRouter();
-  const { id } = router.query; // 경로 변수 가져오기
-
-  const [searchList, setSearchList] = useState(props.queries[0].state.data);
+  const socket = new SockJS('https://www.shinemustget.com/api/ws');
+  console.log(socket);
 
   return (
     <SearchSection>

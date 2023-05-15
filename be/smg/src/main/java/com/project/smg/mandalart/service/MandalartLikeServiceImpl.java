@@ -1,5 +1,6 @@
 package com.project.smg.mandalart.service;
 
+import com.project.smg.alarm.service.sendService;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.repository.TitleRepository;
@@ -23,6 +24,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
     private final LikeRepository likeRepository;
     private final RedisTemplate redisTemplate;
     private final MemberRepository memberRepository;
+    private final sendService sendService;
     /**
      * 좋아요
      * 1) redis 조회
@@ -44,16 +46,17 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
         saveRedisLike(id, key, setOperations);
 
         if (setOperations.isMember(key, mid)){ // 좋아요 취소
-            log.info("exist redis, like remove from Redis");
+            log.info("Redis에 좋아요 삭제");
             setOperations.remove(key, mid);
             // 변경여부체크
             checkChange(mid, subKey, setOperations);
 
         }else{ // 좋아요
-            log.info("exist redis, like add from Redis");
+            log.info("Redis에 좋아요 추가");
             setOperations.add(key,mid);
             // 변경여부체크
             checkChange(mid, subKey, setOperations);
+            sendService.sendAlarm(id);
         }
     }
 

@@ -81,7 +81,6 @@ export default function Detail() {
   useEffect(() => {
     podoRead(index).then(response => {
       dispatch(setPodosList(response));
-      console.log(response);
     });
     podoSticker().then(response => {
       setstickerList(response);

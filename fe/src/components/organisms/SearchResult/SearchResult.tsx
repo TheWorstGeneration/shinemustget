@@ -50,11 +50,13 @@ const SearchResult = () => {
 
   const nextData = useQuery(MANDALART_SEARCH, () => getSearch(id, page));
 
+  console.log(nextData);
+
   useEffect(() => {
-    if (nextData.isSuccess) {
+    if (!nextData.isRefetching && nextData.isSuccess) {
       setSearchList(prevSearchList => [...prevSearchList, ...nextData.data]);
     }
-  }, [nextData.data]);
+  }, [nextData.isRefetching]);
 
   // 검색 결과 인덱스
   const [sortIndex, setSortIndex] = useState<string>('like');
@@ -76,7 +78,24 @@ const SearchResult = () => {
   // 다음 페이지 불러오기
   useEffect(() => {
     nextData.refetch();
-  }, [page]);
+  }, [page, id]);
+
+  // 검색어 변경시
+  useEffect(() => {
+    setSearchList([]);
+
+    const reFetch = async () => {
+      await handleTest();
+      await nextData.refetch();
+    };
+
+    reFetch();
+  }, [id]);
+
+  const handleTest = async () => {
+    console.log(123);
+    setPage(0);
+  };
 
   // 바닥인지 감지
   const [isBottom, setIsBottom] = useState(false);
@@ -105,6 +124,7 @@ const SearchResult = () => {
     if (isBottom) {
       if (nextData.data?.length === 10) {
         setPage(prevPage => prevPage + 1);
+        console.log(456);
       }
     }
   }, [isBottom]);
