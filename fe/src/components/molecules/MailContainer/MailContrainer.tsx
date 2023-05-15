@@ -93,6 +93,7 @@ export function MailContainer() {
   const isLandingPage = router.pathname === '/';
 
   const [isClicked, setIsClicked] = useState(false);
+  const [mailList,setMailList] = useState("");
   const isMaxWidth = useInnerWidth() > 1440;
   const isActive = isClicked || isMaxWidth;
 
@@ -116,10 +117,11 @@ export function MailContainer() {
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
-
+    
       socket.onmessage = (event) => { 
         const message = event.data;
         console.log("앙 메세지띠", message);
+        console.log("앙 메세지띠2", message.message);
     }
     
   }, [socket]);
