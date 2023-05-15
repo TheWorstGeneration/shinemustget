@@ -3,17 +3,21 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal, setBigGoal } from '@/store/modules/goal';
 import { selectModal } from '@/store/modules/modal';
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import defaultImage from '../../../../public/assets/images/grapeBoard/default.png';
+import smileImage from '../../../../public/assets/images/grapeBoard/smile.png';
+import { keyframes } from '@emotion/react';
 
 const BigGoalList = styled.article`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: start;
 
   position: relative;
 
   width: 712px;
-  height: 100vh;
+  height: calc(100vh - 7rem);
 
   @media screen and (max-width: 960px) {
     width: 512px;
@@ -50,6 +54,8 @@ const BigGoals = styled.div`
 
   width: 100%;
   height: 50vh;
+
+  margin: 1rem 0;
 `;
 
 const BigGoalContainer = styled.div`
@@ -123,6 +129,18 @@ const BigGoalTextLength = styled.span`
   color: #718f80;
 `;
 
+const UxTag = styled.span<{ isInputBox: boolean }>`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  transform: ${props => (props.isInputBox ? 'translateY(0)' : 'translateY(0)')};
+`;
+
 const YouCanEdit = styled.h2<{ isInputBox: boolean }>`
   font-size: 1rem;
   font-weight: 600;
@@ -130,17 +148,19 @@ const YouCanEdit = styled.h2<{ isInputBox: boolean }>`
   color: #718f80;
   text-align: center;
   width: 100%;
-  transform: ${props =>
-    props.isInputBox ? 'translateY(-10em)' : 'translateY(0)'};
 `;
 
 const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: 3rem;
+`;
+
+const Loading = styled(Image)<{ isInputBox: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const BigGoalListContainer = () => {
@@ -155,11 +175,20 @@ export const BigGoalListContainer = () => {
     <BigGoalList>
       <MandalartTitle>{title}</MandalartTitle>
       {title === '' ? (
-        <YouCanEdit isInputBox={isInputBox}>
-          {isInputBox
-            ? '장기적인 목표를 작성할수록 좋은 결과를 가져옵니다.'
-            : 'Shine Must Get이 당신의 만다라트를 작성 중 입니다.'}
-        </YouCanEdit>
+        <UxTag isInputBox={isInputBox}>
+          <Loading
+            src={isInputBox ? smileImage : defaultImage}
+            alt="loading"
+            width={100}
+            height={100}
+            isInputBox={isInputBox}
+          />
+          <YouCanEdit isInputBox={isInputBox}>
+            {isInputBox
+              ? '장기적인 목표를 작성할수록 좋은 결과를 가져옵니다.'
+              : 'Shine Must Get이 당신의 만다라트를 작성 중 입니다.'}
+          </YouCanEdit>
+        </UxTag>
       ) : (
         <>
           <BigGoals>

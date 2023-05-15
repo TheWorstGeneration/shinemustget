@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@/hooks/useRedux';
 import { deleteMandalart } from '@/pages/api/deleteMandalart';
 import { setResetGoal } from '@/store/modules/goal';
-import { setResetInputBox } from '@/store/modules/modal';
+import { setResetCreateButton, setResetInputBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,6 +57,7 @@ export const DeleteButton = () => {
       deleteMandalart();
       dispatch(setResetGoal());
       dispatch(setResetInputBox());
+      dispatch(setResetCreateButton());
       router.push('/create');
     }
   };
