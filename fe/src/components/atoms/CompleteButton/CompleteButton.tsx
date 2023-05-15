@@ -24,8 +24,8 @@ export function CompleteButton() {
   const { index, content, isClear } = useAppSelector(selectIdx);
   const router = useRouter();
 
-  const handleComplete = () => {
-    mandalartClear(index);
+  const handleComplete = async () => {
+    await mandalartClear(index);
     router.push('/home');
   };
 
