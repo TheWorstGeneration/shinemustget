@@ -1,5 +1,6 @@
 import { MailBox } from '@/components/atoms/MailBox/MailBox';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
+import { useSocket } from '@/hooks/useSocket';
 import styled from '@emotion/styled';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { faCheckDouble } from '@fortawesome/free-solid-svg-icons';
@@ -110,9 +111,12 @@ export function MailContainer() {
     // console.log('전체 확인');
   };
 
+  const socket = useSocket();
+
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
+    console.log(socket);
   }, []);
 
   return isLandingPage ? null : (
