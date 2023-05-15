@@ -38,7 +38,7 @@ const initialState = {
         podoDtoList: [
           {
             id: 0,
-            imageUrl: "",
+            imageUrl: '',
           },
         ],
       },
