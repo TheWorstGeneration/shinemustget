@@ -1,7 +1,9 @@
+import mandalartLike from '@/pages/api/postMandalartLike';
 import styled from '@emotion/styled';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faHeart as fillHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
 const LikeBox = styled.div`
   display: flex;
@@ -16,17 +18,29 @@ const LikeBox = styled.div`
 `;
 
 const Like = (props: {
+  id: number;
   isLike: boolean;
   likeCnt: number;
   isProfile: boolean;
 }) => {
-  const isLike = props.isLike;
-  const likeCnt = props.likeCnt;
   const isProfile = props.isProfile;
+  const id = props.id;
 
-  const handleLikeClick = () => {
-    console.log('likeClick');
+  const [isLike, setIsLike] = useState(props.isLike);
+  const [likeCnt, setLikeCnt] = useState(props.likeCnt);
+
+  const handleLikeClick = async () => {
+    const res: any = await mandalartLike(id);
+    if (res.statusCode === 200) {
+      if (isLike) {
+        setLikeCnt(prev => prev - 1);
+      } else {
+        setLikeCnt(prev => prev + 1);
+      }
+      setIsLike(prev => !prev);
+    }
   };
+
   return (
     <LikeBox>
       {isLike

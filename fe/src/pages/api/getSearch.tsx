@@ -15,11 +15,14 @@ interface SearchBigDto {
 }
 
 const getSearch = async (
+  queryIndex: string,
   queryKey: string | string[] | undefined,
   page: number,
 ) => {
   const data = await customAxios
-    .get<SearchDto[]>(MANDALART_SEARCH + queryKey + `/${page}`)
+    .get<SearchDto[]>(
+      MANDALART_SEARCH + queryIndex + '/' + queryKey + `/${page}`,
+    )
     .then(res => res.data);
 
   console.log('key', queryKey);

@@ -120,7 +120,7 @@ export const BigGoalMandalart = (props: any) => {
           )}
         </MandalartdBox>
       </MandalartContainer>
-      <Like isLike={isLike} likeCnt={likeCnt} isProfile={isProfile} />
+      <Like id={id} isLike={isLike} likeCnt={likeCnt} isProfile={isProfile} />
     </>
   );
 };
