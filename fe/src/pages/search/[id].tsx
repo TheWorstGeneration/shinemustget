@@ -5,8 +5,6 @@ import { MANDALART_SEARCH } from '@/constants/queryKey';
 import { QueryClient, dehydrate } from 'react-query';
 import getSearch from '../api/getSearch';
 import { GetServerSideProps } from 'next';
-import { useEffect } from 'react';
-import SockJS from 'sockjs-client';
 
 const SearchSection = styled.section`
   display: flex;
@@ -33,9 +31,6 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
 const Search = (props: any) => {
   const isMaxWidth = useInnerWidth() >= 1440;
 
-  const socket = new SockJS('https://www.shinemustget.com/api/ws');
-  console.log(socket);
-
   return (
     <SearchSection>
       <SearchContainer isMaxWidth={isMaxWidth}>
@@ -52,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
   await queryClient.prefetchQuery(
     MANDALART_SEARCH,
-    () => getSearch(searchData, 0),
+    () => getSearch('accuracy/', searchData, 0),
     {
       staleTime: 10000,
       cacheTime: 20000,
