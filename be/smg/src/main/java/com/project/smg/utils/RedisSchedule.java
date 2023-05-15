@@ -3,6 +3,7 @@ package com.project.smg.utils;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.service.MandalartLikeService;
+import com.project.smg.mandalart.service.MandalartService;
 import com.project.smg.member.entity.Likes;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
@@ -25,6 +26,7 @@ public class RedisSchedule {
     private final MandalartLikeService mandalartLikeService;
     private final LikeRepository likeRepository;
     private final RedisTemplate redisTemplate;
+    private final MandalartService mandalartService;
     @Transactional
     @Scheduled(cron = "0 0/3 * * * *")
     public void deleteChangeLikeFromRedis() {
@@ -80,7 +82,7 @@ public class RedisSchedule {
         // 변경된 title id 만 db 개수 조회해서 update
         int likeCnt = likeRepository.countByTitleIdAndStatus(titleId, true).intValue();
         findTitle.setLikeCnt(likeCnt);
-        
+        mandalartService.saveClearTitle(findTitle);
     }
 
     private void deleteLikeFromRedis() {

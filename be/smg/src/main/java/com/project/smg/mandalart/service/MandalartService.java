@@ -3,6 +3,7 @@ package com.project.smg.mandalart.service;
 import com.project.smg.mandalart.dto.BigDto;
 import com.project.smg.mandalart.dto.MandalartRequestDto;
 import com.project.smg.mandalart.dto.SearchDetailResponseDto;
+import com.project.smg.mandalart.entity.Title;
 import com.project.smg.member.dto.SearchDto;
 import org.springframework.scheduling.annotation.Async;
 
@@ -24,4 +25,5 @@ public interface MandalartService {
 
     public SearchDetailResponseDto getSearchDetail(String mid, int id);
     public void clearGoal(String mid, int id);
+    public void saveClearTitle(Title title);
 }
