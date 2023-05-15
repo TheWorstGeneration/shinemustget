@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { GoalBoxProps } from '@/components/atoms/GoalBox/GoalBox';
 
 const Container = styled.article`
+  margin-top: 5.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;

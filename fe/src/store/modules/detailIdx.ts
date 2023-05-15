@@ -7,16 +7,21 @@ interface Podo {
 }
 
 export interface Podos {
-  pageCnt: number;
-  podosList: Podo[];
+  podoCnt: number;
+  podoDtoList: Podo[];
 }
-// state type
+
+interface Result {
+  pageCnt: number;
+  podosList: Podos[];
+}
+
 export interface idxSlice {
   index: number;
   isPodo: boolean;
   content: string;
   isToday: boolean;
-  podosDtoList: Podos;
+  result: Result;
 }
 
 // 초기 상태 정의
@@ -25,12 +30,17 @@ const initialState = {
   isPodo: false,
   content: null,
   isToday: false,
-  podosDtoList: {
+  result: {
     pageCnt: 0,
     podosList: [
       {
-        id: 0,
-        imageUrl: '',
+        podoCnt: 0,
+        podoDtoList: [
+          {
+            id: 0,
+            imageUrl: '',
+          },
+        ],
       },
     ],
   },
@@ -56,7 +66,7 @@ const detailSlice = createSlice({
       state.isToday = !state.isToday;
     },
     setPodosList: (state, action) => {
-      state.podosDtoList = action.payload;
+      state.result = action.payload;
     },
   },
 });
