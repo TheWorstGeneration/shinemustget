@@ -5,10 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -17,7 +16,7 @@ public class testController {
     private final AlarmMakeService alarmMakeService;
 
     @PostMapping("/test/{id}")
-    public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @PathVariable("id") int id) {
-        return new ResponseEntity<>(alarmMakeService.saveAlarm(memberId, id), HttpStatus.OK);
+    public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @PathVariable("id") int id, @RequestBody Map<String, String> map) {
+        return new ResponseEntity<>(alarmMakeService.saveAlarm(memberId, id, map.get("nickname")), HttpStatus.OK);
     }
 }

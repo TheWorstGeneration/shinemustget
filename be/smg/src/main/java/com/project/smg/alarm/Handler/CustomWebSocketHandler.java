@@ -67,6 +67,10 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         String jsonPayload = message.getPayload().toString();
         JsonNode jsonNode = objectMapper.readTree(jsonPayload);
 
+        if(jsonNode.get("cursor").isNull()){
+
+        }
+
         String value = jsonNode.get("cursor").asText();
         String memberId = getMemberId(session);
 
@@ -100,7 +104,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         List<SendAlarmDto> alarmDtoList = (List<SendAlarmDto>) result.get("sendAlarmDtoList");
         double nextScore = (double) result.get("nextScore");
 
-        log.info("메세지 조회 {}", alarmDtoList.size());
+        log.info("메세지 갯수 조회 {}", alarmDtoList.size());
 
 //        for (int i = 0; i < alarmDtoList.size(); i++) {
 //            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList.get(i))));

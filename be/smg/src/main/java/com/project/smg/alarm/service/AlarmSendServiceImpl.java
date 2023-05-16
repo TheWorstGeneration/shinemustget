@@ -18,12 +18,12 @@ public class AlarmSendServiceImpl implements AlarmSendService {
     private final AlarmMakeService alarmMakeService;
 
     @Override
-    public void sendAlarm(int id) throws Exception {
+    public void sendAlarm(String nickname, int id) throws Exception {
         Title title = titleRepository.findById(id).orElse(null);
 
         String opponentId = title.getMember().getId();
 
-        AlarmDto alarmDto = alarmMakeService.saveAlarm(opponentId, id);
+        AlarmDto alarmDto = alarmMakeService.saveAlarm(opponentId, id, nickname);
 //        String message = alarmDto.getMessage() + " " + alarmDto.getFormattedCreatedAt();
         customWebSocketHandler.sendMessageToUser(opponentId, new SendAlarmDto(alarmDto.getMessage(), alarmDto.getFormattedCreatedAt()));
     }
