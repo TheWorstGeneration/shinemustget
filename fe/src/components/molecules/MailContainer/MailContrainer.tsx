@@ -130,8 +130,9 @@ export function MailContainer() {
         setMailList(mail_list);
       } else {
         if (message.cursor != (undefined || '-1')) {
-          socket.send(message.cursor);
-        } else {
+          const jsonStr = JSON.stringify({cursor: message.cursor});
+          socket.send(jsonStr);
+        } else { 
           mail_list.push(message);
           setMailList(mail_list);
         }
