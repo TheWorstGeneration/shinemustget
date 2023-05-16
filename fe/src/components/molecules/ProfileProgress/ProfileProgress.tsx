@@ -62,11 +62,11 @@ export const ProfileProgress = () => {
 
   const title: string = progressProps?.title
     ? progressProps.title
-    : '현재 진행중인 만다라트가 없습니다.';
+    : '현재 진행중인 만다라트가 없어요.';
   const rate: number = progressProps?.rate ? progressProps.rate : 0;
   const goalList: Goal[] = progressProps
     ? progressProps.nowBigGoalDtoList
-    : [{ content: '현재 진행중인 만다라트가 없습니다.', isClear: false }];
+    : [{ content: '현재 진행중인 만다라트가 없어요.', isClear: false }];
 
   return (
     <ProfileProgressContainer>

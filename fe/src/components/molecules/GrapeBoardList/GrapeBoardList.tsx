@@ -156,6 +156,14 @@ const GrapeContainer = styled.div`
   }
 `;
 
+const Sticker = styled(Image)`
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 0.5rem #22222250);
+  }
+`;
+
 export function GrapeBoardList({
   setPodoDetail,
 }: {
@@ -213,7 +221,7 @@ export function GrapeBoardList({
               {podo == null ? (
                 ''
               ) : (
-                <Image
+                <Sticker
                   src={podo.imageUrl}
                   width={40}
                   height={40}

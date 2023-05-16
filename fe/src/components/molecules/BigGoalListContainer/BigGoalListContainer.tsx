@@ -215,7 +215,7 @@ export const BigGoalListContainer = () => {
             수정하고 싶은 목표가 있다면 변경해 보세요.
             <br />
             <br />
-            20자 이하의 목표를 작성하시는 것을 추천드립니다.
+            20자 이하의 목표를 작성하시는 것을 추천해드려요.
           </YouCanEdit>
           <ButtonContainer>
             <SmallGoalCreateButton />

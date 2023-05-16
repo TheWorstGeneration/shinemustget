@@ -28,7 +28,7 @@ export const LogoutButton = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    const result = window.confirm('로그아웃 하시겠습니까?');
+    const result = window.confirm('로그아웃 하시겠어요?');
 
     if (result) {
       getKakaoLogout();

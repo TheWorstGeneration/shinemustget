@@ -66,7 +66,7 @@ export const SmallGoalCreateButton = () => {
   return (
     <Button
       type="button"
-      title="중간 목표를 기반으로 세부 목표를 작성합니다."
+      title="중간 목표를 기반으로 세부 목표를 작성"
       onClick={handleCreateSmallGoal}
       createButton={createButton}
       disabled={createButton}

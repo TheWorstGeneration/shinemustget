@@ -1,9 +1,11 @@
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { ComposeButton } from '@/components/atoms/ComposeButton/ComposeButton';
 import { sticker } from '@/constants/stickerList';
 import podoRead from '@/pages/api/podoRead';
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectIdx } from '@/store/modules/detailIdx';
 
 const UserCommentDiv = styled.div`
   box-shadow: 0 0 0.5rem 1px #22222225;
@@ -26,25 +28,29 @@ const UserCommentImageDiv = styled.div`
 const UserCommentTextDiv = styled.textarea`
   position: relative;
   z-index: 9999;
-  height: 8rem;
+  height: 7rem;
   width: 100%;
   border: none;
   word-wrap: break-word;
+  resize: none;
+  font-size: 0.75rem;
+  outline: none;
+  line-height: 1.5;
 `;
 
 const UserCommentDateDiv = styled.div`
-  font-weight: 900;
+  font-weight: 300;
   padding-top: 0.5rem;
   text-align: right;
 `;
 
 const UserCommentCompleteDiv = styled.div`
   display: flex;
-  padding-top: 1.05rem;
+  padding-top: 1rem;
 `;
 
 const UserCommentCompleteImageDiv = styled.div`
-  padding: 0.45rem;
+  padding: 0.5rem;
   flex: 1;
 `;
 
@@ -54,6 +60,7 @@ const UserCommentCompleteButtonDiv = styled.div`
 `;
 
 export function UserComment({ stickerList }: { stickerList: sticker[] }) {
+  const { isToday } = useAppSelector(selectIdx);
   const [countLetter, setCountLetter] = useState(0);
   const [oneline, setOneLine] = useState('');
   const [imageUrl, setImageUrl] = useState(
@@ -73,6 +80,10 @@ export function UserComment({ stickerList }: { stickerList: sticker[] }) {
       });
     }
 
+  useEffect(() => {
+    setOneLine('');
+  }, [isToday]);
+
   return (
     <UserCommentDiv>
       <UserCommentImageDiv>
@@ -86,19 +97,22 @@ export function UserComment({ stickerList }: { stickerList: sticker[] }) {
             width={32.5}
             height={32.5}
             alt="image"
-            style={{ marginLeft: '0.75rem' }}
-          ></Image>
+            style={{ marginLeft: '0.75rem', cursor: 'pointer' }}
+          />
         ))}
       </UserCommentImageDiv>
       <UserCommentContentDiv>
         <UserCommentTextDiv
-          placeholder="메모를 작성해주세요!"
+          placeholder={
+            isToday ? '이미 스티커를 작성했어요!' : '메모를 작성해주세요!'
+          }
           onChange={handleOnChange}
-          maxLength={150}
-        ></UserCommentTextDiv>
+          maxLength={100}
+          readOnly={isToday}
+        />
       </UserCommentContentDiv>
       <UserCommentDateDiv>
-        <p>{countLetter}/150</p>
+        <p>{countLetter}/100</p>
       </UserCommentDateDiv>
       <UserCommentCompleteDiv>
         <UserCommentCompleteImageDiv>

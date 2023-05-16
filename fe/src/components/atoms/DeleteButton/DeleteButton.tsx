@@ -52,7 +52,7 @@ export const DeleteButton = () => {
   const dispatch = useAppDispatch();
 
   const handleDeleteMandalart = () => {
-    const result = confirm('정말로 만다라트를 삭제하시겠습니까?');
+    const result = confirm('정말로 만다라트를 삭제하시나요?');
     if (result) {
       deleteMandalart();
       dispatch(setResetGoal());
