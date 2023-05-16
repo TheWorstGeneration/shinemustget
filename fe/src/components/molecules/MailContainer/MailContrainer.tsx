@@ -120,6 +120,7 @@ export function MailContainer() {
     
     socket.onmessage = (event) => { 
       const message = JSON.parse(event.data);
+      console.log(message);
       if (Array.isArray(message)) {
         mail_list = message;
       } else { 
@@ -129,6 +130,7 @@ export function MailContainer() {
           mail_list.push(message);
         }
       }
+      console.log("mail_list",mail_list);
     }
     
   }, [socket]);
