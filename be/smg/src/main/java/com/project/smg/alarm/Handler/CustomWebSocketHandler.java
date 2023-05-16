@@ -88,9 +88,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
         log.info("메세지 조회 {}", alarmDtoList.size());
 
-        for (int i = 0; i < alarmDtoList.size(); i++) {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList.get(i))));
-        }
+//        for (int i = 0; i < alarmDtoList.size(); i++) {
+//            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList.get(i))));
+//        }
+        
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList)));
 
         Map<String, Object> data = new HashMap<>();
         data.put("cursor", Double.toString(nextScore));
