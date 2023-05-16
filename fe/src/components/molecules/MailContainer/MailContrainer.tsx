@@ -114,45 +114,32 @@ export function MailContainer() {
 
   // const mail_list: string[] = [];
 
-  const { socket, message } = useSocket();
-  // socket.onopen;
-    console.log(message);
+  const socket = useSocket();
+  socket.onopen;
 
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
 
-    // socket.onmessage = event => {
-    //   const message = JSON.parse(event.data);
-    //   console.log(message);
+    socket.onmessage = event => {
+      const message = JSON.parse(event.data);
+      console.log(message);
 
-    //   if (Array.isArray(message)) {
-    //     for (let i = 0; i < message.length; i++) {
-    //       mail_list.push(message[i].message);
-    //     }
-    //     setMailList(prev => [...mail_list, ...prev]);
-    //   } else { 
-    //     if (message.cursor != undefined  && message.cursor != '-1.0') {
-    //       const jsonStr = JSON.stringify({"cursor": message.cursor});
-    //       socket.send(jsonStr);
-    //     }
-    //   
-    //   console.log('mail_list', mail_list);
-    // };
+      if (Array.isArray(message)) {
+        for (let i = 0; i < message.length; i++) {
+          setMailList(prev => [message[i].message, ...prev]);
+        }
+      } else {
+        if (message.cursor != undefined && message.cursor != '-1.0') {
+          const jsonStr = JSON.stringify({ "cursor": message.cursor });
+          socket.send(jsonStr);
+        }
+      };
+    }
 
-    console.log(message);
+    // socket.onmessage
 
-    if (Array.isArray(message)) {
-      for (let i = 0; i < message.length; i++) {
-        setMailList(prev => [message[i].message, ...prev]);
-      }
-    } else { 
-      if (message.cursor != undefined  && message.cursor != '-1.0') {
-        const jsonStr = JSON.stringify({"cursor": message.cursor});
-        socket.send(jsonStr);
-      }
-    };
-  }, [socket, message]);
+  }, [socket.onmessage]);
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
