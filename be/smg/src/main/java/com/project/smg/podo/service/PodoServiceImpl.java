@@ -135,13 +135,13 @@ public class PodoServiceImpl implements PodoService {
         return false;
     }
     @Transactional
-    private void setSpecialDate(String mid) {
+    public void setSpecialDate(String mid) {
         Member findMember = mandalartLikeService.checkMember(mid);
         findMember.setSpecialStickerDate(LocalDateTime.now());
     }
 
     @Transactional
-    void setSpecialMemberPodo(String mid){
+    public void setSpecialMemberPodo(String mid){
         List<MemberPodo> byPodoTypeStatus0 = memberPodoRepository.findByPodoTypeStatus0(mid);
         log.info("스페셜 포도 부여합니다 ^^ !!");
         for (MemberPodo mp : byPodoTypeStatus0){

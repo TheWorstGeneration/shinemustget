@@ -1,21 +1,17 @@
 package com.project.smg.mandalart.service;
 
-import co.elastic.clients.elasticsearch._types.analysis.Tokenizer;
-import co.elastic.clients.elasticsearch._types.analysis.TokenizerBuilders;
 import com.project.smg.mandalart.dto.*;
 import com.project.smg.mandalart.entity.*;
 import com.project.smg.mandalart.repository.*;
 import com.project.smg.member.dto.SearchBigDto;
 import com.project.smg.member.dto.SearchDto;
 import com.project.smg.member.entity.Member;
-import com.project.smg.member.entity.Role;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.podo.entity.Podo;
 import com.project.smg.podo.repository.PodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -37,7 +33,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -242,6 +237,8 @@ public class MandalartServiceImpl implements MandalartService {
                         .build()
                 )
                 .collect(Collectors.toList());
+
+        Collections.sort(searchList, (o1, o2) -> (o2.getLikeCnt() - o1.getLikeCnt()));
         return searchList;
     }
 

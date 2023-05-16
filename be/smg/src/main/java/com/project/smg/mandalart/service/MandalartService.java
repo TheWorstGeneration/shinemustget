@@ -1,6 +1,5 @@
 package com.project.smg.mandalart.service;
 
-import com.project.smg.mandalart.dto.BigDto;
 import com.project.smg.mandalart.dto.MandalartRequestDto;
 import com.project.smg.mandalart.dto.SearchDetailResponseDto;
 import com.project.smg.mandalart.entity.Title;
