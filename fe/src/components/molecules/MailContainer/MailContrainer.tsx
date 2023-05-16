@@ -97,7 +97,7 @@ export function MailContainer() {
   const isMaxWidth = useInnerWidth() > 1440;
   const isActive = isClicked || isMaxWidth;
 
-  const mail_list: string[] | null = [];
+  let mail_list: string[]  = [];
 
   // for (let i = 0; i < 20; i++) {
   //   mail_list.push('당신의 만다라트에 좋아요가 눌렸습니다.');
@@ -118,10 +118,17 @@ export function MailContainer() {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
     
-      socket.onmessage = (event) => { 
-        const message = JSON.parse(event.data);
-        console.log("앙 메세지띠", message);
-        console.log("앙 메세지띠2", message.message);
+    socket.onmessage = (event) => { 
+      const message = JSON.parse(event.data);
+      if (Array.isArray(message)) {
+        mail_list = message;
+      } else { 
+        if (message.cursor != (undefined || '-1')) {
+          socket.send(message.cursor);
+        } else { 
+          mail_list.push(message);
+        }
+      }
     }
     
   }, [socket]);
