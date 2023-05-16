@@ -26,47 +26,22 @@ CI/CD : Jenkins, Docker
 ## 2. 개발환경
 
 1. Back-end
-   - Spring Boot : 2.7.9
+   - Spring Boot : 2.7.10
    - Java : 11.0.17
+   - Gradle : 7.6.1
 2. Front-end
-   - Node.js : 18.16.0
-   - Next.js : 13.2.3
-   - Typescript : 4.9.5
+   - Node.js : 18.15.0
+   - Next.js : 13.3.0
+   - Typescript : 5.0.4
 3. 그 외
-   - MySQL : 8.0.32
-   - AWS : EC2 Ubuntu 20.04 LTS
+   - DB : MySQL 8.0.32
+   - Server : AWS EC2 Ubuntu 20.04 LTS
 
 ## 3. 외부 서비스
 
-- Redis
-- S3
-  - CORS 정책
-  ```
-  [
-      {
-          "AllowedHeaders": [
-              "*"
-          ],
-          "AllowedMethods": [
-              "PUT",
-              "POST",
-              "GET",
-              "HEAD"
-          ],
-          "AllowedOrigins": [
-              "*"
-          ],
-          "ExposeHeaders": [
-              "x-amz-server-side-encryption",
-              "x-amz-request-id",
-              "x-amz-id-2"
-          ],
-          "MaxAgeSeconds": 3000
-      }
-  ]
-  ```
-- Cloud Front
-  - 배포 도메인 이름 :
+- Kakao OAuth2
+- Redis LTS
+- Sonarqube
 
 ## 4. .gitignore 처리한 파일
 
@@ -111,79 +86,50 @@ CI/CD : Jenkins, Docker
     token-validity-in-seconds: 3600
   ```
 
-  - application-s3.yml (/src/main/resources 에 위치)
-
-  ```
-  # s3
-  cloud:
-    aws:
-      credentials:
-        accessKey: [ACCESS 키]
-        secretKey: [SECRET 키]
-      s3:
-        bucket: haru-palette
-      region:
-        static: ap-northeast-2
-      stack:
-        auto: false
-
-    # multipartFile 용량 늘려주는 설정
-    servlet:
-      multipart:
-        max-file-size: 100MB
-        max-request-size: 100MB
-  ```
-
 ## 5. 배포관련 설정
 
-- Nginx 설정
+- mySQL 설치
 
   ```bash
-  server {
-      # 서버가 Listen할 포트를 지정합니다.
-      listen 443 ssl;
-      # IPv6 및 IPv4 모두에서 해당 포트를 수신 대기하도록 설정합니다.
-      listen [::]:443 ssl;
+  $ cd /home/ubuntu/Dockerfiles/db
+  $ docker build -t mysql -f Dockerfile-mysql .
+  $ docker run -d -p 3300:3306 -v /home/ubuntu/db:/var/lib/mysql --name mysql --restart=always mysql
+  ```
 
-      # 서버의 도메인 이름을 지정합니다.
-      server_name shinemustget.com;
+- Redis 설치
 
-      ssl_certificate /etc/letsencrypt/live/shinemustget.com/fullchain.pem;
-      ssl_certificate_key /etc/letsencrypt/live/shinemustget.com/privkey.pem;
+  ```bash
+  $ cd /home/ubuntu/Dockerfiles/redis
+  $ docker build -t redis -f Dockerfile-redis .
+  $ docker run -d -p 3301:6379 --name redis --restart=always redis
+  ```
 
-      # 프론트엔드
-      location / {
-          proxy_pass http://localhost:3000;
+- Jenkins 설치
 
-          # "Host" 요청 헤더를 설정합니다. 이는 프록시 서버가 클라이언트로부터 요청이 온 것처럼 보이도록 합니다.
-          proxy_set_header Host $host;
+  ```bash
+  $ cd /home/ubuntu/Dockerfiles/jenkins
+  $ docker build -t jenkins -f Dockerfile-jenkins .
+  $ docker run -d --name jenkins --restart=always -p 9090:8080 -v /home/ubuntu/jenkins:/var/jenkins_home -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -u root jenkins
+  ```
 
-          # "X-Real-IP" 요청 헤더를 설정합니다. 이는 프록시 서버에 실제 IP 주소를 전달합니다.
-          proxy_set_header X-Real-IP $remote_addr;
+- image server 생성
 
-          # "X-Forwarded-For" 요청 헤더를 설정합니다. 이는 클라이언트 IP 주소 와 프록시 서버 IP 주소를 포함하여 전달합니다.
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      }
+  ```bash
+  $ docker run -d --name image --restart always --network ubuntu_default -e TZ=Asia/Seoul -p 8082:80 -v /home/ubuntu/images:/usr/share/nginx/html/images nginx:latest
+  ```
 
-      # 백엔드 비즈니스 서버
-      location /api {
-          proxy_pass http://localhost:8080;
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+- sonarqube 설치
 
-          # proxy를 통해서 데이터를 읽을 때 타임아웃
-          proxy_read_timeout 120s;
-      }
+  ```bash
+    $ cd /home/ubuntu/Dockerfiles/sonarqube
+    $ docker build -t sonarqube -f Dockerfile-sonarqube .
+    $ docker run --name sonarqube --network ubuntu_default -d -p 9000:9000 -it -e TZ=Asia/Seoul -v /home/ubuntu/sonarqube/data:/opt/sonarqube/data -v /home/ubuntu/sonarqube/logs:/opt/sonarqube/logs -v /home/ubuntu/sonarqube/extensions:/opt/sonarqube/extensions sonarqube
+  ```
 
-      # 백엔드 인증 서버
-      location ~ ^/(login|oauth2) {
-          proxy_pass http://localhost:8090;
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      }
-  }
+- elastic
+  ```
+  $ cd /home/ubuntu/elastic/docker-elk
+  $ docker-compose up -d
   ```
 
 ## 6. 빌드
@@ -191,7 +137,8 @@ CI/CD : Jenkins, Docker
 1. Front-end
    ```bash
    $ npm i
-   $ npm run build
+   $ npx next build
+   $ npx next start
    ```
 2. Back-end
 
