@@ -137,8 +137,8 @@ export function MailContainer() {
         }
         
         if (message.message != undefined) { 
-          mail_list.push(message);
-          setMailList(mail_list);
+          mail_list.push(message.message);
+          setMailList(prev => [...prev, ...mail_list]);
         }
       }
       console.log('mail_list', mail_list);
