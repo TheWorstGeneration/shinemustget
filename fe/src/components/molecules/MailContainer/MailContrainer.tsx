@@ -122,7 +122,9 @@ export function MailContainer() {
       const message = JSON.parse(event.data);
       console.log(message);
       if (Array.isArray(message)) {
-        mail_list = message;
+        for (let i = 0; i < message.length; i++) { 
+          mail_list.push(message[i].message);
+        }
       } else { 
         if (message.cursor != (undefined || '-1')) {
           socket.send(message.cursor);
@@ -154,9 +156,11 @@ export function MailContainer() {
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isActive={isActive}>
-        {
+        {mail_list.length === 0 ? (
+          <p>메일함이 비었어요.</p>
+        ) : (
           mail_list.map((mail, index) => <MailBox key={index} mail={mail} />)
-        }
+        )}
       </MailContainerMain>
     </MailContainerDiv>
   );
