@@ -1,25 +1,26 @@
 package com.project.smg.utils;
 
+import com.project.smg.alarm.dto.AlarmDto;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.service.MandalartLikeService;
 import com.project.smg.mandalart.service.MandalartService;
 import com.project.smg.member.entity.Likes;
 import com.project.smg.member.entity.Member;
-import com.project.smg.member.repository.MemberRepository;
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import java.util.Iterator;
+import java.util.Set;
 
-import java.util.*;
-
-@Service
+@Component
 @RequiredArgsConstructor
 @Log4j2
 public class RedisSchedule {
@@ -27,6 +28,14 @@ public class RedisSchedule {
     private final LikeRepository likeRepository;
     private final RedisTemplate redisTemplate;
     private final MandalartService mandalartService;
+    private final RedisTemplate<String, AlarmDto> alarmRedisTemplate;
+    private ZSetOperations<String, AlarmDto> zSetOperations;
+
+    @PostConstruct
+    private void init() {
+        zSetOperations = alarmRedisTemplate.opsForZSet();
+    }
+
     @Transactional
     @Scheduled(cron = "0 0/3 * * * *")
     public void deleteChangeLikeFromRedis() {
@@ -76,6 +85,23 @@ public class RedisSchedule {
         deleteLikeFromRedis();
 
     }
+
+    @Scheduled(cron = "0 0/1 * * * *") // 24시간마다 실행
+    public void cleanupExpiredAlarms() {
+        log.info("[Scheduling] 알람 데이터 삭제 시작");
+        long currentTime = System.currentTimeMillis();
+//        long expirationTime = currentTime - (24 * 60 * 60 * 1000); // 24시간 이전의 시간
+        long expirationTime = currentTime - (50 * 1000);
+
+        // Redis에서 expirationTime보다 작은 스코어를 가지는 데이터 삭제
+        Set<AlarmDto> expiredAlarms = zSetOperations.rangeByScore("", 0, expirationTime);
+        for (AlarmDto alarmDto : expiredAlarms) {
+            String memberId = alarmDto.getMemberId();
+            zSetOperations.remove(memberId);
+        }
+        log.info("[Scheduling] 알람 데이터 삭제 완료");
+    }
+
     @Transactional
     public void updateLikeCnt(int titleId) {
         Title findTitle = mandalartLikeService.checkTitle(titleId);

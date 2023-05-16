@@ -84,6 +84,4 @@ public class RedisAlarmRepository implements AlarmRepository {
 
         return resultMap;
     }
-
-
 }

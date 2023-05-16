@@ -76,14 +76,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     public void sendMessageToUser(String memberId, SendAlarmDto sendAlarmDto) throws Exception {
         WebSocketSession session = userSessions.get(memberId);
         if (session != null && session.isOpen()) {
-//            TextMessage textMessage = new TextMessage(objectMapper.writeValueAsString(alarmDto));
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(sendAlarmDto)));
-//            try {
-//                session.sendMessage(textMessage);
-//            } catch (IOException e) {
-//                // 메시지 전송 중 오류 처리
-//                log.error("메세지 전송 실패 : {}", memberId, e);
-//            }
         } else {
             log.warn("수신자의 세션이 닫혀있거나 존재하지 않음 : {}", memberId);
         }
