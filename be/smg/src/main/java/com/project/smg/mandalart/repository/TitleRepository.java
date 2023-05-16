@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface TitleRepository extends JpaRepository<Title, Integer> {
     Optional <Title> findTopByMemberIdAndClearAtIsNullOrderByCreatedAtDesc(String memberId);
     Optional<List<Title>> findByMemberIdAndClearAtIsNotNullOrderByClearAtDesc(String memberId);
-    Optional<Title> findTop1ByMemberAndDeletedAtIsNullOrderByIdDesc(Member member);
+    Optional<Title> findTop1ByMemberOrderByIdDesc(Member member);
     Optional<Title> findById(int id);
 }
