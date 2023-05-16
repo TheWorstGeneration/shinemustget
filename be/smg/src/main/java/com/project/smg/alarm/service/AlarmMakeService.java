@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface AlarmMakeService {
-    AlarmDto saveAlarm(String memberId, int id);
+    AlarmDto saveAlarm(String memberId, int id, String nickname);
     Map<String, Object> alarmDtoList(String memberId, double lastSocre);
 }

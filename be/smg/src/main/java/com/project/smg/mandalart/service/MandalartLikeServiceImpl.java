@@ -59,7 +59,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService{
             setOperations.add(key,mid);
             // 변경여부체크
             checkChange(mid, subKey, setOperations);
-            alarmSendService.sendAlarm(id);
+            alarmSendService.sendAlarm(checkMember(mid).getNickname(), id);
         }
     }
 

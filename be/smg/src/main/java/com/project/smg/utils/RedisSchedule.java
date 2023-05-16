@@ -1,6 +1,7 @@
 package com.project.smg.utils;
 
 import com.project.smg.alarm.dto.AlarmDto;
+import com.project.smg.alarm.utils.ChatUtils;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.service.MandalartLikeService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -28,6 +30,7 @@ public class RedisSchedule {
     private final LikeRepository likeRepository;
     private final RedisTemplate redisTemplate;
     private final MandalartService mandalartService;
+    private final ChatUtils chatUtils;
     private final RedisTemplate<String, AlarmDto> alarmRedisTemplate;
     private ZSetOperations<String, AlarmDto> zSetOperations;
 
@@ -86,18 +89,24 @@ public class RedisSchedule {
 
     }
 
-    @Scheduled(cron = "0 0/1 * * * *") // 24시간마다 실행
+//    @Scheduled(cron = "0 0/1 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void cleanupExpiredAlarms() {
         log.info("[Scheduling] 알람 데이터 삭제 시작");
-        long currentTime = System.currentTimeMillis();
-//        long expirationTime = currentTime - (24 * 60 * 60 * 1000); // 24시간 이전의 시간
-        long expirationTime = currentTime - (50 * 1000);
+
+        LocalDateTime expirationDateTime = LocalDateTime.now().minusHours(24);
+//        LocalDateTime expirationDateTime = LocalDateTime.now().minusMinutes(10);
+//        LocalDateTime expirationDateTime = LocalDateTime.now().minusSeconds(50);
+
+        double expirationTimestamp = chatUtils.changeLocalDateTimeToDouble(expirationDateTime);
 
         // Redis에서 expirationTime보다 작은 스코어를 가지는 데이터 삭제
-        Set<AlarmDto> expiredAlarms = zSetOperations.rangeByScore("", 0, expirationTime);
-        for (AlarmDto alarmDto : expiredAlarms) {
-            String memberId = alarmDto.getMemberId();
-            zSetOperations.remove(memberId);
+        Set<String> allKeys = alarmRedisTemplate.keys("*"); // 모든 키 가져오기
+        for (String key : allKeys) {
+            Set<AlarmDto> expiredAlarms = zSetOperations.rangeByScore(key, 0, expirationTimestamp);
+            for (AlarmDto alarmDto : expiredAlarms) {
+                zSetOperations.remove(key, alarmDto);
+            }
         }
         log.info("[Scheduling] 알람 데이터 삭제 완료");
     }
