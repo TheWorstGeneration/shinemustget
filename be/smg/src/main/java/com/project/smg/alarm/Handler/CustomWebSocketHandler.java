@@ -61,14 +61,20 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 //        String jsonPayload = message.getPayload().toString();
+//        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
+        log.info("메세지 수신 시작");
+
         String jsonPayload = message.getPayload().toString();
         JsonNode jsonNode = objectMapper.readTree(jsonPayload);
+
+        if(jsonNode.get("cursor").isNull()){
+
+        }
 
         String value = jsonNode.get("cursor").asText();
         String memberId = getMemberId(session);
 
         ReceiveDto receivedMessage = new ReceiveDto(memberId, value);
-//        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
 
         Map<String, Object> result = alarmMakeService.alarmDtoList(receivedMessage.getMemberId(), Double.parseDouble(receivedMessage.getCursor()));
 
@@ -77,7 +83,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        String memberId = (String) session.getAttributes().get("id");
+        String memberId = getMemberId(session);
+        session.sendMessage(new TextMessage("소켓 연결 종료"));
         removeSession(memberId);
         log.info("유저 로그아웃 {}", memberId);
         log.info("소켓 연결 종료 {}", status);
@@ -97,7 +104,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         List<SendAlarmDto> alarmDtoList = (List<SendAlarmDto>) result.get("sendAlarmDtoList");
         double nextScore = (double) result.get("nextScore");
 
-        log.info("메세지 조회 {}", alarmDtoList.size());
+        log.info("메세지 갯수 조회 {}", alarmDtoList.size());
 
 //        for (int i = 0; i < alarmDtoList.size(); i++) {
 //            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList.get(i))));

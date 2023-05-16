@@ -1,14 +1,20 @@
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectModal } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
-const SearchBarContainer = styled.div<{ isClicked: boolean }>`
+const SearchBarContainer = styled.div<{
+  isClicked: boolean;
+  isMailBox: boolean;
+}>`
   display: flex;
   align-items: center;
   justify-content: end;
-  width: ${({ isClicked }) => (isClicked ? '30rem' : '3rem')};
+  width: ${({ isClicked }) => (isClicked ? '15rem' : '3rem')};
+  max-width: 30vw;
 
   height: 3rem;
   border: none;
@@ -20,8 +26,11 @@ const SearchBarContainer = styled.div<{ isClicked: boolean }>`
   overflow: hidden;
 
   &:hover {
-    width: 30rem;
+    width: 15rem;
+    max-width: 30vw;
   }
+
+  margin-right: ${({ isMailBox }) => (isMailBox ? '0' : '4rem')};
 `;
 
 const Input = styled.input`
@@ -33,6 +42,7 @@ const Input = styled.input`
 `;
 
 export const SearchBar = () => {
+  const { isMailBox } = useAppSelector(selectModal);
   const [isClicked, setIsClicked] = useState(false);
   const [searchKey, setSearchKey] = useState('');
   const inputRef = useRef(null);
@@ -74,7 +84,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <SearchBarContainer isClicked={isClicked}>
+    <SearchBarContainer isClicked={isClicked} isMailBox={isMailBox}>
       <Input
         ref={inputRef}
         value={searchKey}

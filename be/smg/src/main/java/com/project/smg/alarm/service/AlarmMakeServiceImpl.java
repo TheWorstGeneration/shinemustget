@@ -23,10 +23,10 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
     private final TitleRepository titleRepository;
 
     @Override
-    public AlarmDto saveAlarm(String memberId, int id) {
+    public AlarmDto saveAlarm(String memberId, int id, String nickname) {
         Title title = titleRepository.findById(id).orElse(null);
 
-        String message = "다른 사용자가 " + title.getContent() + " 만다라트에 좋아요 표시를 했습니다.";
+        String message = nickname + "님이 " + title.getContent() + " 만다라트를 좋아합니다.";
 
         LocalDateTime time = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -36,7 +36,7 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
                 .titleName(title.getContent())
                 .titleId(title.getId())
                 .message(message)
-                .createdAt(LocalDateTime.now())
+                .createdAt(time)
                 .formattedCreatedAt(time.format(formatter))
                 .build();
 
@@ -47,14 +47,10 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
 
     @Override
     public Map<String, Object> alarmDtoList(String memberId, double lastSocre) {
-        log.info("메세지 목록 가져오기");
         Map<String, Object> map = redisAlarmRepository.getLatestAlarms(memberId, lastSocre);
 
         List<SendAlarmDto> sendAlarmDtoList = (List<SendAlarmDto>) map.get("alarms");
         double nextScore = (double) map.get("lastScore");
-
-        log.info("메세지 조회 {}", sendAlarmDtoList.size());
-        log.info("nextScore {}", nextScore);
 
         Map<String, Object> result = new HashMap<>();
 

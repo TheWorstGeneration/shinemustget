@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class AlarmDto {
-    private int id;
     private String memberId;
     private String titleName;
     private int titleId;
