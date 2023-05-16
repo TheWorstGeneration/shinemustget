@@ -112,37 +112,46 @@ export function MailContainer() {
     // console.log('전체 확인');
   };
 
-  const mail_list: string[] = [];
+  // const mail_list: string[] = [];
 
-  const socket = useSocket();
-  socket.onopen;
+  const { socket, message } = useSocket();
+  // socket.onopen;
 
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
 
-    socket.onmessage = event => {
-      const message = JSON.parse(event.data);
-      console.log(message);
+    // socket.onmessage = event => {
+    //   const message = JSON.parse(event.data);
+    //   console.log(message);
 
-      if (Array.isArray(message)) {
-        for (let i = 0; i < message.length; i++) {
-          mail_list.push(message[i].message);
-        }
-        setMailList(prev => [...prev, ...mail_list]);
-      } else { 
-        if (message.cursor != undefined  && message.cursor != '-1.0') {
-          const jsonStr = JSON.stringify({"cursor": message.cursor});
-          socket.send(jsonStr);
-        }
-        if (message.message != undefined) { 
-          mail_list.push(message.message);
-          setMailList(prev => [...prev, ...mail_list]);
-        }
+    //   if (Array.isArray(message)) {
+    //     for (let i = 0; i < message.length; i++) {
+    //       mail_list.push(message[i].message);
+    //     }
+    //     setMailList(prev => [...mail_list, ...prev]);
+    //   } else { 
+    //     if (message.cursor != undefined  && message.cursor != '-1.0') {
+    //       const jsonStr = JSON.stringify({"cursor": message.cursor});
+    //       socket.send(jsonStr);
+    //     }
+    //   
+    //   console.log('mail_list', mail_list);
+    // };
+
+    console.log(message);
+
+    if (Array.isArray(message)) {
+      for (let i = 0; i < message.length; i++) {
+        setMailList(prev => [message[i].message, ...prev]);
       }
-      console.log('mail_list', mail_list);
+    } else { 
+      if (message.cursor != undefined  && message.cursor != '-1.0') {
+        const jsonStr = JSON.stringify({"cursor": message.cursor});
+        socket.send(jsonStr);
+      }
     };
-  }, [socket.onmessage]);
+  }, [socket, message]);
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
