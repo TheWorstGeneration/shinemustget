@@ -119,10 +119,9 @@ export function MailContainer() {
     // console.log('메일 받아오기');
     
       socket.onmessage = (event) => { 
-        const message = event.data;
-        const message2 = event.data.message;
+        const message = JSON.parse(event.data);
         console.log("앙 메세지띠", message);
-        console.log("앙 메세지띠2", message2);
+        console.log("앙 메세지띠2", message.message);
     }
     
   }, [socket]);
