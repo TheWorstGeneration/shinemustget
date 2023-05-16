@@ -23,7 +23,7 @@ export async function getServerSideProps(context: any) {
   const searchData = query.id;
 
   try {
-    const mandalart = searchDetail(122);
+    const mandalart = searchDetail("122");
 
     return {
       props: mandalart,
