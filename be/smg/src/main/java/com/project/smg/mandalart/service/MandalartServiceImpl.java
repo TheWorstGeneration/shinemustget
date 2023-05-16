@@ -175,19 +175,21 @@ public class MandalartServiceImpl implements MandalartService {
         Optional<Member> optional = memberRepository.findById(mid);
         Member member = optional.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
 
-        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberAndDeletedAtIsNullOrderByIdDesc(member);
+        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
         Title title = top1ByMemberOrderByIdDesc.orElse(null);
 
-        HashMap<String, Object> result;
+        HashMap<String, Object> result = new HashMap<>();
+        if(title == null) return result;
 
-        if(title == null)
-            result = new HashMap<>();
-        else {
-            result = new HashMap<>();
-            result.put("title", title.getContent());
-            result.put("isClear", title.getClearAt() == null ? false : true);
-            result.put("bigList", makeBigDto(title.getBigGoals()));
-        }
+        boolean canCreate = title.getCreatedAt().toLocalDate().equals(LocalDate.now()) ? false : true;
+        boolean isDelete = title.getDeletedAt() != null ? true : false;
+
+        result = new HashMap<>();
+        result.put("title", title.getContent());
+        result.put("isClear", title.getClearAt() == null ? false : true);
+        result.put("bigList", makeBigDto(title.getBigGoals()));
+        result.put("canCreate", canCreate);
+        result.put("isDelete", isDelete);
 
         return result;
     }
@@ -314,7 +316,7 @@ public class MandalartServiceImpl implements MandalartService {
         if(check) {
             title.setClearAt(LocalDateTime.now());
             titleRepository.save(title);
-            saveClearTitle(title);
+//            saveClearTitle(title);
         }
     }
 
