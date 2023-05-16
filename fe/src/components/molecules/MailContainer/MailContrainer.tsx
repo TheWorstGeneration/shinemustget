@@ -93,11 +93,9 @@ export function MailContainer() {
   const isLandingPage = router.pathname === '/';
 
   const [isClicked, setIsClicked] = useState(false);
-  const [mailList,setMailList] = useState("");
+  const [maillist, setMailList] = useState<string[]>([]);
   const isMaxWidth = useInnerWidth() > 1440;
   const isActive = isClicked || isMaxWidth;
-
-  let mail_list: string[]  = [];
 
   // for (let i = 0; i < 20; i++) {
   //   mail_list.push('당신의 만다라트에 좋아요가 눌렸습니다.');
@@ -121,10 +119,12 @@ export function MailContainer() {
     socket.onmessage = (event) => { 
       const message = JSON.parse(event.data);
       console.log(message);
+      const mail_list:string[] = [];
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) { 
           mail_list.push(message[i].message);
         }
+        setMailList(mail_list);
       } else { 
         if (message.cursor != (undefined || '-1')) {
           socket.send(message.cursor);
@@ -140,7 +140,7 @@ export function MailContainer() {
 
   return isLandingPage ? null : (
     <MailContainerDiv isActive={isActive}>
-      <MailBadge isActive={isActive} isEmpty={mail_list.length} />
+      <MailBadge isActive={isActive} isEmpty={maillist.length} />
       <MailContainerHeader isActive={isActive}>
         <button type="button" title="메일함 열기" onClick={handleMailContainer}>
           <FontAwesomeIcon icon={faEnvelope} size="lg" />
@@ -156,10 +156,10 @@ export function MailContainer() {
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isActive={isActive}>
-        {mail_list.length === 0 ? (
+        {maillist.length === 0 ? (
           <p>메일함이 비었어요.</p>
         ) : (
-          mail_list.map((mail, index) => <MailBox key={index} mail={mail} />)
+          maillist.map((mail, index) => <MailBox key={index} mail={mail} />)
         )}
       </MailContainerMain>
     </MailContainerDiv>
