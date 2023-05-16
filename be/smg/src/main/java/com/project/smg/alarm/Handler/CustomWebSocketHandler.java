@@ -79,7 +79,8 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        String memberId = (String) session.getAttributes().get("id");
+        String memberId = getMemberId(session);
+        session.sendMessage(new TextMessage("소켓 연결 종료"));
         removeSession(memberId);
         log.info("유저 로그아웃 {}", memberId);
         log.info("소켓 연결 종료 {}", status);
