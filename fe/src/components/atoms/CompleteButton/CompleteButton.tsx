@@ -4,7 +4,7 @@ import { useAppSelector } from '@/hooks/useRedux';
 import { selectIdx } from '@/store/modules/detailIdx';
 import { useRouter } from 'next/router';
 
-const Button = styled.button`
+const Button = styled.button<{ isClear: boolean }>`
   margin-top: 3rem;
   align-items: center;
   border-radius: 0.55rem;
@@ -12,7 +12,7 @@ const Button = styled.button`
   height: 3rem;
   box-shadow: 0 0 0.5rem 1px #22222225;
   padding: 1rem;
-  color: #a3da08;
+  color: ${({ isClear }) => (isClear ? '#88888888' : '#a3da08')};
   font-weight: 900;
 
   &:hover {
@@ -35,8 +35,9 @@ export function CompleteButton() {
       title="세부 목표 달성"
       onClick={handleComplete}
       disabled={isClear}
+      isClear={isClear}
     >
-      {isClear ? '이미 완료된 목표입니다.' : `${content} 완료하기`}
+      {isClear ? '이미 완료된 목표입니다.' : `${content} 완료!`}
     </Button>
   );
 }

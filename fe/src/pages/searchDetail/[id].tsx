@@ -19,8 +19,11 @@ const SearchDetail = (mandalart: any) => {
 };
 
 export async function getServerSideProps(context: any) {
+  const { query } = context;
+  const searchData = query.id;
+
   try {
-    const mandalart = searchDetail(8);
+    const mandalart = searchDetail(searchData);
 
     return {
       props: mandalart,

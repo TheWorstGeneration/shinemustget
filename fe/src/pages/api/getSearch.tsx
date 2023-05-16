@@ -25,9 +25,6 @@ const getSearch = async (
     )
     .then(res => res.data);
 
-  console.log('key', queryKey);
-  console.log('page', page);
-
   return data;
 };
 

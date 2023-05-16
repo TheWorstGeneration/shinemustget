@@ -11,14 +11,14 @@ const Button = styled.button<{ isToday: boolean }>`
   border-radius: 0.55rem;
   width: 100%;
   height: 3rem;
-  box-shadow: 0 0 0.5rem 1px #22222225;
   padding: 0.5rem;
+  border: 1px solid ${({ isToday }) => (isToday ? '#88888888' : '#a3da08')};
   color: ${({ isToday }) => (isToday ? '#88888888' : '#a3da08')};
   font-weight: 900;
 
+  transition: box-shadow 2s;
+
   &:hover {
-    box-shadow: 0 0 0.5rem 1px
-      ${({ isToday }) => (isToday ? '#22222225' : '#22222250')};
   }
 `;
 
@@ -26,8 +26,8 @@ export function ComposeButton({
   imageUrl,
   oneline,
 }: {
-  imageUrl: any;
-  oneline: any;
+  imageUrl: string;
+  oneline: string;
 }) {
   const { index, isToday } = useAppSelector(selectIdx);
   const dispatch = useAppDispatch();

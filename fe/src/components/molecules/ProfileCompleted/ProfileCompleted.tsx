@@ -65,8 +65,10 @@ export const ProfileCompleted = () => {
             clearAt={Log.clearAt}
           />
         ))}
-        {completedLogs?.length === 0 && <Err>현재 달성한 목표가 없습니다.</Err>}
-        {!completedLogs && <Err>현재 달성한 목표가 없습니다.</Err>}
+        {completedLogs?.length === 0 && (
+          <Err>현재 달성한 목표가 없어요. 😭</Err>
+        )}
+        {!completedLogs && <Err>현재 달성한 목표가 없어요. 😭</Err>}
       </CompletedBox>
     </ProfileCompletedContainer>
   );

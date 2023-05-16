@@ -1,4 +1,3 @@
-import { MandalartData } from '@/hooks/useMandalart';
 import { GoalBoxContainer2 } from '../GoalBoxContainer2/GoalBoxContainer2';
 import styled from '@emotion/styled';
 import { GoalBoxProps } from '@/components/atoms/GoalBox/GoalBox';

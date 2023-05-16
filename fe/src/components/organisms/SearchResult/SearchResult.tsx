@@ -45,31 +45,30 @@ const SearchResult = () => {
   const [searchList, setSearchList] = useState<SearchDto[] | []>([]);
 
   const [page, setPage] = useState<number>(0);
+  const [isChange, setIsChange] = useState(false);
 
   const router = useRouter();
   const id: string | string[] | undefined = router.query.id; // 경로 변수 가져오기
 
-  const nextData = useQuery(MANDALART_SEARCH, () =>
+  // 데이터 불러오기
+  const searchData = useQuery(MANDALART_SEARCH, () =>
     getSearch(sortIndex, id, page),
   );
 
   useEffect(() => {
-    if (!nextData.isRefetching && nextData.isSuccess) {
-      setSearchList(prevSearchList => [...prevSearchList, ...nextData.data]);
+    if (!searchData.isRefetching && searchData.isSuccess) {
+      setSearchList(prevSearchList => [...prevSearchList, ...searchData.data]);
     }
-  }, [nextData.isRefetching]);
+  }, [searchData.isRefetching]);
+
+  useEffect(() => {
+    if (!searchData.isRefetching && searchData.isSuccess) {
+      setSearchList(prevSearchList => [...prevSearchList, ...searchData.data]);
+    }
+  }, [searchData.isLoading]);
 
   // 검색 결과 인덱스
   const [sortIndex, setSortIndex] = useState<string>('accuracy');
-
-  // 좋아요, 정확도순 변경
-  useEffect(() => {
-    if (sortIndex === 'like') {
-      // 좋아요순으로 요청
-    } else {
-      // 정확도순으로 요청
-    }
-  }, [sortIndex]);
 
   // 좋아요, 최신순 변경
   const handleChangeSort = (index: string) => {
@@ -78,34 +77,37 @@ const SearchResult = () => {
 
   // 다음 페이지 불러오기
   useEffect(() => {
-    nextData.refetch();
-  }, [page, id]);
+    if (isChange) {
+      searchData.refetch();
+      setIsChange(false);
+    }
+  }, [isChange]);
 
-  // 검색어 변경시
+  // 검색어 변경 및 sortIndex 변경시 실행
   useEffect(() => {
     setSearchList([]);
-    handleTest();
-    nextData.refetch();
-  }, [id]);
-
-  const handleTest = async () => {
     setPage(0);
-    console.log(page);
-  };
+    setIsChange(true);
+  }, [id, sortIndex]);
 
   // 바닥인지 감지
   const [isBottom, setIsBottom] = useState(false);
 
   // 스크롤 위치 감지
   useEffect(() => {
+    let timeoutId: any = null;
+
     const handleScroll = () => {
-      const { scrollTop, clientHeight, scrollHeight } =
-        document.documentElement;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        setIsBottom(true);
-      } else {
-        setIsBottom(false);
-      }
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        const { scrollTop, clientHeight, scrollHeight } =
+          document.documentElement;
+        if (scrollTop + clientHeight >= scrollHeight) {
+          setIsBottom(true);
+        } else {
+          setIsBottom(false);
+        }
+      }, 100);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -118,9 +120,9 @@ const SearchResult = () => {
   // 스크롤이 바닥에 왔을 때 실행할거
   useEffect(() => {
     if (isBottom) {
-      if (nextData.data?.length === 10) {
+      if (searchData.data?.length === 10) {
         setPage(prevPage => prevPage + 1);
-        console.log(456);
+        setIsChange(true);
       }
     }
   }, [isBottom]);
@@ -128,7 +130,7 @@ const SearchResult = () => {
   return (
     <>
       <SearchResultContainer>
-        <SortButton onClick={handleChangeSort} />
+        <SortButton sortIndex={sortIndex} onClick={handleChangeSort} />
         {searchList?.map(List => (
           <SearchMandalartBox>
             <BigGoalMandalart

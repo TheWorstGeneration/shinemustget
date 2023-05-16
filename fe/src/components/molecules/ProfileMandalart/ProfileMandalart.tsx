@@ -80,7 +80,7 @@ export const ProfileMandalart = () => {
           />
         ))}
         {clearList && clearList.length === 0 && (
-          <Err>클리어한 만다라트가 없습니다.</Err>
+          <Err>클리어한 만다라트가 없어요. 😭</Err>
         )}
       </BigGoalMandalartBox>
     </ProfileMandalartContainer>

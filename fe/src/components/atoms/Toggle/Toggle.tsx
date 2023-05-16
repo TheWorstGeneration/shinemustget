@@ -1,4 +1,3 @@
-import { useEffect, Dispatch, SetStateAction } from 'react';
 import styled from '@emotion/styled';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { setIsPodo } from '@/store/modules/detailIdx';

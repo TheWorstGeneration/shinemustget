@@ -230,7 +230,11 @@ export const GoalBox = ({
       {content}
     </CenterBox>
   ) : isCreate ? (
-    <TextFieldBox value={input} onChange={handleChangeSmallGoal} />
+    <TextFieldBox
+      value={input}
+      onChange={handleChangeSmallGoal}
+      maxLength={20}
+    />
   ) : (
     <Box
       href={`/detail/${id}`}
