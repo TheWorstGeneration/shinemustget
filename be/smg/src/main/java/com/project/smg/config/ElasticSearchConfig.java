@@ -34,6 +34,7 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
                 .withBasicAuth(userName, userPassword)
                 .withDefaultHeaders(defaultHeaders)
                 .build();
+
         return RestClients.create(configuration).rest();
     }
 }
