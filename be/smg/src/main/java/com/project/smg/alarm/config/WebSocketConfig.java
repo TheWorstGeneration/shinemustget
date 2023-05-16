@@ -21,8 +21,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
         registry.addHandler(customWebSocketHandler(), "/ws")
                 .addInterceptors(customHandshakeInterceptor())
 //                .setAllowedOrigins("http://localhost:8080", "http://www.shinemustget.com", "https://www.shinemustget.com")
-                .setAllowedOriginPatterns("*")
-                .withSockJS();
+                .setAllowedOriginPatterns("*");
+//                .withSockJS();
     }
 
     @Bean
