@@ -22,7 +22,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .addInterceptors(customHandshakeInterceptor())
 //                .setAllowedOrigins("http://localhost:8080", "http://www.shinemustget.com", "https://www.shinemustget.com")
                 .setAllowedOriginPatterns("*");
-//                .withSockJS();
+//                .withSockJS()
+//                .setClientLibraryUrl("http://localhost:8080");
     }
 
     @Bean
