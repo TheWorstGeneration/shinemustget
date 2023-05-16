@@ -5,6 +5,7 @@ import getClearMandalart from '@/pages/api/getClearMandalart';
 import getSearch from '@/pages/api/getSearch';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import { resolve } from 'path';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -48,9 +49,9 @@ const SearchResult = () => {
   const router = useRouter();
   const id: string | string[] | undefined = router.query.id; // 경로 변수 가져오기
 
-  const nextData = useQuery(MANDALART_SEARCH, () => getSearch(id, page));
-
-  console.log(nextData);
+  const nextData = useQuery(MANDALART_SEARCH, () =>
+    getSearch(sortIndex, id, page),
+  );
 
   useEffect(() => {
     if (!nextData.isRefetching && nextData.isSuccess) {
@@ -59,14 +60,14 @@ const SearchResult = () => {
   }, [nextData.isRefetching]);
 
   // 검색 결과 인덱스
-  const [sortIndex, setSortIndex] = useState<string>('like');
+  const [sortIndex, setSortIndex] = useState<string>('accuracy');
 
-  // 좋아요, 최신순 변경
+  // 좋아요, 정확도순 변경
   useEffect(() => {
     if (sortIndex === 'like') {
       // 좋아요순으로 요청
     } else {
-      // 최신순으로 요청
+      // 정확도순으로 요청
     }
   }, [sortIndex]);
 
@@ -83,18 +84,13 @@ const SearchResult = () => {
   // 검색어 변경시
   useEffect(() => {
     setSearchList([]);
-
-    const reFetch = async () => {
-      await handleTest();
-      await nextData.refetch();
-    };
-
-    reFetch();
+    handleTest();
+    nextData.refetch();
   }, [id]);
 
   const handleTest = async () => {
-    console.log(123);
     setPage(0);
+    console.log(page);
   };
 
   // 바닥인지 감지

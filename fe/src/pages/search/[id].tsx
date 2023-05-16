@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
   await queryClient.prefetchQuery(
     MANDALART_SEARCH,
-    () => getSearch(searchData, 0),
+    () => getSearch('accuracy/', searchData, 0),
     {
       staleTime: 10000,
       cacheTime: 20000,

@@ -1,5 +1,6 @@
 package com.project.smg.alarm.Handler;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.smg.alarm.dto.ReceiveDto;
 import com.project.smg.alarm.dto.SendAlarmDto;
@@ -29,10 +30,13 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    public WebSocketSession getUserSession(String memberId) {
-        return userSessions.get(memberId);
-    }
+//    public WebSocketSession getUserSession(String memberId) {
+//        return userSessions.get(memberId);
+//    }
 
+    public String getMemberId(WebSocketSession session){
+        return (String) session.getAttributes().get("id");
+    }
     public void removeSession(String memberId) {
         if (userSessions.containsKey(memberId)) {
             userSessions.remove(memberId);
@@ -41,7 +45,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String memberId = (String) session.getAttributes().get("id");
+        String memberId = getMemberId(session);
         log.info("소켓 연결");
 
         addSession(memberId, session);
@@ -56,8 +60,15 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+//        String jsonPayload = message.getPayload().toString();
         String jsonPayload = message.getPayload().toString();
-        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
+        JsonNode jsonNode = objectMapper.readTree(jsonPayload);
+
+        String value = jsonNode.get("cursor").asText();
+        String memberId = getMemberId(session);
+
+        ReceiveDto receivedMessage = new ReceiveDto(memberId, value);
+//        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
 
         Map<String, Object> result = alarmMakeService.alarmDtoList(receivedMessage.getMemberId(), Double.parseDouble(receivedMessage.getCursor()));
 
@@ -76,14 +87,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     public void sendMessageToUser(String memberId, SendAlarmDto sendAlarmDto) throws Exception {
         WebSocketSession session = userSessions.get(memberId);
         if (session != null && session.isOpen()) {
-//            TextMessage textMessage = new TextMessage(objectMapper.writeValueAsString(alarmDto));
             session.sendMessage(new TextMessage(objectMapper.writeValueAsString(sendAlarmDto)));
-//            try {
-//                session.sendMessage(textMessage);
-//            } catch (IOException e) {
-//                // 메시지 전송 중 오류 처리
-//                log.error("메세지 전송 실패 : {}", memberId, e);
-//            }
         } else {
             log.warn("수신자의 세션이 닫혀있거나 존재하지 않음 : {}", memberId);
         }
@@ -95,9 +99,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
         log.info("메세지 조회 {}", alarmDtoList.size());
 
-        for (int i = 0; i < alarmDtoList.size(); i++) {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList.get(i))));
-        }
+//        for (int i = 0; i < alarmDtoList.size(); i++) {
+//            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList.get(i))));
+//        }
+
+        session.sendMessage(new TextMessage(objectMapper.writeValueAsString(alarmDtoList)));
 
         Map<String, Object> data = new HashMap<>();
         data.put("cursor", Double.toString(nextScore));

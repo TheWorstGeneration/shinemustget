@@ -93,10 +93,11 @@ export function MailContainer() {
   const isLandingPage = router.pathname === '/';
 
   const [isClicked, setIsClicked] = useState(false);
+  const [mailList,setMailList] = useState("");
   const isMaxWidth = useInnerWidth() > 1440;
   const isActive = isClicked || isMaxWidth;
 
-  const mail_list: string[] | null = [];
+  let mail_list: string[]  = [];
 
   // for (let i = 0; i < 20; i++) {
   //   mail_list.push('당신의 만다라트에 좋아요가 눌렸습니다.');
@@ -116,13 +117,23 @@ export function MailContainer() {
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
     // console.log('메일 받아오기');
-
-    if (socket) { 
-      socket.onmessage = (event) => { 
-        const message = event.data;
-        console.log("앙 메세지띠", message.message);
+    
+    socket.onmessage = (event) => { 
+      const message = JSON.parse(event.data);
+      console.log(message);
+      if (Array.isArray(message)) {
+        mail_list = message;
+      } else { 
+        if (message.cursor != (undefined || '-1')) {
+          socket.send(message.cursor);
+        } else { 
+          mail_list.push(message);
+        }
       }
+      console.log("mail_list", mail_list);
+      console.log(mail_list.length);
     }
+    
   }, [socket]);
 
   return isLandingPage ? null : (
@@ -143,11 +154,9 @@ export function MailContainer() {
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isActive={isActive}>
-        {mail_list.length === 0 ? (
-          <p>메일함이 비었습니다.</p>
-        ) : (
+        {
           mail_list.map((mail, index) => <MailBox key={index} mail={mail} />)
-        )}
+        }
       </MailContainerMain>
     </MailContainerDiv>
   );

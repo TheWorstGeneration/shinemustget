@@ -15,7 +15,7 @@ export const MANDALART_CREATE = `${BASE_URL}/mandalart/create`;
 // 만다라트 조회
 export const MANDALART_READ_MAIN = `${BASE_URL}/mandalart/readMain`;
 // 만다라트 좋아요
-export const MANDALART_LIKE = `${BASE_URL}/mandalart/like`;
+export const MANDALART_LIKE = `${BASE_URL}/mandalart/like/`;
 // 만다라트 검색
 export const MANDALART_SEARCH = `${BASE_URL}/mandalart/search/`;
 // 만다라트 상세조회
