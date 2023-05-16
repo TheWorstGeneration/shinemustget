@@ -129,7 +129,7 @@ export function MailContainer() {
         for (let i = 0; i < message.length; i++) {
           mail_list.push(message[i].message);
         }
-        setMailList(mail_list);
+        setMailList(prev => [...prev, ...mail_list]);
       } else { 
         if (message.cursor != undefined  && message.cursor != '-1.0') {
           const jsonStr = JSON.stringify({"cursor": message.cursor});
