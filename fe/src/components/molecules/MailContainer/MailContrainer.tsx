@@ -137,7 +137,7 @@ export function MailContainer() {
       };
     }
 
-    // socket.onmessage
+    socket.onmessage
 
   }, [socket.onmessage]);
 
