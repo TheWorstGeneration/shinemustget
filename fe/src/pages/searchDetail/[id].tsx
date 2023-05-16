@@ -5,7 +5,7 @@ import searchDetail from '../api/searchDetail';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { MANDALART_SEARCH_DETAIL } from '@/constants/queryKey';
-import { QueryClient, dehydrate } from 'react-query';
+import { QueryClient, dehydrate, useQuery } from 'react-query';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +15,11 @@ const Container = styled.div`
 `;
 
 const SearchDetail = (props: any) => {
-  const mandalart = props.queries[0].state.data;
+  const { query } = useRouter();
+  const searchData = query.id;
+  const mandalart = useQuery(MANDALART_SEARCH_DETAIL, () =>
+    searchDetail(searchData),
+  );
 
   return (
     <>
@@ -26,7 +30,9 @@ const SearchDetail = (props: any) => {
         />
       </Head>
       <Container>
-        {mandalart != null} <SearchDetailContainer mandalart={mandalart} />
+        {mandalart.isSuccess && (
+          <SearchDetailContainer mandalart={mandalart.data} />
+        )}
       </Container>
     </>
   );
