@@ -17,6 +17,8 @@ public class RedisAlarmRepository implements AlarmRepository {
     private final RedisTemplate<String, AlarmDto> alarmRedisTemplate;
     private final ChatUtils chatUtils;
     private ZSetOperations<String, AlarmDto> zSetOperations;
+    private static final double NO_MORE_ALARMS = -1.0;
+    private static final int MAX_ALARM_COUNT = 10;
 
     @PostConstruct
     private void init() {
@@ -33,55 +35,47 @@ public class RedisAlarmRepository implements AlarmRepository {
 
         if (lastScore == 0) {
             // 처음부터 조회하는 경우
-            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, Double.POSITIVE_INFINITY, 0, 10);
-
-            List<SendAlarmDto> alarmList = new ArrayList<>();
-            for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
-                alarmList.add(new SendAlarmDto(tuple.getValue().getMessage(), tuple.getValue().getFormattedCreatedAt()));
-//                AlarmDto alarm = tuple.getValue();
-//
-//                // createdAt 필드 형식화
-//                LocalDateTime createdAt = alarm.getCreatedAt();
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//                String formattedCreatedAt = createdAt.format(formatter);
-//
-//                alarmList.add(new SendAlarmDto(alarm.getMessage(), formattedCreatedAt));
-            }
-
-            resultMap.put("alarms", alarmList);
-
-            if (alarmList.size() < 10) {
-                resultMap.put("lastScore", -1.0); // 더 이상 조회할 데이터가 없음을 표시
-            } else {
-                double newLastScore = alarms.iterator().next().getScore(); // 다음 조회의 시작점 Score 값을 추출
-                resultMap.put("lastScore", newLastScore);
-            }
-
+            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, Double.POSITIVE_INFINITY, 0, MAX_ALARM_COUNT);
+            processAlarms(alarms, resultMap);
 
         } else if (lastScore > 0) {
             // 이전 조회의 시작점을 기준으로 이어서 조회하는 경우
-            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, lastScore, Double.POSITIVE_INFINITY, 0, 10);
-
-            List<SendAlarmDto> alarmList = new ArrayList<>();
-            for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
-                alarmList.add(new SendAlarmDto(tuple.getValue().getMessage(), tuple.getValue().getFormattedCreatedAt()));
-            }
-
-            resultMap.put("alarms", alarmList);
-
-            if (alarmList.size() < 10) {
-                resultMap.put("lastScore", -1.0); // 더 이상 조회할 데이터가 없음을 표시
-            } else {
-                double newLastScore = alarms.iterator().next().getScore(); // 다음 조회의 시작점 Score 값을 추출
-                resultMap.put("lastScore", newLastScore);
-            }
+            Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, lastScore, 0, MAX_ALARM_COUNT);
+            alarms.removeIf(tuple -> tuple.getScore() >= lastScore);
+            processAlarms(alarms, resultMap);
 
         } else {
             // 잘못된 lastScore 값이 전달된 경우
             resultMap.put("alarms", Collections.emptyList());
-            resultMap.put("lastScore", -1.0);
+            resultMap.put("lastScore", NO_MORE_ALARMS);
         }
 
         return resultMap;
+    }
+
+    public boolean delete(String memberId, double deleteStart, double deleteEnd){
+        Long removedCount = zSetOperations.removeRangeByScore(memberId, deleteStart, deleteEnd);
+        return removedCount != null && removedCount > 0;
+    }
+
+    private void processAlarms(Set<ZSetOperations.TypedTuple<AlarmDto>> alarms, Map<String, Object> resultMap) {
+        List<SendAlarmDto> alarmList = new ArrayList<>();
+        double minScore = Double.MAX_VALUE;
+
+        for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
+            double score = tuple.getScore();
+            alarmList.add(new SendAlarmDto(tuple.getValue().getMessage(), tuple.getValue().getFormattedCreatedAt(), score));
+            if (score < minScore) {
+                minScore = score;
+            }
+        }
+
+        resultMap.put("alarms", alarmList);
+
+        if (alarmList.size() < MAX_ALARM_COUNT) {
+            resultMap.put("lastScore", NO_MORE_ALARMS);
+        } else {
+            resultMap.put("lastScore", minScore);
+        }
     }
 }
