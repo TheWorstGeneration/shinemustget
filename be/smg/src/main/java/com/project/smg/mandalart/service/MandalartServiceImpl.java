@@ -238,7 +238,7 @@ public class MandalartServiceImpl implements MandalartService {
                 )
                 .collect(Collectors.toList());
 
-        Collections.sort(searchList, (o1, o2) -> (o2.getLikeCnt() - o1.getLikeCnt()));
+        if(option.equals("like")) Collections.sort(searchList, (o1, o2) -> (o2.getLikeCnt() - o1.getLikeCnt()));
         return searchList;
     }
 
