@@ -138,7 +138,7 @@ export function MailContainer() {
       console.log(mail_list.length);
     }
     
-  }, [socket,maillist]);
+  }, [socket.onmessage]);
 
   return isLandingPage ? null : (
     <MailContainerDiv isActive={isActive}>
