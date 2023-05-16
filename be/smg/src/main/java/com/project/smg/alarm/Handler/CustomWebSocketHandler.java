@@ -61,6 +61,9 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 //        String jsonPayload = message.getPayload().toString();
+//        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
+        log.info("메세지 수신 시작");
+
         String jsonPayload = message.getPayload().toString();
         JsonNode jsonNode = objectMapper.readTree(jsonPayload);
 
@@ -68,7 +71,6 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         String memberId = getMemberId(session);
 
         ReceiveDto receivedMessage = new ReceiveDto(memberId, value);
-//        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
 
         Map<String, Object> result = alarmMakeService.alarmDtoList(receivedMessage.getMemberId(), Double.parseDouble(receivedMessage.getCursor()));
 
