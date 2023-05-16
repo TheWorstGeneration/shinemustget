@@ -135,6 +135,10 @@ export function MailContainer() {
           const jsonStr = JSON.stringify({"cursor": message.cursor});
           socket.send(jsonStr);
         }
+        if (message.message != undefined) { 
+          mail_list.push(message.message);
+          setMailList(prev => [...prev, ...mail_list]);
+        }
       }
       console.log('mail_list', mail_list);
     };
