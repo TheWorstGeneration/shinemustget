@@ -111,6 +111,7 @@ export function MailContainer() {
   };
 
   const socket = useSocket();
+  socket.onopen;
 
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
@@ -130,13 +131,14 @@ export function MailContainer() {
           socket.send(message.cursor);
         } else { 
           mail_list.push(message);
+          setMailList(mail_list);
         }
       }
       console.log("mail_list", mail_list);
       console.log(mail_list.length);
     }
     
-  }, [socket]);
+  }, [socket,maillist]);
 
   return isLandingPage ? null : (
     <MailContainerDiv isActive={isActive}>
