@@ -111,6 +111,7 @@ export function MailContainer() {
     //TODO: 전체 확인 버튼 클릭 시, 모든 메일을 확인한 것으로 처리
     // console.log('전체 확인');
   };
+  const mail_list: string[] = [];
 
   const socket = useSocket();
   socket.onopen;
@@ -122,17 +123,18 @@ export function MailContainer() {
     socket.onmessage = event => {
       const message = JSON.parse(event.data);
       console.log(message);
-      const mail_list: string[] = [];
+
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) {
           mail_list.push(message[i].message);
         }
         setMailList(mail_list);
       } else { 
-        if (message.cursor != (undefined || '-1.0')) {
-          const jsonStr = JSON.stringify({cursor: message.cursor});
+        if (message.cursor != undefined  && message.cursor != '-1.0') {
+          const jsonStr = JSON.stringify({"cursor": message.cursor});
           socket.send(jsonStr);
-        } 
+        }
+        
         if (message.message != undefined) { 
           mail_list.push(message);
           setMailList(mail_list);
