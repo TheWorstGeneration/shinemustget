@@ -120,8 +120,9 @@ export function MailContainer() {
     
       socket.onmessage = (event) => { 
         const message = event.data;
+        const message2 = event.data.message;
         console.log("앙 메세지띠", message);
-        console.log("앙 메세지띠2", message.message);
+        console.log("앙 메세지띠2", message2);
     }
     
   }, [socket]);
