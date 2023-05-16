@@ -129,16 +129,11 @@ export function MailContainer() {
         for (let i = 0; i < message.length; i++) {
           mail_list.push(message[i].message);
         }
-        setMailList(prev => [...prev, ...mail_list]);
+        setMailList(prev => [...mail_list,...prev]);
       } else { 
         if (message.cursor != undefined  && message.cursor != '-1.0') {
           const jsonStr = JSON.stringify({"cursor": message.cursor});
           socket.send(jsonStr);
-        }
-        
-        if (message.message != undefined) { 
-          mail_list.push(message.message);
-          setMailList(prev => [...prev, ...mail_list]);
         }
       }
       console.log('mail_list', mail_list);
