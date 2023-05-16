@@ -128,11 +128,12 @@ export function MailContainer() {
           mail_list.push(message[i].message);
         }
         setMailList(mail_list);
-      } else {
-        if (message.cursor != (undefined || '-1')) {
+      } else { 
+        if (message.cursor != (undefined || '-1.0')) {
           const jsonStr = JSON.stringify({cursor: message.cursor});
           socket.send(jsonStr);
-        } else { 
+        } 
+        if (message.message != undefined) { 
           mail_list.push(message);
           setMailList(mail_list);
         }
