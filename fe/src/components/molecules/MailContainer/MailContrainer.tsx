@@ -130,7 +130,8 @@ export function MailContainer() {
           mail_list.push(message);
         }
       }
-      console.log("mail_list",mail_list);
+      console.log("mail_list", mail_list);
+      console.log(mail_list.length);
     }
     
   }, [socket]);
@@ -153,11 +154,9 @@ export function MailContainer() {
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isActive={isActive}>
-        {mail_list.length === 0 ? (
-          <p>메일함이 비었습니다.</p>
-        ) : (
+        {
           mail_list.map((mail, index) => <MailBox key={index} mail={mail} />)
-        )}
+        }
       </MailContainerMain>
     </MailContainerDiv>
   );
