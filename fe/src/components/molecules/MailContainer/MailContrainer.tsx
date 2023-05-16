@@ -111,6 +111,7 @@ export function MailContainer() {
     //TODO: 전체 확인 버튼 클릭 시, 모든 메일을 확인한 것으로 처리
     // console.log('전체 확인');
   };
+
   const mail_list: string[] = [];
 
   const socket = useSocket();
@@ -141,7 +142,6 @@ export function MailContainer() {
         }
       }
       console.log('mail_list', mail_list);
-      console.log(mail_list.length);
     };
   }, [socket.onmessage]);
 
