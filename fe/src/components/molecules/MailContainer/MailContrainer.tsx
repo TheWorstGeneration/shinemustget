@@ -96,7 +96,7 @@ export function MailContainer() {
   const router = useRouter();
   const isLandingPage = router.pathname === '/';
   const { isMailBox } = useAppSelector(selectModal);
-  const [maillist, setMailList] = useState<string[]>([]);
+  const [mailList, setMailList] = useState<string[]>([]);
 
   const dispatch = useAppDispatch();
   // for (let i = 0; i < 20; i++) {
@@ -116,6 +116,7 @@ export function MailContainer() {
 
   const { socket, message } = useSocket();
   // socket.onopen;
+    console.log(message);
 
   useEffect(() => {
     //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
@@ -155,7 +156,7 @@ export function MailContainer() {
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
-      <MailBadge isMailBox={isMailBox} isEmpty={maillist.length} />
+      <MailBadge isMailBox={isMailBox} isEmpty={mailList.length} />
       <MailContainerHeader isMailBox={isMailBox}>
         <button type="button" title="메일함 열기" onClick={handleMailContainer}>
           <FontAwesomeIcon icon={faEnvelope} size="lg" />
@@ -171,10 +172,10 @@ export function MailContainer() {
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isMailBox={isMailBox}>
-        {maillist.length === 0 ? (
+        {mailList.length === 0 ? (
           <p>메일함이 비었어요.</p>
         ) : (
-          maillist.map((mail, index) => <MailBox key={index} mail={mail} />)
+          mailList.map((mail, index) => <MailBox key={index} mail={mail} />)
         )}
       </MailContainerMain>
     </MailContainerDiv>
