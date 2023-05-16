@@ -5,7 +5,7 @@ interface podoId {
   id: number;
 }
 
-const searchDetail = async (props: number) => {
+const searchDetail = async (props: string) => {
   const data = await customAxios
     .get<podoId>(MANDALART_SEARCH_DETAIL + `/${props}`)
     .then(res => res.data);
