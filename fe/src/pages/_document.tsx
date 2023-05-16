@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
+        <title>Shine Must Get | 샤인머스켓</title>
         <meta
           name="description"
           content="목표 달성을 위한 만다라트 제작 서비스"
