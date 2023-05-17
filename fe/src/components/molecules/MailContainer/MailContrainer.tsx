@@ -119,8 +119,28 @@ export function MailContainer() {
   const socket = useSocket();
   socket.onopen;
   
+  // useEffect(() => {
+  //   socket.onmessage = event => {
+  //     const message = JSON.parse(event.data);
+  //     console.log(message);
+
+  //     if (Array.isArray(message)) {
+  //       for (let i = 0; i < message.length; i++) {
+  //         setMailList(prev => [...prev, message[i]]);
+  //       }
+  //     } else {
+  //       if (message.cursor != undefined && message.cursor != '-1.0') {
+  //         const jsonStr = JSON.stringify({ "cursor": message.cursor });
+  //         socket.send(jsonStr);
+  //       }
+  //     }
+  //   };
+  // }, []);
+
   useEffect(() => {
-    socket.onmessage = event => {
+    console.log('change socket');
+    const handleSocketMessage = (event:any) => {
+      console.log('receive message');
       const message = JSON.parse(event.data);
       console.log(message);
 
@@ -130,23 +150,31 @@ export function MailContainer() {
         }
       } else {
         if (message.cursor != undefined && message.cursor != '-1.0') {
-          const jsonStr = JSON.stringify({ "cursor": message.cursor });
+          const jsonStr = JSON.stringify({ cursor: message.cursor });
           socket.send(jsonStr);
         }
       }
     };
-  }, []);
+
+    socket.addEventListener('message', handleSocketMessage);
+
+    return () => {
+      socket.removeEventListener('message', handleSocketMessage);
+    };
+  }, [socket]);
 
 
   useEffect(() => {
 
     const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
+
     if (socket.readyState === WebSocket.OPEN) {
-    socket.send(jsonStr);
-      setMailList((prevMailList) =>
-    prevMailList.filter((mail) => mail.score !== deleteScore)
-      );
+        socket.send(jsonStr);
+        setMailList((prevMailList) =>
+        prevMailList.filter((mail) => mail.score !== deleteScore)
+        );
     }
+
   }, [deleteScore]);
 
   const handleTotalCheck = () => {
