@@ -195,6 +195,7 @@ export function MailContainer() {
     if (!socket) return;
 
     const handleSocketMessage = (event: MessageEvent) => {
+      console.log(socket);
       const message = JSON.parse(event.data);
       console.log(message);
 
