@@ -29,8 +29,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
  */
 @Configuration
-@EnableWebSecurity(debug = true)
-//@EnableWebSecurity
+//@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -48,11 +48,11 @@ public class SecurityConfig {
         http
                 .formLogin().disable() // FormLogin 사용 X
                 .httpBasic().disable() // httpBasic 사용 X
-                .csrf().disable() // csrf 보안 사용 X
+//                .csrf().disable() // csrf 보안 사용 X
                 .headers()
 //                    .frameOptions().disable()
-                    .frameOptions().sameOrigin()
-                    .cacheControl().disable() // 캐시 비활성화
+                .frameOptions().sameOrigin()
+                .cacheControl().disable() // 캐시 비활성화
                 .and()
 
                 // 세션 사용하지 않으므로 STATELESS로 설정
@@ -63,10 +63,12 @@ public class SecurityConfig {
                 //== URL별 권한 관리 옵션 ==//
                 .authorizeRequests()
 
-                .antMatchers("/**", "/ws/**", "/socket.io/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+//                .antMatchers("/**", "/ws/**", "/socket.io/**")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+                .antMatchers("/**")
+                .authenticated()
                 .and()
                 //== 소셜 로그인 설정 ==//
                 .oauth2Login()
