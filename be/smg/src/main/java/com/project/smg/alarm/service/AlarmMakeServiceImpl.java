@@ -20,10 +20,10 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
     private final TitleRepository titleRepository;
 
     @Override
-    public AlarmDto saveAlarm(String memberId, int id, String nickname) {
+    public AlarmDto saveLikeAlarm(String memberId, int id, String nickname) {
         Title title = titleRepository.findById(id).orElse(null);
 
-        if(title == null){
+        if (title == null) {
             return null;
         }
 
@@ -36,6 +36,24 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
                 .memberId(memberId)
                 .titleName(title.getContent())
                 .titleId(title.getId())
+                .message(message)
+                .createdAt(time)
+                .formattedCreatedAt(time.format(formatter))
+                .build();
+
+        redisAlarmRepository.save(alarmDto);
+
+        return alarmDto;
+    }
+
+    @Override
+    public AlarmDto savePodoAlarm(String memberId) {
+        String message = "축하합니다. 26일 동안 스페셜 포도🍇를 사용할 수 있습니다.";
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+
+        AlarmDto alarmDto = AlarmDto.builder()
+                .memberId(memberId)
                 .message(message)
                 .createdAt(time)
                 .formattedCreatedAt(time.format(formatter))

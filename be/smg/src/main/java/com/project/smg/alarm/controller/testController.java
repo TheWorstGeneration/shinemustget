@@ -17,6 +17,6 @@ public class testController {
 
     @PostMapping("/test/{id}")
     public ResponseEntity<?> test(@RequestAttribute("id") String memberId, @PathVariable("id") int id, @RequestBody Map<String, String> map) {
-        return new ResponseEntity<>(alarmMakeService.saveAlarm(memberId, id, map.get("nickname")), HttpStatus.OK);
+        return new ResponseEntity<>(alarmMakeService.saveLikeAlarm(memberId, id, map.get("nickname")), HttpStatus.OK);
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PodoService {
-    void create(String mid, PodoCreateDto podoCreateDto);
+    void create(String mid, PodoCreateDto podoCreateDto) throws Exception;
 
     List<StickerDto> sticker(String mid);
 
