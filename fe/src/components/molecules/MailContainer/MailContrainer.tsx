@@ -161,7 +161,7 @@ export function MailContainer() {
     return () => {
       socket.removeEventListener('message', handleSocketMessage);
     };
-  }, [socket]);
+  }, []);
 
 
   useEffect(() => {
