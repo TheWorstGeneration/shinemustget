@@ -116,8 +116,8 @@ export function MailContainer() {
     dispatch(setMailBox());
   };
 
-  const socket = useSocket();
-  socket.onopen;
+  // const socket = useSocket();
+  // socket.onopen;
   
   // useEffect(() => {
   //   socket.onmessage = event => {
@@ -137,13 +137,63 @@ export function MailContainer() {
   //   };
   // }, []);
 
+  // useEffect(() => {
+  //   socket.onopen = () => {
+  //   console.log('WebSocket connection opened');
+  //   };
+  //   console.log('change socket');
+  //   const handleSocketMessage = (event:any) => {
+  //     console.log('receive message');
+  //     const message = JSON.parse(event.data);
+  //     console.log(message);
+
+  //     if (Array.isArray(message)) {
+  //       for (let i = 0; i < message.length; i++) {
+  //         setMailList(prev => [...prev, message[i]]);
+  //       }
+  //     } else {
+  //       if (message.cursor != undefined && message.cursor != '-1.0') {
+  //         const jsonStr = JSON.stringify({ cursor: message.cursor });
+  //         socket.send(jsonStr);
+  //       }
+  //     }
+  //   };
+
+  //   socket.addEventListener('message', handleSocketMessage);
+
+  //   return () => {
+  //     socket.removeEventListener('message', handleSocketMessage);
+  //     socket.onopen = null;
+  //   };
+  // }, []);
+
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+
   useEffect(() => {
-    socket.onopen = () => {
-    console.log('WebSocket connection opened');
+    const newSocket = new WebSocket('wss://www.shinemustget.com/api/ws');
+    setSocket(newSocket);
+
+    const handleSocketClose = () => {
+      reconnect();
     };
-    console.log('change socket');
-    const handleSocketMessage = (event:any) => {
-      console.log('receive message');
+
+    newSocket.addEventListener('close', handleSocketClose);
+
+    return () => {
+      newSocket.removeEventListener('close', handleSocketClose);
+      newSocket.close();
+    };
+  }, []);
+
+  const reconnect = () => {
+    const newSocket = new WebSocket('wss://www.shinemustget.com/api/ws');
+    setSocket(newSocket);
+  };
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleSocketMessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
       console.log(message);
 
@@ -163,16 +213,15 @@ export function MailContainer() {
 
     return () => {
       socket.removeEventListener('message', handleSocketMessage);
-      socket.onopen = null;
     };
-  }, []);
+  }, [socket]);
 
 
   useEffect(() => {
 
     const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
 
-    if (socket.readyState === WebSocket.OPEN) {
+    if (socket&& socket.readyState === WebSocket.OPEN) {
         socket.send(jsonStr);
         setMailList((prevMailList) =>
         prevMailList.filter((mail) => mail.score !== deleteScore)
@@ -183,7 +232,7 @@ export function MailContainer() {
 
   const handleTotalCheck = () => {
     const jsonStr = JSON.stringify({ "deleteStart": mailList[0].score, "deleteEnd": mailList[mailList.length-1].score });
-    socket.send(jsonStr);
+    socket?.send(jsonStr);
   };
 
 
