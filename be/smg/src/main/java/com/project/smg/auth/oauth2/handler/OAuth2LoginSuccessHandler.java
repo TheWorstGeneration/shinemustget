@@ -10,6 +10,7 @@ import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
 import com.project.smg.member.service.MemberService;
+import com.project.smg.podo.service.PodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -35,6 +36,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final MemberPodoRepository memberPodoRepository;
     private final MemberService memberService;
     private final MandalartService mandalartService;
+    private final PodoService podoService;
     private static final String home = "https://shinemustget.com/home";
     private static final String create = "https://shinemustget.com/create";
 
@@ -78,12 +80,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         if (memberPodoList.isEmpty())
             memberService.addMemberPodo(memberId);
 
+        podoService.checkSpecialStickerTime(member);
+
         if (!mandalartService.getMainMandalart(memberId).isEmpty()) {
             member.authorizeUser();
             memberRepository.save(member);
             response.sendRedirect(home);
-        }
-        else {
+        } else {
             response.sendRedirect(create);
         }
 
