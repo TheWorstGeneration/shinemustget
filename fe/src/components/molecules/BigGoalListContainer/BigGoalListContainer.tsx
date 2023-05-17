@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultImage from '../../../../public/assets/images/grapeBoard/default.png';
 import smileImage from '../../../../public/assets/images/grapeBoard/smile.png';
-import { keyframes } from '@emotion/react';
 
 const BigGoalList = styled.article`
   display: flex;
@@ -173,7 +172,7 @@ export const BigGoalListContainer = () => {
   return (
     <BigGoalList>
       <MandalartTitle>{title}</MandalartTitle>
-      {title === '' ? (
+      {title === '만다라트를 만들어보세요! 🎉' ? (
         <UxTag isInputBox={isInputBox}>
           <Loading
             src={isInputBox ? smileImage : defaultImage}

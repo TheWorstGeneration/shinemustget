@@ -85,6 +85,8 @@ export const InputBox = () => {
   const dispatch = useAppDispatch();
   const [input, setInput] = useState('');
   const { isInputBox } = useAppSelector(selectModal);
+  const regex = /[@#$%^*()'`:{}|<>🎉]/g;
+  const regex2 = /[`!~&\-_=+,./?]/g;
 
   const axiosBigGoal = async (input: string) => {
     const bigGoalDTO = await getBigGoal(input);
@@ -98,18 +100,26 @@ export const InputBox = () => {
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value === '\n') return;
+    if (regex.test(e.target.value)) {
+      alert('일부 특수문자는 사용할 수 없어요.');
+      return;
+    }
     setInput(e.target.value);
   };
 
   const handleSendButtonClick = () => {
+    const inputWithoutRegex2 = input.replace(regex2, '');
     if (!input.trim()) {
       alert('목표를 입력해 주세요.');
-      setInput('');
+    } else if (!inputWithoutRegex2.trim()) {
+      alert('진지하게 저희를 테스트하시는 건가요? 😎');
+    } else if (Number(inputWithoutRegex2.trim())) {
+      alert('숫자만 입력하실 수 없어요! 😎');
     } else {
-      setInput('');
       axiosBigGoal(input);
       dispatch(setInputBox());
     }
+    setInput('');
   };
 
   const handleEscape = () => {

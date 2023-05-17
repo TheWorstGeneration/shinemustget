@@ -7,6 +7,8 @@ export interface profileSlice {
   nickname: string;
   language: string;
   isLogin: boolean;
+  canCreate: boolean;
+  isDelete: boolean;
 }
 
 // 초기 상태 정의
@@ -15,6 +17,8 @@ const initialState = {
   nickname: '',
   language: 'ko',
   isLogin: false,
+  canCreate: false,
+  isDelete: false,
 };
 
 const profileSlice = createSlice({
@@ -35,11 +39,18 @@ const profileSlice = createSlice({
     setLanguage: (state, action) => {
       state.language = action.payload;
     },
+    setCanCreate: (state, action) => {
+      state.canCreate = action.payload;
+    },
+    setIsDelete: (state, action) => {
+      state.isDelete = action.payload;
+    },
   },
 });
 
 // 액션 생성함수
-export const { setLogin, setLogout, setLanguage } = profileSlice.actions;
+export const { setLogin, setLogout, setLanguage, setCanCreate, setIsDelete } =
+  profileSlice.actions;
 export const selectProfile = (state: RootState) => state.profile;
 // 리듀서
 export default profileSlice.reducer;

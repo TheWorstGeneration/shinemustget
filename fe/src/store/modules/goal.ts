@@ -21,7 +21,7 @@ export interface SmallGoalAction {
 
 // 초기 상태 정의
 const initialState = {
-  title: '',
+  title: '만다라트를 만들어보세요! 🎉',
   bigGoalList: Array(8).fill(''),
   smallGoalLists: Array(8).fill(Array(8).fill('')),
 };
@@ -43,7 +43,7 @@ const goalSlice = createSlice({
       state.smallGoalLists[i][j] = smallGoal;
     },
     setResetGoal: state => {
-      state.title = '';
+      state.title = '만다라트를 만들어보세요! 🎉';
       state.bigGoalList = Array(8).fill('');
       state.smallGoalLists = Array(8).fill(Array(8).fill(''));
     },

@@ -1,9 +1,12 @@
 import { GoalBoxContainer } from '@/components/molecules/GoalBoxContainer/GoalBoxContainer';
 import { MANDALART_READ_MAIN } from '@/constants/queryKey';
 import { MandalartData, useMandalart } from '@/hooks/useMandalart';
+import { useAppDispatch } from '@/hooks/useRedux';
 import { getReadMain } from '@/pages/api/getReadMain';
+import { setCanCreate, setIsDelete } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 
 const Container = styled.article`
@@ -64,8 +67,9 @@ export const Mandalart = () => {
   const router = useRouter();
   const { pathname } = router;
   const { data } = useQuery(MANDALART_READ_MAIN, getReadMain);
+  console.log(data);
   const mandalart = useMandalart();
-
+  const dispatch = useAppDispatch();
   const { title, bigList }: MandalartData =
     pathname === '/home' ? (data?.bigList ? data : mandalart) : mandalart;
 
@@ -101,6 +105,11 @@ export const Mandalart = () => {
 
   // secondRow의 두번째 요소에 center를 삽입
   secondRow.splice(1, 0, center);
+
+  useEffect(() => {
+    dispatch(setCanCreate(data?.canCreate));
+    dispatch(setIsDelete(data?.isDelete));
+  }, []);
 
   return (
     <Container id="mandalart">

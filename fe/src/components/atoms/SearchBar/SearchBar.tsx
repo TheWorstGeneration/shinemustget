@@ -47,7 +47,7 @@ export const SearchBar = () => {
   const [searchKey, setSearchKey] = useState('');
   const inputRef = useRef(null);
   const router = useRouter();
-
+  const { pathname } = router;
   useEffect(() => {
     const handleOutsideClick = (event: any) => {
       if (event.target !== inputRef.current) {
@@ -63,6 +63,14 @@ export const SearchBar = () => {
 
   const handleKeyDown = (event: any) => {
     if (event.key === 'Enter') {
+      if (pathname === '/create') {
+        const result = window.confirm(
+          '생성중인 만다라트가 있어요.\n검색 시 만다라트 삭제가 취소됩니다.',
+        );
+
+        if (!result) return;
+      }
+
       handleSearch();
       setSearchKey('');
     }
@@ -91,8 +99,11 @@ export const SearchBar = () => {
         onClick={handleClick}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        placeholder="만다라트를 검색해 보세요."
       />
-      <FontAwesomeIcon icon={faSearch} />
+      <button type="button" title="검색" onClick={handleKeyDown}>
+        <FontAwesomeIcon icon={faSearch} />
+      </button>
     </SearchBarContainer>
   );
 };

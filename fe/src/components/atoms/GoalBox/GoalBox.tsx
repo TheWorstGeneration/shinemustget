@@ -130,7 +130,7 @@ const TextFieldBox = styled.textarea`
   }
 `;
 
-const Box = styled(Link)<{ isClear: boolean }>`
+const Box = styled.button<{ isClear: boolean }>`
   position: relative;
 
   display: flex;
@@ -205,6 +205,7 @@ export const GoalBox = ({
   const dispatch = useAppDispatch();
   const { pathname } = router;
   const isCreate = pathname === '/create';
+  const isHome = pathname === '/home';
 
   const handleChangeSmallGoal = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const smallGoal = e.target.value;
@@ -214,6 +215,7 @@ export const GoalBox = ({
   };
 
   const handleGoToDetail = () => {
+    router.push(`/detail/${id}`);
     dispatch(
       setPodo({
         content: content,
@@ -237,9 +239,11 @@ export const GoalBox = ({
     />
   ) : (
     <Box
-      href={`/detail/${id}`}
+      type="button"
+      title="목표 상세보기"
       isClear={isClear ? isClear : false}
       onClick={handleGoToDetail}
+      disabled={!isHome}
     >
       {isPodo && !isClear ? (
         <Badge>

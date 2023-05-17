@@ -26,11 +26,15 @@ const LogoutLink = styled.button`
 export const LogoutButton = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  // const socket = useSocket();
+  const { pathname } = router;
 
   const handleLogout = () => {
-    const result = window.confirm('로그아웃 하시겠어요?');
-    // socket.close();
+    let message = '로그아웃 하시겠어요?';
+    if (pathname === '/create') {
+      message =
+        '생성중인 만다라트가 있어요.\n로그아웃 시 만다라트 삭제가 취소됩니다.';
+    }
+    const result = window.confirm(message);
 
     if (result) {
       getKakaoLogout();

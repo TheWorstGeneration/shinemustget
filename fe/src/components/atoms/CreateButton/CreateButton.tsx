@@ -76,6 +76,11 @@ export const CreateButton = () => {
   });
 
   const handleCreateMandalart = async () => {
+    const result = window.confirm(
+      '만다라트는 생성 후 24시간 이내에 삭제가 안돼요.\n생성하시겠어요?',
+    );
+
+    if (!result) return;
     await postCreate({ title: mandalart.title, bigRequestDto: bigRequestDto });
     router.push('/home');
   };
