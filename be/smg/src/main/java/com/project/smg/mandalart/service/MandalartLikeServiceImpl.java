@@ -61,7 +61,7 @@ public class MandalartLikeServiceImpl implements MandalartLikeService {
             setOperations.add(key, mid);
             // 변경여부체크
             checkChange(mid, subKey, setOperations);
-            if (!mid.equals(findTitle.getId()))
+            if (!mid.equals(findTitle.getMember().getId()))
                 alarmSendService.sendLikeAlarm(checkMember(mid).getNickname(), id);
         }
     }
