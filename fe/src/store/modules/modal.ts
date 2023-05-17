@@ -35,7 +35,7 @@ const modalSlice = createSlice({
       state.isMailBox = false;
     },
     setMailBox: state => {
-      state.isMailBox = !state.isMailBox
+      state.isMailBox = !state.isMailBox;
     },
   },
 });
