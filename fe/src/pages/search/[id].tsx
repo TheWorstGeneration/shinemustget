@@ -6,6 +6,7 @@ import { QueryClient, dehydrate } from 'react-query';
 import getSearch from '../api/getSearch';
 import { GetServerSideProps } from 'next';
 import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
+import { scrollToTop } from '@/utils/scrollToTop';
 
 const SearchSection = styled.section`
   display: flex;
@@ -31,7 +32,7 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
 
 const Search = (props: any) => {
   useGoToLandingPage();
-
+  // scrollToTop();
   const isMaxWidth = useInnerWidth() >= 1440;
 
   return (

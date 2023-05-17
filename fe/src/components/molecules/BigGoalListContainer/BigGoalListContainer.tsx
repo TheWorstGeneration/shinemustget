@@ -7,7 +7,7 @@ import Image from 'next/image';
 import defaultImage from '../../../../public/assets/images/grapeBoard/default.png';
 import smileImage from '../../../../public/assets/images/grapeBoard/smile.png';
 import { useEffect } from 'react';
-import { scrollToTop } from '@/utils/scrolltoTop';
+import { scrollToTop } from '@/utils/scrollToTop';
 
 const BigGoalList = styled.article`
   display: flex;

@@ -5,7 +5,7 @@ import { selectIdx } from '@/store/modules/detailIdx';
 import { useRouter } from 'next/router';
 
 const Button = styled.button<{ isClear: boolean }>`
-  margin-top: 3rem;
+  margin: 3rem 0;
   align-items: center;
   border-radius: 0.55rem;
   width: 100%;
