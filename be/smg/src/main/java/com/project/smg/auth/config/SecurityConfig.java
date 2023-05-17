@@ -6,6 +6,7 @@ import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.auth.oauth2.handler.OAuth2LoginFailureHandler;
 import com.project.smg.auth.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.project.smg.auth.oauth2.service.CustomOAuth2UserService;
+import com.project.smg.member.entity.Role;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class SecurityConfig {
         http
                 .formLogin().disable() // FormLogin 사용 X
                 .httpBasic().disable() // httpBasic 사용 X
-//                .csrf().disable() // csrf 보안 사용 X
+                .csrf().disable() // csrf 보안 사용 X
                 .headers()
 //                    .frameOptions().disable()
                 .frameOptions().sameOrigin()
@@ -63,10 +64,14 @@ public class SecurityConfig {
                 //== URL별 권한 관리 옵션 ==//
                 .authorizeRequests()
 
-                .antMatchers("/**", "/ws/**", "/socket.io/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+//                .antMatchers("/**", "/ws/**", "/socket.io/**")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
+                .antMatchers("/**").hasAnyAuthority(Role.USER.getKey())
+                .antMatchers("/**").hasAnyAuthority(Role.GUEST.getKey())
+                .antMatchers()
+                .authenticated()
                 .and()
                 //== 소셜 로그인 설정 ==//
                 .oauth2Login()
