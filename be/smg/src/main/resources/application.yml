@@ -12,20 +12,18 @@ spring:
   profiles:
     include: API-KEY
 
-  # ??? ?? ??
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-#    async:
-#      request-timeout: 1000s
+  #    async:
+  #      request-timeout: 1000s
 
 
   # DB??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/smg?serverTimezone=Asia/Seoul
-    #    url: jdbc:mysql://52.78.90.69:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     url: jdbc:mysql://k8b109.p.ssafy.io:3300/smg?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: smg
     password: smg!
@@ -53,10 +51,14 @@ spring:
         format_sql: true
 
   logging.level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: TRACE
+    #    org.hibernate.SQL: debug
+    #    org.hibernate.type: trace
+    #    org.springframework.security: DEBUG
+    #    org.springframework.security.oauth2: TRACE
+    org.hibernate.SQL: error
+    org.hibernate.type: error
+    org.springframework.security: error
+    org.springframework.security.oauth2: error
 
   security:
     oauth2:
@@ -65,9 +67,7 @@ spring:
           kakao:
             client-id: 2e076ec2c494a09a9d214c3658d64dcf
             client-secret: tDquIYEW1gmLenqhFf4VZNAJjFrreNKZ
-#            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             redirect-uri: http://shinemustget.com/api/login/oauth2/code/kakao
-            # redirect-uri: http://k8b109.p.ssafy.io/api/login/oauth2/code/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             client-name: Kakao
@@ -86,7 +86,6 @@ spring:
     uris: k8b109.p.ssafy.io:9200
     username: elastic
     password: changeme
-
 
 
 jwt:
