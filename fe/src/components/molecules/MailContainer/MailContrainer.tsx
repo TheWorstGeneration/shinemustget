@@ -189,7 +189,7 @@ export function MailContainer() {
     socket?.send(jsonStr);
     setMailList([]);
   };
-
+  
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
       <MailBadge isMailBox={isMailBox} isEmpty={mailList.length} />
