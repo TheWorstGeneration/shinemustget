@@ -1,8 +1,9 @@
-import { mailList } from '@/components/molecules/MailContainer/MailContrainer';
+import { deleteMailList, mailList } from '@/components/molecules/MailContainer/MailContrainer';
 import styled from '@emotion/styled';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSocket } from '@/hooks/useSocket';
+import { Dispatch,SetStateAction } from 'react';
 
 const Mail = styled.article`
   display: flex;
@@ -24,14 +25,12 @@ const MailFooter = styled.footer`
   justify-content: flex-end;
 `;
 
-// const socket = useSocket();
 
-export const MailBox = ({ mail }: { mail: mailList }) => {
+export const MailBox = ({ mail,setDeleteIdx }: { mail: mailList,setDeleteIdx: Dispatch<SetStateAction<string>> }) => {
   
-  // const handleOnClick = () => { 
-  //   const jsonStr = JSON.stringify({ "deleteStart": mail.score, "deleteEnd": mail.score });
-  //   socket.send(jsonStr);
-  // };
+  const handleOnClick = () => { 
+    setDeleteIdx(mail.score);
+  };
 
   return (
     <Mail>
@@ -39,7 +38,7 @@ export const MailBox = ({ mail }: { mail: mailList }) => {
       <p>{ mail.formattedCreatedAt}</p>
       <MailFooter>
         <button type="button" title="확인">
-          {/* <FontAwesomeIcon icon={faCheck} onClick={handleOnClick} /> */}
+          <FontAwesomeIcon icon={faCheck} onClick={handleOnClick} />
         </button>
       </MailFooter>
     </Mail>
