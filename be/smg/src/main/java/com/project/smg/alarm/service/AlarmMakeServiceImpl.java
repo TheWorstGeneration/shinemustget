@@ -27,7 +27,7 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
             return null;
         }
 
-        String message = nickname + "님이 " + title.getContent() + " 만다라트를 좋아합니다.";
+        String message = nickname + "님이 " + title.getContent() + " 만다라트를 좋아합니다.💖";
 
         LocalDateTime time = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
