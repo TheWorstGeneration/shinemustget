@@ -92,15 +92,15 @@ const MailContainerMain = styled.main<{ isMailBox: boolean }>`
   justify-content: center;
 `;
 
-export interface mailList { 
-  message: string,
-  formattedCreatedAt: string,
-  score: string
+export interface mailList {
+  message: string;
+  formattedCreatedAt: string;
+  score: string;
 }
 
-export interface deleteMailList { 
-  deleteStart: string,
-  deleteEnd: string,
+export interface deleteMailList {
+  deleteStart: string;
+  deleteEnd: string;
 }
 
 export function MailContainer() {
@@ -108,7 +108,7 @@ export function MailContainer() {
   const isLandingPage = router.pathname === '/';
   const { isMailBox } = useAppSelector(selectModal);
   const [mailList, setMailList] = useState<mailList[]>([]);
-  const [deleteScore, setDeleteScore] = useState<string>("");
+  const [deleteScore, setDeleteScore] = useState<string>('');
 
   const dispatch = useAppDispatch();
 
@@ -118,7 +118,7 @@ export function MailContainer() {
 
   // const socket = useSocket();
   // socket.onopen;
-  
+
   // useEffect(() => {
   //   socket.onmessage = event => {
   //     const message = JSON.parse(event.data);
@@ -169,25 +169,26 @@ export function MailContainer() {
 
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
+  const handleSocketClose = () => {
+    newSocket.removeEventListener('close', handleSocketClose);
+    reconnect();
+  };
+
   useEffect(() => {
     const newSocket = new WebSocket('wss://www.shinemustget.com/api/ws');
     setSocket(newSocket);
-
-    const handleSocketClose = () => {
-      reconnect();
-    };
 
     newSocket.addEventListener('close', handleSocketClose);
 
     return () => {
       newSocket.removeEventListener('close', handleSocketClose);
-      newSocket.close();
     };
   }, []);
 
   const reconnect = () => {
     const newSocket = new WebSocket('wss://www.shinemustget.com/api/ws');
     setSocket(newSocket);
+    newSocket.addEventListener('close', handleSocketClose);
   };
 
   useEffect(() => {
@@ -216,26 +217,28 @@ export function MailContainer() {
     };
   }, [socket]);
 
-
   useEffect(() => {
+    const jsonStr = JSON.stringify({
+      deleteStart: deleteScore,
+      deleteEnd: deleteScore,
+    });
 
-    const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
-
-    if (socket&& socket.readyState === WebSocket.OPEN) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(jsonStr);
-      console.log("jsonStr", jsonStr);
-        setMailList((prevMailList) =>
-          prevMailList.filter((mail) => mail.score !== deleteScore)
-        );
+      console.log('jsonStr', jsonStr);
+      setMailList(prevMailList =>
+        prevMailList.filter(mail => mail.score !== deleteScore),
+      );
     }
-
   }, [deleteScore]);
 
   const handleTotalCheck = () => {
-    const jsonStr = JSON.stringify({ "deleteStart": mailList[0].score, "deleteEnd": mailList[mailList.length-1].score });
+    const jsonStr = JSON.stringify({
+      deleteStart: mailList[0].score,
+      deleteEnd: mailList[mailList.length - 1].score,
+    });
     socket?.send(jsonStr);
   };
-
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
@@ -258,7 +261,9 @@ export function MailContainer() {
         {mailList.length === 0 ? (
           <p>메일함이 비었어요.</p>
         ) : (
-            mailList.map((mail, index) => <MailBox key={index} mail={mail} setDeleteScore={setDeleteScore} />)
+          mailList.map((mail, index) => (
+            <MailBox key={index} mail={mail} setDeleteScore={setDeleteScore} />
+          ))
         )}
       </MailContainerMain>
     </MailContainerDiv>
