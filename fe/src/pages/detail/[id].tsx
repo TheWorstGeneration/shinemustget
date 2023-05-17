@@ -19,7 +19,6 @@ const HeadDiv = styled.div`
 
 const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
   display: flex;
-  /* height: 130vh; */
   margin: 0 auto;
   justify-content: center;
 
@@ -29,23 +28,21 @@ const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
   @media (max-width: 960px) {
     display: flex;
     justify-content: column;
-    /* height: 100vh; */
   }
 
   @media (max-width: 500px) {
     display: flex;
     justify-content: column;
-    /* height: 130vh; */
   }
 `;
 
 const DetailedDivCenter = styled.div<{ isMaxWidth: boolean }>`
+  width: 100%;
   @media (max-width: 960px) {
     padding: 1rem;
   }
 
   @media (max-width: 500px) {
-    /* height: 130vh; */
   }
 `;
 
@@ -55,7 +52,6 @@ const DetailedDivRight = styled.div`
   }
 
   @media (max-width: 500px) {
-    /* height: 130vh; */
   }
 `;
 
@@ -120,7 +116,7 @@ export default function Detail() {
       <DetailedDiv isMaxWidth={isMaxWidth}>
         <DetailedDivCenter isMaxWidth={isMaxWidth}>
           <DetailedCenter stickerList={...stickerList} />
-          <CompleteButton></CompleteButton>
+          <CompleteButton />
         </DetailedDivCenter>
       </DetailedDiv>
     </>
