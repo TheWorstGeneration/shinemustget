@@ -93,13 +93,17 @@ public class JwtService {
                     }
                 });
 
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretKey))
-                .build()
-                .verify(newToken.get());
+        if (newToken.isPresent()) {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretKey))
+                    .build()
+                    .verify(newToken.get());
 
-        String kakaoIdStr = decodedJWT.getClaim(ID_CLAIM).asString();  // ID_CLAIM 이름의 클레임에서 문자열 값을 추출하여 변수에 저장
+            String kakaoIdStr = decodedJWT.getClaim(ID_CLAIM).asString();  // ID_CLAIM 이름의 클레임에서 문자열 값을 추출하여 변수에 저장
 
-        return kakaoIdStr;
+            return kakaoIdStr;
+        } else {
+            throw new IllegalArgumentException("검증되지 않는 토큰");
+        }
     }
 
     /**
