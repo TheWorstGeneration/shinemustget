@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import postSmallGoal from '@/pages/api/postSmallGoal';
 import { selectGoal, setSmallGoal } from '@/store/modules/goal';
 import { selectModal, setCreateButton } from '@/store/modules/modal';
-import { scrollToTop } from '@/utils/scrolltoTop';
+import { scrollToTop } from '@/utils/scrollToTop';
 import styled from '@emotion/styled';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
