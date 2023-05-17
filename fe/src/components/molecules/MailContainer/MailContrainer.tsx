@@ -92,34 +92,34 @@ const MailContainerMain = styled.main<{ isMailBox: boolean }>`
   justify-content: center;
 `;
 
+export interface mailList { 
+  message: string,
+  formattedCreatedAt: string,
+  score: string
+}
+
 export function MailContainer() {
   const router = useRouter();
   const isLandingPage = router.pathname === '/';
   const { isMailBox } = useAppSelector(selectModal);
-  const [mailList, setMailList] = useState<string[]>([]);
+  const [mailList, setMailList] = useState<mailList[]>([]);
 
   const dispatch = useAppDispatch();
-  // for (let i = 0; i < 20; i++) {
-  //   mail_list.push('당신의 만다라트에 좋아요가 눌렸습니다.');
-  // }
 
   const handleMailContainer = () => {
     dispatch(setMailBox());
   };
 
   const handleTotalCheck = () => {
-    //TODO: 전체 확인 버튼 클릭 시, 모든 메일을 확인한 것으로 처리
-    // console.log('전체 확인');
+    const jsonStr = JSON.stringify({ "deleteStart": mailList[0].score, "deleteEnd": mailList[mailList.length-1].score });
+    socket.send(jsonStr);
   };
 
-  // const mail_list: string[] = [];
 
   const socket = useSocket();
   socket.onopen;
 
   useEffect(() => {
-    //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
-    // console.log('메일 받아오기');
 
     socket.onmessage = event => {
       const message = JSON.parse(event.data);
@@ -127,7 +127,7 @@ export function MailContainer() {
 
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) {
-          setMailList(prev => [message[i].message, ...prev]);
+          setMailList(prev => [message[i], ...prev]);
         }
       } else {
         if (message.cursor != undefined && message.cursor != '-1.0') {
