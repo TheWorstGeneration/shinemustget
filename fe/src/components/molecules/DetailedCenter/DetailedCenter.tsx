@@ -9,6 +9,7 @@ import { useAppSelector } from '@/hooks/useRedux';
 import { selectIdx } from '@/store/modules/detailIdx';
 
 const DetailedOverDiv = styled.div`
+  width: 100%;
   @media (max-width: 960px) {
     width: calc(100vw - 2rem);
   }
@@ -21,24 +22,21 @@ const DetailedOverDiv = styled.div`
 const DetailedDiv = styled.div`
   display: flex;
   margin-bottom: 2.05rem;
+  width: 100%;
 `;
 
 const DetailedDivGoal = styled.div`
-  flex: 1;
+  width: 100%;
+  height: 4rem;
+  margin-bottom: 2.05rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const DetailedDivToggle = styled.div`
-  flex: 1;
-  margin-left: 32.25rem;
   display: flex;
+  align-items: flex-end;
 
-  @media (max-width: 960px) {
-    margin-left: 47rem;
-  }
-
-  @media (max-width: 500px) {
-    margin-left: 18rem;
-  }
 `;
 
 const DetailedDivToggleDesc = styled.div`
@@ -89,7 +87,6 @@ export function DetailedCenter({ stickerList }: { stickerList: sticker[] }) {
 
   return (
     <DetailedOverDiv>
-      <DetailedDiv>
         <DetailedDivGoal>
           <h1>{content}</h1>
           <DetailedDivToggle>
@@ -99,7 +96,6 @@ export function DetailedCenter({ stickerList }: { stickerList: sticker[] }) {
             <Toggle />
           </DetailedDivToggle>
         </DetailedDivGoal>
-      </DetailedDiv>
       {isPodo ? (
         <DetailedDivPos>
           <DetailedDivPosLeft>
