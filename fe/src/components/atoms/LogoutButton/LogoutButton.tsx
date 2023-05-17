@@ -6,6 +6,7 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useSocket } from '@/hooks/useSocket';
 
 const LogoutLink = styled.button`
   display: flex;
@@ -26,9 +27,11 @@ const LogoutLink = styled.button`
 export const LogoutButton = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  // const socket = useSocket();
 
   const handleLogout = () => {
     const result = window.confirm('로그아웃 하시겠어요?');
+    // socket.close();
 
     if (result) {
       getKakaoLogout();

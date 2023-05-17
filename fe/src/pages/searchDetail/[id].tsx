@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import SearchDetailContainer from '@/components/molecules/SearchDetailContainer/SearchDetailContainer';
 import searchDetail from '../api/searchDetail';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { MANDALART_SEARCH_DETAIL } from '@/constants/queryKey';
+import { QueryClient, dehydrate, useQuery } from 'react-query';
 
 const Container = styled.div`
   display: flex;
@@ -10,27 +14,47 @@ const Container = styled.div`
   height: calc(100vh + 6rem);
 `;
 
-const SearchDetail = (mandalart: any) => {
+const SearchDetail = (props: any) => {
+  const { query } = useRouter();
+  const searchData = query.id;
+  const mandalart = useQuery(MANDALART_SEARCH_DETAIL, () =>
+    searchDetail(searchData),
+  );
+
   return (
-    <Container>
-      {mandalart != null} <SearchDetailContainer mandalart={mandalart} />
-    </Container>
+    <>
+      <Head>
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+      </Head>
+      <Container>
+        {mandalart.isSuccess && (
+          <SearchDetailContainer mandalart={mandalart.data} />
+        )}
+      </Container>
+    </>
   );
 };
 
 export async function getServerSideProps(context: any) {
+  const queryClient = new QueryClient();
   const { query } = context;
   const searchData = query.id;
 
-  try {
-    const mandalart = searchDetail(searchData);
+  await queryClient.prefetchQuery(
+    MANDALART_SEARCH_DETAIL,
+    () => searchDetail(searchData),
+    {
+      staleTime: 10000,
+      cacheTime: 20000,
+    },
+  );
 
-    return {
-      props: mandalart,
-    };
-  } catch (err) {
-    console.log('에러 발생함띠', err);
-  }
+  return {
+    props: dehydrate(queryClient),
+  };
 }
 
 export default SearchDetail;

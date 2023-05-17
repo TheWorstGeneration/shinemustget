@@ -92,61 +92,100 @@ const MailContainerMain = styled.main<{ isMailBox: boolean }>`
   justify-content: center;
 `;
 
+export interface mailList { 
+  message: string,
+  formattedCreatedAt: string,
+  score: string
+}
+
+export interface deleteMailList { 
+  deleteStart: string,
+  deleteEnd: string,
+}
+
 export function MailContainer() {
   const router = useRouter();
   const isLandingPage = router.pathname === '/';
   const { isMailBox } = useAppSelector(selectModal);
-  const [maillist, setMailList] = useState<string[]>([]);
+  const [mailList, setMailList] = useState<mailList[]>([]);
+  const [deleteScore, setDeleteScore] = useState<string>("");
 
   const dispatch = useAppDispatch();
-  // for (let i = 0; i < 20; i++) {
-  //   mail_list.push('당신의 만다라트에 좋아요가 눌렸습니다.');
-  // }
 
   const handleMailContainer = () => {
     dispatch(setMailBox());
   };
 
-  const handleTotalCheck = () => {
-    //TODO: 전체 확인 버튼 클릭 시, 모든 메일을 확인한 것으로 처리
-    // console.log('전체 확인');
-  };
-
-  const mail_list: string[] = [];
-
   const socket = useSocket();
   socket.onopen;
+  
+  // useEffect(() => {
+  //   socket.onmessage = event => {
+  //     const message = JSON.parse(event.data);
+  //     console.log(message);
+
+  //     if (Array.isArray(message)) {
+  //       for (let i = 0; i < message.length; i++) {
+  //         setMailList(prev => [...prev, message[i]]);
+  //       }
+  //     } else {
+  //       if (message.cursor != undefined && message.cursor != '-1.0') {
+  //         const jsonStr = JSON.stringify({ "cursor": message.cursor });
+  //         socket.send(jsonStr);
+  //       }
+  //     }
+  //   };
+  // }, []);
 
   useEffect(() => {
-    //TODO: mail controller에서 메일을 받아와서 알림창에 띄우기
-    // console.log('메일 받아오기');
-
-    socket.onmessage = event => {
+    console.log('change socket');
+    const handleSocketMessage = (event:any) => {
+      console.log('receive message');
       const message = JSON.parse(event.data);
       console.log(message);
 
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) {
-          mail_list.push(message[i].message);
+          setMailList(prev => [...prev, message[i]]);
         }
-        setMailList(prev => [...prev, ...mail_list]);
-      } else { 
-        if (message.cursor != undefined  && message.cursor != '-1.0') {
-          const jsonStr = JSON.stringify({"cursor": message.cursor});
+      } else {
+        if (message.cursor != undefined && message.cursor != '-1.0') {
+          const jsonStr = JSON.stringify({ cursor: message.cursor });
           socket.send(jsonStr);
         }
-        if (message.message != undefined) { 
-          mail_list.push(message.message);
-          setMailList(prev => [...prev, ...mail_list]);
-        }
       }
-      console.log('mail_list', mail_list);
     };
-  }, [socket.onmessage]);
+
+    socket.addEventListener('message', handleSocketMessage);
+
+    return () => {
+      socket.removeEventListener('message', handleSocketMessage);
+    };
+  }, [socket]);
+
+
+  useEffect(() => {
+
+    const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
+
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(jsonStr);
+        setMailList((prevMailList) =>
+        prevMailList.filter((mail) => mail.score !== deleteScore)
+        );
+    }
+
+  }, [deleteScore]);
+
+  const handleTotalCheck = () => {
+    const jsonStr = JSON.stringify({ "deleteStart": mailList[0].score, "deleteEnd": mailList[mailList.length-1].score });
+    socket.send(jsonStr);
+  };
+
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
-      <MailBadge isMailBox={isMailBox} isEmpty={maillist.length} />
+      <MailBadge isMailBox={isMailBox} isEmpty={mailList.length} />
       <MailContainerHeader isMailBox={isMailBox}>
         <button type="button" title="메일함 열기" onClick={handleMailContainer}>
           <FontAwesomeIcon icon={faEnvelope} size="lg" />
@@ -162,10 +201,10 @@ export function MailContainer() {
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isMailBox={isMailBox}>
-        {maillist.length === 0 ? (
+        {mailList.length === 0 ? (
           <p>메일함이 비었어요.</p>
         ) : (
-          maillist.map((mail, index) => <MailBox key={index} mail={mail} />)
+            mailList.map((mail, index) => <MailBox key={index} mail={mail} setDeleteScore={setDeleteScore} />)
         )}
       </MailContainerMain>
     </MailContainerDiv>

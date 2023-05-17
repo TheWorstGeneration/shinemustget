@@ -1,10 +1,8 @@
+import { deleteMailList, mailList } from '@/components/molecules/MailContainer/MailContrainer';
 import styled from '@emotion/styled';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-interface MailBoxProps {
-  mail: string;
-}
+import { Dispatch,SetStateAction } from 'react';
 
 const Mail = styled.article`
   display: flex;
@@ -26,13 +24,20 @@ const MailFooter = styled.footer`
   justify-content: flex-end;
 `;
 
-export const MailBox = ({ mail }: MailBoxProps) => {
+
+export const MailBox = ({ key,mail,setDeleteScore }: { key:number,mail: mailList,setDeleteScore: Dispatch<SetStateAction<string>> }) => {
+  
+  const handleOnClick = () => { 
+    setDeleteScore(mail.score);
+  };
+
   return (
     <Mail>
-      <p>{mail}</p>
+      <p>{mail.message}</p>
+      <p>{mail.formattedCreatedAt}</p>
       <MailFooter>
         <button type="button" title="확인">
-          <FontAwesomeIcon icon={faCheck} />
+          <FontAwesomeIcon icon={faCheck} onClick={handleOnClick} />
         </button>
       </MailFooter>
     </Mail>
