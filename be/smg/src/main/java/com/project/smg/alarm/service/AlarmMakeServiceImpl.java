@@ -29,7 +29,7 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
         String message = nickname + "님이 " + title.getContent() + " 만다라트를 좋아합니다.";
 
         LocalDateTime time = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
 
         AlarmDto alarmDto = AlarmDto.builder()
                 .memberId(memberId)
@@ -58,5 +58,10 @@ public class AlarmMakeServiceImpl implements AlarmMakeService {
         result.put("nextScore", nextScore);
 
         return result;
+    }
+
+    @Override
+    public boolean deleteAlarm(String memberId, double deleteStart, double deleteEnd) {
+        return redisAlarmRepository.delete(memberId, deleteStart, deleteEnd);
     }
 }

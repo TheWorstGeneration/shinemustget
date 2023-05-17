@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SendAlarmDto {
-    String message;
+    private String message;
     private String formattedCreatedAt;
+    private double score;
 }

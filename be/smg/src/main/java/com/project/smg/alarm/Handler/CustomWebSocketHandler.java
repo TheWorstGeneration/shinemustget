@@ -34,6 +34,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 //        return userSessions.get(memberId);
 //    }
 
+
     public String getMemberId(WebSocketSession session){
         return (String) session.getAttributes().get("id");
     }
@@ -60,25 +61,45 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-//        String jsonPayload = message.getPayload().toString();
-//        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
+        String jsonPayload = message.getPayload().toString();
+        ReceiveDto receivedMessage = objectMapper.readValue(jsonPayload, ReceiveDto.class);
         log.info("메세지 수신 시작");
 
-        String jsonPayload = message.getPayload().toString();
-        JsonNode jsonNode = objectMapper.readTree(jsonPayload);
-
-        if(jsonNode.get("cursor").isNull()){
-
-        }
-
-        String value = jsonNode.get("cursor").asText();
         String memberId = getMemberId(session);
 
-        ReceiveDto receivedMessage = new ReceiveDto(memberId, value);
+        if(receivedMessage.getCursor() != null) {
+            Map<String, Object> result = alarmMakeService.alarmDtoList(memberId, Double.parseDouble(receivedMessage.getCursor()));
+            session.sendMessage(new TextMessage(sendAlarmList(result, session)));
+        }
 
-        Map<String, Object> result = alarmMakeService.alarmDtoList(receivedMessage.getMemberId(), Double.parseDouble(receivedMessage.getCursor()));
+        if(receivedMessage.getDeleteStart() != null && receivedMessage.getDeleteEnd() != null) {
+            boolean deleteResult = alarmMakeService.deleteAlarm(memberId, Double.parseDouble(receivedMessage.getDeleteStart()), Double.parseDouble(receivedMessage.getDeleteEnd()));
+            if (deleteResult) {
+                session.sendMessage(new TextMessage("삭제 성공"));
+            } else {
+                session.sendMessage(new TextMessage("삭제 실패"));
+            }
+        }
 
-        session.sendMessage(new TextMessage(sendAlarmList(result, session)));
+//        String jsonPayload = message.getPayload().toString();
+//        JsonNode jsonNode = objectMapper.readTree(jsonPayload);
+//        String memberId = getMemberId(session);
+//
+//        if(jsonNode.has("cursor") && !jsonNode.get("cursor").isNull()){
+//            String value = jsonNode.get("cursor").asText();
+//
+//            ReceiveDto receivedMessage = new ReceiveDto(memberId, value);
+//
+//            Map<String, Object> result = alarmMakeService.alarmDtoList(receivedMessage.getMemberId(), Double.parseDouble(receivedMessage.getCursor()));
+//
+//            session.sendMessage(new TextMessage(sendAlarmList(result, session)));
+//        }
+//
+//        if(jsonNode.has("delete") && !jsonNode.get("delete").isNull()){
+//            String value = jsonNode.get("delete").asText();
+//
+//        }
+
     }
 
     @Override
@@ -91,6 +112,12 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         session.close();
     }
 
+    /**
+     * 이벤트 발생 시 알람 전송
+     * @param memberId
+     * @param sendAlarmDto
+     * @throws Exception
+     */
     public void sendMessageToUser(String memberId, SendAlarmDto sendAlarmDto) throws Exception {
         WebSocketSession session = userSessions.get(memberId);
         if (session != null && session.isOpen()) {
@@ -100,6 +127,13 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    /**
+     * 알람 목록 전송
+     * @param result
+     * @param session
+     * @return
+     * @throws Exception
+     */
     private String sendAlarmList(Map<String, Object> result, WebSocketSession session) throws Exception {
         List<SendAlarmDto> alarmDtoList = (List<SendAlarmDto>) result.get("sendAlarmDtoList");
         double nextScore = (double) result.get("nextScore");
