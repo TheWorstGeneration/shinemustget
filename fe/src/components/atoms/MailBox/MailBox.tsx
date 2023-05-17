@@ -47,7 +47,7 @@ const MailFooter = styled.footer`
   padding: 1rem;
   border-radius: 0 1rem 1rem 0;
   &:hover{
-    background-color: #b6a9a9;
+    background-color: #EBECF0;
   }
 `;
 
