@@ -6,6 +6,8 @@ import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.TitleRepository;
 import com.project.smg.mandalart.service.MandalartLikeService;
 import com.project.smg.member.dto.*;
+import com.project.smg.member.entity.Member;
+import com.project.smg.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.stream.Stream;
 public class ProfileServiceImpl implements ProfileService {
     private final TitleRepository titleRepository;
     private final MandalartLikeService mandalartLikeService;
+    private final MemberRepository memberRepository;
 
     private Title getTitle(String memberId) {
         return titleRepository.findTopByMemberIdAndClearAtIsNullOrderByCreatedAtDesc(memberId)
@@ -115,38 +118,44 @@ public class ProfileServiceImpl implements ProfileService {
         if (clearTitleList.isEmpty())
             return Collections.emptyList();
 
-        List<ClearMandalartDto> clearMandalartDtoList = new ArrayList<>();
+        else {
+            List<ClearMandalartDto> clearMandalartDtoList = new ArrayList<>();
 
-        for (int i = 0; i < clearTitleList.size(); i++) {
-            Title title = clearTitleList.get(i);
-            List<BigGoal> bigGoalList = Optional.ofNullable(title)
-                    .map(Title::getBigGoals)
-                    .orElse(Collections.emptyList());
+            for (int i = 0; i < clearTitleList.size(); i++) {
+                Title title = clearTitleList.get(i);
+                List<BigGoal> bigGoalList = Optional.ofNullable(title)
+                        .map(Title::getBigGoals)
+                        .orElse(Collections.emptyList());
 
-            List<SearchBigDto> searchBigDtoList = new ArrayList<>();
+                List<SearchBigDto> searchBigDtoList = new ArrayList<>();
 
-            for (int j = 0; j < bigGoalList.size(); j++) {
-                SearchBigDto searchBigDto = new SearchBigDto(bigGoalList.get(j).getContent(), bigGoalList.get(j).getLocation());
-                searchBigDtoList.add(searchBigDto);
+                for (int j = 0; j < bigGoalList.size(); j++) {
+                    SearchBigDto searchBigDto = new SearchBigDto(bigGoalList.get(j).getContent(), bigGoalList.get(j).getLocation());
+                    searchBigDtoList.add(searchBigDto);
+                }
+
+                SearchDto searchDto = SearchDto.builder()
+                        .title(title.getContent())
+                        .bigList(searchBigDtoList)
+                        .isLike(mandalartLikeService.isMandalartLike(memberId, title.getId()))
+                        .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
+                        .build();
+
+                ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDto, title.getId());
+                clearMandalartDtoList.add(clearMandalartDto);
             }
-
-            SearchDto searchDto = SearchDto.builder()
-                    .title(title.getContent())
-                    .bigList(searchBigDtoList)
-                    .isLike(mandalartLikeService.isMandalartLike(memberId, title.getId()))
-                    .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
-                    .build();
-
-            ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDto, title.getId());
-            clearMandalartDtoList.add(clearMandalartDto);
+            return clearMandalartDtoList;
         }
-
-        return clearMandalartDtoList;
     }
 
     @Override
     public void delete(String memberId) {
-        Title title = getTitle(memberId);
+        Optional<Member> byId = memberRepository.findById(memberId);
+        Member member = byId.orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
+
+        Optional<Title> top1ByMemberOrderByIdDesc = titleRepository.findTop1ByMemberOrderByIdDesc(member);
+        Title title = top1ByMemberOrderByIdDesc.orElseThrow(() -> new IllegalStateException("존재하지 않는 만다라트입니다."));
+
         title.setDeletedAt(LocalDateTime.now());
         titleRepository.save(title);
     }

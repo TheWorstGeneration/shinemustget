@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SendAlarmDto {
-    private String message;
-    private String formattedCreatedAt;
-    private double score;
+public class LatestAlarmsResultDto {
+    private List<SendAlarmDto> alarms;
+    private double lastScore;
 }

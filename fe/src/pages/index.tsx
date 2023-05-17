@@ -33,23 +33,31 @@ export default function Landing() {
   return (
     <>
       <Head>
-        <title>Shine Must Get</title>
+        <title>Shine Must Get | 샤인머스켓</title>
         <meta
           name="description"
-          content="로그인 후 만다라트를 생성해 보세요."
+          content="목표 달성을 위한 만다라트를 OpenAI의 ChatGPT를 이용해 자동 제작해주는 서비스입니다."
         />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Shine Must Get" />
-        <meta property="og:title" content="Shine Must Get" />
+        <meta name="author" content="Shine Must Get" />
+        <meta property="og:title" content="Shine Must Get | 샤인머스켓" />
         <meta
           property="og:description"
-          content="로그인 후 만다라트를 생성해 보세요."
+          content="목표 달성을 위한 만다라트를 OpenAI의 ChatGPT를 이용해 자동 제작해주는 서비스입니다."
         />
-        <meta
-          property="og:image"
-          content="assets/images/common/front-image.png"
-        />
+        <meta property="og:image" content="assets/images/common/front-end" />
         <meta property="og:url" content="https://shinemustget.com" />
+        <meta property="og:site_name" content="Shine Must Get | 샤인머스켓" />
+        <meta property="og:type" content="website" />
+
+        <meta name="twitter:title" content="Shine Must Get | 샤인머스켓" />
+        <meta
+          name="twitter:description"
+          content="목표 달성을 위한 만다라트를 OpenAI의 ChatGPT를 이용해 자동 제작해주는 서비스입니다."
+        />
+        <meta name="twitter:image" content="assets/images/common/front-end" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@ShineMustGet" />
+        <meta name="twitter:creator" content="@ShineMustGet" />
       </Head>
       <MainContainer>
         <Navigator />

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ReceiveDto {
-    private String memberId;
     private String cursor;
+    private String deleteStart;
+    private String deleteEnd;
 }
