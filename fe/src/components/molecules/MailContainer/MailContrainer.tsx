@@ -170,7 +170,7 @@ export function MailContainer() {
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const handleSocketClose = () => {
-    newSocket.removeEventListener('close', handleSocketClose);
+    socket.removeEventListener('close', handleSocketClose);
     reconnect();
   };
 
