@@ -2,7 +2,6 @@ import { deleteMailList, mailList } from '@/components/molecules/MailContainer/M
 import styled from '@emotion/styled';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSocket } from '@/hooks/useSocket';
 import { Dispatch,SetStateAction } from 'react';
 
 const Mail = styled.article`

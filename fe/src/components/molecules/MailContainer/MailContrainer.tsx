@@ -116,14 +116,13 @@ export function MailContainer() {
     dispatch(setMailBox());
   };
 
+  const socket = useSocket();
+  socket.onopen;
+  
   const handleTotalCheck = () => {
     const jsonStr = JSON.stringify({ "deleteStart": mailList[0].score, "deleteEnd": mailList[mailList.length-1].score });
     socket.send(jsonStr);
   };
-
-
-  const socket = useSocket();
-  socket.onopen;
 
   useEffect(() => {
 
@@ -147,10 +146,10 @@ export function MailContainer() {
 
   }, [socket.onmessage]);
 
-  useEffect(() => { 
-    const jsonStr = JSON.stringify({ "deleteStart": deleteIdx, "deleteEnd": deleteIdx });
-    socket.send(jsonStr);
-  },[deleteIdx])
+  // useEffect(() => { 
+  //   const jsonStr = JSON.stringify({ "deleteStart": deleteIdx, "deleteEnd": deleteIdx });
+  //   socket.send(jsonStr);
+  // },[deleteIdx])
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
