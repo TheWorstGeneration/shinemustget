@@ -68,8 +68,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
 
-        log.info("Access Token : {}", accessToken);
-
         if (accessToken == null) {
             log.info("필터에서 Refresh Token 사용");
             log.info("Refresh Token 쿠키에서 조회");
@@ -77,8 +75,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             String refreshToken = jwtService.extractRefreshToken(request)
                     .filter(jwtService::isTokenValid)
                     .orElse(null);
-
-            log.info("Refresh Token : {}", refreshToken);
 
             Member member = memberRepository.findByRefreshToken(refreshToken)
                     .orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));
