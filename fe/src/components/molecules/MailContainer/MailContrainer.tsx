@@ -139,11 +139,14 @@ export function MailContainer() {
 
 
   useEffect(() => {
+
     const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
+    if (socket.readyState === WebSocket.OPEN) {
     socket.send(jsonStr);
-    setMailList((prevMailList) =>
-            prevMailList.filter((mail) => mail.score !== deleteScore)
-    );
+      setMailList((prevMailList) =>
+    prevMailList.filter((mail) => mail.score !== deleteScore)
+      );
+    }
   }, [deleteScore]);
 
   const handleTotalCheck = () => {
