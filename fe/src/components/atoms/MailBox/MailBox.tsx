@@ -24,14 +24,14 @@ const MailFooter = styled.footer`
   justify-content: flex-end;
 `;
 
-const socket = useSocket();
+// const socket = useSocket();
 
 export const MailBox = ({ mail }: { mail: mailList }) => {
   
-  const handleOnClick = () => { 
-    const jsonStr = JSON.stringify({ "deleteStart": mail.score, "deleteEnd": mail.score });
-    socket.send(jsonStr);
-  };
+  // const handleOnClick = () => { 
+  //   const jsonStr = JSON.stringify({ "deleteStart": mail.score, "deleteEnd": mail.score });
+  //   socket.send(jsonStr);
+  // };
 
   return (
     <Mail>
@@ -39,7 +39,7 @@ export const MailBox = ({ mail }: { mail: mailList }) => {
       <p>{ mail.formattedCreatedAt}</p>
       <MailFooter>
         <button type="button" title="확인">
-          <FontAwesomeIcon icon={faCheck} onClick={handleOnClick} />
+          {/* <FontAwesomeIcon icon={faCheck} onClick={handleOnClick} /> */}
         </button>
       </MailFooter>
     </Mail>
