@@ -54,16 +54,18 @@ public class RedisAlarmRepository implements AlarmRepository {
             Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, Double.POSITIVE_INFINITY, 0, MAX_ALARM_COUNT);
             if (alarms == null || alarms.isEmpty()) {
                 return sendLastPoint(latestAlarmsResultDto);
+            } else {
+                processAlarms(alarms, latestAlarmsResultDto);
             }
-            processAlarms(alarms, latestAlarmsResultDto);
 
         } else if (lastScore > 0) {
             // 이전 조회의 시작점을 기준으로 이어서 조회하는 경우
             Set<ZSetOperations.TypedTuple<AlarmDto>> alarms = zSetOperations.reverseRangeByScoreWithScores(memberId, 0, lastScore, 0, MAX_ALARM_COUNT);
             if (alarms == null || alarms.isEmpty()) {
                 return sendLastPoint(latestAlarmsResultDto);
+            } else {
+                processAlarms(alarms, latestAlarmsResultDto);
             }
-            processAlarms(alarms, latestAlarmsResultDto);
         } else {
             // 잘못된 lastScore 값이 전달된 경우
             return sendLastPoint(latestAlarmsResultDto);
@@ -81,7 +83,7 @@ public class RedisAlarmRepository implements AlarmRepository {
 
         Set<AlarmDto> valuesToDelete = zSetOperations.rangeByScore(memberId, deleteStart, deleteEnd);
 
-        if(valuesToDelete == null || valuesToDelete.isEmpty())
+        if (valuesToDelete == null || valuesToDelete.isEmpty())
             return false;
 
         Long removedCount = zSetOperations.remove(memberId, valuesToDelete.toArray());

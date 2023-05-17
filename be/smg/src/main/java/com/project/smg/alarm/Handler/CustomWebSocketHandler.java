@@ -65,12 +65,12 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         }
 
         if (receivedMessage.getDeleteStart() != null && receivedMessage.getDeleteEnd() != null) {
-            log.info("메세지 삭제 시도");
+            log.info("알람 삭제 시도");
             boolean deleteResult = alarmMakeService.deleteAlarm(memberId, Double.parseDouble(receivedMessage.getDeleteStart()), Double.parseDouble(receivedMessage.getDeleteEnd()));
             if (deleteResult) {
-                session.sendMessage(new TextMessage("삭제 성공"));
+                log.info("알람 삭제 성공");
             } else {
-                session.sendMessage(new TextMessage("삭제 실패"));
+                log.info("알람 삭제 실패");
             }
         }
     }
@@ -78,7 +78,6 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         String memberId = getMemberId(session);
-        session.sendMessage(new TextMessage("소켓 연결 종료"));
         removeSession(memberId);
         log.info("유저 로그아웃 {}", memberId);
         log.info("소켓 연결 종료 {}", status);
