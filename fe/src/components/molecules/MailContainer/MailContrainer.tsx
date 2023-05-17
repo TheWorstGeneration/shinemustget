@@ -138,6 +138,9 @@ export function MailContainer() {
   // }, []);
 
   useEffect(() => {
+    socket.onopen = () => {
+    console.log('WebSocket connection opened');
+    };
     console.log('change socket');
     const handleSocketMessage = (event:any) => {
       console.log('receive message');
@@ -160,6 +163,7 @@ export function MailContainer() {
 
     return () => {
       socket.removeEventListener('message', handleSocketMessage);
+      socket.onopen = null;
     };
   }, []);
 
