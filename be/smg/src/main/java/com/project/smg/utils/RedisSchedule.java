@@ -45,6 +45,11 @@ public class RedisSchedule {
         log.info("[Scheduling] redis like caching start");
 
         Set<String> redisChangeKeys = redisTemplate.keys("change*");
+
+        if (redisChangeKeys == null) {
+            return;
+        }
+
         Iterator<String> changeKeys = redisChangeKeys.iterator();
 
         SetOperations<String, String> setOperations = redisTemplate.opsForSet();
@@ -89,7 +94,7 @@ public class RedisSchedule {
 
     }
 
-//    @Scheduled(cron = "0 0/1 * * * *")
+    //    @Scheduled(cron = "0 0/1 * * * *")
     @Scheduled(cron = "0 0 0 * * *")
     public void cleanupExpiredAlarms() {
         log.info("[Scheduling] 알람 데이터 삭제 시작");

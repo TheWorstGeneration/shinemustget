@@ -54,6 +54,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElse(null);
 
+        if (member == null)
+            return null;
+
         MemberInfoDto memberInfoDto = new MemberInfoDto(member.getNickname(), member.getImageUrl());
         return memberInfoDto;
     }

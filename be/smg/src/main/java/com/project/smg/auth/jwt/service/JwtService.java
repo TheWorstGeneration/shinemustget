@@ -95,7 +95,7 @@ public class JwtService {
 //                .filter(accessToken -> accessToken.startsWith(BEARER))
 //                .map(accessToken -> accessToken.replace(BEARER, ""));
 
-        log.info("내 토큰 = {}", newToken.get());
+//        log.info("내 토큰 = {}", newToken.get());
 
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretKey))
                 .build()
