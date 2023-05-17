@@ -150,26 +150,23 @@ public class MandalartServiceImpl implements MandalartService {
                 .likeCnt(0)
                 .bigGoals(new ArrayList<>())
                 .build();
-
-        if (member == null) {
-            throw new IllegalArgumentException("존재하지 않는 유저");
-        }
-
-        title.addMember(member.get());
-        for (BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()) {
-            BigGoal bigGoal = BigGoal.builder()
-                    .location(bigRequestDto.getLocation())
-                    .content(bigRequestDto.getContent())
-                    .smallGoals(new ArrayList<>())
-                    .build();
-            bigGoal.addTitle(title);
-            for (SmallRequestDto smallRequestDto : bigRequestDto.getSmallRequestDto()) {
-                SmallGoal smallGoal = SmallGoal.builder()
-                        .location(smallRequestDto.getLocation())
-                        .content(smallRequestDto.getContent())
-                        .isSticker(false)
+        if (member.isPresent()) {
+            title.addMember(member.get());
+            for (BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()) {
+                BigGoal bigGoal = BigGoal.builder()
+                        .location(bigRequestDto.getLocation())
+                        .content(bigRequestDto.getContent())
+                        .smallGoals(new ArrayList<>())
                         .build();
-                smallGoal.addBigGoal(bigGoal);
+                bigGoal.addTitle(title);
+                for (SmallRequestDto smallRequestDto : bigRequestDto.getSmallRequestDto()) {
+                    SmallGoal smallGoal = SmallGoal.builder()
+                            .location(smallRequestDto.getLocation())
+                            .content(smallRequestDto.getContent())
+                            .isSticker(false)
+                            .build();
+                    smallGoal.addBigGoal(bigGoal);
+                }
             }
         }
 

@@ -9,6 +9,8 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.http.HttpHeaders;
 
+import java.io.IOException;
+
 @Configuration
 @EnableElasticsearchRepositories
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
