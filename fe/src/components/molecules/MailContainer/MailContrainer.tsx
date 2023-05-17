@@ -138,13 +138,13 @@ export function MailContainer() {
   }, []);
 
 
-  // useEffect(() => {
-  //   const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
-  //   socket.send(jsonStr);
-  //   setMailList((prevMailList) =>
-  //           prevMailList.filter((mail) => mail.score !== deleteScore)
-  //   );
-  // }, [deleteScore]);
+  useEffect(() => {
+    const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
+    socket.send(jsonStr);
+    setMailList((prevMailList) =>
+            prevMailList.filter((mail) => mail.score !== deleteScore)
+    );
+  }, [deleteScore]);
 
   const handleTotalCheck = () => {
     const jsonStr = JSON.stringify({ "deleteStart": mailList[0].score, "deleteEnd": mailList[mailList.length-1].score });
