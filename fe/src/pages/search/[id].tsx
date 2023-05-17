@@ -5,6 +5,7 @@ import { MANDALART_SEARCH } from '@/constants/queryKey';
 import { QueryClient, dehydrate } from 'react-query';
 import getSearch from '../api/getSearch';
 import { GetServerSideProps } from 'next';
+import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 
 const SearchSection = styled.section`
   display: flex;
@@ -29,6 +30,8 @@ const SearchContainer = styled.section<{ isMaxWidth: boolean }>`
 `;
 
 const Search = (props: any) => {
+  useGoToLandingPage();
+
   const isMaxWidth = useInnerWidth() >= 1440;
 
   return (

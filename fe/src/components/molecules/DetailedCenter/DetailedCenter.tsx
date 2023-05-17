@@ -36,7 +36,6 @@ const DetailedDivGoal = styled.div`
 const DetailedDivToggle = styled.div`
   display: flex;
   align-items: flex-end;
-
 `;
 
 const DetailedDivToggleDesc = styled.div`
@@ -87,15 +86,15 @@ export function DetailedCenter({ stickerList }: { stickerList: sticker[] }) {
 
   return (
     <DetailedOverDiv>
-        <DetailedDivGoal>
-          <h1>{content}</h1>
-          <DetailedDivToggle>
-            <DetailedDivToggleDesc>
-              <p>포도알 설정</p>
-            </DetailedDivToggleDesc>
-            <Toggle />
-          </DetailedDivToggle>
-        </DetailedDivGoal>
+      <DetailedDivGoal>
+        <h1>{content}</h1>
+        <DetailedDivToggle>
+          <DetailedDivToggleDesc>
+            <p>포도알 설정</p>
+          </DetailedDivToggleDesc>
+          <Toggle />
+        </DetailedDivToggle>
+      </DetailedDivGoal>
       {isPodo ? (
         <DetailedDivPos>
           <DetailedDivPosLeft>

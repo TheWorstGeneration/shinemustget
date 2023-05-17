@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import getBigGoal from '@/pages/api/getBigGoal';
 import { setBigGoal, setTitle } from '@/store/modules/goal';
 import { selectModal, setInputBox } from '@/store/modules/modal';
+import { scrollToTop } from '@/utils/scrolltoTop';
 import styled from '@emotion/styled';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,9 +23,7 @@ const TypingContainer = styled.div<{ isInputBox: boolean }>`
   border-radius: 0.5rem;
   border: 1px solid #e0e0e0;
 
-  transform: translateY(
-    ${({ isInputBox }) => (isInputBox ? '-7rem' : '10rem')}
-  );
+  transform: translateY(${({ isInputBox }) => (isInputBox ? '-7rem' : '10vh')});
 
   @media screen and (max-width: 960px) {
     width: 512px;
@@ -119,6 +118,7 @@ export const InputBox = () => {
       axiosBigGoal(input);
       dispatch(setInputBox());
     }
+    scrollToTop();
     setInput('');
   };
 

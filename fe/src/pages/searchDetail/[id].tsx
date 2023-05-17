@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { MANDALART_SEARCH_DETAIL } from '@/constants/queryKey';
 import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 
 const Container = styled.div`
   display: flex;
@@ -15,6 +16,8 @@ const Container = styled.div`
 `;
 
 const SearchDetail = (props: any) => {
+  useGoToLandingPage();
+
   const { query } = useRouter();
   const searchData = query.id;
   const mandalart = useQuery(MANDALART_SEARCH_DETAIL, () =>

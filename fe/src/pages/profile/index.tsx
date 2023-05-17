@@ -13,6 +13,7 @@ import {
   MANDALART_READ_CLEAR_MANDALART,
   MANDALART_READ_NOW_GOAL,
 } from '@/constants/queryKey';
+import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 
 const ProfileTop = styled.section`
   display: flex;
@@ -40,6 +41,8 @@ const ProfileSection = styled.section<{ isMaxWidth: boolean }>`
 `;
 
 export const Profile = (props: any) => {
+  useGoToLandingPage();
+
   const isMaxWidth = useInnerWidth() >= 1440;
 
   return (

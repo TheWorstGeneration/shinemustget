@@ -11,6 +11,7 @@ import { QueryClient, dehydrate, useQuery } from 'react-query';
 import { GetServerSideProps } from 'next';
 import { MANDALART_READ_MAIN, MEMBER_INFO } from '@/constants/queryKey';
 import { getReadMain } from '../api/getReadMain';
+import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 
 const HomeSection = styled.section`
   display: flex;
@@ -77,6 +78,7 @@ const ButtonContainer = styled.div`
 export default function Home() {
   const dispatch = useAppDispatch();
   const { data } = useQuery(MEMBER_INFO, getMemberInfo);
+  useGoToLandingPage();
   dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
   return (
     <>

@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultImage from '../../../../public/assets/images/grapeBoard/default.png';
 import smileImage from '../../../../public/assets/images/grapeBoard/smile.png';
+import { useEffect } from 'react';
+import { scrollToTop } from '@/utils/scrolltoTop';
 
 const BigGoalList = styled.article`
   display: flex;
@@ -169,6 +171,11 @@ export const BigGoalListContainer = () => {
   const handleChangeBigGoal = (index: number, bigGoal: string) => {
     dispatch(setBigGoal({ index, bigGoal }));
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
+
   return (
     <BigGoalList>
       <MandalartTitle>{title}</MandalartTitle>

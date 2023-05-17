@@ -18,19 +18,14 @@ const MailContainer = styled.div`
   justify-content: center;
   width: 100%;
   margin: 0.5rem 0;
-  height:7rem;
+  height: 7rem;
 `;
 
 const Mail = styled.article`
-
-  padding: 0.5rem 0 .5rem 1rem ;
- 
+  padding: 0.5rem 0 0.5rem 1rem;
 `;
 
-
-const MailText = styled.div`
-
-`;
+const MailText = styled.div``;
 
 const MailDate = styled.div`
   margin-top: 0.5rem;
@@ -46,11 +41,10 @@ const MailFooter = styled.footer`
   height: 100%;
   padding: 1rem;
   border-radius: 0 1rem 1rem 0;
-  &:hover{
-    background-color: #EBECF0;
+  &:hover {
+    background-color: #ebecf0;
   }
 `;
-
 
 export const MailBox = ({
   key,

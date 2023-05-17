@@ -12,6 +12,7 @@ import { getReadMain } from '../api/getReadMain';
 import { GetServerSideProps } from 'next';
 import { setLogin } from '@/store/modules/profile';
 import { CreateButton } from '@/components/atoms/CreateButton/CreateButton';
+import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 
 const CreateSection = styled.section`
   display: flex;
@@ -40,6 +41,8 @@ const FinalCreateStep = styled.div`
 `;
 
 export default function Create() {
+  useGoToLandingPage();
+
   const dispatch = useAppDispatch();
   const { smallGoalLists } = useAppSelector(selectGoal);
 

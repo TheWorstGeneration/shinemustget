@@ -11,6 +11,7 @@ import podoSticker from '../api/podoSticker';
 import { selectIdx } from '@/store/modules/detailIdx';
 import podoSetting from '../api/podoSetting';
 import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
+import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 
 const HeadDiv = styled.div`
   margin-bottom: 7rem;
@@ -74,6 +75,8 @@ export interface podoListRecord {
 }
 
 export default function Detail() {
+  useGoToLandingPage();
+
   const dispatch = useAppDispatch();
   const isMaxWidth = useInnerWidth() >= 1440;
 
