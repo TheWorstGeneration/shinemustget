@@ -162,6 +162,10 @@ CI/CD : Jenkins, Docker
 - sonarqube 설치
 
   ```bash
+  $ sysctl -w vm.max_map_count=524288
+  $ sysctl -w fs.file-max=131072
+  $ ulimit -n 131072
+  $ ulimit -u 8192
   $ cd /home/ubuntu/Dockerfiles/sonarqube
   $ docker build -t sonarqube -f Dockerfile-sonarqube .
   $ docker run --name sonarqube --network ubuntu_default -d -p 9000:9000 -it -e TZ=Asia/Seoul -v /home/ubuntu/sonarqube/data:/opt/sonarqube/data -v /home/ubuntu/sonarqube/logs:/opt/sonarqube/logs -v /home/ubuntu/sonarqube/extensions:/opt/sonarqube/extensions sonarqube
