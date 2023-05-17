@@ -37,7 +37,7 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     database: mysql
     properties:
       hibernate:
