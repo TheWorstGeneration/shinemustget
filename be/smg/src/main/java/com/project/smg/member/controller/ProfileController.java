@@ -1,6 +1,5 @@
 package com.project.smg.member.controller;
 
-import com.project.smg.common.ResponseDto;
 import com.project.smg.member.dto.ClearDto;
 import com.project.smg.member.dto.ClearMandalartDto;
 import com.project.smg.member.dto.NowBigGoalDto;
@@ -34,8 +33,7 @@ public class ProfileController {
             nowGoalDto.setNowBigGoalDtoList(nowBigGoalDtoList);
             log.info("BigGoal 리스트 조회 성공");
             return new ResponseEntity<>(nowGoalDto, HttpStatus.OK);
-        }
-        else {
+        } else {
             log.info("BigGoal 리스트 조회 실패");
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
@@ -47,8 +45,7 @@ public class ProfileController {
         if (!clearDtoList.isEmpty()) {
             log.info("완료 목록 조회 성공");
             return new ResponseEntity<>(clearDtoList, HttpStatus.OK);
-        }
-        else {
+        } else {
             log.info("완료 목록 조회 실패");
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }
@@ -60,8 +57,7 @@ public class ProfileController {
         if (!clearMandalartDtoList.isEmpty()) {
             log.info("완료한 만다라트 조회 성공");
             return new ResponseEntity<>(clearMandalartDtoList, HttpStatus.OK);
-        }
-        else {
+        } else {
             log.info("완료한 만다라트 조회 실패");
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
         }

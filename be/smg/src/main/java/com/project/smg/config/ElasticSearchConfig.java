@@ -21,6 +21,7 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
 
     @Value("${spring.elasticsearch.password}")
     public String userPassword;
+
     @Override
     public RestHighLevelClient elasticsearchClient() {
         // DocWriteResponse _doc헤더 설정

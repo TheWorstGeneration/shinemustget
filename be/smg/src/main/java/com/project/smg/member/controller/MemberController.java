@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+
     /**
      * 카카오 소셜 로그인 로그아웃 처리
      *

@@ -11,8 +11,6 @@ import java.util.List;
 @Builder
 public class GptTitleDto {
     private int id;
-
     private String content;
-
     private List<GptBigGoalDto> gptBigGoals;
 }

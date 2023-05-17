@@ -9,6 +9,5 @@ import lombok.*;
 @Builder
 public class GptBigGoalDto {
     private int id;
-
     private String content;
 }

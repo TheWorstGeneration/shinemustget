@@ -11,14 +11,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 public class SmallDto implements Serializable {
-
     private int id;
     private int location;
     private String content;
-
     @JsonProperty("isPodo")
     private boolean isPodo;
-
     @JsonProperty("isToday")
     private boolean isToday;
     @JsonProperty("isClear")

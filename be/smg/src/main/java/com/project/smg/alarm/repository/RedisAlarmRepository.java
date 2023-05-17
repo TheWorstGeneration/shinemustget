@@ -106,9 +106,12 @@ public class RedisAlarmRepository implements AlarmRepository {
 
         for (ZSetOperations.TypedTuple<AlarmDto> tuple : alarms) {
             double score = tuple.getScore();
-            alarmList.add(new SendAlarmDto(tuple.getValue().getMessage(), tuple.getValue().getFormattedCreatedAt(), score));
-            if (score < minScore) {
-                minScore = score;
+            AlarmDto alarmDto = tuple.getValue();
+            if (alarmDto != null) {
+                alarmList.add(new SendAlarmDto(alarmDto.getMessage(), alarmDto.getFormattedCreatedAt(), score));
+                if (score < minScore) {
+                    minScore = score;
+                }
             }
         }
 
