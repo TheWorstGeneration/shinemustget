@@ -222,9 +222,10 @@ export function MailContainer() {
     const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
 
     if (socket&& socket.readyState === WebSocket.OPEN) {
-        socket.send(jsonStr);
+      socket.send(jsonStr);
+      console.log("jsonStr", jsonStr);
         setMailList((prevMailList) =>
-        prevMailList.filter((mail) => mail.score !== deleteScore)
+          prevMailList.filter((mail) => mail.score !== deleteScore)
         );
     }
 
