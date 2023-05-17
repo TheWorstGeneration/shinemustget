@@ -316,7 +316,6 @@ public class MandalartServiceImpl implements MandalartService {
         if(check) {
             title.setClearAt(LocalDateTime.now());
             titleRepository.save(title);
-//            saveClearTitle(title);
         }
     }
 
