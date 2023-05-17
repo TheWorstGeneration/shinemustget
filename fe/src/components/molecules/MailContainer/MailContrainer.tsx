@@ -1,7 +1,5 @@
 import { MailBox } from '@/components/atoms/MailBox/MailBox';
-import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
-import { useSocket } from '@/hooks/useSocket';
 import { selectModal, setMailBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
@@ -23,7 +21,7 @@ const MailContainerDiv = styled.aside<{ isMailBox: boolean }>`
 
   z-index: 1000;
 
-  background-color: ${({ isMailBox }) => (isMailBox ? '#ffffff' : '#ffffff')};
+  background-color: #ffffff;
 
   overflow-x: hidden; // 가로 스크롤 숨기기
   overflow-y: scroll; // 세로 스크롤 활성화
@@ -116,57 +114,6 @@ export function MailContainer() {
     dispatch(setMailBox());
   };
 
-  // const socket = useSocket();
-  // socket.onopen;
-
-  // useEffect(() => {
-  //   socket.onmessage = event => {
-  //     const message = JSON.parse(event.data);
-  //     console.log(message);
-
-  //     if (Array.isArray(message)) {
-  //       for (let i = 0; i < message.length; i++) {
-  //         setMailList(prev => [...prev, message[i]]);
-  //       }
-  //     } else {
-  //       if (message.cursor != undefined && message.cursor != '-1.0') {
-  //         const jsonStr = JSON.stringify({ "cursor": message.cursor });
-  //         socket.send(jsonStr);
-  //       }
-  //     }
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   socket.onopen = () => {
-  //   console.log('WebSocket connection opened');
-  //   };
-  //   console.log('change socket');
-  //   const handleSocketMessage = (event:any) => {
-  //     console.log('receive message');
-  //     const message = JSON.parse(event.data);
-  //     console.log(message);
-
-  //     if (Array.isArray(message)) {
-  //       for (let i = 0; i < message.length; i++) {
-  //         setMailList(prev => [...prev, message[i]]);
-  //       }
-  //     } else {
-  //       if (message.cursor != undefined && message.cursor != '-1.0') {
-  //         const jsonStr = JSON.stringify({ cursor: message.cursor });
-  //         socket.send(jsonStr);
-  //       }
-  //     }
-  //   };
-
-  //   socket.addEventListener('message', handleSocketMessage);
-
-  //   return () => {
-  //     socket.removeEventListener('message', handleSocketMessage);
-  //     socket.onopen = null;
-  //   };
-  // }, []);
-
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   const handleSocketClose = () => {
@@ -205,13 +152,12 @@ export function MailContainer() {
           setMailList(prev => [...prev, message[i]]);
         }
       } else if (message.cursor !== undefined && message.cursor !== '-1.0') {
-          const jsonStr = JSON.stringify({ cursor: message.cursor });
-          socket.send(jsonStr);
-        }
-        else if (message.message !== undefined) { 
-          setMailList(prev => [message, ...prev]);
-        }
+        const jsonStr = JSON.stringify({ cursor: message.cursor });
+        socket.send(jsonStr);
+      } else if (message.message !== undefined) {
+        setMailList(prev => [message, ...prev]);
       }
+    };
 
     socket.addEventListener('message', handleSocketMessage);
 

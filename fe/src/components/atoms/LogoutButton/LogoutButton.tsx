@@ -6,7 +6,6 @@ import { faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useSocket } from '@/hooks/useSocket';
 
 const LogoutLink = styled.button`
   display: flex;

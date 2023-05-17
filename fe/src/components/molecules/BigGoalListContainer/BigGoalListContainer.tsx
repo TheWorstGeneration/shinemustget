@@ -138,7 +138,6 @@ const UxTag = styled.span<{ isInputBox: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  transform: ${props => (props.isInputBox ? 'translateY(0)' : 'translateY(0)')};
 `;
 
 const YouCanEdit = styled.h2<{ isInputBox: boolean }>`
