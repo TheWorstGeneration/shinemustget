@@ -186,6 +186,7 @@ export function MailContainer() {
   }, []);
 
   const reconnect = () => {
+    setMailList([]);
     const newSocket = new WebSocket('wss://www.shinemustget.com/api/ws');
     setSocket(newSocket);
     newSocket.addEventListener('close', handleSocketClose);
@@ -203,13 +204,14 @@ export function MailContainer() {
         for (let i = 0; i < message.length; i++) {
           setMailList(prev => [...prev, message[i]]);
         }
-      } else {
-        if (message.cursor != undefined && message.cursor != '-1.0') {
+      } else if (message.cursor !== undefined && message.cursor !== '-1.0') {
           const jsonStr = JSON.stringify({ cursor: message.cursor });
           socket.send(jsonStr);
         }
+        else if (message.message !== undefined) { 
+          setMailList(prev => [message, ...prev]);
+        }
       }
-    };
 
     socket.addEventListener('message', handleSocketMessage);
 
