@@ -2,7 +2,7 @@ import { MailBox } from '@/components/atoms/MailBox/MailBox';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectModal, setMailBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { faEnvelope, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faCheckDouble } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
@@ -204,7 +204,7 @@ export function MailContainer() {
           onClick={handleTotalCheck}
           isMailBox={isMailBox}
         >
-          <FontAwesomeIcon icon={faCheckDouble} />
+          <FontAwesomeIcon icon={faTrashCan} />
         </TotalCheckButton>
       </MailContainerHeader>
       <MailContainerMain isMailBox={isMailBox}>
