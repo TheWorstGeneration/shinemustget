@@ -1,6 +1,7 @@
 package com.project.smg.podo.service;
 
 
+import com.project.smg.alarm.service.AlarmSendService;
 import com.project.smg.mandalart.entity.SmallGoal;
 import com.project.smg.mandalart.repository.SmallGoalRepository;
 import com.project.smg.mandalart.service.MandalartLikeService;
@@ -32,6 +33,7 @@ public class PodoServiceImpl implements PodoService {
     private final PodoTypeRepository podoTypeRepository;
     private final PodoRepository podoRepository;
     private final MandalartLikeService mandalartLikeService;
+    private final AlarmSendService alarmSendService;
 
     /**
      * 포도송이 조회
@@ -85,7 +87,7 @@ public class PodoServiceImpl implements PodoService {
      */
     @Override
     @Transactional
-    public void create(String mid, PodoCreateDto podoCreateDto) {
+    public void create(String mid, PodoCreateDto podoCreateDto) throws Exception {
 
         // small goal 확인
         SmallGoal findSmallGoal = checkSmallGoal(podoCreateDto.getId());
@@ -108,6 +110,9 @@ public class PodoServiceImpl implements PodoService {
 
         // 스페셜 포도 알림 여부
         boolean is26daysClear = isSpecialClear(mid, podoCreateDto.getId());
+        if (is26daysClear) {
+            alarmSendService.sendPodoAlarm(mid);
+        }
         log.info("is26daysClear= {}", is26daysClear);
     }
 

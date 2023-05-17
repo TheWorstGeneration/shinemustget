@@ -20,16 +20,28 @@ public class AlarmSendServiceImpl implements AlarmSendService {
     private final ChatUtils chatUtils;
 
     @Override
-    public void sendAlarm(String nickname, int id) throws Exception {
+    public void sendLikeAlarm(String nickname, int id) throws Exception {
         Title title = titleRepository.findById(id).orElse(null);
 
-        if(title == null)
+        if (title == null)
             return;
-        
+
         String opponentId = title.getMember().getId();
 
-        AlarmDto alarmDto = alarmMakeService.saveAlarm(opponentId, id, nickname);
+        AlarmDto alarmDto = alarmMakeService.saveLikeAlarm(opponentId, id, nickname);
 
-        customWebSocketHandler.sendMessageToUser(opponentId, new SendAlarmDto(alarmDto.getMessage(), alarmDto.getFormattedCreatedAt(), chatUtils.changeLocalDateTimeToDouble(alarmDto.getCreatedAt())));
+        customWebSocketHandler.sendMessageToUser(opponentId,
+                new SendAlarmDto(alarmDto.getMessage(),
+                        alarmDto.getFormattedCreatedAt(),
+                        chatUtils.changeLocalDateTimeToDouble(alarmDto.getCreatedAt())));
+    }
+
+    @Override
+    public void sendPodoAlarm(String memberId) throws Exception {
+        AlarmDto alarmDto = alarmMakeService.savePodoAlarm(memberId);
+        customWebSocketHandler.sendMessageToUser(memberId,
+                new SendAlarmDto(alarmDto.getMessage(),
+                        alarmDto.getFormattedCreatedAt(),
+                        chatUtils.changeLocalDateTimeToDouble(alarmDto.getCreatedAt())));
     }
 }
