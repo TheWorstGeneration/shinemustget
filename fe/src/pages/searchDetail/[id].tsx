@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh + 6rem);
+  height: calc(100vh - 7rem);
 `;
 
 const SearchDetail = (props: any) => {
