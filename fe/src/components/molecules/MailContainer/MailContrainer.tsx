@@ -120,26 +120,22 @@ export function MailContainer() {
   socket.onopen;
   
   useEffect(() => {
-
     socket.onmessage = event => {
       const message = JSON.parse(event.data);
       console.log(message);
 
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) {
-          setMailList(prev => [...prev,message[i]]);
+          setMailList(prev => [...prev, message[i]]);
         }
       } else {
         if (message.cursor != undefined && message.cursor != '-1.0') {
           const jsonStr = JSON.stringify({ "cursor": message.cursor });
           socket.send(jsonStr);
         }
-      };
-    }
-
-    // socket.onmessage
-    
-  }, [socket.onmessage]);
+      }
+    };
+  }, []);
 
 
   // useEffect(() => {
