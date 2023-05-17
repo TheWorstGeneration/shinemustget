@@ -238,6 +238,7 @@ export function MailContainer() {
       deleteEnd: mailList[mailList.length - 1].score,
     });
     socket?.send(jsonStr);
+    setMailList([]);
   };
 
   return isLandingPage ? null : (
