@@ -50,8 +50,8 @@ public class SecurityConfig {
                 .httpBasic().disable() // httpBasic 사용 X
                 .csrf().disable() // csrf 보안 사용 X
                 .headers()
-                    .frameOptions().disable()
-//                    .frameOptions().sameOrigin()
+//                    .frameOptions().disable()
+                    .frameOptions().sameOrigin()
                     .cacheControl().disable() // 캐시 비활성화
                 .and()
 

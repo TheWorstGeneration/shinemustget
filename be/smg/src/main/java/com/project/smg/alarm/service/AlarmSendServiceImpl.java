@@ -23,10 +23,12 @@ public class AlarmSendServiceImpl implements AlarmSendService {
     public void sendAlarm(String nickname, int id) throws Exception {
         Title title = titleRepository.findById(id).orElse(null);
 
+        if(title == null)
+            return;
+        
         String opponentId = title.getMember().getId();
 
         AlarmDto alarmDto = alarmMakeService.saveAlarm(opponentId, id, nickname);
-//        AlarmDto alarmDto = alarmMakeService.saveAlarm(title, nickname);
 
         customWebSocketHandler.sendMessageToUser(opponentId, new SendAlarmDto(alarmDto.getMessage(), alarmDto.getFormattedCreatedAt(), chatUtils.changeLocalDateTimeToDouble(alarmDto.getCreatedAt())));
     }
