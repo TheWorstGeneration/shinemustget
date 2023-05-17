@@ -18,7 +18,7 @@ const HeadDiv = styled.div`
 
 const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
   display: flex;
-  height: 130vh;
+  /* height: 130vh; */
   margin: 0 auto;
   justify-content: center;
 
@@ -28,13 +28,13 @@ const DetailedDiv = styled.div<{ isMaxWidth: boolean }>`
   @media (max-width: 960px) {
     display: flex;
     justify-content: column;
-    height: 100vh;
+    /* height: 100vh; */
   }
 
   @media (max-width: 500px) {
     display: flex;
     justify-content: column;
-    height: 160vh;
+    /* height: 130vh; */
   }
 `;
 
@@ -44,7 +44,7 @@ const DetailedDivCenter = styled.div<{ isMaxWidth: boolean }>`
   }
 
   @media (max-width: 500px) {
-    height: 130vh;
+    /* height: 130vh; */
   }
 `;
 
@@ -54,6 +54,7 @@ const DetailedDivRight = styled.div`
   }
 
   @media (max-width: 500px) {
+    /* height: 130vh; */
   }
 `;
 
