@@ -16,14 +16,12 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketConfigurer {
     private final AlarmMakeService alarmMakeService;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(customWebSocketHandler(), "/ws")
                 .addInterceptors(customHandshakeInterceptor())
                 .setAllowedOrigins("http://localhost:8080", "http://www.shinemustget.com", "https://www.shinemustget.com");
-//                .setAllowedOriginPatterns("*");
-//                .withSockJS()
-//                .setClientLibraryUrl("https://cdn.jsdelivr.net/sockjs/latest/sockjs.min.js");
     }
 
     @Bean

@@ -26,7 +26,8 @@ public class AlarmSendServiceImpl implements AlarmSendService {
         String opponentId = title.getMember().getId();
 
         AlarmDto alarmDto = alarmMakeService.saveAlarm(opponentId, id, nickname);
-//        String message = alarmDto.getMessage() + " " + alarmDto.getFormattedCreatedAt();
+//        AlarmDto alarmDto = alarmMakeService.saveAlarm(title, nickname);
+
         customWebSocketHandler.sendMessageToUser(opponentId, new SendAlarmDto(alarmDto.getMessage(), alarmDto.getFormattedCreatedAt(), chatUtils.changeLocalDateTimeToDouble(alarmDto.getCreatedAt())));
     }
 }
