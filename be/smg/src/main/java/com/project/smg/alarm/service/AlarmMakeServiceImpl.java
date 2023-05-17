@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -18,45 +19,45 @@ import java.time.format.DateTimeFormatter;
 public class AlarmMakeServiceImpl implements AlarmMakeService {
     private final RedisAlarmRepository redisAlarmRepository;
     private final TitleRepository titleRepository;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM-dd HH:mm");
+
 
     @Override
     public AlarmDto saveLikeAlarm(String memberId, int id, String nickname) {
-        Title title = titleRepository.findById(id).orElse(null);
+        Optional<Title> optionalTitle = titleRepository.findById(id);
 
-        if (title == null) {
+        if (optionalTitle.isPresent()) {
+            Title title = optionalTitle.get();
+            String message = nickname + "님이 " + title.getContent() + " 만다라트를 좋아합니다.💖";
+            LocalDateTime time = LocalDateTime.now();
+
+            AlarmDto alarmDto = AlarmDto.builder()
+                    .memberId(memberId)
+                    .titleName(title.getContent())
+                    .titleId(title.getId())
+                    .message(message)
+                    .createdAt(time)
+                    .formattedCreatedAt(time.format(FORMATTER))
+                    .build();
+
+            redisAlarmRepository.save(alarmDto);
+            return alarmDto;
+        } else {
+            log.warn("존재하지 않는 title");
             return null;
         }
-
-        String message = nickname + "님이 " + title.getContent() + " 만다라트를 좋아합니다.💖";
-
-        LocalDateTime time = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
-
-        AlarmDto alarmDto = AlarmDto.builder()
-                .memberId(memberId)
-                .titleName(title.getContent())
-                .titleId(title.getId())
-                .message(message)
-                .createdAt(time)
-                .formattedCreatedAt(time.format(formatter))
-                .build();
-
-        redisAlarmRepository.save(alarmDto);
-
-        return alarmDto;
     }
 
     @Override
     public AlarmDto savePodoAlarm(String memberId) {
         String message = "축하합니다. 26일 동안 스페셜 포도🍇를 사용할 수 있습니다.";
         LocalDateTime time = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
 
         AlarmDto alarmDto = AlarmDto.builder()
                 .memberId(memberId)
                 .message(message)
                 .createdAt(time)
-                .formattedCreatedAt(time.format(formatter))
+                .formattedCreatedAt(time.format(FORMATTER))
                 .build();
 
         redisAlarmRepository.save(alarmDto);
