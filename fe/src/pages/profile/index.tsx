@@ -25,7 +25,7 @@ const ProfileSection = styled.section<{ isMaxWidth: boolean }>`
   flex-direction: column;
 
   width: ${({ isMaxWidth }) => (isMaxWidth ? '50vw' : '100vw')};
-  padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0rem')};
+  padding: ${({ isMaxWidth }) => (isMaxWidth ? '0' : '0 9.5rem')};
   height: 91vh;
 
   background-color: #ffffff;
