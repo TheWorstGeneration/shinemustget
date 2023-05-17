@@ -25,16 +25,16 @@ const MailFooter = styled.footer`
 `;
 
 
-export const MailBox = ({ mail,setDeleteIdx }: { mail: mailList,setDeleteIdx: Dispatch<SetStateAction<string>> }) => {
+export const MailBox = ({ key,mail,setDeleteScore }: { key:number,mail: mailList,setDeleteScore: Dispatch<SetStateAction<string>> }) => {
   
   const handleOnClick = () => { 
-    setDeleteIdx(mail.score);
+    setDeleteScore(mail.score);
   };
 
   return (
     <Mail>
       <p>{mail.message}</p>
-      <p>{ mail.formattedCreatedAt}</p>
+      <p>{mail.formattedCreatedAt}</p>
       <MailFooter>
         <button type="button" title="확인">
           <FontAwesomeIcon icon={faCheck} onClick={handleOnClick} />

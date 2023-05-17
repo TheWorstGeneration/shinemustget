@@ -108,7 +108,7 @@ export function MailContainer() {
   const isLandingPage = router.pathname === '/';
   const { isMailBox } = useAppSelector(selectModal);
   const [mailList, setMailList] = useState<mailList[]>([]);
-  const [deleteIdx, setDeleteIdx] = useState<string>("");
+  const [deleteScore, setDeleteScore] = useState<string>("");
 
   const dispatch = useAppDispatch();
 
@@ -143,13 +143,16 @@ export function MailContainer() {
     }
 
     socket.onmessage
-
+    
   }, [socket.onmessage]);
-
-  // useEffect(() => { 
-  //   const jsonStr = JSON.stringify({ "deleteStart": deleteIdx, "deleteEnd": deleteIdx });
-  //   socket.send(jsonStr);
-  // },[deleteIdx])
+  
+  useEffect(() => {
+    const jsonStr = JSON.stringify({ "deleteStart": deleteScore, "deleteEnd": deleteScore });
+    socket.send(jsonStr);
+    setMailList((prevMailList) =>
+            prevMailList.filter((mail) => mail.score !== deleteScore)
+    );
+  }, [deleteScore]);
 
   return isLandingPage ? null : (
     <MailContainerDiv isMailBox={isMailBox}>
@@ -172,7 +175,7 @@ export function MailContainer() {
         {mailList.length === 0 ? (
           <p>메일함이 비었어요.</p>
         ) : (
-            mailList.map((mail, index) => <MailBox key={index} mail={mail} setDeleteIdx={ setDeleteIdx} />)
+            mailList.map((mail, index) => <MailBox key={index} mail={mail} setDeleteScore={setDeleteScore} />)
         )}
       </MailContainerMain>
     </MailContainerDiv>
