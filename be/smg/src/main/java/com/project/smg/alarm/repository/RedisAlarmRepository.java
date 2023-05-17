@@ -5,6 +5,7 @@ import com.project.smg.alarm.dto.LatestAlarmsResultDto;
 import com.project.smg.alarm.dto.SendAlarmDto;
 import com.project.smg.alarm.utils.ChatUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class RedisAlarmRepository implements AlarmRepository {
     private final RedisTemplate<String, AlarmDto> alarmRedisTemplate;
     private final ChatUtils chatUtils;
@@ -75,11 +77,13 @@ public class RedisAlarmRepository implements AlarmRepository {
     }
 
     public boolean delete(String memberId, double deleteStart, double deleteEnd) {
+        log.info("초기 시작값, 종료값 {}, {}", deleteStart, deleteEnd);
         if (deleteStart > deleteEnd) {
             double tmp = deleteStart;
             deleteStart = deleteEnd;
             deleteEnd = tmp;
         }
+        log.info("변경된 시작값, 종료값 {}, {}", deleteStart, deleteEnd);
 
         Set<AlarmDto> valuesToDelete = zSetOperations.rangeByScore(memberId, deleteStart, deleteEnd);
 

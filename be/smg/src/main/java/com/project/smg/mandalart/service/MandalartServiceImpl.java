@@ -51,7 +51,9 @@ public class MandalartServiceImpl implements MandalartService {
     private final ElasticsearchOperations elasticsearchOperations;
     private static final String OPEN_AI_CHAT_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
-    /** Gpt 요청 */
+    /**
+     * Gpt 요청
+     */
     @Async
     public CompletableFuture<ChatGptResponseDto> getChatGptResponse(String prompt) {
         HttpHeaders headers = new HttpHeaders();
@@ -79,7 +81,9 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
 
-    /** 만다라트 타이틀 생성 */
+    /**
+     * 만다라트 타이틀 생성
+     */
     @Transactional
     @Override
     @Async
@@ -110,13 +114,15 @@ public class MandalartServiceImpl implements MandalartService {
         });
     }
 
-    /** 만다라트 세부 목표 생성 */
+    /**
+     * 만다라트 세부 목표 생성
+     */
     @Transactional
     @Override
     @Async
     public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal) {
         List<CompletableFuture<ConcurrentHashMap<String, Object>>> futures = new ArrayList<>();
-        for(String content : bigGoal){
+        for (String content : bigGoal) {
             CompletableFuture<ConcurrentHashMap<String, Object>> asyncBigGoals = getBigGoals(content);
             futures.add(asyncBigGoals);
         }
@@ -124,13 +130,16 @@ public class MandalartServiceImpl implements MandalartService {
                 .thenApply(v -> {
                     ConcurrentHashMap<String, Object> result = new ConcurrentHashMap<>();
                     for (int i = 0; i < bigGoal.size(); i++) {
-                        for(String key : futures.get(i).join().keySet()) result.put(key, futures.get(i).join().get(key));
+                        for (String key : futures.get(i).join().keySet())
+                            result.put(key, futures.get(i).join().get(key));
                     }
                     return result;
                 });
     }
 
-    /** 만다라트 생성 */
+    /**
+     * 만다라트 생성
+     */
     @Transactional
     @Override
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
@@ -141,15 +150,18 @@ public class MandalartServiceImpl implements MandalartService {
                 .likeCnt(0)
                 .bigGoals(new ArrayList<>())
                 .build();
+        if (title == null) {
+            throw new IllegalArgumentException("존재하지 않는 title");
+        }
         title.addMember(member.get());
-        for(BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()){
+        for (BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()) {
             BigGoal bigGoal = BigGoal.builder()
                     .location(bigRequestDto.getLocation())
                     .content(bigRequestDto.getContent())
                     .smallGoals(new ArrayList<>())
                     .build();
             bigGoal.addTitle(title);
-            for(SmallRequestDto smallRequestDto : bigRequestDto.getSmallRequestDto()){
+            for (SmallRequestDto smallRequestDto : bigRequestDto.getSmallRequestDto()) {
                 SmallGoal smallGoal = SmallGoal.builder()
                         .location(smallRequestDto.getLocation())
                         .content(smallRequestDto.getContent())
@@ -168,7 +180,9 @@ public class MandalartServiceImpl implements MandalartService {
         saveClearTitle(title);
     }
 
-    /** 만다라트 조회 */
+    /**
+     * 만다라트 조회
+     */
     @Override
     @Transactional
     public HashMap<String, Object> getMainMandalart(String mid) {
@@ -179,7 +193,7 @@ public class MandalartServiceImpl implements MandalartService {
         Title title = top1ByMemberOrderByIdDesc.orElse(null);
 
         HashMap<String, Object> result = new HashMap<>();
-        if(title == null) return result;
+        if (title == null) return result;
 
         boolean canCreate = title.getCreatedAt().toLocalDate().equals(LocalDate.now()) ? false : true;
         boolean isDelete = title.getDeletedAt() != null ? true : false;
@@ -194,7 +208,9 @@ public class MandalartServiceImpl implements MandalartService {
         return result;
     }
 
-    /** 만다라트 검색 */
+    /**
+     * 만다라트 검색
+     */
     @Override
     public List<SearchDto> getSearchMandalart(String mid, String option, String word, String pageNo) {
         PageRequest page = PageRequest.of(Integer.parseInt(pageNo), 10);
@@ -202,14 +218,14 @@ public class MandalartServiceImpl implements MandalartService {
 
         NativeSearchQuery query = null;
 
-        if(option.equals("like")){
+        if (option.equals("like")) {
             query = new NativeSearchQueryBuilder()
                     .withQuery(QueryBuilders.matchQuery("title.ngram", word))
                     .withPageable(page)
                     .withSort(sort)
                     .build();
-        }else if(option.equals("accuracy")){
-             query = new NativeSearchQueryBuilder()
+        } else if (option.equals("accuracy")) {
+            query = new NativeSearchQueryBuilder()
                     .withQuery(QueryBuilders.matchQuery("title.ngram", word))
                     .withPageable(page)
                     .build();
@@ -221,7 +237,7 @@ public class MandalartServiceImpl implements MandalartService {
                 .collect(Collectors.toList());
 
         List<SearchDto> searchList = new ArrayList<>();
-        if(search.isEmpty()) return searchList;
+        if (search.isEmpty()) return searchList;
 
         searchList = content.stream()
                 .map(title -> SearchDto.builder()
@@ -240,18 +256,20 @@ public class MandalartServiceImpl implements MandalartService {
                 )
                 .collect(Collectors.toList());
 
-        if(option.equals("like")) Collections.sort(searchList, (o1, o2) -> (o2.getLikeCnt() - o1.getLikeCnt()));
+        if (option.equals("like")) Collections.sort(searchList, (o1, o2) -> (o2.getLikeCnt() - o1.getLikeCnt()));
         return searchList;
     }
 
 
-    /** 만다라트 상세 조회 */
+    /**
+     * 만다라트 상세 조회
+     */
     @Override
     public SearchDetailResponseDto getSearchDetail(String mid, int id) {
         SearchDetailResponseDto SearchDetailResponse = null;
 
         Optional<Title> byId = titleRepository.findById(id);
-        if(!byId.isPresent()) return SearchDetailResponse;
+        if (!byId.isPresent()) return SearchDetailResponse;
         Title title = byId.get();
 
         SearchDetailResponse = SearchDetailResponseDto.builder()
@@ -265,71 +283,77 @@ public class MandalartServiceImpl implements MandalartService {
                         MandalartRequestDto.builder()
                                 .title(title.getContent())
                                 .bigRequestDto(title.getBigGoals().stream()
-                                                .map(bigGoal -> BigRequestDto.builder()
-                                                                .content(bigGoal.getContent())
-                                                                .location(bigGoal.getLocation())
-                                                                .smallRequestDto(bigGoal.getSmallGoals().stream()
-                                                                                .map(smallGoal -> SmallRequestDto.builder()
-                                                                                                .location(smallGoal.getLocation())
-                                                                                                .content(smallGoal.getContent())
-                                                                                                .build()
-                                                                                ).collect(Collectors.toList())
-                                                                ).build()
-                                                ).collect(Collectors.toList())
+                                        .map(bigGoal -> BigRequestDto.builder()
+                                                .content(bigGoal.getContent())
+                                                .location(bigGoal.getLocation())
+                                                .smallRequestDto(bigGoal.getSmallGoals().stream()
+                                                        .map(smallGoal -> SmallRequestDto.builder()
+                                                                .location(smallGoal.getLocation())
+                                                                .content(smallGoal.getContent())
+                                                                .build()
+                                                        ).collect(Collectors.toList())
+                                                ).build()
+                                        ).collect(Collectors.toList())
                                 ).build()
                 ).build();
         return SearchDetailResponse;
     }
 
-    /** 세부목표 완료 */
+    /**
+     * 세부목표 완료
+     */
     @Transactional
     @Override
     public void clearGoal(String mid, int id) {
         Optional<Title> title = titleRepository.findTopByMemberIdAndClearAtIsNullOrderByCreatedAtDesc(mid);
         Optional<SmallGoal> byId = smallGoalRepository.findById(id);
         System.out.println("test");
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             SmallGoal smallGoal = byId.get();
             smallGoal.setClearAt(LocalDateTime.now());
-            if(isFinishBigGoal(smallGoal) && title.isPresent()) checkFinishTitle(title.get());
+            if (isFinishBigGoal(smallGoal) && title.isPresent()) checkFinishTitle(title.get());
             smallGoalRepository.save(smallGoal);
         }
     }
 
 
-    /** 빅골 완료시 타이틀 완료되는지 체크 */
+    /**
+     * 빅골 완료시 타이틀 완료되는지 체크
+     */
     @Transactional
-    public void checkFinishTitle(Title title){
+    public void checkFinishTitle(Title title) {
         boolean check = true;
-        for(BigGoal bigGoal : title.getBigGoals()){
+        for (BigGoal bigGoal : title.getBigGoals()) {
             // 아직 완료하지 못한것 중에
-            if(bigGoal.getClearAt() == null){
-                for(SmallGoal smallGoal : bigGoal.getSmallGoals()){
+            if (bigGoal.getClearAt() == null) {
+                for (SmallGoal smallGoal : bigGoal.getSmallGoals()) {
                     // 완료 못했으면 빅골 완료 x
-                    if(smallGoal.getClearAt() == null){
+                    if (smallGoal.getClearAt() == null) {
                         check = false;
                         return;
                     }
                 }
             }
         }
-        if(check) {
+        if (check) {
             title.setClearAt(LocalDateTime.now());
             titleRepository.save(title);
         }
     }
 
-    /** 세부목표 완료시 빅골 완료되는지 체크 */
+    /**
+     * 세부목표 완료시 빅골 완료되는지 체크
+     */
     @Transactional
-    public boolean isFinishBigGoal(SmallGoal smallGoal){
+    public boolean isFinishBigGoal(SmallGoal smallGoal) {
         boolean check = true;
         Optional<BigGoal> byId = bigGoalRepository.findById(smallGoal.getBigGoal().getId());
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             BigGoal bigGoal = byId.get();
-            for(SmallGoal goal : bigGoal.getSmallGoals()){
-                if(goal.getClearAt() == null) check = false;
+            for (SmallGoal goal : bigGoal.getSmallGoals()) {
+                if (goal.getClearAt() == null) check = false;
             }
-            if(check){
+            if (check) {
                 bigGoal.setClearAt(LocalDateTime.now());
             }
         }
@@ -337,7 +361,9 @@ public class MandalartServiceImpl implements MandalartService {
     }
 
 
-    /** 완료된 만다라트 ElasticSearch에 저장 */
+    /**
+     * 완료된 만다라트 ElasticSearch에 저장
+     */
     public void saveClearTitle(Title title) {
         SearchDocument search = SearchDocument.builder()
                 .id(title.getId())
@@ -355,22 +381,30 @@ public class MandalartServiceImpl implements MandalartService {
         searchRepository.save(search);
     }
 
-    /** Gpt에 저장된 세부목표 불러오기 */
+    /**
+     * Gpt에 저장된 세부목표 불러오기
+     */
     @Async
-    public List<String> getSavedGptBigGoal(Optional<GptTitle> optional){
-        GptTitle gptTitle = optional.orElseThrow(() -> new IllegalStateException("저장된 Title이 없습니다."));
-        Optional<GptBigGoal> byId = gptBigGoalRepository.findById(gptTitle.getId());
-        List<String> savedGptBigGoal = optional.get().getGptBigGoals()
-                .stream()
-                .map(i -> i.getContent())
-                .collect(Collectors.toList());
-        return savedGptBigGoal;
+    public List<String> getSavedGptBigGoal(Optional<GptTitle> optional) {
+//        GptTitle gptTitle = optional.orElseThrow(() -> new IllegalStateException("저장된 Title이 없습니다."));
+//        Optional<GptBigGoal> byId = gptBigGoalRepository.findById(gptTitle.getId());
+        if (optional.isPresent()) {
+            List<String> savedGptBigGoal = optional.get().getGptBigGoals()
+                    .stream()
+                    .map(i -> i.getContent())
+                    .collect(Collectors.toList());
+            return savedGptBigGoal;
+        } else {
+            return Collections.emptyList();
+        }
     }
 
-    /** Gpt로 만든 세부목표 저장하기 */
+    /**
+     * Gpt로 만든 세부목표 저장하기
+     */
     @Transactional
     @Async
-    public void saveGptBigGoal(String title, List<String> strings){
+    public void saveGptBigGoal(String title, List<String> strings) {
         List<GptBigGoal> gptBigGoals = strings.stream()
                 .map(i -> GptBigGoal.builder().content(i).build())
                 .collect(Collectors.toList());
@@ -381,14 +415,16 @@ public class MandalartServiceImpl implements MandalartService {
                 .gptBigGoals(new ArrayList<>())
                 .build();
 
-        for(int i = 0; i < gptBigGoals.size(); i++) gptBigGoals.get(i).addGptTitle(gptTitle);
+        for (int i = 0; i < gptBigGoals.size(); i++) gptBigGoals.get(i).addGptTitle(gptTitle);
         gptTitleRepository.save(gptTitle);
     }
 
-    /** BigDto 리스트 생성 */
-    public List<BigDto> makeBigDto(List<BigGoal> bigGoals){
+    /**
+     * BigDto 리스트 생성
+     */
+    public List<BigDto> makeBigDto(List<BigGoal> bigGoals) {
         List<BigDto> bigDtos = new ArrayList<>();
-        for(BigGoal bigGoal : bigGoals){
+        for (BigGoal bigGoal : bigGoals) {
             List<SmallDto> smallDtos = makeSmallDto(bigGoal.getSmallGoals());
             BigDto bigDto = BigDto.builder()
                     .location(bigGoal.getLocation())
@@ -401,10 +437,12 @@ public class MandalartServiceImpl implements MandalartService {
         return bigDtos;
     }
 
-    /** SmallDto 리스트 생성 */
-    public List<SmallDto> makeSmallDto(List<SmallGoal> smallGoals){
+    /**
+     * SmallDto 리스트 생성
+     */
+    public List<SmallDto> makeSmallDto(List<SmallGoal> smallGoals) {
         List<SmallDto> smallDtos = new ArrayList<>();
-        for(SmallGoal smallGoal : smallGoals){
+        for (SmallGoal smallGoal : smallGoals) {
             SmallDto smallDto = SmallDto.builder()
                     .id(smallGoal.getId())
                     .location(smallGoal.getLocation())
@@ -413,12 +451,12 @@ public class MandalartServiceImpl implements MandalartService {
                     .isToday(false)
                     .isClear(smallGoal.getClearAt() == null ? false : true)
                     .build();
-            
+
             // 포도로 생성됬고, 가장 최근 생성된 포도가 있다면 오늘 만든 포도인지 찾기
-            if(smallDto.isPodo()){
+            if (smallDto.isPodo()) {
                 Optional<Podo> top1BySmallGoalOrderByIdDesc = podoRepository.findTop1BySmallGoalOrderByIdDesc(smallGoal);
-                if(top1BySmallGoalOrderByIdDesc.isPresent()){
-                    if(top1BySmallGoalOrderByIdDesc.get().getCreatedAt().toLocalDate()
+                if (top1BySmallGoalOrderByIdDesc.isPresent()) {
+                    if (top1BySmallGoalOrderByIdDesc.get().getCreatedAt().toLocalDate()
                             .equals(LocalDate.now())) smallDto.setToday(true);
                 }
             }

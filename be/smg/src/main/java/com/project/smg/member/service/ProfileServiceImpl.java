@@ -118,34 +118,37 @@ public class ProfileServiceImpl implements ProfileService {
         if (clearTitleList.isEmpty())
             return Collections.emptyList();
 
-        else {
-            List<ClearMandalartDto> clearMandalartDtoList = new ArrayList<>();
+        List<ClearMandalartDto> clearMandalartDtoList = new ArrayList<>();
 
-            for (int i = 0; i < clearTitleList.size(); i++) {
-                Title title = clearTitleList.get(i);
-                List<BigGoal> bigGoalList = Optional.ofNullable(title)
-                        .map(Title::getBigGoals)
-                        .orElse(Collections.emptyList());
+        for (int i = 0; i < clearTitleList.size(); i++) {
+            Title title = clearTitleList.get(i);
+            List<BigGoal> bigGoalList = Optional.ofNullable(title)
+                    .map(Title::getBigGoals)
+                    .orElse(Collections.emptyList());
 
-                List<SearchBigDto> searchBigDtoList = new ArrayList<>();
-
-                for (int j = 0; j < bigGoalList.size(); j++) {
-                    SearchBigDto searchBigDto = new SearchBigDto(bigGoalList.get(j).getContent(), bigGoalList.get(j).getLocation());
-                    searchBigDtoList.add(searchBigDto);
-                }
-
-                SearchDto searchDto = SearchDto.builder()
-                        .title(title.getContent())
-                        .bigList(searchBigDtoList)
-                        .isLike(mandalartLikeService.isMandalartLike(memberId, title.getId()))
-                        .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
-                        .build();
-
-                ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDto, title.getId());
-                clearMandalartDtoList.add(clearMandalartDto);
+            if (title == null) {
+                throw new IllegalArgumentException("존재하지 않는 title");
             }
-            return clearMandalartDtoList;
+
+            List<SearchBigDto> searchBigDtoList = new ArrayList<>();
+
+            for (int j = 0; j < bigGoalList.size(); j++) {
+                SearchBigDto searchBigDto = new SearchBigDto(bigGoalList.get(j).getContent(), bigGoalList.get(j).getLocation());
+                searchBigDtoList.add(searchBigDto);
+            }
+
+            SearchDto searchDto = SearchDto.builder()
+                    .title(title.getContent())
+                    .bigList(searchBigDtoList)
+                    .isLike(mandalartLikeService.isMandalartLike(memberId, title.getId()))
+                    .likeCnt(mandalartLikeService.mandalartLikeCnt(title.getId()))
+                    .build();
+
+            ClearMandalartDto clearMandalartDto = new ClearMandalartDto(searchDto, title.getId());
+            clearMandalartDtoList.add(clearMandalartDto);
         }
+
+        return clearMandalartDtoList;
     }
 
     @Override
