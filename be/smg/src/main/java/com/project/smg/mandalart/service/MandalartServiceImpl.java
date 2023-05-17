@@ -143,15 +143,17 @@ public class MandalartServiceImpl implements MandalartService {
     @Transactional
     @Override
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
-        Optional<Member> member = memberRepository.findById(mid);
+//        Optional<Member> member = memberRepository.findById(mid);
+        Member member = memberRepository.findById(mid).orElse(null);
         Title title = Title.builder()
                 .createdAt(LocalDateTime.now())
                 .content(mandalartRequestDto.getTitle())
                 .likeCnt(0)
                 .bigGoals(new ArrayList<>())
                 .build();
-        if (member.isPresent()) {
-            title.addMember(member.get());
+
+        if (member != null) {
+            title.addMember(member);
             for (BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()) {
                 BigGoal bigGoal = BigGoal.builder()
                         .location(bigRequestDto.getLocation())
@@ -168,15 +170,16 @@ public class MandalartServiceImpl implements MandalartService {
                     smallGoal.addBigGoal(bigGoal);
                 }
             }
+            member.authorizeUser();
+
+            memberRepository.save(member);
+
+            titleRepository.save(title);
+
+            saveClearTitle(title);
+        } else {
+            throw new IllegalArgumentException("존재하지 않는 유저");
         }
-
-        Member newMember = member
-                .orElse(null);
-        newMember.authorizeUser();
-        memberRepository.save(newMember);
-
-        titleRepository.save(title);
-        saveClearTitle(title);
     }
 
     /**
