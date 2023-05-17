@@ -150,9 +150,11 @@ public class MandalartServiceImpl implements MandalartService {
                 .likeCnt(0)
                 .bigGoals(new ArrayList<>())
                 .build();
-        if (title == null) {
-            throw new IllegalArgumentException("존재하지 않는 title");
+
+        if (member == null) {
+            throw new IllegalArgumentException("존재하지 않는 유저");
         }
+
         title.addMember(member.get());
         for (BigRequestDto bigRequestDto : mandalartRequestDto.getBigRequestDto()) {
             BigGoal bigGoal = BigGoal.builder()

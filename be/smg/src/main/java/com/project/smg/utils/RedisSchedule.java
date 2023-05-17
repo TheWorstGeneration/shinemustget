@@ -129,7 +129,7 @@ public class RedisSchedule {
         // 기존 redis caching 데이터 삭제
         log.info("[Scheduling] 좋아요 기존 redis caching 데이터 삭제 ");
         Set<String> redisLikeKeys = redisTemplate.keys("like*");
-        if(redisLikeKeys == null){
+        if (redisLikeKeys == null) {
             return;
         }
         Iterator<String> likeKeys = redisLikeKeys.iterator();

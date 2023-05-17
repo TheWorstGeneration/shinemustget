@@ -2,7 +2,6 @@ package com.project.smg.mandalart.dto;
 
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -12,5 +11,4 @@ import java.util.List;
 @Builder
 public class SmallGoalRequestDto {
     private List<String> bigGoal;
-//    private String bigGoal;
 }
