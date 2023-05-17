@@ -132,7 +132,7 @@ export function MailContainer() {
 
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) {
-          setMailList(prev => [message[i], ...prev]);
+          setMailList(prev => [...prev,message[i]]);
         }
       } else {
         if (message.cursor != undefined && message.cursor != '-1.0') {
