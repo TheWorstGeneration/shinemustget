@@ -73,10 +73,6 @@ export const Mandalart = () => {
   const { title, bigList }: MandalartData =
     pathname === '/home' ? (data?.bigList ? data : mandalart) : mandalart;
 
-  if (title !== '만다라트를 만들어보세요! 🎉') {
-    dispatch(setTitle(title));
-  }
-
   bigList.sort((a, b) => {
     return a.location - b.location;
   });

@@ -36,7 +36,7 @@ const GithubButton = styled.button`
 export const Footer = () => {
   const size = useInnerWidth() > 500 ? 'lg' : 'sm';
   const handleGithub = () => {
-    window.open('https://lab.ssafy.com/s08-final/S08P31B109');
+    window.open('https://github.com/LimSB-dev');
   };
 
   return (
