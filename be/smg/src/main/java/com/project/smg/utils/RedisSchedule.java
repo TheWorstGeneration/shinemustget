@@ -86,9 +86,7 @@ public class RedisSchedule {
             // 변경 redis caching 데이터 삭제
             log.info("[Scheduling] 좋아요 변경 redis caching 데이터 삭제 ");
             redisTemplate.delete(changeKey);
-
         }
-
     }
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -111,8 +109,8 @@ public class RedisSchedule {
     }
 
     // 일주일에 한 번 실행
-    @Scheduled(cron = "0 0 * * 0")
-    private void deleteLikeFromRedis() {
+    @Scheduled(cron = "0 0 0 * * 0")
+    public void deleteLikeFromRedis() {
         // 기존 redis caching 데이터 삭제
         log.info("[Scheduling] 좋아요 기존 redis caching 데이터 삭제 ");
         Set<String> redisLikeKeys = redisTemplate.keys("like*");
