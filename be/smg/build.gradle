@@ -60,7 +60,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     // Elasticsearch
-//    implementation group: 'org.elasticsearch', name: 'elasticsearch', version: '8.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 }
 
