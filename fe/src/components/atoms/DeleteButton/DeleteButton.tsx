@@ -54,7 +54,7 @@ export const DeleteButton = () => {
   const { canCreate } = useAppSelector(selectProfile);
 
   const handleDeleteMandalart = () => {
-    if (!canCreate) {
+    if (canCreate) {
       alert('생성 후 24시간이 지나야 새로운 만다라트를 생설할 수 있어요.');
       return;
     }
