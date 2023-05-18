@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 
-// state type
 export interface goalSlice {
   title: string;
   bigGoalList: string[];
@@ -19,7 +18,6 @@ export interface SmallGoalAction {
   smallGoal: string;
 }
 
-// 초기 상태 정의
 const initialState = {
   title: '만다라트를 만들어보세요! 🎉',
   bigGoalList: Array(8).fill(''),
@@ -30,7 +28,6 @@ const goalSlice = createSlice({
   name: 'goal',
   initialState,
   reducers: {
-    // 액션 생성함수
     setTitle: (state, action) => {
       state.title = action.payload;
     },
@@ -50,9 +47,7 @@ const goalSlice = createSlice({
   },
 });
 
-// 액션 생성함수
 export const { setTitle, setBigGoal, setSmallGoal, setResetGoal } =
   goalSlice.actions;
 export const selectGoal = (state: RootState) => state.goal;
-// 리듀서
 export default goalSlice.reducer;

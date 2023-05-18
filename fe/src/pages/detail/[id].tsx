@@ -1,15 +1,13 @@
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { DetailedCenter } from '@/components/molecules/DetailedCenter/DetailedCenter';
 import Head from 'next/head';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
-import { setIdx, setPodosList } from '@/store/modules/detailIdx';
+import { setPodosList } from '@/store/modules/detailIdx';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import podoRead from '../api/podoRead';
 import podoSticker from '../api/podoSticker';
 import { selectIdx } from '@/store/modules/detailIdx';
-import podoSetting from '../api/podoSetting';
 import { CompleteButton } from '@/components/atoms/CompleteButton/CompleteButton';
 import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 

@@ -1,7 +1,5 @@
-import { useInnerWidth } from '@/hooks/useInnerWidth';
 import { usePageYOffset } from '../../../../hooks/usePageYOffset';
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 const SectionStyle = styled.section`
   display: flex;

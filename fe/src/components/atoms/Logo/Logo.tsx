@@ -16,7 +16,6 @@ const LogoLink = styled(Link)`
   font-weight: 600;
 
   & > svg {
-    // 그림자
     filter: drop-shadow(0 0 5px #d1ffc6);
   }
 

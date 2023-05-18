@@ -135,7 +135,6 @@ export const InputBox = () => {
         onChange={handleChangeInput}
         onKeyDown={e => {
           if (e.key === 'Enter') {
-            console.log('enter');
             handleSendButtonClick();
           } else if (e.key === 'Escape') {
             handleEscape();

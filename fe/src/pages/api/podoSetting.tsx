@@ -10,8 +10,6 @@ const podoSetting = async (props: number) => {
     .post<podoId>(PODO_CREATE + `${props}`, {})
     .then(res => res.data);
 
-  console.log('data', data);
-
   return data;
 };
 

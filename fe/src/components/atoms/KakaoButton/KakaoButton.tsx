@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { useAppSelector } from '@/hooks/useRedux';
 import { selectProfile, setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { faComment } from '@fortawesome/free-solid-svg-icons';

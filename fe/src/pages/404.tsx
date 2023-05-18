@@ -12,13 +12,11 @@ const ImageContainer = styled.div`
 const NotFoundImage = styled(Image)`
   object-fit: contain;
 
-  // 중앙 정렬
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  // 반응형
   @media screen and (max-width: 960px) {
     width: 512px;
   }

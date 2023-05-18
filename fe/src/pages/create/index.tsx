@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectGoal } from '@/store/modules/goal';
 import styled from '@emotion/styled';
 import Head from 'next/head';
-import { QueryClient, dehydrate, hydrate, useQuery } from 'react-query';
+import { QueryClient, dehydrate, useQuery } from 'react-query';
 import getMemberInfo from '../api/getMemberInfo';
 import { getReadMain } from '../api/getReadMain';
 import { GetServerSideProps } from 'next';

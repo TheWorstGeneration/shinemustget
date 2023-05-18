@@ -25,7 +25,6 @@ export interface idxSlice {
   result: Result;
 }
 
-// 초기 상태 정의
 const initialState = {
   index: 0,
   isPodo: false,
@@ -52,7 +51,6 @@ const detailSlice = createSlice({
   name: 'detailIdx',
   initialState,
   reducers: {
-    // 액션 생성함수
     setIdx: (state, action) => {
       state.index = action.payload;
     },
@@ -74,9 +72,7 @@ const detailSlice = createSlice({
   },
 });
 
-// 액션 생성함수
 export const { setIdx, setPodo, setIsPodo, setIsToday, setPodosList } =
   detailSlice.actions;
 export const selectIdx = (state: RootState) => state.detailIdx;
-// 리듀서
 export default detailSlice.reducer;

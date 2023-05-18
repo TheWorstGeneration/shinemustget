@@ -10,7 +10,6 @@ const StyledChip = styled.div`
   align-items: center;
   justify-content: center;
 
-  // width가 context의 길이에 따라 달라지도록 설정
   width: fit-content;
 
   color: #ffffff;
@@ -21,7 +20,6 @@ const StyledChip = styled.div`
   border-radius: 0.25rem;
   padding: 0.75rem;
 
-  // Must used margin-right instead of gap for the loop to be smooth
   margin-right: 1rem;
   white-space: nowrap;
 `;

@@ -1,38 +1,22 @@
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 0, 0, 0;
-  }
-} */
-
-/*여기서 부터*/
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 
-  /* 모든 변화에 animation 적용 */
   transition: all 0.3s ease-in-out;
 }
 
 html,
 body {
-  /* 좌우 스크롤 금지 */
   overflow-x: hidden;
 }
 
-/* 스크롤 바 숨기기 */
 ::-webkit-scrollbar {
   display: none;
 }
 
 section {
-  /* transition */
   transition: all 0s ease-in-out !important;
 }
 
@@ -50,7 +34,6 @@ label,
 li,
 ul,
 ol {
-  /* text 컬러 */
   color: black;
 }
 
@@ -64,11 +47,6 @@ button {
   cursor: pointer;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-} */
 
 @font-face {
   font-family: 'Pacifico';

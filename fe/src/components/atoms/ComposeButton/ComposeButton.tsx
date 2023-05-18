@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import podoWrite from '@/pages/api/podoWrite';
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectIdx, setIsToday } from '@/store/modules/detailIdx';
-import podoRead from '@/pages/api/podoRead';
 
 const Button = styled.button<{ isToday: boolean }>`
   display: flex;

@@ -1,5 +1,4 @@
 import {
-  deleteMailList,
   mailList,
 } from '@/components/molecules/MailContainer/MailContrainer';
 import styled from '@emotion/styled';
@@ -47,7 +46,6 @@ const MailFooter = styled.footer`
 `;
 
 export const MailBox = ({
-  key,
   mail,
   setDeleteScore,
 }: {

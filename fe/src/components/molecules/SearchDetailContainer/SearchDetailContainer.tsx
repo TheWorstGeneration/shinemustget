@@ -82,7 +82,6 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any }) => {
     isCenter: 2,
   };
 
-  // secondRow의 두번째 요소에 center를 삽입
   secondRow.splice(1, 0, center);
 
   return (
@@ -117,7 +116,6 @@ const SearchDetailContainer = ({ mandalart }: { mandalart: any }) => {
             smallRequestDto: GoalBoxProps[];
             isCenter: number | undefined;
           }) => {
-            console.log(bigGoal);
             return (
               <GoalBoxContainer2
                 key={bigGoal.location}

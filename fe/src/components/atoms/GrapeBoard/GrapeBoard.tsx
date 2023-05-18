@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import Image from 'next/image';
 import grapeUrl from '../../../../public/assets/images/grapeBoard/grape_board.png';
 
