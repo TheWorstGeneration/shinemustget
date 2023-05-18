@@ -3,7 +3,6 @@ package com.project.smg.auth.jwt.filter;
 import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
-import com.project.smg.member.repository.RefreshTokenRepository;
 import com.project.smg.utils.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,13 +57,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             }
         }
 
-        // 로컬테스트용
-//        if (request.getHeader("id") != null) {
-//            log.info("로컬 테스트 사용");
-//            request.setAttribute("id", request.getHeader("id"));
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+         //로컬테스트용
+        if (request.getHeader("id") != null) {
+            log.info("로컬 테스트 사용");
+            request.setAttribute("id", request.getHeader("id"));
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String accessToken = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
