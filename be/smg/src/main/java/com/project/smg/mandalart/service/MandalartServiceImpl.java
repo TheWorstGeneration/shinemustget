@@ -193,7 +193,7 @@ public class MandalartServiceImpl implements MandalartService {
         Title title = top1ByMemberOrderByIdDesc.orElse(null);
 
         HashMap<String, Object> result = new HashMap<>();
-        if (title == null) return result;
+        if (title == null) return null;
 
         boolean canCreate = title.getCreatedAt().toLocalDate().equals(LocalDate.now()) ? false : true;
         boolean isDelete = title.getDeletedAt() != null ? true : false;
