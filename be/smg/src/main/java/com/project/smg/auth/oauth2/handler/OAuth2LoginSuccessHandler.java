@@ -77,12 +77,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         podoService.checkSpecialStickerTime(member);
 
         // 만다라트 생성 시 유저 상태 변경
-        if (mandalartService.getMainMandalart(memberId) != null) {
-            member.authorizeUser();
-            memberRepository.save(member);
-            response.sendRedirect(home);
-        } else {
+        if (member.getRole().getKey() == "ROLE_GUEST") {
             response.sendRedirect(create);
+        } else {
+            response.sendRedirect(home);
         }
 
     }
