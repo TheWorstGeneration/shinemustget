@@ -1,10 +1,10 @@
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
-import { faBuromobelexperte } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import logo from '../../../../public/assets/images/common/logo.png';
 
 const LogoLink = styled(Link)`
   display: flex;
@@ -39,12 +39,13 @@ export const Logo = () => {
       aria-label={'redirect to landing page'}
       title={'landing page'}
     >
-      <FontAwesomeIcon
+      {/* <FontAwesomeIcon
         icon={faBuromobelexperte}
         size="2xl"
         rotation={90}
         color="#238835"
-      />
+      /> */}
+      <Image src={logo} alt="logo" width={50} height={50} />
     </LogoLink>
   );
 };
