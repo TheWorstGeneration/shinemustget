@@ -28,7 +28,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
-
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
