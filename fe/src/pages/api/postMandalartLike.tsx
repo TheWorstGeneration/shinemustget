@@ -6,8 +6,6 @@ const mandalartLike = async (id: number) => {
     .post<number>(MANDALART_LIKE + `${id}`)
     .then(res => res.data);
 
-  console.log(data);
-
   return data;
 };
 

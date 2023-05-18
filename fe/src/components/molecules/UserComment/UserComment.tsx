@@ -1,9 +1,8 @@
-import { useState, Dispatch, SetStateAction, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { ComposeButton } from '@/components/atoms/ComposeButton/ComposeButton';
 import { sticker } from '@/constants/stickerList';
-import podoRead from '@/pages/api/podoRead';
 import { useAppSelector } from '@/hooks/useRedux';
 import { selectIdx } from '@/store/modules/detailIdx';
 
@@ -92,7 +91,6 @@ export function UserComment({ stickerList }: { stickerList: sticker[] }) {
             src={key.imageUrl}
             onClick={() => {
               setImageUrl(key.imageUrl);
-              console.log(key.imageUrl);
             }}
             width={32.5}
             height={32.5}

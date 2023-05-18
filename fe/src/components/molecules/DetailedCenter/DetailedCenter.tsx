@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Toggle } from '@/components/atoms/Toggle/Toggle';
 import { GrapeBoardList } from '../GrapeBoardList/GrapeBoardList';

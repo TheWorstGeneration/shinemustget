@@ -67,7 +67,6 @@ export const Mandalart = () => {
   const router = useRouter();
   const { pathname } = router;
   const { data } = useQuery(MANDALART_READ_MAIN, getReadMain);
-  console.log(data);
   const mandalart = useMandalart();
   const dispatch = useAppDispatch();
   const { title, bigList }: MandalartData =
@@ -103,7 +102,6 @@ export const Mandalart = () => {
     isCenter: 2,
   };
 
-  // secondRow의 두번째 요소에 center를 삽입
   secondRow.splice(1, 0, center);
 
   useEffect(() => {

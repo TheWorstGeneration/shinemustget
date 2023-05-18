@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 
-// state type
 export interface profileSlice {
   imageUrl: string;
   nickname: string;
@@ -11,7 +10,6 @@ export interface profileSlice {
   isDelete: boolean;
 }
 
-// 초기 상태 정의
 const initialState = {
   imageUrl: '',
   nickname: '',
@@ -25,7 +23,7 @@ const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    // 액션 생성함수
+
     setLogin: (state, actions) => {
       state.imageUrl = actions.payload.imageUrl;
       state.nickname = actions.payload.nickname;
@@ -48,9 +46,7 @@ const profileSlice = createSlice({
   },
 });
 
-// 액션 생성함수
 export const { setLogin, setLogout, setLanguage, setCanCreate, setIsDelete } =
   profileSlice.actions;
 export const selectProfile = (state: RootState) => state.profile;
-// 리듀서
 export default profileSlice.reducer;

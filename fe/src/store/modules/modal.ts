@@ -7,7 +7,6 @@ export interface modalSlice {
   isMailBox: boolean;
 }
 
-// 초기 상태 정의
 const initialState = {
   isInputBox: true,
   createButton: false,
@@ -18,7 +17,7 @@ const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    // 액션 생성함수
+
     setResetInputBox: state => {
       state.isInputBox = true;
     },
@@ -40,7 +39,6 @@ const modalSlice = createSlice({
   },
 });
 
-// 액션 생성함수
 export const {
   setResetInputBox,
   setInputBox,
@@ -50,5 +48,4 @@ export const {
   setMailBox,
 } = modalSlice.actions;
 export const selectModal = (state: RootState) => state.modal;
-// 리듀서
 export default modalSlice.reducer;

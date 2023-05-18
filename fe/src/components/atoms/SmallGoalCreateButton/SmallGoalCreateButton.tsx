@@ -32,7 +32,6 @@ const Button = styled.button<{ createButton: boolean }>`
     margin-right: 0.5rem;
   }
 
-  // createButton이 true일 때만 적용되는 css
   ${({ createButton }) =>
     createButton &&
     `

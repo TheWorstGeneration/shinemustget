@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { selectModal, setMailBox } from '@/store/modules/modal';
 import styled from '@emotion/styled';
 import { faEnvelope, faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { faCheckDouble } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -23,10 +22,10 @@ const MailContainerDiv = styled.aside<{ isMailBox: boolean }>`
 
   background-color: #ffffff;
 
-  overflow-x: hidden; // 가로 스크롤 숨기기
-  overflow-y: scroll; // 세로 스크롤 활성화
+  overflow-x: hidden; 
+  overflow-y: scroll; 
   &::-webkit-scrollbar {
-    display: none; // 스크롤바 숨기기
+    display: none; 
   }
 
   @media screen and (max-width: 960px) {
@@ -143,9 +142,7 @@ export function MailContainer() {
     if (!socket) return;
 
     const handleSocketMessage = (event: MessageEvent) => {
-      console.log(socket);
       const message = JSON.parse(event.data);
-      console.log(message);
 
       if (Array.isArray(message)) {
         for (let i = 0; i < message.length; i++) {
@@ -174,7 +171,6 @@ export function MailContainer() {
 
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(jsonStr);
-      console.log('jsonStr', jsonStr);
       setMailList(prevMailList =>
         prevMailList.filter(mail => mail.score !== deleteScore),
       );

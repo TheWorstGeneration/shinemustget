@@ -47,7 +47,6 @@ export const GoalBoxContainer = ({
   smallList,
   isCenter,
 }: GoalBoxContainerProps) => {
-  // smallGoal의 location을 기준으로 정렬
   smallList.sort((a, b) => {
     return a.location - b.location;
   });
@@ -64,7 +63,6 @@ export const GoalBoxContainer = ({
     isCenter: isCenter ? isCenter : 1,
   };
 
-  // secondRow의 두번째 요소에 center를 삽입
   secondRow.splice(1, 0, center);
 
   return (

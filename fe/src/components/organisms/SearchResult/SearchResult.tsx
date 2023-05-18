@@ -1,11 +1,9 @@
 import SortButton from '@/components/atoms/SortButton/SortButton';
 import { BigGoalMandalart } from '@/components/molecules/BigGoalMandalart/BigGoalMandalart';
 import { MANDALART_SEARCH } from '@/constants/queryKey';
-import getClearMandalart from '@/pages/api/getClearMandalart';
 import getSearch from '@/pages/api/getSearch';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { resolve } from 'path';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
@@ -48,9 +46,8 @@ const SearchResult = () => {
   const [isChange, setIsChange] = useState(false);
 
   const router = useRouter();
-  const id: string | string[] | undefined = router.query.id; // 경로 변수 가져오기
+  const id: string | string[] | undefined = router.query.id; 
 
-  // 데이터 불러오기
   const searchData = useQuery(MANDALART_SEARCH, () =>
     getSearch(sortIndex, id, page),
   );
@@ -67,15 +64,12 @@ const SearchResult = () => {
     }
   }, [searchData.isLoading]);
 
-  // 검색 결과 인덱스
   const [sortIndex, setSortIndex] = useState<string>('accuracy');
 
-  // 좋아요, 최신순 변경
   const handleChangeSort = (index: string) => {
     setSortIndex(index);
   };
 
-  // 다음 페이지 불러오기
   useEffect(() => {
     if (isChange) {
       searchData.refetch();
@@ -83,17 +77,14 @@ const SearchResult = () => {
     }
   }, [isChange]);
 
-  // 검색어 변경 및 sortIndex 변경시 실행
   useEffect(() => {
     setSearchList([]);
     setPage(0);
     setIsChange(true);
   }, [id, sortIndex]);
 
-  // 바닥인지 감지
   const [isBottom, setIsBottom] = useState(false);
 
-  // 스크롤 위치 감지
   useEffect(() => {
     let timeoutId: any = null;
 
@@ -117,7 +108,6 @@ const SearchResult = () => {
     };
   }, []);
 
-  // 스크롤이 바닥에 왔을 때 실행할거
   useEffect(() => {
     if (isBottom) {
       if (searchData.data?.length === 10) {

@@ -13,7 +13,6 @@ const getBigGoal = async (content: string) => {
     .then(res => res.data)
     .catch(err => {
       alert('저희의 ChatGPT 사용요금이 예상 범위를 뛰어 넘어 버렸습니다. 😭');
-      console.log(err);
     });
   return data;
 };

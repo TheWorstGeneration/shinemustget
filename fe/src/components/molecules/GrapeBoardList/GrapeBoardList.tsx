@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
-import { podoListRecord } from '@/constants/grapeboardList';
 import GrapeBoard from '@/components/atoms/GrapeBoard/GrapeBoard';
 import Image from 'next/image';
 import podoDetail from '@/pages/api/podoDetail';
 import { Dispatch, SetStateAction } from 'react';
 import { useAppSelector } from '@/hooks/useRedux';
-import { Podos, selectIdx } from '@/store/modules/detailIdx';
+import { selectIdx } from '@/store/modules/detailIdx';
 
 const ArrowButtonUp = styled.div`
   margin-left: 9.25rem;
@@ -170,7 +169,6 @@ export function GrapeBoardList({
   setPodoDetail: Dispatch<SetStateAction<string>>;
 }) {
   const { pageCnt, podosList } = useAppSelector(selectIdx).result;
-  console.log(pageCnt, podosList);
 
   const [listIdx, setListIdx] = useState(pageCnt === 0 ? 0 : pageCnt - 1);
 

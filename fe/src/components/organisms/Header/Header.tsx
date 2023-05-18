@@ -5,12 +5,10 @@ import { LogoutButton } from '../../atoms/LogoutButton/LogoutButton';
 import { ProfileImage } from '../../atoms/ProfileImage/ProfileImage';
 import styled from '@emotion/styled';
 import { Logo } from '@/components/atoms/Logo/Logo';
-import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { useAppSelector } from '@/hooks/useRedux';
 import { selectProfile, setLogin } from '@/store/modules/profile';
 import { useRouter } from 'next/router';
 import { useInnerWidth } from '@/hooks/useInnerWidth';
-import { useEffect } from 'react';
-import getMemberInfo from '@/pages/api/getMemberInfo';
 import { SearchBar } from '@/components/atoms/SearchBar/SearchBar';
 
 const HeadContainer = styled.header<{ isScroll: boolean; size: string }>`

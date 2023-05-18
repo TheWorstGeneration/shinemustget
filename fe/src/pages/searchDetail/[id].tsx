@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import SearchDetailContainer from '@/components/molecules/SearchDetailContainer/SearchDetailContainer';
 import searchDetail from '../api/searchDetail';

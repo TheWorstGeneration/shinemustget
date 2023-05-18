@@ -55,12 +55,7 @@ export const DeleteButton = () => {
   const { title } = useAppSelector(selectGoal);
 
   const handleDeleteMandalart = () => {
-    // if (!canCreate) {
-    //   alert(
-    //     '한 번 목표를 잡았으면 노력은 해봐야죠!\n생성 후 24시간이 지나야 삭제가 가능해요.',
-    //   );
-    //   return;
-    // }
+    
     if (title === '만다라트를 만들어보세요! 🎉') {
       router.push('/create');
       return;

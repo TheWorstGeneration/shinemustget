@@ -8,7 +8,6 @@ import goal from './goal';
 import modal from './modal';
 
 const rootReducer = combineReducers({
-  // reducers
   profile,
   detailIdx,
   goal,
@@ -19,7 +18,6 @@ const persistConfig = {
   key: 'root',
   storage,
   whitelist: [
-    // reducers
     'profile',
     'detailIdx',
     'goal',

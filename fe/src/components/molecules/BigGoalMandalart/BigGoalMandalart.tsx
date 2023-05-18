@@ -89,11 +89,9 @@ export const BigGoalMandalart = (props: any) => {
   );
   const isProfile: boolean = props.isProfile;
   const id: number = props.id;
-  console.log('props.id', props.id);
 
   const handleMandalartDetail = () => {
     router.push(`/searchDetail/${id}`);
-    console.log('madalart detail');
   };
 
   return (
