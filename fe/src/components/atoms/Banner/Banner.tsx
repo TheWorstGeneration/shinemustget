@@ -25,9 +25,9 @@ export const Banner = () => {
       url: 'https://oreuda.kr/',
     },
   ];
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
 
-  setInterval(() => {
+  setTimeout(() => {
     setIndex((index + 1) % Banner.length);
   }, 10000);
 
