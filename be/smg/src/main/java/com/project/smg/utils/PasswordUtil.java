@@ -1,4 +1,4 @@
-package com.project.smg.auth.jwt.util;
+package com.project.smg.utils;
 
 import java.security.SecureRandom;
 

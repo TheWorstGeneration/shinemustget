@@ -1,4 +1,4 @@
-package com.project.smg.alarm.utils;
+package com.project.smg.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

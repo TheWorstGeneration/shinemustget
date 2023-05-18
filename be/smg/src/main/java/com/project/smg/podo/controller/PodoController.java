@@ -100,10 +100,4 @@ public class PodoController {
     public ResponseEntity<?> testSpecial(@RequestAttribute("id") String mid, @PathVariable("id") int id) {
         return new ResponseEntity<>(podoService.isSpecialClear(mid, id), HttpStatus.OK);
     }
-
-//    @GetMapping(value = "/testSpecialTime")
-//    public ResponseEntity<?> testSpecialTime(@RequestAttribute("id") String mid) {
-//        podoService.checkSpecialStickerTime(mid);
-//        return new ResponseEntity<>( HttpStatus.OK);
-//    }
 }

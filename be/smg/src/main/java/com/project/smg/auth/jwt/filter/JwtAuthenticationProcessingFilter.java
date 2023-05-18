@@ -1,10 +1,10 @@
 package com.project.smg.auth.jwt.filter;
 
 import com.project.smg.auth.jwt.service.JwtService;
-import com.project.smg.auth.jwt.util.PasswordUtil;
 import com.project.smg.member.entity.Member;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
+import com.project.smg.utils.PasswordUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

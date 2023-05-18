@@ -80,8 +80,6 @@ public class PodoServiceImpl implements PodoService {
         return podoDetailDto;
     }
 
-    // TODO is26daysClear - special podo 여부 : true 면 알림호출
-
     /**
      * 포도알 작성하기
      */
@@ -162,8 +160,6 @@ public class PodoServiceImpl implements PodoService {
             mp.setStatus(true);
         }
     }
-
-    // TODO checkSpecialStickerTime - special podo 사용가능시간 - > 로그인 성공할때마다 확인
 
     /**
      * 스페셜 포도 지속시간 확인 - 로그인 시 확인

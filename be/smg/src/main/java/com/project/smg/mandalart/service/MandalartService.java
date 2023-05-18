@@ -14,15 +14,19 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface MandalartService {
     @Async
     public CompletableFuture<ConcurrentHashMap<String, Object>> getBigGoals(String content);
+
     @Async
     public CompletableFuture<ConcurrentHashMap<String, Object>> getSmallGoals(List<String> bigGoal);
 
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid);
+
     public HashMap<String, Object> getMainMandalart(String mid);
 
     public List<SearchDto> getSearchMandalart(String mid, String option, String word, String pageNo);
 
     public SearchDetailResponseDto getSearchDetail(String mid, int id);
+
     public void clearGoal(String mid, int id);
+
     public void saveClearTitle(Title title);
 }

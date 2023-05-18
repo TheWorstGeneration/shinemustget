@@ -1,7 +1,6 @@
 package com.project.smg.utils;
 
 import com.project.smg.alarm.dto.AlarmDto;
-import com.project.smg.alarm.utils.ChatUtils;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.LikeRepository;
 import com.project.smg.mandalart.service.MandalartLikeService;
@@ -94,14 +93,11 @@ public class RedisSchedule {
 
     }
 
-    //    @Scheduled(cron = "0 0/1 * * * *")
     @Scheduled(cron = "0 0 0 * * *")
     public void cleanupExpiredAlarms() {
         log.info("[Scheduling] 알람 데이터 삭제 시작");
 
         LocalDateTime expirationDateTime = LocalDateTime.now().minusHours(24);
-//        LocalDateTime expirationDateTime = LocalDateTime.now().minusMinutes(10);
-//        LocalDateTime expirationDateTime = LocalDateTime.now().minusSeconds(50);
 
         double expirationTimestamp = chatUtils.changeLocalDateTimeToDouble(expirationDateTime);
 

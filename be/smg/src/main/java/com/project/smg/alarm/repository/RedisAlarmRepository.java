@@ -3,7 +3,7 @@ package com.project.smg.alarm.repository;
 import com.project.smg.alarm.dto.AlarmDto;
 import com.project.smg.alarm.dto.LatestAlarmsResultDto;
 import com.project.smg.alarm.dto.SendAlarmDto;
-import com.project.smg.alarm.utils.ChatUtils;
+import com.project.smg.utils.ChatUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
