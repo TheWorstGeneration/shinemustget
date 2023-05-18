@@ -57,16 +57,18 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         }
 
         // 로컬테스트용
-        if (request.getHeader("id") != null) {
-            log.info("로컬 테스트 사용");
-            request.setAttribute("id", request.getHeader("id"));
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if (request.getHeader("id") != null) {
+//            log.info("로컬 테스트 사용");
+//            request.setAttribute("id", request.getHeader("id"));
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         String accessToken = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
+
+        log.info("accessToken {}", accessToken);
 
         if (accessToken == null) {
             log.info("필터에서 Refresh Token 사용");
@@ -75,6 +77,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             String refreshToken = jwtService.extractRefreshToken(request)
                     .filter(jwtService::isTokenValid)
                     .orElse(null);
+
+            log.info("refreshToken {}", refreshToken);
 
             Member member = memberRepository.findByRefreshToken(refreshToken)
                     .orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));

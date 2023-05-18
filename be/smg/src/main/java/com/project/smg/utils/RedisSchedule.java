@@ -38,8 +38,9 @@ public class RedisSchedule {
         zSetOperations = alarmRedisTemplate.opsForZSet();
     }
 
+    // 매일 자정에 실행
     @Transactional
-    @Scheduled(cron = "0 0/3 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void deleteChangeLikeFromRedis() {
         log.info("[Scheduling] redis like caching start");
 
@@ -87,9 +88,6 @@ public class RedisSchedule {
             redisTemplate.delete(changeKey);
 
         }
-        // Todo redis 삭제는 일주일에 한 번 -> 나중에 Scheduled 로 빼기
-        // 기존 redis caching 데이터 삭제
-        deleteLikeFromRedis();
 
     }
 
@@ -112,15 +110,8 @@ public class RedisSchedule {
         log.info("[Scheduling] 알람 데이터 삭제 완료");
     }
 
-    @Transactional
-    public void updateLikeCnt(int titleId) {
-        Title findTitle = mandalartLikeService.checkTitle(titleId);
-        // 변경된 title id 만 db 개수 조회해서 update
-        int likeCnt = likeRepository.countByTitleIdAndStatus(titleId, true).intValue();
-        findTitle.setLikeCnt(likeCnt);
-        mandalartService.saveClearTitle(findTitle);
-    }
-
+    // 일주일에 한 번 실행
+    @Scheduled(cron = "0 0 * * 0")
     private void deleteLikeFromRedis() {
         // 기존 redis caching 데이터 삭제
         log.info("[Scheduling] 좋아요 기존 redis caching 데이터 삭제 ");
@@ -136,5 +127,13 @@ public class RedisSchedule {
         }
     }
 
+    @Transactional
+    public void updateLikeCnt(int titleId) {
+        Title findTitle = mandalartLikeService.checkTitle(titleId);
+        // 변경된 title id 만 db 개수 조회해서 update
+        int likeCnt = likeRepository.countByTitleIdAndStatus(titleId, true).intValue();
+        findTitle.setLikeCnt(likeCnt);
+        mandalartService.saveClearTitle(findTitle);
+    }
 
 }
