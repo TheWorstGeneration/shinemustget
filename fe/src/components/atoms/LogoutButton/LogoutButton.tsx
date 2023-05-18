@@ -37,8 +37,8 @@ export const LogoutButton = () => {
     const result = window.confirm(message);
 
     if (result) {
-      getKakaoLogout();
       dispatch(setLogout());
+      getKakaoLogout();
 
       window.location.href = process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
         ? process.env.NEXT_PUBLIC_LOGOUT_REDIRECTURI
