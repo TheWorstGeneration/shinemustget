@@ -114,6 +114,7 @@ export const SearchBar = () => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder="만다라트를 검색해 보세요."
+        maxLength={20}
       />
       <button onClick={handleButtonClick} title="검색" type="button">
         <FontAwesomeIcon icon={faSearch} />
