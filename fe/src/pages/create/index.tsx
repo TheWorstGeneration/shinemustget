@@ -10,10 +10,11 @@ import { QueryClient, dehydrate, useQuery } from 'react-query';
 import getMemberInfo from '../api/getMemberInfo';
 import { getReadMain } from '../api/getReadMain';
 import { GetServerSideProps } from 'next';
-import { setLogin } from '@/store/modules/profile';
+import { selectProfile, setLogin } from '@/store/modules/profile';
 import { CreateButton } from '@/components/atoms/CreateButton/CreateButton';
 import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const CreateSection = styled.section`
   display: flex;
@@ -45,11 +46,20 @@ export default function Create() {
   useGoToLandingPage();
   const dispatch = useAppDispatch();
   const { smallGoalLists } = useAppSelector(selectGoal);
+  const { isLogin } = useAppSelector(selectProfile);
+  const router = useRouter();
   const { data, isSuccess } = useQuery(MEMBER_INFO, getMemberInfo);
 
   useEffect(() => {
-    if (!isSuccess) return;
-    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+    if (isSuccess) {
+      dispatch(
+        setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }),
+      );
+    }
+
+    if (!isLogin) {
+      router.push('/');
+    }
   });
 
   return (

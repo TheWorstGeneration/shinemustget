@@ -1,6 +1,6 @@
 import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
-import { useAppDispatch } from '@/hooks/useRedux';
-import { setLogin } from '@/store/modules/profile';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { selectProfile, setLogin } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
 import getMemberInfo from '../api/getMemberInfo';
@@ -12,6 +12,7 @@ import { GetServerSideProps } from 'next';
 import { MANDALART_READ_MAIN, MEMBER_INFO } from '@/constants/queryKey';
 import { getReadMain } from '../api/getReadMain';
 import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
+import { useRouter } from 'next/router';
 
 const HomeSection = styled.section`
   display: flex;
@@ -77,12 +78,21 @@ const ButtonContainer = styled.div`
 
 export default function Home() {
   const dispatch = useAppDispatch();
+  const { isLogin } = useAppSelector(selectProfile);
   const { data, isSuccess } = useQuery(MEMBER_INFO, getMemberInfo);
-  useGoToLandingPage();
+
+  const router = useRouter();
 
   useEffect(() => {
-    if (!isSuccess) return;
-    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+    if (isSuccess) {
+      dispatch(
+        setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }),
+      );
+    }
+
+    if (!isLogin) {
+      router.push('/');
+    }
   });
 
   return (
