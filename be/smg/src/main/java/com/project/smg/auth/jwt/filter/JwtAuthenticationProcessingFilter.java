@@ -79,7 +79,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             Member member = memberRepository.findByRefreshToken(refreshToken)
                     .orElseThrow(() -> new IllegalStateException("존재하지 않는 유저"));
             String memberId = member.getId();
-            saveAuthentication(member);
+
             checkRefreshTokenAndReIssueAccessToken(response, memberId);
             request.setAttribute("id", memberId);
             filterChain.doFilter(request, response);
@@ -145,7 +145,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         }
 
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(myUser.getId().toString())
+                .username(myUser.getId())
                 .password(password)
                 .roles(myUser.getRole().name())
                 .build();
