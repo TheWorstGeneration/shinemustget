@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import bannerUrl from '../../../../public/assets/images/common/banner.svg';
+import defaultBanner from '../../../../public/assets/images/common/banner.png';
+import oreudaBanner from '../../../../public/assets/images/common/banner.svg';
+import { useState } from 'react';
 
 const BannerImage = styled(Image)`
   position: relative;
@@ -13,12 +15,28 @@ const BannerImage = styled(Image)`
 `;
 
 export const Banner = () => {
+  const Banner = [
+    {
+      src: defaultBanner,
+      url: '',
+    },
+    {
+      src: oreudaBanner,
+      url: 'https://oreuda.kr/',
+    },
+  ];
+  const [index, setIndex] = useState(0);
+
+  setInterval(() => {
+    setIndex((index + 1) % Banner.length);
+  }, 10000);
+
   const handleBannerClick = () => {
-    window.open('https://oreuda.kr/', '_blank');
+    window.open(Banner[index].url, '_blank');
   };
   return (
     <BannerImage
-      src={bannerUrl}
+      src={Banner[index].src}
       alt="banner"
       width={200}
       height={400}
