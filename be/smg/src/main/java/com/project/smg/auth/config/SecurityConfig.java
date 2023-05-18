@@ -6,7 +6,6 @@ import com.project.smg.auth.oauth2.handler.OAuth2LoginFailureHandler;
 import com.project.smg.auth.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.project.smg.auth.oauth2.service.CustomOAuth2UserService;
 import com.project.smg.member.repository.MemberRepository;
-import com.project.smg.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
