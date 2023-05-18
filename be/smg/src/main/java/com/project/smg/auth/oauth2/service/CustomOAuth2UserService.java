@@ -3,9 +3,7 @@ package com.project.smg.auth.oauth2.service;
 import com.project.smg.auth.oauth2.CustomOAuth2User;
 import com.project.smg.auth.oauth2.OAuthAttributes;
 import com.project.smg.member.entity.Member;
-import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.entity.SocialType;
-import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -27,7 +24,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
-    private final MemberPodoRepository memberPodoRepository;
     private final MemberService memberService;
     private static final String KAKAO = "kakao";
 
@@ -108,7 +104,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private Member saveUser(OAuthAttributes attributes, SocialType socialType) {
         Member createdUser = attributes.toEntity(attributes.getOauth2UserInfo(), socialType);
         log.info("신규 유저 가입 {}", createdUser.getNickname());
-        
         return memberRepository.save(createdUser);
     }
 }
