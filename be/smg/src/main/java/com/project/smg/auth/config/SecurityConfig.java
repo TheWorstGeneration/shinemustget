@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .authorizeRequests()
 
 //                .antMatchers("/**", "/ws/**", "/socket.io/**")
-                .antMatchers("/")
+                .antMatchers("/", "/oauth2/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
