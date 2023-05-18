@@ -33,8 +33,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     private final MandalartService mandalartService;
     private final PodoService podoService;
-    private static final String home = "https://shinemustget.com/home";
-    private static final String create = "https://shinemustget.com/create";
+    private static final String home = "https://www.shinemustget.com/home";
+    private static final String create = "https://www.shinemustget.com/create";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
