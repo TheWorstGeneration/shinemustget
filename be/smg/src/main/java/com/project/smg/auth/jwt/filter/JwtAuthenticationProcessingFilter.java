@@ -57,13 +57,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             }
         }
 
-         //로컬테스트용
-        if (request.getHeader("id") != null) {
-            log.info("로컬 테스트 사용");
-            request.setAttribute("id", request.getHeader("id"));
-            filterChain.doFilter(request, response);
-            return;
-        }
+        //로컬테스트용
+//        if (request.getHeader("id") != null) {
+//            log.info("로컬 테스트 사용");
+//            request.setAttribute("id", request.getHeader("id"));
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         String accessToken = jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)

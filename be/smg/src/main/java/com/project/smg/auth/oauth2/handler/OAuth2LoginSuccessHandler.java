@@ -2,11 +2,13 @@ package com.project.smg.auth.oauth2.handler;
 
 import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.auth.oauth2.CustomOAuth2User;
-import com.project.smg.mandalart.service.MandalartService;
 import com.project.smg.member.entity.Member;
+import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.entity.RefreshToken;
+import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
+import com.project.smg.member.service.MemberService;
 import com.project.smg.podo.service.PodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -29,7 +32,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
-    private final MandalartService mandalartService;
+    private final MemberService memberService;
+    private final MemberPodoRepository memberPodoRepository;
     private final PodoService podoService;
     private static final String home = "https://www.shinemustget.com/home";
     private static final String create = "https://www.shinemustget.com/create";
@@ -73,6 +77,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 스페셜 포도 유효기간 체크
         podoService.checkSpecialStickerTime(member);
+
+        //기본 포도 리스트 생성
+        List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(member.getId());
+        if (memberPodoList.isEmpty())
+            memberService.addMemberPodo(member.getId());
 
         // 만다라트 생성 시 유저 상태 변경
         if (member.getRole().getKey() == "ROLE_GUEST") {
