@@ -77,9 +77,14 @@ const ButtonContainer = styled.div`
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { data } = useQuery(MEMBER_INFO, getMemberInfo);
+  const { data, isSuccess } = useQuery(MEMBER_INFO, getMemberInfo);
   useGoToLandingPage();
-  dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+
+  useEffect(() => {
+    if (!isSuccess) return;
+    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  });
+
   return (
     <>
       <Head>

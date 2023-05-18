@@ -13,6 +13,7 @@ import { GetServerSideProps } from 'next';
 import { setLogin } from '@/store/modules/profile';
 import { CreateButton } from '@/components/atoms/CreateButton/CreateButton';
 import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
+import { useEffect } from 'react';
 
 const CreateSection = styled.section`
   display: flex;
@@ -42,12 +43,14 @@ const FinalCreateStep = styled.div`
 
 export default function Create() {
   useGoToLandingPage();
-
   const dispatch = useAppDispatch();
   const { smallGoalLists } = useAppSelector(selectGoal);
+  const { data, isSuccess } = useQuery(MEMBER_INFO, getMemberInfo);
 
-  const { data } = useQuery(MEMBER_INFO, getMemberInfo);
-  dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  useEffect(() => {
+    if (!isSuccess) return;
+    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  });
 
   return (
     <>
