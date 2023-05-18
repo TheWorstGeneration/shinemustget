@@ -19,14 +19,8 @@ public class MandalartLikeController {
     /* 만다라트 좋아요 */
     @PostMapping("/like/{id}")
     public ResponseEntity<?> like(@RequestAttribute("id") String mid, @PathVariable("id") int id) throws Exception {
-//        try {
         mandalartLikeService.mandalartLike(mid, id);
         return new ResponseEntity<>(new ResponseDto(200, "좋아요 변경 완료"), HttpStatus.OK);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//            return new ResponseEntity<>(new ResponseDto(500, "좋아요 실패"), HttpStatus.OK);
-//        }
-
     }
 
 

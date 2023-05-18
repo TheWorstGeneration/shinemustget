@@ -3,8 +3,11 @@ package com.project.smg.auth.oauth2.service;
 import com.project.smg.auth.oauth2.CustomOAuth2User;
 import com.project.smg.auth.oauth2.OAuthAttributes;
 import com.project.smg.member.entity.Member;
+import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.entity.SocialType;
+import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
+import com.project.smg.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +19,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -23,6 +27,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
+    private final MemberPodoRepository memberPodoRepository;
+    private final MemberService memberService;
     private static final String KAKAO = "kakao";
 
     @Override
@@ -84,12 +90,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         if (findUser == null) {
             return saveUser(attributes, socialType);
-        }
-        else {
+        } else {
+            //유저 프로필 이미지 변경 시 업데이트
             if (!findUser.getImageUrl().equals(attributes.getOauth2UserInfo().getImageUrl())) {
                 findUser.updateImageUrl(attributes.getOauth2UserInfo().getImageUrl());
                 memberRepository.save(findUser);
             }
+
+            //기본 포도 리스트 생성
+            List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(findUser.getId());
+            if (memberPodoList.isEmpty())
+                memberService.addMemberPodo(findUser.getId());
         }
         return findUser;
     }

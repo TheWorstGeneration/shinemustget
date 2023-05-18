@@ -96,6 +96,7 @@ public class ProfileServiceImpl implements ProfileService {
         List<ClearDto> clearDtoList = Stream.concat(
                         bigGoalList.stream().filter(goal -> goal.getClearAt() != null)
                                 .map(goal -> new ClearDto(goal.getContent(), goal.getClearAt())),
+
                         smallGoalList.stream().filter(goal -> goal.getClearAt() != null)
                                 .map(goal -> new ClearDto(goal.getContent(), goal.getClearAt())))
                 .collect(Collectors.toCollection(ArrayList::new));

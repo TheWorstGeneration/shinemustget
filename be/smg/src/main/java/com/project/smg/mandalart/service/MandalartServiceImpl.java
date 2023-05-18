@@ -40,7 +40,6 @@ public class MandalartServiceImpl implements MandalartService {
     @Value("${openai.api-key}")
     private String apiKey;
     private final GptTitleRepository gptTitleRepository;
-    private final GptBigGoalRepository gptBigGoalRepository;
     private final MemberRepository memberRepository;
     private final TitleRepository titleRepository;
     private final PodoRepository podoRepository;
@@ -143,7 +142,6 @@ public class MandalartServiceImpl implements MandalartService {
     @Transactional
     @Override
     public void createMandalart(MandalartRequestDto mandalartRequestDto, String mid) {
-//        Optional<Member> member = memberRepository.findById(mid);
         Member member = memberRepository.findById(mid).orElse(null);
         Title title = Title.builder()
                 .createdAt(LocalDateTime.now())
@@ -170,12 +168,12 @@ public class MandalartServiceImpl implements MandalartService {
                     smallGoal.addBigGoal(bigGoal);
                 }
             }
-            member.authorizeUser();
 
+            // 만다라트 생성 시 유저상태 변경
+            member.authorizeUser();
             memberRepository.save(member);
 
             titleRepository.save(title);
-
             saveClearTitle(title);
         } else {
             throw new IllegalArgumentException("존재하지 않는 유저");

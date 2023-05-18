@@ -1,12 +1,10 @@
 package com.project.smg.auth.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.smg.auth.jwt.filter.JwtAuthenticationProcessingFilter;
 import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.auth.oauth2.handler.OAuth2LoginFailureHandler;
 import com.project.smg.auth.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.project.smg.auth.oauth2.service.CustomOAuth2UserService;
-import com.project.smg.member.entity.Role;
 import com.project.smg.member.repository.MemberRepository;
 import com.project.smg.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +32,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final ObjectMapper objectMapper;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -121,7 +117,6 @@ public class SecurityConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setMaxAge(3600L);
-//        config.addExposedHeader("Authorization");
         source.registerCorsConfiguration("/**", config);
 
         return source;

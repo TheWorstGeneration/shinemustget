@@ -3,7 +3,7 @@ package com.project.smg.alarm.service;
 import com.project.smg.alarm.Handler.CustomWebSocketHandler;
 import com.project.smg.alarm.dto.AlarmDto;
 import com.project.smg.alarm.dto.SendAlarmDto;
-import com.project.smg.alarm.utils.ChatUtils;
+import com.project.smg.utils.ChatUtils;
 import com.project.smg.mandalart.entity.Title;
 import com.project.smg.mandalart.repository.TitleRepository;
 import lombok.RequiredArgsConstructor;

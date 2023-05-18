@@ -4,7 +4,6 @@ import com.project.smg.auth.jwt.service.JwtService;
 import com.project.smg.auth.oauth2.CustomOAuth2User;
 import com.project.smg.mandalart.service.MandalartService;
 import com.project.smg.member.entity.Member;
-import com.project.smg.member.entity.MemberPodo;
 import com.project.smg.member.entity.RefreshToken;
 import com.project.smg.member.repository.MemberPodoRepository;
 import com.project.smg.member.repository.MemberRepository;
@@ -22,7 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -33,8 +31,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
-    private final MemberPodoRepository memberPodoRepository;
-    private final MemberService memberService;
     private final MandalartService mandalartService;
     private final PodoService podoService;
     private static final String home = "https://shinemustget.com/home";
@@ -56,6 +52,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         Optional<Member> findMember = memberRepository.findById(memberId);
         Member member = findMember.orElseThrow(() -> new IllegalStateException("유저가 존재하지 않음"));
 
+        //토큰 검증 과정
         refreshTokenRepository.findByMemberId(member.getId())
                 .ifPresentOrElse(refreshToken -> {
                             log.info("Refresh Token 있음");
@@ -75,13 +72,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                                     .build();
                             refreshTokenRepository.save(token);
                         });
-        List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(memberId);
 
-        if (memberPodoList.isEmpty())
-            memberService.addMemberPodo(memberId);
-
+        // 스페셜 포도 유효기간 체크
         podoService.checkSpecialStickerTime(member);
 
+        // 만다라트 생성 시 유저 상태 변경
         if (!mandalartService.getMainMandalart(memberId).isEmpty()) {
             member.authorizeUser();
             memberRepository.save(member);
