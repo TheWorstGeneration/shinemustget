@@ -12,7 +12,6 @@ import { getReadMain } from '../api/getReadMain';
 import { GetServerSideProps } from 'next';
 import { setLogin, setLogout } from '@/store/modules/profile';
 import { CreateButton } from '@/components/atoms/CreateButton/CreateButton';
-import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
 import { useRouter } from 'next/router';
 
 const CreateSection = styled.section`
@@ -42,22 +41,19 @@ const FinalCreateStep = styled.div`
 `;
 
 export default function Create() {
-  useGoToLandingPage();
   const dispatch = useAppDispatch();
   const { smallGoalLists } = useAppSelector(selectGoal);
   const router = useRouter();
   const { data, isSuccess, isError } = useQuery(MEMBER_INFO, getMemberInfo);
 
-  dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
   console.log(data, isSuccess, isError);
 
-  // if (isSuccess) {
-  //   dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
-  // } else if (isError) {
-  //   dispatch(setLogout());
-  //   console.log(data, isSuccess, isError);
-  //   router.push('/');
-  // }
+  if (isSuccess) {
+    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  } else if (isError) {
+    dispatch(setLogout());
+    router.push('/');
+  }
 
   return (
     <>

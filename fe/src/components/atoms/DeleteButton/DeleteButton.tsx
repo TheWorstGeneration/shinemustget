@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 import { deleteMandalart } from '@/pages/api/deleteMandalart';
-import { selectGoal, setResetGoal } from '@/store/modules/goal';
+import { setResetGoal } from '@/store/modules/goal';
 import { setResetCreateButton, setResetInputBox } from '@/store/modules/modal';
 import { selectProfile } from '@/store/modules/profile';
 import styled from '@emotion/styled';
@@ -52,14 +52,8 @@ export const DeleteButton = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { canCreate } = useAppSelector(selectProfile);
-  const { title } = useAppSelector(selectGoal);
 
   const handleDeleteMandalart = () => {
-    if (title === '만다라트를 만들어보세요! 🎉') {
-      router.push('/create');
-      return;
-    }
-
     if (!canCreate) {
       alert('생성 후 24시간이 지나야 새로운 만다라트를 생설할 수 있어요.');
       return;
@@ -78,11 +72,7 @@ export const DeleteButton = () => {
   return (
     <ButtonStyle type="button" onClick={handleDeleteMandalart}>
       <FontAwesomeIcon icon={faTrashCan} color="#ff090988" />
-      <ButtonText>
-        {title === '만다라트를 만들어보세요! 🎉'
-          ? '만다라트 생성'
-          : '만다라트 삭제'}
-      </ButtonText>
+      <ButtonText>만다라트 삭제</ButtonText>
     </ButtonStyle>
   );
 };

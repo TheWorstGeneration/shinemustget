@@ -80,16 +80,14 @@ export default function Home() {
   const router = useRouter();
   const { data, isSuccess, isError } = useQuery(MEMBER_INFO, getMemberInfo);
 
-  dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
   console.log(data, isSuccess, isError);
 
-  // if (isSuccess) {
-  //   dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
-  // } else if (isError) {
-  //   dispatch(setLogout());
-  //   console.log(data, isSuccess, isError);
-  //   router.push('/');
-  // }
+  if (isSuccess) {
+    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  } else if (isError) {
+    dispatch(setLogout());
+    router.push('/');
+  }
 
   return (
     <>
