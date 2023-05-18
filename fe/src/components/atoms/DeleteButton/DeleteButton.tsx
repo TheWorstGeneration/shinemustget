@@ -55,11 +55,16 @@ export const DeleteButton = () => {
   const { title } = useAppSelector(selectGoal);
 
   const handleDeleteMandalart = () => {
-    
     if (title === '만다라트를 만들어보세요! 🎉') {
       router.push('/create');
       return;
     }
+
+    if (!canCreate) {
+      alert('생성 후 24시간이 지나야 새로운 만다라트를 생설할 수 있어요.');
+      return;
+    }
+
     const result = confirm('정말로 만다라트를 삭제하시나요?');
     if (result) {
       deleteMandalart();

@@ -3,6 +3,7 @@ import { MANDALART_READ_MAIN } from '@/constants/queryKey';
 import { MandalartData, useMandalart } from '@/hooks/useMandalart';
 import { useAppDispatch } from '@/hooks/useRedux';
 import { getReadMain } from '@/pages/api/getReadMain';
+import { setTitle } from '@/store/modules/goal';
 import { setCanCreate, setIsDelete } from '@/store/modules/profile';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
@@ -71,6 +72,10 @@ export const Mandalart = () => {
   const dispatch = useAppDispatch();
   const { title, bigList }: MandalartData =
     pathname === '/home' ? (data?.bigList ? data : mandalart) : mandalart;
+
+  if (title !== '만다라트를 만들어보세요! 🎉') {
+    dispatch(setTitle(title));
+  }
 
   bigList.sort((a, b) => {
     return a.location - b.location;
