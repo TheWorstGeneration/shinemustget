@@ -36,18 +36,17 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final String[] NO_CHECK_URLS = {"/swagger-ui", "/login"};
+    private static final String[] NO_CHECK_URLS = {"/swagger-ui", "/api/login/**", "/login/**"};
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("필터 시작");
         log.info("Access Token 쿠키에서 조회");
-        
-        String domain = request.getServerName();
+
+        String domain = request.getRequestURI();
         log.info("도메인 {}", domain);
 
         //필터 제외 url 체크
