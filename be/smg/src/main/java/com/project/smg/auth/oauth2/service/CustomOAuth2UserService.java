@@ -59,6 +59,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes extractAttributes = OAuthAttributes.of(socialType, userNameAttributeName, attributes);
 
         Member createdUser = getUser(extractAttributes, socialType); // getUser() 메소드로 User 객체 생성 후 반환
+        memberService.addMemberPodo(createdUser.getId());
 
         log.info("유저정보 : {}", createdUser.getRole().getKey());
 
@@ -96,11 +97,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 findUser.updateImageUrl(attributes.getOauth2UserInfo().getImageUrl());
                 memberRepository.save(findUser);
             }
-
-            //기본 포도 리스트 생성
-            List<MemberPodo> memberPodoList = memberPodoRepository.findByPodoTypeId(findUser.getId());
-            if (memberPodoList.isEmpty())
-                memberService.addMemberPodo(findUser.getId());
         }
         return findUser;
     }
@@ -112,6 +108,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private Member saveUser(OAuthAttributes attributes, SocialType socialType) {
         Member createdUser = attributes.toEntity(attributes.getOauth2UserInfo(), socialType);
         log.info("신규 유저 가입 {}", createdUser.getNickname());
+        
         return memberRepository.save(createdUser);
     }
 }
