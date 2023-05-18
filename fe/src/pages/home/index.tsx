@@ -1,8 +1,7 @@
 import { Mandalart } from '@/components/organisms/Mandalart/Mandalart';
-import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
-import { selectProfile, setLogin } from '@/store/modules/profile';
+import { useAppDispatch } from '@/hooks/useRedux';
+import { setLogin, setLogout } from '@/store/modules/profile';
 import styled from '@emotion/styled';
-import React, { useEffect } from 'react';
 import getMemberInfo from '../api/getMemberInfo';
 import { ImageButton } from '@/components/atoms/ImageButton/ImageButton';
 import { DeleteButton } from '@/components/atoms/DeleteButton/DeleteButton';
@@ -78,22 +77,15 @@ const ButtonContainer = styled.div`
 
 export default function Home() {
   const dispatch = useAppDispatch();
-  const { isLogin } = useAppSelector(selectProfile);
-  const { data, isSuccess } = useQuery(MEMBER_INFO, getMemberInfo);
-
   const router = useRouter();
+  const { data, isSuccess, isError } = useQuery(MEMBER_INFO, getMemberInfo);
 
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(
-        setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }),
-      );
-    }
-
-    if (!isLogin) {
-      router.push('/');
-    }
-  });
+  if (isSuccess) {
+    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  } else if (isError) {
+    dispatch(setLogout());
+    router.push('/');
+  }
 
   return (
     <>

@@ -10,10 +10,9 @@ import { QueryClient, dehydrate, useQuery } from 'react-query';
 import getMemberInfo from '../api/getMemberInfo';
 import { getReadMain } from '../api/getReadMain';
 import { GetServerSideProps } from 'next';
-import { selectProfile, setLogin } from '@/store/modules/profile';
+import { setLogin, setLogout } from '@/store/modules/profile';
 import { CreateButton } from '@/components/atoms/CreateButton/CreateButton';
 import { useGoToLandingPage } from '@/hooks/useGoToLandingPage';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 const CreateSection = styled.section`
@@ -46,21 +45,15 @@ export default function Create() {
   useGoToLandingPage();
   const dispatch = useAppDispatch();
   const { smallGoalLists } = useAppSelector(selectGoal);
-  const { isLogin } = useAppSelector(selectProfile);
   const router = useRouter();
-  const { data, isSuccess } = useQuery(MEMBER_INFO, getMemberInfo);
+  const { data, isSuccess, isError } = useQuery(MEMBER_INFO, getMemberInfo);
 
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(
-        setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }),
-      );
-    }
-
-    if (!isLogin) {
-      router.push('/');
-    }
-  });
+  if (isSuccess) {
+    dispatch(setLogin({ imageUrl: data?.imageUrl, nickname: data?.nickname }));
+  } else if (isError) {
+    dispatch(setLogout());
+    router.push('/');
+  }
 
   return (
     <>
